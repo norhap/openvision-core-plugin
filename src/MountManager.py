@@ -42,7 +42,7 @@ def getProcPartitions(List):
 			if re.search('8', devmajor):
 				if not re.search('sd[a-z][1-9]', device):							# if storage use partitions only
 					continue
-				if SystemInfo["HasHiSi"] and path.exists("/dev/sda4") and re.search('sd[a][1-4]', device):	# sf8008 using SDcard for slots ---> exclude
+				if SystemInfo["HiSilicon"] and path.exists("/dev/sda4") and re.search('sd[a][1-4]', device):	# sf8008 using SDcard for slots ---> exclude
 					continue
 			if device in list2:
 				continue

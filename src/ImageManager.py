@@ -117,7 +117,7 @@ class VISIONImageManager(Screen):
 		self.BackupRunning = False
 		self.BackupDirectory = " "
 		if SystemInfo["canMultiBoot"]:
-			self.mtdboot = SystemInfo["MBbootdevice"]
+			self.mtdboot = SystemInfo["MultibootStartupDevice"]
 		self.imagelist = {}
 		self.getImageList = None
 		self.onChangedEntry = []
@@ -378,7 +378,7 @@ class VISIONImageManager(Screen):
 	def keyResstore0(self, answer):
 		if answer:
 			if SystemInfo["canMultiBoot"]:
-				if SystemInfo["HasHiSi"]:
+				if SystemInfo["HiSilicon"]:
 	 				if pathExists('/dev/sda4'):
 						self.HasSDmmc = True
 						self.getImageList = GetImagelist(self.keyRestore1)
@@ -468,7 +468,7 @@ class VISIONImageManager(Screen):
 		if ret == 0:
 			CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST
 			if SystemInfo["canMultiBoot"]:
- 				if SystemInfo["HasHiSi"]:									#SF8008 type receiver with SD card multiboot
+ 				if SystemInfo["HiSilicon"]:									#SF8008 type receiver with SD card multiboot
 					CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
 				else:
 					CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)
@@ -486,7 +486,7 @@ class VISIONImageManager(Screen):
 	def ofgwriteResult(self, result, retval, extra_args=None):
 		fbClass.getInstance().unlock()
 		if retval == 0:
-			if SystemInfo["HasHiSi"] and self.HasSDmmc is False:
+			if SystemInfo["HiSilicon"] and self.HasSDmmc is False:
 				self.session.open(TryQuitMainloop, 2)
 			elif SystemInfo["canMultiBoot"]:
 				print("[ImageManager] slot %s result %s\n" %(self.multibootslot, result))
@@ -703,12 +703,12 @@ class ImageBackup(Screen):
 			slot = GetCurrentImage()
 			self.MTDKERNEL  = SystemInfo["canMultiBoot"][slot]["kernel"].split('/')[2] 
 			self.MTDROOTFS  = SystemInfo["canMultiBoot"][slot]["device"].split('/')[2] 
-			if SystemInfo["HasRootSubdir"]:
+			if SystemInfo["MultibootStartupDevice"]:
 				self.ROOTFSSUBDIR = SystemInfo["canMultiBoot"][slot]['rootsubdir']
 		else:
 			self.MTDKERNEL = getMachineMtdKernel()
 			self.MTDROOTFS = getMachineMtdRoot()
-		if getBoxType() in ("gb7252", "gbx34k"):
+		if getBoxType() in ("gbquad4k","gbue4k","gbx34k"):
 			self.GB4Kbin = 'boot.bin'
 			self.GB4Krescue = 'rescue.bin'
 		if "sda" in self.MTDKERNEL:
@@ -970,12 +970,12 @@ class ImageBackup(Screen):
 				self.commands.append('mount /dev/%s %s/root' %(self.MTDROOTFS, self.TMPDIR))
 			else:
 				self.commands.append('mount --bind / %s/root' % self.TMPDIR)
-			if SystemInfo["HasRootSubdir"]:
+			if SystemInfo["MultibootStartupDevice"]:
 				self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root/%s --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR, self.ROOTFSSUBDIR))
 			else:
 				self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR))
 			self.commands.append("/usr/bin/bzip2 %s/rootfs.tar" % self.WORKDIR)
-			if getBoxType() in ("gb7252", "gbx34k"):
+			if getBoxType() in ("gbquad4k","gbue4k","gbx34k"):
 				self.commands.append("dd if=/dev/mmcblk0p1 of=%s/boot.bin" % self.WORKDIR)
 				self.commands.append("dd if=/dev/mmcblk0p3 of=%s/rescue.bin" % self.WORKDIR)
 				print('[ImageManager] Stage2: Create: boot dump boot.bin:',self.MODEL)
@@ -1190,7 +1190,7 @@ class ImageBackup(Screen):
 		else:
 			move('%s/rootfs.%s' % (self.WORKDIR, self.ROOTFSTYPE), '%s/%s' % (self.MAINDEST, self.ROOTFSFILE))
 
-		if getBoxType() in ("gb7252", "gbx34k"):
+		if getBoxType() in ("gbquad4k","gbue4k","gbx34k"):
 			move('%s/%s' % (self.WORKDIR, self.GB4Kbin), '%s/%s' % (self.MAINDEST, self.GB4Kbin))
 			move('%s/%s' % (self.WORKDIR, self.GB4Krescue), '%s/%s' % (self.MAINDEST, self.GB4Krescue))
 			system('cp -f /usr/share/gpt.bin %s/gpt.bin' %(self.MAINDEST))
@@ -1216,14 +1216,14 @@ class ImageBackup(Screen):
 				with open(self.MAINDEST + '/noforce', 'w') as fileout:
 					line = "rename this file to 'force' to force an update without confirmation"
 					fileout.write(line)
-			if SystemInfo["HasHiSi"] and self.KERN == "mmc":
+			if SystemInfo["HiSilicon"] and self.KERN == "mmc":
 				with open(self.MAINDEST + '/SDAbackup', 'w') as fileout:
 					line = "SF8008 indicate type of backup %s" %self.KERN
 					fileout.write(line)
 				self.session.open(MessageBox, _("Multiboot only able to restore this backup to mmc slot1"), MessageBox.TYPE_INFO, timeout=20)
 			if path.exists('/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat'):
 				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat', self.MAINDESTROOT + '/burn.bat')
-		elif SystemInfo["HasRootSubdir"]:
+		elif SystemInfo["MultibootStartupDevice"]:
 				with open(self.MAINDEST + '/force_%s_READ.ME' %self.MCBUILD, 'w') as fileout: 
 					line1 = "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick" %(self.MCBUILD, self.MCBUILD)
 					line2 = "When you enter the recovery menu then it will force the image to be installed in the linux selection" 
@@ -1258,7 +1258,7 @@ class ImageBackup(Screen):
 	def doBackup6(self):
 		zipfolder = path.split(self.MAINDESTROOT)
 		self.commands = []
-		if SystemInfo["HasRootSubdir"]:
+		if SystemInfo["MultibootStartupDevice"]:
 			self.commands.append('7za a -r -bt -bd %s/%s-%s-%s-%s-%s_mmc.zip %s/*' %(self.BackupDirectory, self.IMAGEDISTRO, self.DISTROVERSION, self.DISTROBUILD, self.MODEL, self.BackupDate, self.MAINDESTROOT))
 		else:
 			self.commands.append('cd ' + self.MAINDESTROOT + ' && zip -r ' + self.MAINDESTROOT + '.zip *')

@@ -18,7 +18,6 @@ from Components.PluginComponent import plugins
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
-from Components.SystemInfo import SystemInfo
 
 config.softcammanager = ConfigSubsection()
 config.softcammanager.softcams_autostart = ConfigLocations(default='')
@@ -125,10 +124,6 @@ class VISIONSoftcamManager(Screen):
 		cams = []
 		if path.exists('/usr/softcams/'):
 			cams = listdir('/usr/softcams')
-		SystemInfo["OScamInstalled"] = False
-		for softcam in cams:
-			if softcam.lower().startswith('oscam'):
-				SystemInfo["OScamInstalled"] = True
 		selcam = ''
 		if cams:
 			current = self["list"].getCurrent()[0]

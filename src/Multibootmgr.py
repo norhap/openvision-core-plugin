@@ -39,7 +39,7 @@ class MultiBoot(Screen):
 		title = screentitle
 		Screen.setTitle(self, title)
 		self.title = screentitle
-		if SystemInfo["HasHiSi"] and not pathExists('/dev/sda4'):
+		if SystemInfo["HiSilicon"] and not pathExists('/dev/sda4'):
 			self["key_red"] = StaticText(_("Cancel"))
 			self["labe14"] = StaticText(_("Press Init to format SDcard."))
 			self["labe15"] = StaticText("")
@@ -66,7 +66,7 @@ class MultiBoot(Screen):
 			self["labe14"] = StaticText(_("Use the cursor keys to select an installed image and then Erase button."))
 			self["labe15"] = StaticText(_("Note: slot list does not show current image or empty slots."))
 			self["key_green"] = StaticText(_("Erase"))
-			if SystemInfo["HasHiSi"]:
+			if SystemInfo["HiSilicon"]:
 				self["key_yellow"] = StaticText(_("Init SDcard"))
 			else:
 				self["key_yellow"] = StaticText("")
@@ -113,7 +113,7 @@ class MultiBoot(Screen):
 		self.currentSelected = self["config"].l.getCurrentSelection()
 		if self.currentSelected != None:
 			if self.currentSelected[0][1] != "Queued":
-				if SystemInfo["HasRootSubdir"]:
+				if SystemInfo["MultibootStartupDevice"]:
 					message = _("Removal of this slot will not show in STB GUI.  Are you sure you want to delete image slot %s ?" %(self.currentSelected[0][1]))
 					ybox = self.session.openWithCallback(self.doErase, MessageBox, message, MessageBox.TYPE_YESNO, default=True)
 					ybox.setTitle(_("Remove confirmation"))
@@ -127,7 +127,7 @@ class MultiBoot(Screen):
 			sloterase = EmptySlot(self.currentSelected[0][1], self.startit)
 
 	def format(self):
-		if SystemInfo["HasHiSi"]:
+		if SystemInfo["HiSilicon"]:
 			self.TITLE = _("Init SDCARD")
 			if "sda" in open('/sys/firmware/devicetree/base/chosen/bootargs', 'r').read():
 				self.session.open(MessageBox, _("Multiboot manager - Cannot initialise SDcard when running image on SDcard."), MessageBox.TYPE_INFO, timeout=10)
