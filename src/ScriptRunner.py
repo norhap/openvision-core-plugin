@@ -25,7 +25,7 @@ config.scriptrunner.showinextensions.addNotifier(updateExtensions, initial_call=
 def ScriptRunnerAutostart(reason, session=None, **kwargs):
 	pass
 
-class VIXScriptRunner(IpkgInstaller):
+class VISIONScriptRunner(IpkgInstaller):
 	def __init__(self, session, list=None, menu_path=""):
 		if not list:
 			list = []
@@ -61,7 +61,7 @@ class VIXScriptRunner(IpkgInstaller):
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
 
-		self.skinName = ["VIXScriptRunner", "IpkgInstaller"]
+		self.skinName = ["VISIONScriptRunner", "IpkgInstaller"]
 		self["key_green"] = StaticText(_("Run"))
 
 		self['myactions'] = ActionMap(["MenuActions"],
@@ -70,7 +70,7 @@ class VIXScriptRunner(IpkgInstaller):
 									  }, -1)
 
 	def createSetup(self):
-		self.session.open(Setup, 'vixscriptrunner', 'SystemPlugins/ViX', self.menu_path, PluginLanguageDomain)
+		self.session.open(Setup, 'visionscriptrunner', 'SystemPlugins/Vision', self.menu_path, PluginLanguageDomain)
 
 	def install(self):
 		list = self.list.getSelectionsList()

@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: enigma2-vix-core\n"
+"Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-11 09:48+0000\n"
 "PO-Revision-Date: 2019-11-12 18:26+0100\n"
@@ -393,8 +393,8 @@ msgstr "HTTP URL für OpenATV Images"
 msgid "Http url for OpenPli Images"
 msgstr "HTTP URL für OpenPli Images"
 
-msgid "Http url for OpenViX Images"
-msgstr "HTTP URL für OpenViX Images"
+msgid "Http url for OpenVision Images"
+msgstr "HTTP URL für OpenVision Images"
 
 msgid "Http url for User Images"
 msgstr "HTTP URL für Benutzer Images"
@@ -421,7 +421,7 @@ msgstr ""
 msgid "ImageLib_User"
 msgstr ""
 
-msgid "ImageLib_ViX"
+msgid "ImageLib_Vision"
 msgstr ""
 
 msgid "Inactive"
@@ -539,8 +539,8 @@ msgid "Multiboot manager - The SDcard must be at least 8MB."
 msgstr "Multiboot Verwaltung. Die SD-Karte muss m indestens 8MB groß sein."
 
 #, python-format
-msgid "Multiboot manager - to use this routine %s image must be at OpenViX 4.2.043 or later and USB flashed - reply Yes to continue"
-msgstr "Multiboot Verwaltung - Um diese Routine zu benutzen %s Image muss OpenViX 4.2.043 oder neuer sein. Wähle Ja um fortzufahren."
+msgid "Multiboot manager - to use this routine %s image must be at OpenVision 4.2.043 or later and USB flashed - reply Yes to continue"
+msgstr "Multiboot Verwaltung - Um diese Routine zu benutzen %s Image muss OpenVision 4.2.043 oder neuer sein. Wähle Ja um fortzufahren."
 
 msgid "Multiboot only able to restore this backup to mmc slot1"
 msgstr "Multiboot kann dieses Backup nur auf MMC Slot 1 wieder herstellen"
@@ -969,23 +969,23 @@ msgstr "Als HDD verwenden"
 msgid "Use the cursor keys to select an installed image and then Erase button."
 msgstr "Benutze die Cursortasten um ein installiertes Image zu wählen und dann den Lösche Button."
 
-msgid "ViX"
-msgstr "ViX"
+msgid "Vision"
+msgstr "Vision"
 
-msgid "ViX Backup manager"
-msgstr "ViX Backup Verwaltung"
+msgid "Vision Backup manager"
+msgstr "Vision Backup Verwaltung"
 
-msgid "ViX Image manager"
-msgstr "ViX Image Verwaltung"
+msgid "Vision Image manager"
+msgstr "Vision Image Verwaltung"
 
-msgid "ViX Mount manager"
-msgstr "ViX Mount Verwaltung"
+msgid "Vision Mount manager"
+msgstr "Vision Mount Verwaltung"
 
-msgid "ViX SWAP manager"
-msgstr "ViX Swap Verwaltung"
+msgid "Vision SWAP manager"
+msgstr "Vision Swap Verwaltung"
 
-msgid "ViX Script runner"
-msgstr "ViX Script ausführen"
+msgid "Vision Script runner"
+msgstr "Vision Script ausführen"
 
 msgid "View progress"
 msgstr "Fortschritt anzeigen"
@@ -1308,11 +1308,11 @@ msgstr "nicht verfügbar"
 #~ msgid "Multiboot Image Manager"
 #~ msgstr "Multiboot Image Verwaltung"
 
-#~ msgid "Multiboot manager - SDcard initialisation run, please restart OpenViX."
+#~ msgid "Multiboot manager - SDcard initialisation run, please restart OpenVision."
 #~ msgstr "Multiboot Verwaltung - SD-Karte wurde initialisiert. Bitte Box neu starten."
 
-#~ msgid "Multiboot manager - SDcard initialization run, please restart OpenViX."
-#~ msgstr "Multiboot Verwaltung - SD Karte wurde initialisiert. Bitte OpenViX neu starten."
+#~ msgid "Multiboot manager - SDcard initialization run, please restart OpenVision."
+#~ msgstr "Multiboot Verwaltung - SD Karte wurde initialisiert. Bitte OpenVision neu starten."
 
 #~ msgid "New Backup"
 #~ msgstr "Neues Backup"
@@ -1423,7 +1423,7 @@ msgstr "nicht verfügbar"
 #~ msgid "Restore confirmation"
 #~ msgstr "Wiederherstellen Bestätigung"
 
-#~ msgid "SDcard detected but not formatted for multiboot - please use ViX MultiBoot Manager to format."
+#~ msgid "SDcard detected but not formatted for multiboot - please use Vision MultiBoot Manager to format."
 #~ msgstr "SD-Karte erkannt aber sie ist nicht für Multiboot formatiert. Bitte die Multiboot Verwaltung zum formatieren benutzen."
 
 #~ msgid "Schedule Backups"
@@ -1576,23 +1576,23 @@ msgstr "nicht verfügbar"
 #~ msgid "Updating mount locations."
 #~ msgstr "Freigaben erneuern."
 
-#~ msgid "ViX Backup Manager"
-#~ msgstr "ViX Backup Verwaltung"
+#~ msgid "Vision Backup Manager"
+#~ msgstr "Vision Backup Verwaltung"
 
-#~ msgid "ViX Image Manager"
-#~ msgstr "ViX Image Verwaltung"
+#~ msgid "Vision Image Manager"
+#~ msgstr "Vision Image Verwaltung"
 
-#~ msgid "ViX Mount Manager"
-#~ msgstr "ViX Mount Verwaltung"
+#~ msgid "Vision Mount Manager"
+#~ msgstr "Vision Mount Verwaltung"
 
-#~ msgid "ViX Script Runner"
-#~ msgstr "ViX Script Ausführung"
+#~ msgid "Vision Script Runner"
+#~ msgstr "Vision Script Ausführung"
 
-#~ msgid "ViX Swap Manager"
-#~ msgstr "ViX Swap Verwaltung"
+#~ msgid "Vision Swap Manager"
+#~ msgstr "Vision Swap Verwaltung"
 
-#~ msgid "ViX Swap manager"
-#~ msgstr "ViX Swap Verwaltung"
+#~ msgid "Vision Swap manager"
+#~ msgstr "Vision Swap Verwaltung"
 
 #~ msgid "View Progress"
 #~ msgstr "Fortschritt anzeigen"

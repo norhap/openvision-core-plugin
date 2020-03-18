@@ -5,7 +5,7 @@
 # Automatically generated, 2011, 2014.
 msgid ""
 msgstr ""
-"Project-Id-Version: enigma2-vix-core\n"
+"Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-30 20:02+0000\n"
 "PO-Revision-Date: 2018-11-03 16:56+0200\n"
@@ -476,8 +476,8 @@ msgstr "Multibuut püsivara haldur"
 msgid "Multiboot manager - Cannot initialise SDcard when running image on SDcard"
 msgstr "Multibuudi haldur: SD kaarti ei saa vormindada, kui aktiivne püsivara paikneb SD kaardil"
 
-msgid "Multiboot manager - SDcard initialisation run, please restart OpenViX"
-msgstr "Multibuudi haldur: SD kaart vormindati, taaskäivita OpenViX"
+msgid "Multiboot manager - SDcard initialisation run, please restart OpenVision"
+msgstr "Multibuudi haldur: SD kaart vormindati, taaskäivita OpenVision"
 
 msgid "Multiboot manager - The SDcard must be at least 8MB"
 msgstr "Multibuudi haldur: SD kaart peab olema vähemalt 8 MB"
@@ -675,8 +675,8 @@ msgstr "Käivita"
 msgid "Run your shell scripts."
 msgstr "Käivita skripte"
 
-msgid "SDcard detected but not formatted for multiboot - please use ViX MultiBoot Manager to format."
-msgstr "Tuvastati SD kaart, kuid ee tuleb multibuudi tarbeks vormindada. Kasuta selleks Vixi multibuudi haldurit."
+msgid "SDcard detected but not formatted for multiboot - please use Vision MultiBoot Manager to format."
+msgstr "Tuvastati SD kaart, kuid ee tuleb multibuudi tarbeks vormindada. Kasuta selleks Visioni multibuudi haldurit."
 
 msgid "SWAP file not found. You have to create the file before you try to activate it."
 msgstr "Saalefaili ei leitud. Enne käivitamist tuleb see luua."
@@ -700,7 +700,7 @@ msgid "Script runner"
 msgstr "Skriptid"
 
 msgid "Script runner settings"
-msgstr "ViX skriptid"
+msgstr "Vision skriptid"
 
 msgid "Select"
 msgstr "Vali"
@@ -892,23 +892,23 @@ msgstr "Kasuta kõvakettana"
 msgid "Use the cursor keys to select an installed image and then Erase button."
 msgstr "Kasuta paigaldatud püsivara valikuks noolenuppe ja siis nuppu 'Kustuta'."
 
-msgid "ViX"
-msgstr "ViX"
+msgid "Vision"
+msgstr "Vision"
 
-msgid "ViX Backup manager"
-msgstr "ViX varukoopia haldur"
+msgid "Vision Backup manager"
+msgstr "Vision varukoopia haldur"
 
-msgid "ViX Image manager"
-msgstr "ViX püsivara haldur"
+msgid "Vision Image manager"
+msgstr "Vision püsivara haldur"
 
-msgid "ViX Mount manager"
-msgstr "ViX haakepunktid"
+msgid "Vision Mount manager"
+msgstr "Vision haakepunktid"
 
-msgid "ViX SWAP manager"
-msgstr "ViX saale haldur"
+msgid "Vision SWAP manager"
+msgstr "Vision saale haldur"
 
-msgid "ViX Script runner"
-msgstr "ViX skriptid"
+msgid "Vision Script runner"
+msgstr "Vision skriptid"
 
 msgid "View progress"
 msgstr "Näita edenemist"
@@ -1426,23 +1426,23 @@ msgstr "pole saadaval"
 #~ msgid "Updating mount locations."
 #~ msgstr "Haakepunktide uuendamine."
 
-#~ msgid "ViX Backup Manager"
-#~ msgstr "ViX varukoopiad"
+#~ msgid "Vision Backup Manager"
+#~ msgstr "Vision varukoopiad"
 
-#~ msgid "ViX Image Manager"
-#~ msgstr "ViX süsteemitõmmised"
+#~ msgid "Vision Image Manager"
+#~ msgstr "Vision süsteemitõmmised"
 
-#~ msgid "ViX Mount Manager"
-#~ msgstr "ViX haakepunktid"
+#~ msgid "Vision Mount Manager"
+#~ msgstr "Vision haakepunktid"
 
-#~ msgid "ViX Script Runner"
-#~ msgstr "ViX skriptid"
+#~ msgid "Vision Script Runner"
+#~ msgstr "Vision skriptid"
 
-#~ msgid "ViX Swap Manager"
-#~ msgstr "ViX saale haldur"
+#~ msgid "Vision Swap Manager"
+#~ msgstr "Vision saale haldur"
 
-#~ msgid "ViX Swap manager"
-#~ msgstr "ViX saale haldur"
+#~ msgid "Vision Swap manager"
+#~ msgstr "Vision saale haldur"
 
 #~ msgid "View Progress"
 #~ msgstr "Näita edenemist"

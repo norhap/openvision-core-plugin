@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: enigma2-vix-core\n"
+"Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-21 11:01+0000\n"
 "PO-Revision-Date: 2019-12-23 14:35+0100\n"
@@ -401,8 +401,8 @@ msgstr "Http url voor OpenATV Images"
 msgid "Http url for OpenPli Images"
 msgstr "Http url voor OpenPli Images"
 
-msgid "Http url for OpenViX Images"
-msgstr "Http url voor OpenViX Images"
+msgid "Http url for OpenVision Images"
+msgstr "Http url voor OpenVision Images"
 
 msgid "Http url for User Images"
 msgstr "Http url voor gebruikersimages"
@@ -429,8 +429,8 @@ msgstr "ImageLib_Pli"
 msgid "ImageLib_User"
 msgstr "ImageLib_User"
 
-msgid "ImageLib_ViX"
-msgstr "ImageLib_ViX"
+msgid "ImageLib_Vision"
+msgstr "ImageLib_Vision"
 
 msgid "Inactive"
 msgstr "Inactief"
@@ -547,8 +547,8 @@ msgid "Multiboot manager - The SDcard must be at least 8MB."
 msgstr "Multiboot manager - De SD-kaart moet tenminste 8MB groot zijn."
 
 #, python-format
-msgid "Multiboot manager - to use this routine %s image must be at OpenViX 4.2.043 or later and USB flashed - reply Yes to continue"
-msgstr "Multiboot manager - om deze routine te gebruiken moet %s image OpenViX 4.2.043 of later zijn en USB geflashed - antwoord \"Ja\" om door te gaan"
+msgid "Multiboot manager - to use this routine %s image must be at OpenVision 4.2.043 or later and USB flashed - reply Yes to continue"
+msgstr "Multiboot manager - om deze routine te gebruiken moet %s image OpenVision 4.2.043 of later zijn en USB geflashed - antwoord \"Ja\" om door te gaan"
 
 msgid "Multiboot only able to restore this backup to mmc slot1"
 msgstr "Multiboot kan deze back-up alleen maar herstellen van mmc slot1"
@@ -980,23 +980,23 @@ msgstr "Gebruik als HDD"
 msgid "Use the cursor keys to select an installed image and then Erase button."
 msgstr "Gebruik de pijlthestoetsen om een geinstalleerd image te kiezen en vervolgens de 'wis-toets'."
 
-msgid "ViX"
-msgstr "ViX"
+msgid "Vision"
+msgstr "Vision"
 
-msgid "ViX Backup manager"
-msgstr "ViX Back-up manager"
+msgid "Vision Backup manager"
+msgstr "Vision Back-up manager"
 
-msgid "ViX Image manager"
-msgstr "ViX Image manager"
+msgid "Vision Image manager"
+msgstr "Vision Image manager"
 
-msgid "ViX Mount manager"
-msgstr "ViX Mount manager"
+msgid "Vision Mount manager"
+msgstr "Vision Mount manager"
 
-msgid "ViX SWAP manager"
-msgstr "ViX SWAP manager"
+msgid "Vision SWAP manager"
+msgstr "Vision SWAP manager"
 
-msgid "ViX Script runner"
-msgstr "ViX Script runner"
+msgid "Vision Script runner"
+msgstr "Vision Script runner"
 
 msgid "View progress"
 msgstr "Bekijk voortgang"
@@ -1333,14 +1333,14 @@ msgstr "niet beschikbaar"
 #~ msgid "Multiboot manager - Cannot initialise SDcard when running image on SDcard"
 #~ msgstr "Multibootmanager - Kan SD-kaart niet initialiseren wanneer het image loopt vanaf de SD-kaart."
 
-#~ msgid "Multiboot manager - SDcard initialisation run, please restart OpenViX"
-#~ msgstr "Multibootmanager - SD-kaart initialisatie, herstart OpenViX."
+#~ msgid "Multiboot manager - SDcard initialisation run, please restart OpenVision"
+#~ msgstr "Multibootmanager - SD-kaart initialisatie, herstart OpenVision."
 
-#~ msgid "Multiboot manager - SDcard initialisation run, please restart OpenViX."
-#~ msgstr "Multiboot manager - SD-kaart initialisatie, herstart OpenViX."
+#~ msgid "Multiboot manager - SDcard initialisation run, please restart OpenVision."
+#~ msgstr "Multiboot manager - SD-kaart initialisatie, herstart OpenVision."
 
-#~ msgid "Multiboot manager - SDcard initialization run, please restart OpenViX."
-#~ msgstr "Multiboot manager - SD-kaart initialisatie, herstart OpenViX."
+#~ msgid "Multiboot manager - SDcard initialization run, please restart OpenVision."
+#~ msgstr "Multiboot manager - SD-kaart initialisatie, herstart OpenVision."
 
 #~ msgid "Multiboot manager - The SDcard must be at least 8MB"
 #~ msgstr "Multibootmanager - De SD-kaart moet minimaal 8MB groot zijn."
@@ -1455,11 +1455,11 @@ msgstr "niet beschikbaar"
 #~ msgid "Restore confirmation"
 #~ msgstr "Herstellen bevestigen"
 
-#~ msgid "SDcard detected but not formatted for multiboot - please use ViX MultiBoot Manager to format"
-#~ msgstr "SD-kaart gedetecteerd maar niet geformatteerd voor multiboot - gebruik de VIX Multibootmanager om te formatteren."
+#~ msgid "SDcard detected but not formatted for multiboot - please use Vision MultiBoot Manager to format"
+#~ msgstr "SD-kaart gedetecteerd maar niet geformatteerd voor multiboot - gebruik de VISION Multibootmanager om te formatteren."
 
-#~ msgid "SDcard detected but not formatted for multiboot - please use ViX MultiBoot Manager to format."
-#~ msgstr "SD-kaart gedetecteerd, maar niet geformatteerd voor multiboot - gebruik de ViX MultiBoot manager 0m te formatteren."
+#~ msgid "SDcard detected but not formatted for multiboot - please use Vision MultiBoot Manager to format."
+#~ msgstr "SD-kaart gedetecteerd, maar niet geformatteerd voor multiboot - gebruik de Vision MultiBoot manager 0m te formatteren."
 
 #~ msgid "Schedule Backups"
 #~ msgstr "Plan back-ups"
@@ -1611,23 +1611,23 @@ msgstr "niet beschikbaar"
 #~ msgid "Updating mount locations."
 #~ msgstr "Mounts worden geupdate."
 
-#~ msgid "ViX Backup Manager"
-#~ msgstr "ViX backupmanager"
+#~ msgid "Vision Backup Manager"
+#~ msgstr "Vision backupmanager"
 
-#~ msgid "ViX Image Manager"
-#~ msgstr "ViX imagemanager"
+#~ msgid "Vision Image Manager"
+#~ msgstr "Vision imagemanager"
 
-#~ msgid "ViX Mount Manager"
-#~ msgstr "ViX mountmanager"
+#~ msgid "Vision Mount Manager"
+#~ msgstr "Vision mountmanager"
 
-#~ msgid "ViX Script Runner"
-#~ msgstr "ViX xcriptrunner"
+#~ msgid "Vision Script Runner"
+#~ msgstr "Vision xcriptrunner"
 
-#~ msgid "ViX Swap Manager"
-#~ msgstr "ViX swapmanager"
+#~ msgid "Vision Swap Manager"
+#~ msgstr "Vision swapmanager"
 
-#~ msgid "ViX Swap manager"
-#~ msgstr "ViX Swap manager"
+#~ msgid "Vision Swap manager"
+#~ msgstr "Vision Swap manager"
 
 #~ msgid "View Progress"
 #~ msgstr "Bekijk voortgang"

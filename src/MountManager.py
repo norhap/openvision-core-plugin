@@ -68,10 +68,10 @@ def buildDeviceList(device, List):
 	# print '[MountManager1]Type:%s' %SystemInfo["MountManager"]
 
 	name = _("HARD DISK: ")
-	if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "vixcore/dev_hdd.png")):
-		mypixmap = resolveFilename(SCOPE_ACTIVE_SKIN, "vixcore/dev_hdd.png")
+	if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "visioncore/dev_hdd.png")):
+		mypixmap = resolveFilename(SCOPE_ACTIVE_SKIN, "visioncore/dev_hdd.png")
 	else:
-		mypixmap = '/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/images/dev_hdd.png'
+		mypixmap = '/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/images/dev_hdd.png'
 	if path.exists('/sys/block/' + device2 + '/device/model'):
 		model = file('/sys/block/' + device2 + '/device/model').read()
 	elif path.exists('/sys/block/' + device2 + '/device/name'):
@@ -80,16 +80,16 @@ def buildDeviceList(device, List):
 
 	if devicetype.find('usb') != -1:
 		name = _('USB: ')
-		if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "vixcore/dev_usb.png")):
-			mypixmap = resolveFilename(SCOPE_ACTIVE_SKIN, "vixcore/dev_usb.png")
+		if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "visioncore/dev_usb.png")):
+			mypixmap = resolveFilename(SCOPE_ACTIVE_SKIN, "visioncore/dev_usb.png")
 		else:
-			mypixmap = '/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/images/dev_usb.png'
+			mypixmap = '/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/images/dev_usb.png'
 	elif devicetype.find('mmc') != -1:
 		name = _('SDCARD: ')
-		if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "vixcore/dev_sd.png")):
-			mypixmap = resolveFilename(SCOPE_ACTIVE_SKIN, "vixcore/dev_sd.png")
+		if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "visioncore/dev_sd.png")):
+			mypixmap = resolveFilename(SCOPE_ACTIVE_SKIN, "visioncore/dev_sd.png")
 		else:
-			mypixmap = '/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/images/dev_sd.png'
+			mypixmap = '/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/images/dev_sd.png'
 	name += model
 	description = ''
 	mediamount = _("None")
@@ -150,7 +150,7 @@ def buildDeviceList(device, List):
 		List.append(res)
 
 
-class VIXDevicesPanel(Screen):
+class VISIONDevicesPanel(Screen):
 	skin = """
 	<screen position="center,center" size="640,460">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="25,0" size="140,40" alphatest="on"/>
@@ -253,7 +253,7 @@ class VIXDevicesPanel(Screen):
 		self['lab1'].hide()
 
 	def SetupMounts(self):
-		self.session.openWithCallback(self.updateList, VIXDevicePanelConf, self.menu_path)
+		self.session.openWithCallback(self.updateList, VISIONDevicePanelConf, self.menu_path)
 
 	def Mount(self):
 		sel = self['list'].getCurrent()
@@ -321,7 +321,7 @@ class VIXDevicesPanel(Screen):
 			out.write(line)
 		self.Console.ePopen('mount -a', self.updateList)
 
-class VIXDevicePanelConf(Screen, ConfigListScreen):
+class VISIONDevicePanelConf(Screen, ConfigListScreen):
 	skin = """
 	<screen position="center,center" size="640,460">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="25,0" size="140,40" alphatest="on"/>
@@ -421,7 +421,7 @@ class VIXDevicePanelConf(Screen, ConfigListScreen):
 		else:
 			self.close()
 
-class VIXDevicesPanelSummary(Screen):
+class VISIONDevicesPanelSummary(Screen):
 	def __init__(self, session, parent):
 		Screen.__init__(self, session, parent=parent)
 		self["entry"] = StaticText("")

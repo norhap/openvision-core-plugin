@@ -59,7 +59,7 @@ config.imagemanager.query = ConfigYesNo(default=True)
 config.imagemanager.lastbackup = ConfigNumber(default=0)
 config.imagemanager.number_to_keep = ConfigNumber(default=0)
 config.imagemanager.imagefeed_User = ConfigText(default="http://url", fixed_size=False)
-config.imagemanager.imagefeed_ViX = ConfigText(default="http://www.openvix.co.uk/openvix-builds/", fixed_size=False)
+config.imagemanager.imagefeed_Vision = ConfigText(default="http://www.openvision.co.uk/openvision-builds/", fixed_size=False)
 config.imagemanager.imagefeed_ATV = ConfigText(default="http://images.mynonpublic.com/openatv/", fixed_size=False)
 config.imagemanager.imagefeed_Pli = ConfigText(default="http://downloads.openpli.org/json", fixed_size=False)
 
@@ -87,8 +87,8 @@ def ImageManagerautostart(reason, session=None, **kwargs):
 			print "[ImageManager] Stop"
 			autoImageManagerTimer.stop()
 
-class VIXImageManager(Screen):
-	skin = """<screen name="VIXImageManager" position="center,center" size="560,400">
+class VISIONImageManager(Screen):
+	skin = """<screen name="VISIONImageManager" position="center,center" size="560,400">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
@@ -271,11 +271,11 @@ class VIXImageManager(Screen):
 				self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
-		self.session.openWithCallback(self.setupDone, Setup, 'viximagemanager', 'SystemPlugins/ViX', self.menu_path, PluginLanguageDomain)
+		self.session.openWithCallback(self.setupDone, Setup, 'visionimagemanager', 'SystemPlugins/Vision', self.menu_path, PluginLanguageDomain)
 
 	def doDownload(self):
-		self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPli",3), ("User Defined", 4), ]
-		self.urlchoices = [config.imagemanager.imagefeed_ViX.value, config.imagemanager.imagefeed_ATV.value, config.imagemanager.imagefeed_Pli.value, config.imagemanager.imagefeed_User.value]
+		self.choices = [("OpenVision", 1), ("OpenATV", 2), ("OpenPli",3), ("User Defined", 4), ]
+		self.urlchoices = [config.imagemanager.imagefeed_Vision.value, config.imagemanager.imagefeed_ATV.value, config.imagemanager.imagefeed_Pli.value, config.imagemanager.imagefeed_User.value]
 		self.message = _("Do you want to change download url")
 		self.session.openWithCallback(self.doDownload2, MessageBox, self.message, list=self.choices, default=1, simple=True)
 
@@ -364,7 +364,7 @@ class VIXImageManager(Screen):
 			self.showJobView(job)
 
 	def doSettingsBackup(self):
-		from Plugins.SystemPlugins.ViX.BackupManager import BackupFiles
+		from Plugins.SystemPlugins.Vision.BackupManager import BackupFiles
 		self.BackupFiles = BackupFiles(self.session, False, True)
 		Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
 		Components.Task.job_manager.in_background = False
@@ -670,7 +670,7 @@ class AutoImageManagerTimer:
 
 class ImageBackup(Screen):
 	skin = """
-	<screen name="VIXImageManager" position="center,center" size="560,400">
+	<screen name="VISIONImageManager" position="center,center" size="560,400">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
@@ -1246,8 +1246,8 @@ class ImageBackup(Screen):
 					line = "SF8008 indicate type of backup %s" %self.KERN
 					fileout.write(line)
 				self.session.open(MessageBox, _("Multiboot only able to restore this backup to mmc slot1"), MessageBox.TYPE_INFO, timeout=20)
-			if path.exists('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/burn.bat'):
-				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/burn.bat', self.MAINDESTROOT + '/burn.bat')
+			if path.exists('/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat'):
+				copy('/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat', self.MAINDESTROOT + '/burn.bat')
 		elif SystemInfo["HasRootSubdir"]:
 				with open(self.MAINDEST + '/force_%s_READ.ME' %self.MCBUILD, 'w') as fileout: 
 					line1 = "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick" %(self.MCBUILD, self.MCBUILD)
@@ -1324,7 +1324,7 @@ class ImageBackup(Screen):
 
 class ImageManagerDownload(Screen):
 	skin = """
-	<screen name="VIXImageManager" position="center,center" size="560,400">
+	<screen name="VISIONImageManager" position="center,center" size="560,400">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
 		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
 		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
@@ -1403,7 +1403,7 @@ class ImageManagerDownload(Screen):
 		
 		if "atv" in self.urli:
 			imagecat = [6.2,6.3, 6.4]
-		elif "www.openvix" in self.urli:
+		elif "www.openvision" in self.urli:
 			imagecat = [5.3]
 
 		if not self.Pli and not self.imagesList:

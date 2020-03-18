@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: enigma2-vix-core\n"
+"Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-19 21:00+0200\n"
 "PO-Revision-Date: 2016-04-25 12:53+0200\n"
@@ -677,23 +677,23 @@ msgstr "Aktualizácia umiestnenia pripojení."
 msgid "Use as HDD"
 msgstr "Použiť ako HDD"
 
-msgid "ViX"
-msgstr "ViX"
+msgid "Vision"
+msgstr "Vision"
 
-msgid "ViX Backup Manager"
-msgstr "ViX manažér záloh"
+msgid "Vision Backup Manager"
+msgstr "Vision manažér záloh"
 
-msgid "ViX Image Manager"
-msgstr "Správca systémových obrazov ViX"
+msgid "Vision Image Manager"
+msgstr "Správca systémových obrazov Vision"
 
-msgid "ViX Mount Manager"
-msgstr "ViX manažér prípojných bodov"
+msgid "Vision Mount Manager"
+msgstr "Vision manažér prípojných bodov"
 
-msgid "ViX Script Runner"
-msgstr "ViX spúšťač skriptov"
+msgid "Vision Script Runner"
+msgstr "Vision spúšťač skriptov"
 
-msgid "ViX Swap Manager"
-msgstr "ViX swap manažér"
+msgid "Vision Swap Manager"
+msgstr "Vision swap manažér"
 
 msgid "View Progress"
 msgstr "Zobraziť priebeh"

@@ -152,7 +152,7 @@ class MultiBoot(Screen):
 				self.session.open(MessageBox, _("Multiboot manager - Cannot initialise SDcard when running image on SDcard."), MessageBox.TYPE_INFO, timeout=10)
 				self.close
 			else:
-				message = _("Multiboot manager - to use this routine %s image must be at OpenViX 4.2.043 or later and USB flashed - reply Yes to continue" %getMachineBuild())
+				message = _("Multiboot manager - to use this routine %s image must be at OpenVision 4.2.043 or later and USB flashed - reply Yes to continue" %getMachineBuild())
 				ybox = self.session.openWithCallback(self.doFormat, MessageBox, message, MessageBox.TYPE_YESNO, default=True)
 				ybox.setTitle(_("Remove confirmation"))
 

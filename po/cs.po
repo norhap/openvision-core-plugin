@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: enigma2-vix-core\n"
+"Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-31 23:16+0000\n"
 "PO-Revision-Date: 2015-11-01 20:22+0100\n"
@@ -708,23 +708,23 @@ msgstr "Aktualizuji přípojné body."
 msgid "Use as HDD"
 msgstr "Užít jako HDD"
 
-msgid "ViX"
-msgstr "ViX"
+msgid "Vision"
+msgstr "Vision"
 
-msgid "ViX Backup Manager"
-msgstr "ViX Správce zálohy"
+msgid "Vision Backup Manager"
+msgstr "Vision Správce zálohy"
 
-msgid "ViX Image Manager"
-msgstr "ViX Správce Image"
+msgid "Vision Image Manager"
+msgstr "Vision Správce Image"
 
-msgid "ViX Mount Manager"
-msgstr "ViX Správce připojovacích bodů"
+msgid "Vision Mount Manager"
+msgstr "Vision Správce připojovacích bodů"
 
-msgid "ViX Script Runner"
-msgstr "ViX Správce skriptů"
+msgid "Vision Script Runner"
+msgstr "Vision Správce skriptů"
 
-msgid "ViX Swap Manager"
-msgstr "ViX Správce odkládání"
+msgid "Vision Swap Manager"
+msgstr "Vision Správce odkládání"
 
 msgid "View Progress"
 msgstr "Průběh"

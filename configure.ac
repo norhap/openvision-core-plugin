@@ -1,5 +1,5 @@
-AC_INIT(plugins,0.0.1)
-AM_INIT_AUTOMAKE(plugins,0.0.1)
+AC_INIT(plugins,1.0.0)
+AM_INIT_AUTOMAKE(plugins,1.0.0)
 
 TUXBOX_APPS_DIRECTORY
 

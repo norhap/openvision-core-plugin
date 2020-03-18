@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: enigma2-vix-core\n"
+"Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-04-17 08:46+0100\n"
 "PO-Revision-Date: 2019-04-21 21:11+0300\n"
@@ -353,7 +353,7 @@ msgstr "فلاش مموري : "
 msgid "Use as HDD"
 msgstr "إستخدام القرص الصلب"
 
-msgid "ViX"
+msgid "Vision"
 msgstr "أوامر صورة فيكس"
 
 msgid ""

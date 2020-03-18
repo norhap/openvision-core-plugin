@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: enigma2-vix-core\n"
+"Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-12-14 14:16+0100\n"
 "PO-Revision-Date: 2013-12-16 08:18+0100\n"
@@ -689,23 +689,23 @@ msgstr "Bağlantı konumları güncelleniyor."
 msgid "Use as HDD"
 msgstr "HDD olarak kullan"
 
-msgid "ViX"
-msgstr "ViX"
+msgid "Vision"
+msgstr "Vision"
 
-msgid "ViX Backup Manager"
-msgstr "ViX Yedekleme Yöneticisi"
+msgid "Vision Backup Manager"
+msgstr "Vision Yedekleme Yöneticisi"
 
-msgid "ViX Image Manager"
-msgstr "ViX İmaj Yöneticisi"
+msgid "Vision Image Manager"
+msgstr "Vision İmaj Yöneticisi"
 
-msgid "ViX Mount Manager"
-msgstr "ViX Bağlantı Yöneticisi"
+msgid "Vision Mount Manager"
+msgstr "Vision Bağlantı Yöneticisi"
 
-msgid "ViX Script Runner"
-msgstr "ViX Komut Yürütücü"
+msgid "Vision Script Runner"
+msgstr "Vision Komut Yürütücü"
 
-msgid "ViX Swap Manager"
-msgstr "ViX Swap Yöneticisi"
+msgid "Vision Swap Manager"
+msgstr "Vision Swap Yöneticisi"
 
 msgid "View Progress"
 msgstr "İşlemi izle"

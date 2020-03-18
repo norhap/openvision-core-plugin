@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: enigma2-vix-core\n"
+"Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-19 21:00+0200\n"
 "PO-Revision-Date: 2013-10-20 17:19+0100\n"
@@ -686,23 +686,23 @@ msgstr "Updating mount locations."
 msgid "Use as HDD"
 msgstr "Use as HDD"
 
-msgid "ViX"
-msgstr "ViX"
+msgid "Vision"
+msgstr "Vision"
 
-msgid "ViX Backup Manager"
-msgstr "ViX Backup Manager"
+msgid "Vision Backup Manager"
+msgstr "Vision Backup Manager"
 
-msgid "ViX Image Manager"
-msgstr "ViX Image Manager"
+msgid "Vision Image Manager"
+msgstr "Vision Image Manager"
 
-msgid "ViX Mount Manager"
-msgstr "ViX Mount Manager"
+msgid "Vision Mount Manager"
+msgstr "Vision Mount Manager"
 
-msgid "ViX Script Runner"
-msgstr "ViX Script Runner"
+msgid "Vision Script Runner"
+msgstr "Vision Script Runner"
 
-msgid "ViX Swap Manager"
-msgstr "ViX Swap Manager"
+msgid "Vision Swap Manager"
+msgstr "Vision Swap Manager"
 
 msgid "View Progress"
 msgstr "View Progress"

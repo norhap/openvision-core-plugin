@@ -87,7 +87,7 @@ def isRestorablePlugins(imageversion):
 
 def isRestorableKernel(kernelversion):
 	# This check should no longer be necessary since auto-installed packages are no longer listed in the plugins backup.
-	# For more information please consult commit https://github.com/OpenViX/vix-core/commit/53a95067677651a3f2579a1b0d1f70172ccc493b
+	# For more information please consult commit https://github.com/OpenVision/vision-core/commit/53a95067677651a3f2579a1b0d1f70172ccc493b
 	return True
 	#return kernelversion == about.getKernelVersionString()
 
@@ -108,8 +108,8 @@ def BackupManagerautostart(reason, session=None, **kwargs):
 			autoBackupManagerTimer.stop()
 
 
-class VIXBackupManager(Screen):
-	skin = """<screen name="VIXBackupManager" position="center,center" size="560,400">
+class VISIONBackupManager(Screen):
+	skin = """<screen name="VISIONBackupManager" position="center,center" size="560,400">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
 		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
 		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
@@ -268,13 +268,13 @@ class VIXBackupManager(Screen):
 				self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
-		self.session.openWithCallback(self.setupDone, VIXBackupManagerMenu, 'vixbackupmanager', 'SystemPlugins/ViX', self.menu_path, PluginLanguageDomain)
+		self.session.openWithCallback(self.setupDone, VISIONBackupManagerMenu, 'visionbackupmanager', 'SystemPlugins/Vision', self.menu_path, PluginLanguageDomain)
 
 	def showLog(self):
 		self.sel = self['list'].getCurrent()
 		if self.sel:
 			filename = self.BackupDirectory + self.sel
-			self.session.open(VIXBackupManagerLogView, self.menu_path, filename)
+			self.session.open(VISIONBackupManagerLogView, self.menu_path, filename)
 
 	def setupDone(self, test=None):
 		if config.backupmanager.folderprefix.value == '':
@@ -909,9 +909,9 @@ class XtraPluginsSelection(Screen):
 	def closeRecursive(self):
 		self.close(True)
 
-class VIXBackupManagerMenu(Setup):
+class VISIONBackupManagerMenu(Setup):
 	skin = """
-	<screen name="VIXBackupManagerMenu" position="center,center" size="560,550">
+	<screen name="VISIONBackupManagerMenu" position="center,center" size="560,550">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
 		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
@@ -932,7 +932,7 @@ class VIXBackupManagerMenu(Setup):
 	def __init__(self, session, setup, plugin=None, menu_path=None, PluginLanguageDomain=None):
 		Setup.__init__(self, session, setup, plugin, menu_path, PluginLanguageDomain)
 		self.menu_path = menu_path
-		self.skinName = "VIXBackupManagerMenu"
+		self.skinName = "VISIONBackupManagerMenu"
 
 		self["actions2"] = ActionMap(["SetupActions", 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
 									 {
@@ -957,9 +957,9 @@ class VIXBackupManagerMenu(Setup):
 		config.backupmanager.save()
 		config.save()
 
-class VIXBackupManagerLogView(Screen):
+class VISIONBackupManagerLogView(Screen):
 	skin = """
-<screen name="VIXBackupManagerLogView" position="center,center" size="560,400">
+<screen name="VISIONBackupManagerLogView" position="center,center" size="560,400">
 	<widget name="list" position="0,0" size="560,400" font="Regular;16"/>
 </screen>"""
 
@@ -979,7 +979,7 @@ class VIXBackupManagerLogView(Screen):
 			self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
 
-		self.skinName = "VIXBackupManagerLogView"
+		self.skinName = "VISIONBackupManagerLogView"
 		filedate = str(date.fromtimestamp(stat(filename).st_mtime))
 		backuplog = _('Backup created') + ': ' + filedate + '\n\n'
 		tar = tarfile.open(filename, "r")
@@ -1273,7 +1273,7 @@ class BackupFiles(Screen):
 				for line in opkg_status_split:
 					if line.startswith('Package'):
 						parts = line.strip().split()
-						if len(parts) > 1 and parts[1] not in ('opkg', 'openvix-base'):
+						if len(parts) > 1 and parts[1] not in ('opkg', 'openvision-base'):
 							plugin = parts[1]
 							continue
 					if plugin and line.startswith('Status') and 'user installed' in line:

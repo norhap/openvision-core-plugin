@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: enigma2-vix-core\n"
+"Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-07-15 11:08+0200\n"
 "PO-Revision-Date: 2016-07-17 14:24+0200\n"
@@ -779,23 +779,23 @@ msgstr "Ενημέρωση τοποθεσιών προσάρτησης."
 msgid "Use as HDD"
 msgstr "Χρήση ως HDD"
 
-msgid "ViX"
-msgstr "ViX"
+msgid "Vision"
+msgstr "Vision"
 
-msgid "ViX Backup Manager"
-msgstr "ViX Διαχείριση Εφεδρείας"
+msgid "Vision Backup Manager"
+msgstr "Vision Διαχείριση Εφεδρείας"
 
-msgid "ViX Image Manager"
-msgstr "ViX Διαχείριση Image"
+msgid "Vision Image Manager"
+msgstr "Vision Διαχείριση Image"
 
-msgid "ViX Mount Manager"
-msgstr "ViX Διαχείριση Προσαρτήσεων"
+msgid "Vision Mount Manager"
+msgstr "Vision Διαχείριση Προσαρτήσεων"
 
-msgid "ViX Script Runner"
-msgstr "ViX Εκτέλεση Script"
+msgid "Vision Script Runner"
+msgstr "Vision Εκτέλεση Script"
 
-msgid "ViX Swap Manager"
-msgstr "ViX Διαχείριση Swap"
+msgid "Vision Swap Manager"
+msgstr "Vision Διαχείριση Swap"
 
 msgid "View Progress"
 msgstr "Επισκόπηση Προόδου"

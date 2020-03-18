@@ -679,23 +679,23 @@ msgstr "Actualizez locatile montate."
 msgid "Use as HDD"
 msgstr "Foloseste ca HDD."
 
-msgid "ViX"
-msgstr "ViX"
+msgid "Vision"
+msgstr "Vision"
 
-msgid "ViX Backup Manager"
-msgstr "Managerul copiei de rezerva al ViX"
+msgid "Vision Backup Manager"
+msgstr "Managerul copiei de rezerva al Vision"
 
-msgid "ViX Image Manager"
-msgstr "Managerul imaginii al ViX"
+msgid "Vision Image Manager"
+msgstr "Managerul imaginii al Vision"
 
-msgid "ViX Mount Manager"
-msgstr "Managerul monturilor al ViX"
+msgid "Vision Mount Manager"
+msgstr "Managerul monturilor al Vision"
 
-msgid "ViX Script Runner"
-msgstr "Rularea scripturilor al ViX"
+msgid "Vision Script Runner"
+msgstr "Rularea scripturilor al Vision"
 
-msgid "ViX Swap Manager"
-msgstr "Managerul Swap al ViX"
+msgid "Vision Swap Manager"
+msgstr "Managerul Swap al Vision"
 
 msgid "View Progress"
 msgstr "Vezi Progresul."

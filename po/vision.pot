@@ -571,22 +571,22 @@ msgstr ""
 msgid "Use as HDD"
 msgstr ""
 
-msgid "ViX"
+msgid "Vision"
 msgstr ""
 
-msgid "ViX Backup Manager"
+msgid "Vision Backup Manager"
 msgstr ""
 
-msgid "ViX Image Manager"
+msgid "Vision Image Manager"
 msgstr ""
 
-msgid "ViX Mount Manager"
+msgid "Vision Mount Manager"
 msgstr ""
 
-msgid "ViX Script Runner"
+msgid "Vision Script Runner"
 msgstr ""
 
-msgid "ViX Swap Manager"
+msgid "Vision Swap Manager"
 msgstr ""
 
 msgid "View Progress"

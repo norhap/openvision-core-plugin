@@ -10,9 +10,9 @@ from Screens.ParentalControlSetup import ProtectedScreen
 from Components.config import config
 from Components.SystemInfo import SystemInfo
 
-class VIXMenu(Screen, ProtectedScreen):
+class VISIONMenu(Screen, ProtectedScreen):
 	skin = """
-		<screen name="VIXMenu" position="center,center" size="610,410">
+		<screen name="VISIONMenu" position="center,center" size="610,410">
 			<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
 			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 			<widget source="menu" render="Listbox" position="15,60" size="330,290" scrollbarMode="showOnDemand">
@@ -41,7 +41,7 @@ class VIXMenu(Screen, ProtectedScreen):
 	def __init__(self, session, args=0):
 		Screen.__init__(self, session)
 		ProtectedScreen.__init__(self)
-		screentitle = _("ViX")
+		screentitle = _("Vision")
 		self.menu_path = _("Main menu")+' / '+_("Setup")+' / '
 		if config.usage.show_menupath.value == 'large':
 			self.menu_path += screentitle
@@ -98,7 +98,7 @@ class VIXMenu(Screen, ProtectedScreen):
 		self["menu"].onSelectionChanged.append(self.selectionChanged)
 
 	def isProtected(self):
-		return config.ParentalControl.setuppinactive.value and config.ParentalControl.config_sections.vixmenu.value
+		return config.ParentalControl.setuppinactive.value and config.ParentalControl.config_sections.visionmenu.value
 	
 	def createSummary(self):
 		from Screens.PluginBrowser import PluginBrowserSummary
@@ -131,11 +131,11 @@ class VIXMenu(Screen, ProtectedScreen):
 			currentEntry = current[0]
 			if self.menu == 0:
 				if currentEntry == "backup-manager":
-					from BackupManager import VIXBackupManager
-					self.session.open(VIXBackupManager, self.menu_path)
+					from BackupManager import VISIONBackupManager
+					self.session.open(VISIONBackupManager, self.menu_path)
 				elif currentEntry == "image-manager":
-					from ImageManager import VIXImageManager
-					self.session.open(VIXImageManager, self.menu_path)
+					from ImageManager import VISIONImageManager
+					self.session.open(VISIONImageManager, self.menu_path)
 				elif currentEntry == "multiboot manager":
 					from Multibootmgr import MultiBoot
 					self.session.open(MultiBoot, self.menu_path)
@@ -143,17 +143,17 @@ class VIXMenu(Screen, ProtectedScreen):
 					from H9SDmanager import H9SDmanager
 					self.session.open(H9SDmanager, self.menu_path)
 				elif currentEntry == "ipkg-install":
-					from IPKInstaller import VIXIPKInstaller
-					self.session.open(VIXIPKInstaller, self.menu_path)
+					from IPKInstaller import VISIONIPKInstaller
+					self.session.open(VISIONIPKInstaller, self.menu_path)
 				elif currentEntry == "mount-manager":
-					from MountManager import VIXDevicesPanel
-					self.session.open(VIXDevicesPanel, self.menu_path)
+					from MountManager import VISIONDevicesPanel
+					self.session.open(VISIONDevicesPanel, self.menu_path)
 				elif currentEntry == "script-runner":
-					from ScriptRunner import VIXScriptRunner
-					self.session.open(VIXScriptRunner, None, self.menu_path)
+					from ScriptRunner import VISIONScriptRunner
+					self.session.open(VISIONScriptRunner, None, self.menu_path)
 				elif currentEntry == "swap-manager":
-					from SwapManager import VIXSwap
-					self.session.open(VIXSwap, self.menu_path)
+					from SwapManager import VISIONSwap
+					self.session.open(VISIONSwap, self.menu_path)
 
 	def closeRecursive(self):
 		self.close(True)
