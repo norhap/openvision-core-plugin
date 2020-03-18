@@ -1,7 +1,5 @@
-# for localized messages
-from os import listdir, path, mkdir
-
 from . import _
+from os import path
 from Screens.Screen import Screen
 from Components.ActionMap import NumberActionMap
 from Components.Sources.StaticText import StaticText
@@ -13,7 +11,7 @@ from Components.SystemInfo import SystemInfo
 class VISIONMenu(Screen, ProtectedScreen):
 	skin = """
 		<screen name="VISIONMenu" position="center,center" size="610,410">
-			<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
 			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 			<widget source="menu" render="Listbox" position="15,60" size="330,290" scrollbarMode="showOnDemand">
 				<convert type="TemplatedMultiContent">
@@ -50,7 +48,7 @@ class VISIONMenu(Screen, ProtectedScreen):
 		if self.menu == 0:
 			self.list.append(("backup-manager", _("Backup manager"), _("Manage the backups of your settings."), None))
 			self.list.append(("image-manager", _("Image manager"), _("Create and flash complete images of your system."), None))
-			self.list.append(("ipkg-install", _("Install local extension"), _("Install IPK's from your tmp folder."), None))
+			self.list.append(("opkg-install", _("Install local extension"), _("Install IPK's from your tmp folder."), None))
 			self.list.append(("mount-manager", _("Mount manager"), _("Manage your devices mount points."), None))
 			self.list.append(("script-runner", _("Script runner"), _("Run your shell scripts."), None))
 			self.list.append(("swap-manager", _("SWAP manager"), _("Create and Manage your SWAP files."), None))
@@ -126,7 +124,7 @@ class VISIONMenu(Screen, ProtectedScreen):
 				elif currentEntry == "H9SDcard manager":
 					from H9SDmanager import H9SDmanager
 					self.session.open(H9SDmanager, self.menu_path)
-				elif currentEntry == "ipkg-install":
+				elif currentEntry == "opkg-install":
 					from IPKInstaller import VISIONIPKInstaller
 					self.session.open(VISIONIPKInstaller, self.menu_path)
 				elif currentEntry == "mount-manager":

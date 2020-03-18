@@ -1,12 +1,7 @@
-from boxbranding import getMachineBrand, getMachineName, getMachineBuild
+from . import _
 from os import mkdir, path, remove, rename, statvfs, system 
 import re
-from time import sleep
-
 from enigma import eTimer
-
-from . import _
-
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.ConfigList import ConfigListScreen
@@ -61,7 +56,6 @@ def buildDeviceList(device, List):
 		device2 = re.sub('[0-9]', '', device)
 	devicetype = path.realpath('/sys/block/' + device2 + '/device')
 
-	# print '[MountManager1]MachineBuild: %s' %getMachineBuild()
 	# print '[MountManager1]device: %s' %device
 	# print '[MountManager1]device2: %s' %device2
 	# print '[MountManager1]devicetype:%s' %devicetype
@@ -153,10 +147,10 @@ def buildDeviceList(device, List):
 class VISIONDevicesPanel(Screen):
 	skin = """
 	<screen position="center,center" size="640,460">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="25,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="175,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="325,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="475,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/red.png" position="25,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/green.png" position="175,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/yellow.png" position="325,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/blue.png" position="475,0" size="140,40" alphatest="on"/>
 		<widget name="key_red" position="25,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 		<widget name="key_green" position="175,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="key_yellow" position="325,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
@@ -308,8 +302,8 @@ class VISIONDevicesPanel(Screen):
 class VISIONDevicePanelConf(Screen, ConfigListScreen):
 	skin = """
 	<screen position="center,center" size="640,460">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="25,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="175,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/red.png" position="25,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/green.png" position="175,0" size="140,40" alphatest="on"/>
 		<widget name="key_red" position="25,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 		<widget name="key_green" position="175,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="config" position="30,60" size="580,275" scrollbarMode="showOnDemand"/>
@@ -334,7 +328,7 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		self.updateList()
 
 	def updateList(self, result=None, retval=None, extra_args=None):
-		scanning = _("Please wait while scanning your %s %s devices...") % (getMachineBrand(), getMachineName())
+		scanning = _("Please wait while scanning your STB devices...")
 		self['Linconn'].setText(scanning)
 		self.activityTimer.start(10)
 
@@ -361,9 +355,9 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		ybox.setTitle(_("Please wait."))
 
 	def delay(self, val):
-		message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (getMachineBrand(), getMachineName())
+		message = _("The changes need a system restart to take effect.\nRestart your STB now?")
 		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
-		ybox.setTitle(_("Restart %s %s.") % (getMachineBrand(), getMachineName()))
+		ybox.setTitle(_("Restart STB."))
 
 	def add_fstab(self, result=None, retval=None, extra_args=None):
 		# print '[MountManager] RESULT:', result

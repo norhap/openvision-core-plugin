@@ -1,11 +1,11 @@
-# for localized messages
-from boxbranding import getBoxType, getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getMachineBrand, getMachineName
+from __future__ import print_function
+from . import _, PluginLanguageDomain
+from boxbranding import getImageDistro, getVisionVersion, getVisionRevision
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod
 from time import localtime, time, strftime, mktime
 from datetime import date, datetime
 import tarfile, glob
-from enigma import eTimer, eEnv, eDVBDB, quitMainloop
-from . import _, PluginLanguageDomain
+from enigma import eTimer, eEnv, eDVBDB, quitMainloop, getBoxType
 from Components.About import about
 from Components.ActionMap import ActionMap
 from Components.Button import Button
@@ -97,27 +97,27 @@ def BackupManagerautostart(reason, session=None, **kwargs):
 	global _session
 	now = int(time())
 	if reason == 0:
-		print "[BackupManager] AutoStart Enabled"
+		print("[BackupManager] AutoStart Enabled")
 		if session is not None:
 			_session = session
 			if autoBackupManagerTimer is None:
 				autoBackupManagerTimer = AutoBackupManagerTimer(session)
 	else:
 		if autoBackupManagerTimer is not None:
-			print "[BackupManager] Stop"
+			print("[BackupManager] Stop")
 			autoBackupManagerTimer.stop()
 
 
 class VISIONBackupManager(Screen):
 	skin = """<screen name="VISIONBackupManager" position="center,center" size="560,400">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
 		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
-		<ePixmap pixmap="skin_default/buttons/key_menu.png" position="0,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
-		<ePixmap pixmap="skin_default/buttons/key_info.png" position="40,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
+		<ePixmap pixmap="buttons/key_menu.png" position="0,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
+		<ePixmap pixmap="buttons/key_info.png" position="40,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
 		<widget name="lab1" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
 		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand" />
 		<widget name="backupstatus" position="10,370" size="400,30" font="Regular;20" zPosition="5" />
@@ -276,13 +276,13 @@ class VISIONBackupManager(Screen):
 		now = int(time())
 		if config.backupmanager.schedule.value:
 			if autoBackupManagerTimer is not None:
-				print "[BackupManager] Backup schedule enabled at", strftime("%c", localtime(now))
+				print("[BackupManager] Backup schedule enabled at", strftime("%c", localtime(now)))
 				autoBackupManagerTimer.backupupdate()
 		else:
 			if autoBackupManagerTimer is not None:
 				global BackupTime
 				BackupTime = 0
-				print "[BackupManager] Backup schedule disabled at", strftime("%c", localtime(now))
+				print("[BackupManager] Backup schedule disabled at", strftime("%c", localtime(now)))
 				autoBackupManagerTimer.backupstop()
 		if BackupTime > 0:
 			t = localtime(BackupTime)
@@ -346,10 +346,10 @@ class VISIONBackupManager(Screen):
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
 		if path.exists('/tmp/backupimageversion'):
 			imageversion = file('/tmp/backupimageversion').read()
-			print '[BackupManager] Backup Image:', imageversion
-			print '[BackupManager] Current Image:', about.getVersionString()
+			print('[BackupManager] Backup Image:', imageversion)
+			print('[BackupManager] Current Image:', about.getVersionString())
 			if imageversion == about.getVersionString() or isRestorableSettings(imageversion):
-				print '[BackupManager] Stage 1: Image ver OK'
+				print('[BackupManager] Stage 1: Image ver OK')
 				self.keyResstore1()
 			else:
 				self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout=10)
@@ -447,17 +447,17 @@ class VISIONBackupManager(Screen):
 		)
 
 	def Stage1(self, answer=None):
-		print '[BackupManager] Restoring Stage 1:'
+		print('[BackupManager] Restoring Stage 1:')
 		if answer is True:
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /", self.Stage1SettingsComplete)
 		elif answer is False:
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion  tmp/3rdPartyPlugins -C /", self.Stage1PluginsComplete)
 
 	def Stage1SettingsComplete(self, result, retval, extra_args):
-		print '[BackupManager] Restoring Stage 1 RESULT:', result
-		print '[BackupManager] Restoring Stage 1 retval:', retval
+		print('[BackupManager] Restoring Stage 1 RESULT:', result)
+		print('[BackupManager] Restoring Stage 1 retval:', retval)
 		if retval == 0:
-			print '[BackupManager] Restoring Stage 1 Complete:'
+			print('[BackupManager] Restoring Stage 1 Complete:')
 			self.didSettingsRestore = True
 			self.Stage1Completed = True
 			eDVBDB.getInstance().reloadServicelist()
@@ -469,7 +469,7 @@ class VISIONBackupManager(Screen):
 			self.session.nav.RecordTimer.loadTimer(justLoad=True)
 			configfile.load()
 		else:
-			print '[BackupManager] Restoring Stage 1 Failed:'
+			print('[BackupManager] Restoring Stage 1 Failed:')
 			AddPopupWithCallback(self.Stage2,
 								 _("Sorry, but the restore failed."),
 								 MessageBox.TYPE_INFO,
@@ -478,15 +478,15 @@ class VISIONBackupManager(Screen):
 			)
 
 	def Stage1PluginsComplete(self, result, retval, extra_args):
-		print '[BackupManager] Restoring Stage 1 Complete:'
+		print('[BackupManager] Restoring Stage 1 Complete:')
 		self.Stage1Completed = True
 
 	def Stage2(self, result=False):
-		print '[BackupManager] Restoring Stage 2: Checking feeds'
+		print('[BackupManager] Restoring Stage 2: Checking feeds')
 		self.Console.ePopen('opkg update', self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
-		print '[BackupManager] Restoring Stage 2: Result ', result
+		print('[BackupManager] Restoring Stage 2: Result ', result)
 		if result.find('wget returned 4') != -1: # probably no network adaptor connected
 			self.feeds = 'NONETWORK' 
 			self.Stage2Completed = True
@@ -504,44 +504,44 @@ class VISIONBackupManager(Screen):
 								 NOPLUGINS
 			)
 		else:
-			print '[BackupManager] Restoring Stage 2: Complete'
+			print('[BackupManager] Restoring Stage 2: Complete')
 			self.feeds = 'OK'
 			self.Stage2Completed = True
 
 	def Stage3(self):
-		print '[BackupManager] Restoring Stage 3: Kernel Version/Feeds Checks'
+		print('[BackupManager] Restoring Stage 3: Kernel Version/Feeds Checks')
 		if self.feeds == 'OK':
-			print '[BackupManager] Restoring Stage 3: Feeds are OK'
+			print('[BackupManager] Restoring Stage 3: Feeds are OK')
 			if path.exists('/tmp/backupkernelversion') and path.exists('/tmp/backupimageversion'):
 				kernelversion = file('/tmp/backupkernelversion').read()
 				imageversion = file('/tmp/backupimageversion').read()
-				print '[BackupManager] Backup Image:', imageversion
-				print '[BackupManager] Current Image:', about.getVersionString()
-				print '[BackupManager] Backup Kernel:', kernelversion
-				print '[BackupManager] Current Kernel:', about.getKernelVersionString()
+				print('[BackupManager] Backup Image:', imageversion)
+				print('[BackupManager] Current Image:', about.getVersionString())
+				print('[BackupManager] Backup Kernel:', kernelversion)
+				print('[BackupManager] Current Kernel:', about.getKernelVersionString())
 				if isRestorableKernel(kernelversion) and (imageversion == about.getVersionString() or isRestorablePlugins(imageversion)):
 					# print '[BackupManager] Restoring Stage 3: Kernel Version is same as backup'
 					self.kernelcheck = True
 					self.Console.ePopen('opkg list-installed', self.Stage3Complete)
 				else:
-					print '[BackupManager] Restoring Stage 3: Kernel or Image Version does not match, exiting'
+					print('[BackupManager] Restoring Stage 3: Kernel or Image Version does not match, exiting')
 					self.kernelcheck = False
 					self.Stage6()
 			else:
-				print '[BackupManager] Restoring Stage 3: Kernel or Image Version check failed'
+				print('[BackupManager] Restoring Stage 3: Kernel or Image Version check failed')
 				self.kernelcheck = False
 				self.Stage6()
 		elif self.feeds == 'NONETWORK':
-			print '[BackupManager] Restoring Stage 3: No network connection, plugin restore not possible'
+			print('[BackupManager] Restoring Stage 3: No network connection, plugin restore not possible')
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
-								 _("Your %s %s is not connected to a network. Please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
+								 _("Your STB is not connected to a network. Please check your network settings and try again."),
 								 MessageBox.TYPE_INFO,
 								 15,
 								 NOPLUGINS
 			)
 		elif self.feeds == 'DOWN':
-			print '[BackupManager] Restoring Stage 3: Feeds are down, plugin restore not possible'
+			print('[BackupManager] Restoring Stage 3: Feeds are down, plugin restore not possible')
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
 								 _("Sorry the feeds are down for maintenance. Please try again later."),
@@ -550,16 +550,16 @@ class VISIONBackupManager(Screen):
 								 NOPLUGINS
 			)
 		elif self.feeds == 'BAD':
-			print '[BackupManager] Restoring Stage 3: no network connection, plugin restore not possible'
+			print('[BackupManager] Restoring Stage 3: no network connection, plugin restore not possible')
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
-								 _("Your %s %s is not connected to the Internet. Please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
+								 _("Your STB is not connected to the Internet. Please check your network settings and try again."),
 								 MessageBox.TYPE_INFO,
 								 15,
 								 NOPLUGINS
 			)
 		else:
-			print '[BackupManager] Restoring Stage 3: Feeds state is unknown aborting'
+			print('[BackupManager] Restoring Stage 3: Feeds state is unknown aborting')
 			self.Stage6()
 
 	def Stage3Complete(self, result, retval, extra_args):
@@ -629,7 +629,7 @@ class VISIONBackupManager(Screen):
 											# 											print 'IPK', ipk
 											self.pluginslist2.append(ipk)
 
-		print '[BackupManager] Restoring Stage 3: Complete'
+		print('[BackupManager] Restoring Stage 3: Complete')
 		self.Stage3Completed = True
 
 	def Stage4(self):
@@ -642,8 +642,8 @@ class VISIONBackupManager(Screen):
 				self.pluginslist2 = " ".join(self.pluginslist2)
 			else:
 				self.pluginslist2 = ""
-			print '[BackupManager] Restoring Stage 4: Plugins to restore (extra plugins)', self.pluginslist
-			print '[BackupManager] Restoring Stage 4: Plugins to restore (3rd party plugins)', self.pluginslist2
+			print('[BackupManager] Restoring Stage 4: Plugins to restore (extra plugins)', self.pluginslist)
+			print('[BackupManager] Restoring Stage 4: Plugins to restore (3rd party plugins)', self.pluginslist2)
 			AddPopupWithCallback(self.Stage4Complete,
 								 _("Do you want to restore your Enigma2 plugins ?"),
 								 MessageBox.TYPE_YESNO,
@@ -651,16 +651,16 @@ class VISIONBackupManager(Screen):
 								 PLUGINRESTOREQUESTIONID
 			)
 		else:
-			print '[BackupManager] Restoring Stage 4: plugin restore not required'
+			print('[BackupManager] Restoring Stage 4: plugin restore not required')
 			self.Stage6()
 
 	def Stage4Complete(self, answer=None):
 		if answer is True:
-			print '[BackupManager] Restoring Stage 4: plugin restore chosen'
+			print('[BackupManager] Restoring Stage 4: plugin restore chosen')
 			self.doPluginsRestore = True
 			self.Stage4Completed = True
 		elif answer is False:
-			print '[BackupManager] Restoring Stage 4: plugin restore skipped by user'
+			print('[BackupManager] Restoring Stage 4: plugin restore skipped by user')
 			AddPopupWithCallback(self.Stage6,
 								 _("Now skipping restore process"),
 								 MessageBox.TYPE_INFO,
@@ -670,19 +670,19 @@ class VISIONBackupManager(Screen):
 
 	def Stage5(self):
 		if self.doPluginsRestore:
-			print '[BackupManager] Restoring Stage 5: starting plugin restore'
-			print '[BackupManager] Console command: ', 'opkg install ' + self.pluginslist + ' ' + self.pluginslist2
+			print('[BackupManager] Restoring Stage 5: starting plugin restore')
+			print('[BackupManager] Console command: ', 'opkg install ' + self.pluginslist + ' ' + self.pluginslist2)
 			self.Console.ePopen('opkg install ' + self.pluginslist + ' ' + self.pluginslist2, self.Stage5Complete)
 		else:
-			print '[BackupManager] Restoring Stage 5: plugin restore not requested'
+			print('[BackupManager] Restoring Stage 5: plugin restore not requested')
 			self.Stage6()
 
 	def Stage5Complete(self, result, retval, extra_args):
 		if result:
-			print "[BackupManager] opkg install result:\n", result
+			print("[BackupManager] opkg install result:\n", result)
 			self.didPluginsRestore = True
 			self.Stage5Completed = True
-			print '[BackupManager] Restoring Stage 5: Completed'
+			print('[BackupManager] Restoring Stage 5: Completed')
 
 	def Stage6(self, result=None, retval=None, extra_args=None):
 		self.Stage1Completed = True
@@ -691,18 +691,18 @@ class VISIONBackupManager(Screen):
 		self.Stage4Completed = True
 		self.Stage5Completed = True
 		if self.didPluginsRestore or self.didSettingsRestore:
-			print '[BackupManager] Restoring Completed rebooting'
+			print('[BackupManager] Restoring Completed rebooting')
 			quitMainloop(2)
 		else:
-			print '[BackupManager] Restoring failed or canceled'
+			print('[BackupManager] Restoring failed or canceled')
 			self.close()
 
 class BackupSelection(Screen):
 	skin = """
 		<screen name="BackupSelection" position="center,center" size="560,400">
-			<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
-			<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
-			<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
 			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 			<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 			<widget source="key_yellow" render="Label" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
@@ -791,9 +791,9 @@ class BackupSelection(Screen):
 class XtraPluginsSelection(Screen):
 	skin = """
 		<screen name="BackupSelection" position="center,center" size="560,400">
-			<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
-			<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
-			<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
 			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 			<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 			<widget source="key_yellow" render="Label" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
@@ -877,10 +877,10 @@ class XtraPluginsSelection(Screen):
 class VISIONBackupManagerMenu(Setup):
 	skin = """
 	<screen name="VISIONBackupManagerMenu" position="center,center" size="560,550">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="420,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphatest="on"/>
 		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
@@ -972,16 +972,16 @@ class AutoBackupManagerTimer:
 		now = int(time())
 		global BackupTime
 		if config.backupmanager.schedule.value:
-			print "[BackupManager] Backup Schedule Enabled at ", strftime("%c", localtime(now))
+			print("[BackupManager] Backup Schedule Enabled at ", strftime("%c", localtime(now)))
 			if now > 1262304000:
 				self.backupupdate()
 			else:
-				print "[BackupManager] Backup Time not yet set."
+				print("[BackupManager] Backup Time not yet set.")
 				BackupTime = 0
 				self.backupactivityTimer.start(36000)
 		else:
 			BackupTime = 0
-			print "[BackupManager] Backup Schedule Disabled at", strftime("(now=%c)", localtime(now))
+			print("[BackupManager] Backup Schedule Disabled at", strftime("(now=%c)", localtime(now)))
 			self.backupactivityTimer.stop()
 
 	def backupupdatedelay(self):
@@ -1015,14 +1015,14 @@ class AutoBackupManagerTimer:
 			if BackupTime < now + atLeast:
 # Backup missed - run it 60s from now
 				self.backuptimer.startLongTimer(60)
-				print "[BackupManager] Backup Time overdue - running in 60s"
+				print("[BackupManager] Backup Time overdue - running in 60s")
 			else:
 # Backup in future - set the timer...
 				delay = BackupTime - now
 				self.backuptimer.startLongTimer(delay)
 		else:
 			BackupTime = -1
-		print "[BackupManager] Backup Time set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now))
+		print("[BackupManager] Backup Time set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now)))
 		return BackupTime
 
 	def backupstop(self):
@@ -1035,40 +1035,40 @@ class AutoBackupManagerTimer:
 		# If we're close enough, we're okay...
 		atLeast = 0
 		if wake - now < 60:
-			print "[BackupManager] Backup onTimer occured at", strftime("%c", localtime(now))
+			print("[BackupManager] Backup onTimer occured at", strftime("%c", localtime(now)))
 			from Screens.Standby import inStandby
 # Check for querying enabled
 			if not inStandby and config.backupmanager.query.value:
-				message = _("Your %s %s is about to run a backup of your settings and to detect your plugins.\nDo you want to allow this?") % (getMachineBrand(), getMachineName())
+				message = _("Your STB is about to run a backup of your settings and to detect your plugins.\nDo you want to allow this?")
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout=30)
 				ybox.setTitle('Scheduled backup.')
 			else:
-				print "[BackupManager] in standby or no querying, so just running backup", strftime("%c", localtime(now))
+				print("[BackupManager] in standby or no querying, so just running backup", strftime("%c", localtime(now)))
 				self.doBackup(True)
 		else:
-			print '[BackupManager] We are not close enough', strftime("%c", localtime(now))
+			print('[BackupManager] We are not close enough', strftime("%c", localtime(now)))
 			self.backupupdate(60)
 
 	def doBackup(self, answer):
 		now = int(time())
 		if answer is False:
 			if config.backupmanager.backupretrycount.value < 2:
-				print '[BackupManager] Number of retries', config.backupmanager.backupretrycount.value
-				print "[BackupManager] Backup delayed."
+				print('[BackupManager] Number of retries', config.backupmanager.backupretrycount.value)
+				print("[BackupManager] Backup delayed.")
 				repeat = config.backupmanager.backupretrycount.value
 				repeat += 1
 				config.backupmanager.backupretrycount.value = repeat
 				BackupTime = now + (int(config.backupmanager.backupretry.value) * 60)
-				print "[BackupManager] Backup Time now set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now))
+				print("[BackupManager] Backup Time now set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now)))
 				self.backuptimer.startLongTimer(int(config.backupmanager.backupretry.value) * 60)
 			else:
 				atLeast = 60
-				print "[BackupManager] Enough Retries, delaying till next schedule.", strftime("%c", localtime(now))
+				print("[BackupManager] Enough Retries, delaying till next schedule.", strftime("%c", localtime(now)))
 				self.session.open(MessageBox, _("Enough retries, delaying till next schedule."), MessageBox.TYPE_INFO, timeout=10)
 				config.backupmanager.backupretrycount.value = 0
 				self.backupupdate(atLeast)
 		else:
-			print "[BackupManager] Running Backup", strftime("%c", localtime(now))
+			print("[BackupManager] Running Backup", strftime("%c", localtime(now)))
 			self.BackupFiles = BackupFiles(self.session)
 			Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
 # Note that fact that the job has been *scheduled*.
@@ -1090,9 +1090,9 @@ class BackupFiles(Screen):
 		self.updatebackup = updatebackup
 		self.imagebackup = imagebackup
 		self.BackupDevice = config.backupmanager.backuplocation.value
-		print "[BackupManager] Device: " + self.BackupDevice
+		print("[BackupManager] Device: " + self.BackupDevice)
 		self.BackupDirectory = config.backupmanager.backuplocation.value + 'backup/'
-		print "[BackupManager] Directory: " + self.BackupDirectory
+		print("[BackupManager] Directory: " + self.BackupDirectory)
 		self.Stage1Completed = False
 		self.Stage2Completed = False
 		self.Stage3Completed = False
@@ -1197,8 +1197,8 @@ class BackupFiles(Screen):
 			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0755)
 		except Exception, e:
-			print str(e)
-			print "[BackupManager] Device: " + config.backupmanager.backuplocation.value + ", i don't seem to have write access to this device."
+			print(str(e))
+			print("[BackupManager] Device: " + config.backupmanager.backuplocation.value + ", i don't seem to have write access to this device.")
 
 		s = statvfs(self.BackupDevice)
 		free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
@@ -1216,7 +1216,7 @@ class BackupFiles(Screen):
 		output.write(now.strftime("%Y-%m-%d %H:%M") + ": Backup started\n")
 		output.close()
 		self.backupdirs = ' '.join(config.backupmanager.backupdirs.value)
-		print '[BackupManager] Listing installed plugins'
+		print('[BackupManager] Listing installed plugins')
 		self.Console.ePopen('opkg status', self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
@@ -1240,19 +1240,19 @@ class BackupFiles(Screen):
 			output.close()
 
 		if path.exists('/tmp/ExtraInstalledPlugins'):
-			print '[BackupManager] Listing completed.'
+			print('[BackupManager] Listing completed.')
 			self.Stage2Completed = True
 		else:
 			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Plugin listing failed - e. g. wrong backup destination or no space left on backup device."), MessageBox.TYPE_INFO, timeout=10)
-			print '[BackupManager] Result.', result
-			print "{BackupManager] Plugin listing failed - e. g. wrong backup destination or no space left on backup device"
+			print('[BackupManager] Result.', result)
+			print("{BackupManager] Plugin listing failed - e. g. wrong backup destination or no space left on backup device")
 
 	def Stage3(self):
-		print '[BackupManager] Finding kernel version:' + about.getKernelVersionString()
+		print('[BackupManager] Finding kernel version:' + about.getKernelVersionString())
 		output = open('/tmp/backupkernelversion', 'w')
 		output.write(about.getKernelVersionString())
 		output.close()
-		print '[BackupManager] Finding image version:' + about.about.getVersionString()
+		print('[BackupManager] Finding image version:' + about.about.getVersionString())
 		output = open('/tmp/backupimageversion', 'w')
 		output.write(about.about.getVersionString())
 		output.close()
@@ -1282,20 +1282,17 @@ class BackupFiles(Screen):
 		if path.exists('/tmp/3rdPartyPluginsLocation'):
 			tmplist.append('/tmp/3rdPartyPluginsLocation')
 		self.backupdirs = ' '.join(tmplist)
-		print '[BackupManager] Backup running'
+		print('[BackupManager] Backup running')
 		backupdate = datetime.now()
 		backupType = "-"
 		if self.updatebackup:
 			backupType = "-SU-"
 		elif self.imagebackup:
 			backupType = "-IM-"
-		imageSubBuild = ""
-		if getImageType() != 'release':
-			imageSubBuild = ".%s" % getImageDevBuild()
 		boxname = ''
 		if config.backupmanager.showboxname.value:
 			boxname = '-' + getBoxType()
-		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + boxname + '-' + getImageType()[0:3] + backupType + getImageVersion() + '.' + getImageBuild() + imageSubBuild + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
+		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + boxname + '-' + backupType + getVisionVersion() + '-' + getVisionRevision() + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
 # Need to create a list of what to backup, so that spaces and special
 # characters don't get lost on, or mangle, the command line
 #
@@ -1307,13 +1304,13 @@ class BackupFiles(Screen):
 	def Stage4Complete(self, result, retval, extra_args):
 		if path.exists(self.Backupfile):
 			chmod(self.Backupfile, 0644)
-			print '[BackupManager] Complete.'
+			print('[BackupManager] Complete.')
 			remove('/tmp/ExtraInstalledPlugins')
 			self.Stage5Completed = True
 		else:
 			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Backup failed - e. g. wrong backup destination or no space left on backup device."), MessageBox.TYPE_INFO, timeout=10)
-			print '[BackupManager] Result.', result
-			print "{BackupManager] Backup failed - e. g. wrong backup destination or no space left on backup device"
+			print('[BackupManager] Result.', result)
+			print("{BackupManager] Backup failed - e. g. wrong backup destination or no space left on backup device")
 # Delete the list of backup files now that it's finished.
 # Ignore any failure here, as there's nothing useful we could do anyway...
 		try:

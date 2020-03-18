@@ -1,13 +1,11 @@
-# for localized messages
 from . import _, PluginLanguageDomain
-
 from Screens.Screen import Screen
 from Screens.Console import Console
 from Screens.Setup import Setup
 from Components.ActionMap import ActionMap
 from Components.Sources.StaticText import StaticText
 from Components.config import config, ConfigSubsection, ConfigYesNo
-from IPKInstaller import IpkgInstaller
+from IPKInstaller import OpkgInstaller
 from Components.PluginComponent import plugins
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from os import path, mkdir, listdir, rename
@@ -25,7 +23,7 @@ config.scriptrunner.showinextensions.addNotifier(updateExtensions, initial_call=
 def ScriptRunnerAutostart(reason, session=None, **kwargs):
 	pass
 
-class VISIONScriptRunner(IpkgInstaller):
+class VISIONScriptRunner(OpkgInstaller):
 	def __init__(self, session, list=None, menu_path=""):
 		if not list:
 			list = []
@@ -39,13 +37,13 @@ class VISIONScriptRunner(IpkgInstaller):
 				pkg = parts[0]
 				if pkg.find('.sh') >= 0:
 					list.append(pkg)
-		IpkgInstaller.__init__(self, session, list)
+		OpkgInstaller.__init__(self, session, list)
 		screentitle =  _("Script runner")
 		self.menu_path = menu_path
 		title = screentitle
 		Screen.setTitle(self, title)
 
-		self.skinName = ["VISIONScriptRunner", "IpkgInstaller"]
+		self.skinName = ["VISIONScriptRunner", "OpkgInstaller"]
 		self["key_green"] = StaticText(_("Run"))
 
 		self['myactions'] = ActionMap(["MenuActions"],

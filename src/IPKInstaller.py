@@ -1,7 +1,5 @@
-# for localized messages
-from os import listdir, path
-
 from . import _
+from os import listdir, path
 from Components.config import config
 from Components.ActionMap import ActionMap
 from Components.Label import Label
@@ -9,19 +7,19 @@ from Components.Button import Button
 from Components.MenuList import MenuList
 from Components.SelectionList import SelectionList
 from Components.Sources.StaticText import StaticText
-from Components.Ipkg import IpkgComponent
+from Components.Opkg import OpkgComponent
 from Screens.Screen import Screen
 from Screens.Console import Console
-from Screens.Ipkg import Ipkg
+from Screens.Opkg import Opkg
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
 
 class VISIONIPKInstaller(Screen):
 	skin = """
 	<screen name="VISIONIPKInstaller" position="center,center" size="560,400">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
 		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
@@ -148,19 +146,19 @@ class VISIONIPKInstaller(Screen):
 	def myclose(self):
 		self.close()
 
-class IpkgInstaller(Screen):
+class OpkgInstaller(Screen):
 	skin = """
-		<screen name="IpkgInstaller" position="center,center" size="550,450" >
-			<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
-			<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
-			<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
-			<ePixmap pixmap="skin_default/buttons/blue.png" position="420,0" size="140,40" alphatest="on"/>
+		<screen name="OpkgInstaller" position="center,center" size="550,450" >
+			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphatest="on"/>
 			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 			<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 			<widget source="key_yellow" render="Label" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
 			<widget source="key_blue" render="Label" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
 			<widget name="list" position="5,50" size="540,360"/>
-			<ePixmap pixmap="skin_default/div-h.png" position="0,410" zPosition="10" size="560,2" transparent="1" alphatest="on"/>
+			<ePixmap pixmap="div-h.png" position="0,410" zPosition="10" size="560,2" transparent="1" alphatest="on"/>
 			<widget source="introduction" render="Label" position="5,420" zPosition="10" size="550,30" halign="center" valign="center" font="Regular;22" transparent="1" shadowColor="black" shadowOffset="-1,-1"/>
 		</screen>"""
 
@@ -192,6 +190,5 @@ class IpkgInstaller(Screen):
 		list = self.list.getSelectionsList()
 		cmdList = []
 		for item in list:
-			cmdList.append((IpkgComponent.CMD_INSTALL, {"package": item[1]}))
-		self.session.open(Ipkg, cmdList=cmdList)
-
+			cmdList.append((OpkgComponent.CMD_INSTALL, {"package": item[1]}))
+		self.session.open(Opkg, cmdList=cmdList)

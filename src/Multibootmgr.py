@@ -1,5 +1,3 @@
-from os import statvfs
-from boxbranding import getMachineBuild
 from Components.ActionMap import ActionMap
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
 from Components.config import config
@@ -9,7 +7,6 @@ from Components.SystemInfo import SystemInfo
 from Screens.Console import Console
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
-from Screens.Standby import TryQuitMainloop
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import pathExists
 from Tools.Multiboot import GetImagelist, GetCurrentImage, GetCurrentImageMode, EmptySlot
@@ -117,7 +114,7 @@ class MultiBoot(Screen):
 		if self.currentSelected != None:
 			if self.currentSelected[0][1] != "Queued":
 				if SystemInfo["HasRootSubdir"]:
-					message = _("Removal of this slot will not show in %s Gui.  Are you sure you want to delete image slot %s ?" %(getMachineBuild(), self.currentSelected[0][1]))
+					message = _("Removal of this slot will not show in STB GUI.  Are you sure you want to delete image slot %s ?" %(self.currentSelected[0][1]))
 					ybox = self.session.openWithCallback(self.doErase, MessageBox, message, MessageBox.TYPE_YESNO, default=True)
 					ybox.setTitle(_("Remove confirmation"))
 				else:
@@ -136,7 +133,7 @@ class MultiBoot(Screen):
 				self.session.open(MessageBox, _("Multiboot manager - Cannot initialise SDcard when running image on SDcard."), MessageBox.TYPE_INFO, timeout=10)
 				self.close
 			else:
-				message = _("Multiboot manager - to use this routine %s image must be at OpenVision 4.2.043 or later and USB flashed - reply Yes to continue" %getMachineBuild())
+				message = _("Multiboot manager - to use this routine STB image must be at OpenVision 4.2.043 or later and USB flashed - reply Yes to continue")
 				ybox = self.session.openWithCallback(self.doFormat, MessageBox, message, MessageBox.TYPE_YESNO, default=True)
 				ybox.setTitle(_("Remove confirmation"))
 

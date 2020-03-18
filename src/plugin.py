@@ -1,22 +1,19 @@
-# for localized messages
-from os import listdir, path, walk, stat
-from boxbranding import getBoxType, getImageDistro
-
+from __future__ import print_function
 from . import _
+from os import listdir, path
 from Plugins.Plugin import PluginDescriptor
-from Components.config import config, ConfigBoolean, configfile
+from Components.config import config, ConfigBoolean
 from BackupManager import BackupManagerautostart
 from ImageManager import ImageManagerautostart
 from SwapManager import SwapAutostart
 from SoftcamManager import SoftcamAutostart
-from ScriptRunner import ScriptRunnerAutostart
-from IPKInstaller import IpkgInstaller
+from IPKInstaller import OpkgInstaller
 
 config.misc.restorewizardrun = ConfigBoolean(default=False)
 
 def setLanguageFromBackup(backupfile):
 	try:
-		print backupfile
+		print(backupfile)
 		import tarfile
 		tar = tarfile.open(backupfile)
 		for member in tar.getmembers():
@@ -53,7 +50,7 @@ def checkConfigBackup():
 						if file.endswith('.tar.gz') and "vision" in file.lower():
 							list.append((path.join(devpath, file)))
  		if len(list):
-			print '[RestoreWizard] Backup Image:', list[0]
+			print('[Vision] Backup Image:', list[0])
 			backupfile = list[0]
 			if path.isfile(backupfile):
 				setLanguageFromBackup(backupfile)
@@ -61,7 +58,7 @@ def checkConfigBackup():
 		else:
 			return None
 	except IOError, e:
-		print "[Vision] unable to use device (%s)..." % str(e)
+		print("[Vision] unable to use device (%s)..." % str(e))
 		return None
 
 if config.misc.firstrun.value and not config.misc.restorewizardrun.value:
@@ -150,7 +147,7 @@ def SwapManagerMenu(session, **kwargs):
 
 def filescan_open(list, session, **kwargs):
 	filelist = [x.path for x in list]
-	session.open(IpkgInstaller, filelist)  # list
+	session.open(OpkgInstaller, filelist)  # list
 
 def filescan(**kwargs):
 	from Components.Scanner import Scanner, ScanPath
@@ -160,7 +157,7 @@ def filescan(**kwargs):
 					ScanPath(path="ipk", with_subdirs=True),
 					ScanPath(path="", with_subdirs=False),
 				],
-				name="Ipkg",
+				name="Opkg",
 				description=_("Install extensions."),
 				openfnc=filescan_open)
 
@@ -179,11 +176,10 @@ def Plugins(**kwargs):
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=BackupManagerautostart))
 	if config.misc.firstrun.value and not config.misc.restorewizardrun.value and backupAvailable == 1:
 		plist.append(PluginDescriptor(name=_("Restore wizard"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(0, RestoreWizard)))
-	plist.append(PluginDescriptor(name=_("Ipkg"), where=PluginDescriptor.WHERE_FILESCAN, needsRestart=False, fnc=filescan))
+	plist.append(PluginDescriptor(name=_("Opkg"), where=PluginDescriptor.WHERE_FILESCAN, needsRestart=False, fnc=filescan))
 	plist.append(PluginDescriptor(name=_("Vision Backup manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=BackupManagerMenu))
 	plist.append(PluginDescriptor(name=_("Vision Image manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ImageMangerMenu))
 	plist.append(PluginDescriptor(name=_("Vision Mount manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=MountManagerMenu))
 	plist.append(PluginDescriptor(name=_("Vision Script runner"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ScriptRunnerMenu))
 	plist.append(PluginDescriptor(name=_("Vision SWAP manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=SwapManagerMenu))
 	return plist
-

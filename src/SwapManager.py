@@ -1,11 +1,9 @@
-# for localized messages
+from __future__ import print_function
+from . import _
 from os import system, stat as mystat, path, remove, rename
 from glob import glob
 import stat
-
 from enigma import eTimer
-
-from . import _
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Screens.ChoiceBox import ChoiceBox
@@ -17,7 +15,6 @@ from Components.Harddisk import harddiskmanager, getProcMounts
 from Components.Console import Console
 from Components.Sources.StaticText import StaticText
 
-
 config.visionsettings.swapautostart = ConfigYesNo(default=False)
 
 startswap = None
@@ -27,7 +24,7 @@ def SwapAutostart(reason, session=None, **kwargs):
 	global startswap
 	if reason == 0:
 		if config.visionsettings.swapautostart.value:
-			print "[SwapManager] autostart"
+			print("[SwapManager] autostart")
 			startswap = StartSwap()
 			startswap.start()
 
@@ -51,7 +48,7 @@ class StartSwap:
 					rename('/etc/fstab.tmp', '/etc/fstab')
 					tmpfile.close()
 					fstabfile.close()
-					print "[SwapManager] Found a SWAP partition:", swap_place
+					print("[SwapManager] Found a SWAP partition:", swap_place)
 		else:
 			devicelist = []
 			for p in harddiskmanager.getMountedPartitions():
@@ -63,30 +60,30 @@ class StartSwap:
 					for filename in glob(device[1] + '/swap*'):
 						if path.exists(filename):
 							swap_place = filename
-							print "[SwapManager] Found a SWAP file on ", swap_place
+							print("[SwapManager] Found a SWAP file on ", swap_place)
 
 		f = file('/proc/swaps')
 		swapfile = f.read()
 		if swapfile.find(swap_place) == -1:
-			print "[SwapManager] Starting SWAP file on ", swap_place
+			print("[SwapManager] Starting SWAP file on ", swap_place)
 			system('swapon ' + swap_place)
 		else:
-			print "[SwapManager] SWAP file is already active on ", swap_place
+			print("[SwapManager] SWAP file is already active on ", swap_place)
 		f.close()
 
 class VISIONSwap(Screen):
 	skin = """
 	<screen name="VISIONSwap" position="center,center" size="620,250">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="10,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="160,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="310,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="460,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/red.png" position="10,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/green.png" position="160,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/yellow.png" position="310,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/blue.png" position="460,0" size="140,40" alphatest="on"/>
 		<widget name="key_red" position="10,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="key_green" position="160,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="key_yellow" position="310,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
 		<widget name="key_blue" position="460,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="autostart_off" position="10,50" zPosition="1" pixmap="skin_default/icons/lock_off.png" size="32,32" alphatest="on"/>
-		<widget name="autostart_on" position="10,50" zPosition="2" pixmap="skin_default/icons/lock_on.png" size="32,32" alphatest="on"/>
+		<widget name="autostart_off" position="10,50" zPosition="1" pixmap="icons/lock_off.png" size="32,32" alphatest="on"/>
+		<widget name="autostart_on" position="10,50" zPosition="2" pixmap="icons/lock_on.png" size="32,32" alphatest="on"/>
 		<widget name="lab1" position="50,50" size="360,30" font="Regular;20" valign="center" transparent="1"/>
 		<widget name="lab2" position="10,100" size="150,30" font="Regular;20" valign="center" transparent="1"/>
 		<widget name="lab3" position="10,150" size="150,30" font="Regular;20" valign="center" transparent="1"/>
