@@ -78,18 +78,7 @@ class VISIONSoftcamManager(Screen):
 		Screen.__init__(self, session)
 		screentitle =  _("Softcam manager")
 		self.menu_path = _('Main menu')+' / '+_('Setup')+' / '+_('Softcam')+' / '
-		if config.usage.show_menupath.value == 'large':
-			self.menu_path += screentitle
-			title = self.menu_path
-			self["menu_path_compressed"] = StaticText("")
-			self.menu_path += ' / '
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(self.menu_path + " >" if not self.menu_path.endswith(' / ') else self.menu_path[:-3] + " >" or "")
-			self.menu_path += " / " + screentitle
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
+		title = screentitle
 		Screen.setTitle(self, title)
 
 		self['lab1'] = Label(_('Select:'))
@@ -543,16 +532,7 @@ class VISIONSoftcamLog(Screen):
 		self.session = session
 		Screen.__init__(self, session)
 		screentitle =  _("Logs")
-		if config.usage.show_menupath.value == 'large':
-			menu_path += screentitle
-			title = menu_path
-			self["menu_path_compressed"] = StaticText("")
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
+		title = screentitle
 		Screen.setTitle(self, title)
 
 		if path.exists('/var/volatile/tmp/cam.check.log'):

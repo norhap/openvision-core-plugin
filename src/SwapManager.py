@@ -101,18 +101,7 @@ class VISIONSwap(Screen):
 		Screen.__init__(self, session)
 		screentitle =  _("SWAP manager")
 		self.menu_path = menu_path
-		if config.usage.show_menupath.value == 'large':
-			self.menu_path += screentitle
-			title = self.menu_path
-			self["menu_path_compressed"] = StaticText("")
-			self.menu_path += ' / '
-		elif config.usage.show_menupath.value == 'small':
-			title = screentitle
-			self["menu_path_compressed"] = StaticText(menu_path + " >" if not menu_path.endswith(' / ') else menu_path[:-3] + " >" or "")
-			menu_path += " / " + screentitle
-		else:
-			title = screentitle
-			self["menu_path_compressed"] = StaticText("")
+		title = screentitle
 		Screen.setTitle(self, title)
 
 		self['lab1'] = Label()
