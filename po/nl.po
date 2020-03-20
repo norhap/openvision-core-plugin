@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-19 01:37+0330\n"
+"POT-Creation-Date: 2020-03-20 23:34+0330\n"
 "PO-Revision-Date: 2019-12-23 14:35+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
@@ -193,13 +193,13 @@ msgstr "CCcam en MGcamd kunnen niet beide actief zijn"
 msgid "CCcam can't run whilst MGcamd is running."
 msgstr "CCcam kan niet draaien terwijl MGcamd draait."
 
-#: ../src/MountManager.py:265
+#: ../src/MountManager.py:279
 msgid "Can't un-mount the partition; make sure it is not being used for SWAP or record/timeshift paths."
 msgstr "Kan de partitie niet unmounten; stel zeker dat deze niet in gebruik is voor SWAP/opname/timeshift/logs."
 
 #: ../src/BackupManager.py:718 ../src/BackupManager.py:809
 #: ../src/BackupManager.py:908 ../src/Multibootmgr.py:43
-#: ../src/Multibootmgr.py:65 ../src/MountManager.py:322
+#: ../src/Multibootmgr.py:65 ../src/MountManager.py:336
 msgid "Cancel"
 msgstr "Annuleer"
 
@@ -223,7 +223,7 @@ msgstr "Kies bestanden"
 msgid "Choose local IPK's folder"
 msgstr "Kies lokale IPK-map"
 
-#: ../src/MountManager.py:317
+#: ../src/MountManager.py:331
 msgid "Choose where to mount your devices to:"
 msgstr "U wilt het apparaat mounten als:"
 
@@ -300,8 +300,8 @@ msgstr "Deselecteer"
 
 #: ../src/BackupManager.py:232 ../src/BackupManager.py:252
 #: ../src/ImageManager.py:240 ../src/ImageManager.py:249
-#: ../src/MountManager.py:124 ../src/MountManager.py:243
-#: ../src/MountManager.py:258
+#: ../src/MountManager.py:138 ../src/MountManager.py:257
+#: ../src/MountManager.py:272
 msgid "Device: "
 msgstr "Apparaat: "
 
@@ -434,7 +434,7 @@ msgstr "Een niet-standaard softcam gevonden; probeer deze te starten maar dit ka
 msgid "Free space:"
 msgstr "Vrije ruimte:"
 
-#: ../src/MountManager.py:111
+#: ../src/MountManager.py:125
 msgid "GB"
 msgstr "GB"
 
@@ -446,7 +446,7 @@ msgstr "H9 SD-kaart manager"
 msgid "H9SDcard Manager"
 msgstr "H9SD-kaart Manager"
 
-#: ../src/MountManager.py:64
+#: ../src/MountManager.py:78
 msgid "HARD DISK: "
 msgstr "HARDE SCHIJF: "
 
@@ -525,7 +525,7 @@ msgstr "Het lijkt erop, dat u geen extra lokatie hebt ingesteld. U kunt dit doen
 msgid "Logs"
 msgstr "Logs"
 
-#: ../src/ImageManager.py:240 ../src/MountManager.py:113
+#: ../src/ImageManager.py:240 ../src/MountManager.py:127
 msgid "MB"
 msgstr "MB"
 
@@ -545,20 +545,20 @@ msgstr "Beheer de back-ups van uw instellingen."
 msgid "Manage your devices mount points."
 msgstr "Beheer hoe uw apparaten gemount zijn."
 
-#: ../src/MountManager.py:183
+#: ../src/MountManager.py:197
 msgid "Mount"
 msgstr "Mount"
 
-#: ../src/MountManager.py:248
+#: ../src/MountManager.py:262
 msgid "Mount failed."
 msgstr "Mounten mislukt."
 
-#: ../src/ui.py:52 ../src/MountManager.py:175
+#: ../src/ui.py:52 ../src/MountManager.py:189
 msgid "Mount manager"
 msgstr "Mount manager"
 
-#: ../src/MountManager.py:124 ../src/MountManager.py:242
-#: ../src/MountManager.py:257
+#: ../src/MountManager.py:138 ../src/MountManager.py:256
+#: ../src/MountManager.py:271
 msgid "Mount: "
 msgstr "Mount: "
 
@@ -667,8 +667,8 @@ msgstr ""
 msgid "No images found for selected download server...if password check validity"
 msgstr "Geen images gevonden op de geselecteerde downloadserver. Indien er een wachtwoord wordt gebruikt, moet u dat controleren"
 
-#: ../src/MountManager.py:89 ../src/MountManager.py:91
-#: ../src/MountManager.py:102
+#: ../src/MountManager.py:103 ../src/MountManager.py:105
+#: ../src/MountManager.py:116
 msgid "None"
 msgstr "Geen"
 
@@ -713,11 +713,11 @@ msgstr "Kies het medium voor het SWAP-bestand."
 msgid "Please wait while plugins restore completes..."
 msgstr "Even wachten tot het installeren van plugins gereed is..."
 
-#: ../src/MountManager.py:221
+#: ../src/MountManager.py:235
 msgid "Please wait while scanning for devices..."
 msgstr "Wacht, de apparaten worden gescand..."
 
-#: ../src/MountManager.py:331
+#: ../src/MountManager.py:345
 #, fuzzy
 msgid "Please wait while scanning your STB devices..."
 msgstr "Wacht, de apparaten worden gescand..."
@@ -747,7 +747,7 @@ msgstr "Wacht terwijl het flashen wordt voorbereid."
 msgid "Please wait while the system gathers information..."
 msgstr "Wacht terwijl het systeem informatie verzamelt..."
 
-#: ../src/MountManager.py:355
+#: ../src/MountManager.py:369
 msgid "Please wait."
 msgstr "Even wachten."
 
@@ -816,7 +816,7 @@ msgstr "Herstart"
 msgid "Restart GUI."
 msgstr "Herstart GUI."
 
-#: ../src/MountManager.py:360
+#: ../src/MountManager.py:374
 #, fuzzy
 msgid "Restart STB."
 msgstr "Herstart GUI."
@@ -864,7 +864,7 @@ msgstr "Voer uit"
 msgid "Run your shell scripts."
 msgstr "Voer uw shell scripts uit."
 
-#: ../src/MountManager.py:82
+#: ../src/MountManager.py:96
 msgid "SDCARD: "
 msgstr "SDCARD: "
 
@@ -885,7 +885,7 @@ msgid "SWAP size:"
 msgstr "SWAP grootte:"
 
 #: ../src/BackupManager.py:719 ../src/BackupManager.py:810
-#: ../src/MountManager.py:321
+#: ../src/MountManager.py:335
 msgid "Save"
 msgstr "Bewaar"
 
@@ -942,13 +942,13 @@ msgstr "Maakt instellingen..."
 msgid "Setup"
 msgstr "Instellingen"
 
-#: ../src/MountManager.py:181
+#: ../src/MountManager.py:195
 msgid "Setup mounts"
 msgstr "Mounts instellen"
 
-#: ../src/MountManager.py:103 ../src/MountManager.py:109
-#: ../src/MountManager.py:111 ../src/MountManager.py:113
-#: ../src/MountManager.py:115
+#: ../src/MountManager.py:117 ../src/MountManager.py:123
+#: ../src/MountManager.py:125 ../src/MountManager.py:127
+#: ../src/MountManager.py:129
 msgid "Size: "
 msgstr "Afmetingen: "
 
@@ -1021,7 +1021,7 @@ msgstr "Status:"
 msgid "Stop"
 msgstr "Stop"
 
-#: ../src/MountManager.py:109
+#: ../src/MountManager.py:123
 msgid "TB"
 msgstr "TB"
 
@@ -1037,7 +1037,7 @@ msgstr "De back-up lokatie heeft onvoldoende ruimte."
 msgid "The backup location does not have enough free space.\n"
 msgstr "De back-up lokatie heeft onvoldoende ruimte.\n"
 
-#: ../src/MountManager.py:358
+#: ../src/MountManager.py:372
 #, fuzzy
 msgid ""
 "The changes need a system restart to take effect.\n"
@@ -1070,19 +1070,19 @@ msgstr "Er is geen image om te verwijderen."
 msgid "There is no image to flash."
 msgstr "Er is geen image om te flashen."
 
-#: ../src/MountManager.py:282
+#: ../src/MountManager.py:296
 msgid "This device is already mounted as HDD."
 msgstr "Dit apparaat is al gemount als HDD."
 
-#: ../src/MountManager.py:124
+#: ../src/MountManager.py:138
 msgid "Type: "
 msgstr "Type: "
 
-#: ../src/MountManager.py:76
+#: ../src/MountManager.py:90
 msgid "USB: "
 msgstr "USB: "
 
-#: ../src/MountManager.py:182
+#: ../src/MountManager.py:196
 msgid "Un-mount"
 msgstr "Un-mount"
 
@@ -1095,11 +1095,11 @@ msgstr ""
 "Unzip-fout (ook naar enig debuglog gestuurd):\n"
 "%s"
 
-#: ../src/MountManager.py:353
+#: ../src/MountManager.py:367
 msgid "Updating mount locations..."
 msgstr "Mount-lokaties worden geüpdatet..."
 
-#: ../src/MountManager.py:205
+#: ../src/MountManager.py:219
 msgid "Use as HDD"
 msgstr "Gebruik als HDD"
 
@@ -1248,7 +1248,7 @@ msgstr "slot%s - %s "
 msgid "slot%s - %s (current image)"
 msgstr "slot%s - %s (huidige image)"
 
-#: ../src/MountManager.py:90 ../src/MountManager.py:103
-#: ../src/MountManager.py:115
+#: ../src/MountManager.py:104 ../src/MountManager.py:117
+#: ../src/MountManager.py:129
 msgid "unavailable"
 msgstr "niet beschikbaar"

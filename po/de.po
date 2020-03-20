@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: enigma2-vision-core\n"
+"Project-Id-Version: enigma2-vix-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-19 01:37+0330\n"
-"PO-Revision-Date: 2019-11-12 18:26+0100\n"
+"POT-Creation-Date: 2020-03-20 23:34+0330\n"
+"PO-Revision-Date: 2020-03-20 10:28+0100\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: ../src/BackupManager.py:155 ../src/BackupManager.py:289
 #: ../src/ImageManager.py:135 ../src/ImageManager.py:291
@@ -187,13 +187,13 @@ msgstr "Während MGcamd läuft kann CCcam nicht ausgeführt werden"
 msgid "CCcam can't run whilst MGcamd is running."
 msgstr "CCcam kann nicht zusammen mit MGcamd laufen."
 
-#: ../src/MountManager.py:265
+#: ../src/MountManager.py:279
 msgid "Can't un-mount the partition; make sure it is not being used for SWAP or record/timeshift paths."
 msgstr "Unmount vom GHerät nicht möglich. Bitte sicher stellen das es nicht von Swap, Aufnahme oder Timeshift benutzt wird."
 
 #: ../src/BackupManager.py:718 ../src/BackupManager.py:809
 #: ../src/BackupManager.py:908 ../src/Multibootmgr.py:43
-#: ../src/Multibootmgr.py:65 ../src/MountManager.py:322
+#: ../src/Multibootmgr.py:65 ../src/MountManager.py:336
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -217,7 +217,7 @@ msgstr "Wähle Dateien"
 msgid "Choose local IPK's folder"
 msgstr "Wähle lokalen IPK Ordner"
 
-#: ../src/MountManager.py:317
+#: ../src/MountManager.py:331
 msgid "Choose where to mount your devices to:"
 msgstr "Bitte Einhängepunkte der Geräte auswählen:"
 
@@ -294,8 +294,8 @@ msgstr "Abwählen"
 
 #: ../src/BackupManager.py:232 ../src/BackupManager.py:252
 #: ../src/ImageManager.py:240 ../src/ImageManager.py:249
-#: ../src/MountManager.py:124 ../src/MountManager.py:243
-#: ../src/MountManager.py:258
+#: ../src/MountManager.py:138 ../src/MountManager.py:257
+#: ../src/MountManager.py:272
 msgid "Device: "
 msgstr "Gerät: "
 
@@ -426,7 +426,7 @@ msgstr "Keine Standard Softcam gefunden. Es wird ein Start versucht aber es kön
 msgid "Free space:"
 msgstr "Freier Speicher:"
 
-#: ../src/MountManager.py:111
+#: ../src/MountManager.py:125
 msgid "GB"
 msgstr "GB"
 
@@ -438,7 +438,7 @@ msgstr "H9 SD-Karten Verwaltung"
 msgid "H9SDcard Manager"
 msgstr "H9 SD-Karten Verwaltung"
 
-#: ../src/MountManager.py:64
+#: ../src/MountManager.py:78
 msgid "HARD DISK: "
 msgstr "FESTPLATTE: "
 
@@ -517,7 +517,7 @@ msgstr "Es sieht so aus asl wenn noch ein Extra Ort konfiguriert wurde. Bitte de
 msgid "Logs"
 msgstr ""
 
-#: ../src/ImageManager.py:240 ../src/MountManager.py:113
+#: ../src/ImageManager.py:240 ../src/MountManager.py:127
 msgid "MB"
 msgstr "MB"
 
@@ -537,20 +537,20 @@ msgstr "Verwalte die Backups der Einstellungen."
 msgid "Manage your devices mount points."
 msgstr "Verwalte die Einhängepunkte."
 
-#: ../src/MountManager.py:183
+#: ../src/MountManager.py:197
 msgid "Mount"
 msgstr "Einhängen"
 
-#: ../src/MountManager.py:248
+#: ../src/MountManager.py:262
 msgid "Mount failed."
 msgstr "Mount fehlgeschlagen."
 
-#: ../src/ui.py:52 ../src/MountManager.py:175
+#: ../src/ui.py:52 ../src/MountManager.py:189
 msgid "Mount manager"
 msgstr "Mount Verwaltung"
 
-#: ../src/MountManager.py:124 ../src/MountManager.py:242
-#: ../src/MountManager.py:257
+#: ../src/MountManager.py:138 ../src/MountManager.py:256
+#: ../src/MountManager.py:271
 msgid "Mount: "
 msgstr "Mount: "
 
@@ -575,9 +575,8 @@ msgid "Multiboot image manager"
 msgstr "Multiboot Image Verwaltung"
 
 #: ../src/Multibootmgr.py:133
-#, fuzzy
 msgid "Multiboot manager - Cannot initialise SDcard when running image on SDcard."
-msgstr "Multiboot Verwaltung - SD Karte kann nicht initialisiert werden wenn ein Image von dieser Karte gestartet ist."
+msgstr "Multiboot Manager - SD-Karte kann nicht initialisiert werden wenn ein Image von der SD-Karte läuft."
 
 #: ../src/Multibootmgr.py:161
 msgid "Multiboot manager - SDcard initialization run, please restart your Image."
@@ -590,7 +589,7 @@ msgstr "Multiboot Verwaltung. Die SD-Karte muss m indestens 8MB groß sein."
 #: ../src/Multibootmgr.py:136
 #, fuzzy
 msgid "Multiboot manager - to use this routine STB image must be at OpenVision 4.2.043 or later and USB flashed - reply Yes to continue"
-msgstr "Multiboot Verwaltung - Um diese Routine zu benutzen %s Image muss OpenVision 4.2.043 oder neuer sein. Wähle Ja um fortzufahren."
+msgstr "Multiboot Verwaltung - Um diese Routine zu benutzen %s Image muss OpenViX 4.2.043 oder neuer sein. Wähle Ja um fortzufahren."
 
 #: ../src/ImageManager.py:450 ../src/ImageManager.py:1223
 msgid "Multiboot only able to restore this backup to mmc slot1"
@@ -659,8 +658,8 @@ msgstr ""
 msgid "No images found for selected download server...if password check validity"
 msgstr "Keine Images auf gewähltem Server gefunden. Falls mit Passwort überprüfe Gültigkeit."
 
-#: ../src/MountManager.py:89 ../src/MountManager.py:91
-#: ../src/MountManager.py:102
+#: ../src/MountManager.py:103 ../src/MountManager.py:105
+#: ../src/MountManager.py:116
 msgid "None"
 msgstr "Keine"
 
@@ -703,11 +702,11 @@ msgstr "Bitte Geräte als Ort für Swap Datei wählen."
 msgid "Please wait while plugins restore completes..."
 msgstr "Bitte warten bis Plugins wiederhergestellt sind..."
 
-#: ../src/MountManager.py:221
+#: ../src/MountManager.py:235
 msgid "Please wait while scanning for devices..."
 msgstr "Bitte warten. Suche Geräte..."
 
-#: ../src/MountManager.py:331
+#: ../src/MountManager.py:345
 #, fuzzy
 msgid "Please wait while scanning your STB devices..."
 msgstr "Bitte warten. Suche Geräte..."
@@ -737,7 +736,7 @@ msgstr "Bitte warten während Flash sich vorbereitet."
 msgid "Please wait while the system gathers information..."
 msgstr "Bitte warten während das System Informationen sammelt..."
 
-#: ../src/MountManager.py:355
+#: ../src/MountManager.py:369
 msgid "Please wait."
 msgstr "Bitte warten."
 
@@ -751,7 +750,7 @@ msgstr "Bereite Extra Plugins vor..."
 
 #: ../src/BackupManager.py:213 ../src/ImageManager.py:216
 msgid "Press 'Menu' to select a storage device"
-msgstr ""
+msgstr "Drücke Menü um einen Massenspeicher zu wählen"
 
 #: ../src/Multibootmgr.py:44
 msgid "Press Init to format SDcard."
@@ -807,7 +806,7 @@ msgstr "Neustart"
 msgid "Restart GUI."
 msgstr "Benutzeroberfläche neu starten."
 
-#: ../src/MountManager.py:360
+#: ../src/MountManager.py:374
 #, fuzzy
 msgid "Restart STB."
 msgstr "Benutzeroberfläche neu starten."
@@ -855,7 +854,7 @@ msgstr "Ausführen"
 msgid "Run your shell scripts."
 msgstr "Führe dein Script aus."
 
-#: ../src/MountManager.py:82
+#: ../src/MountManager.py:96
 msgid "SDCARD: "
 msgstr ""
 
@@ -876,7 +875,7 @@ msgid "SWAP size:"
 msgstr "SWAP Größe:"
 
 #: ../src/BackupManager.py:719 ../src/BackupManager.py:810
-#: ../src/MountManager.py:321
+#: ../src/MountManager.py:335
 msgid "Save"
 msgstr "Speichern"
 
@@ -933,13 +932,13 @@ msgstr "Konfiguriere..."
 msgid "Setup"
 msgstr "Einstellungen"
 
-#: ../src/MountManager.py:181
+#: ../src/MountManager.py:195
 msgid "Setup mounts"
 msgstr "Konfigiriere Mounts"
 
-#: ../src/MountManager.py:103 ../src/MountManager.py:109
-#: ../src/MountManager.py:111 ../src/MountManager.py:113
-#: ../src/MountManager.py:115
+#: ../src/MountManager.py:117 ../src/MountManager.py:123
+#: ../src/MountManager.py:125 ../src/MountManager.py:127
+#: ../src/MountManager.py:129
 msgid "Size: "
 msgstr "Größe: "
 
@@ -1012,7 +1011,7 @@ msgstr "Status:"
 msgid "Stop"
 msgstr "Stopp"
 
-#: ../src/MountManager.py:109
+#: ../src/MountManager.py:123
 msgid "TB"
 msgstr ""
 
@@ -1028,7 +1027,7 @@ msgstr "Der Ort für die Backups hat nicht genug freien Speicher."
 msgid "The backup location does not have enough free space.\n"
 msgstr "Der Ort für die Backups hat nicht genug freien Speicher.\n"
 
-#: ../src/MountManager.py:358
+#: ../src/MountManager.py:372
 #, fuzzy
 msgid ""
 "The changes need a system restart to take effect.\n"
@@ -1061,19 +1060,19 @@ msgstr "Kein Image zum löschen."
 msgid "There is no image to flash."
 msgstr "Kein Image zum flashen."
 
-#: ../src/MountManager.py:282
+#: ../src/MountManager.py:296
 msgid "This device is already mounted as HDD."
 msgstr "Dieses Gerät wurde schon als HDD gemountet."
 
-#: ../src/MountManager.py:124
+#: ../src/MountManager.py:138
 msgid "Type: "
 msgstr "Typ: "
 
-#: ../src/MountManager.py:76
+#: ../src/MountManager.py:90
 msgid "USB: "
 msgstr ""
 
-#: ../src/MountManager.py:182
+#: ../src/MountManager.py:196
 msgid "Un-mount"
 msgstr ""
 
@@ -1084,11 +1083,11 @@ msgid ""
 "%s"
 msgstr "Fehler bei Unzip (auch in Debug Log):%s"
 
-#: ../src/MountManager.py:353
+#: ../src/MountManager.py:367
 msgid "Updating mount locations..."
 msgstr "Erneuern der Mountpunkte..."
 
-#: ../src/MountManager.py:205
+#: ../src/MountManager.py:219
 msgid "Use as HDD"
 msgstr "Als HDD verwenden"
 
@@ -1104,27 +1103,32 @@ msgstr "Fortschritt anzeigen"
 
 #: ../src/ui.py:42 ../src/plugin.py:81 ../src/plugin.py:167
 msgid "Vision"
-msgstr "Vision"
+msgstr ""
 
 #: ../src/plugin.py:180
+#, fuzzy
 msgid "Vision Backup manager"
-msgstr "Vision Backup Verwaltung"
+msgstr "ViX Backup Verwaltung"
 
 #: ../src/plugin.py:181
+#, fuzzy
 msgid "Vision Image manager"
-msgstr "Vision Image Verwaltung"
+msgstr "ViX Image Verwaltung"
 
 #: ../src/plugin.py:182
+#, fuzzy
 msgid "Vision Mount manager"
-msgstr "Vision Mount Verwaltung"
+msgstr "ViX Mount Verwaltung"
 
 #: ../src/plugin.py:184
+#, fuzzy
 msgid "Vision SWAP manager"
-msgstr "Vision Swap Verwaltung"
+msgstr "ViX Swap Verwaltung"
 
 #: ../src/plugin.py:183
+#, fuzzy
 msgid "Vision Script runner"
-msgstr "Vision Script ausführen"
+msgstr "ViX Script ausführen"
 
 #: ../src/SwapManager.py:303
 msgid "Wait please while creating SWAP file..."
@@ -1236,7 +1240,7 @@ msgstr "Slot%s - %s "
 msgid "slot%s - %s (current image)"
 msgstr "Slot%s - %s (aktuelle Image)"
 
-#: ../src/MountManager.py:90 ../src/MountManager.py:103
-#: ../src/MountManager.py:115
+#: ../src/MountManager.py:104 ../src/MountManager.py:117
+#: ../src/MountManager.py:129
 msgid "unavailable"
 msgstr "nicht verfügbar"

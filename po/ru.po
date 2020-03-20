@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-19 01:37+0330\n"
+"POT-Creation-Date: 2020-03-20 23:34+0330\n"
 "PO-Revision-Date: 2013-10-20 17:17+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@o2.co.uk>\n"
 "Language-Team: RU locale by Sowa\n"
@@ -205,14 +205,14 @@ msgstr "CCcam не работает одновременно с MgCamd"
 msgid "CCcam can't run whilst MGcamd is running."
 msgstr "CCcam не работает одновременно с MgCamd"
 
-#: ../src/MountManager.py:265
+#: ../src/MountManager.py:279
 #, fuzzy
 msgid "Can't un-mount the partition; make sure it is not being used for SWAP or record/timeshift paths."
 msgstr "Не можете размонтировать раздел, убедитесь, что он не используется для подкачки или в путях записи/TimeShift"
 
 #: ../src/BackupManager.py:718 ../src/BackupManager.py:809
 #: ../src/BackupManager.py:908 ../src/Multibootmgr.py:43
-#: ../src/Multibootmgr.py:65 ../src/MountManager.py:322
+#: ../src/Multibootmgr.py:65 ../src/MountManager.py:336
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -240,7 +240,7 @@ msgstr "Выбор файлов"
 msgid "Choose local IPK's folder"
 msgstr "Выберите локальную папку содержащую пакеты ipk"
 
-#: ../src/MountManager.py:317
+#: ../src/MountManager.py:331
 msgid "Choose where to mount your devices to:"
 msgstr "Выбор точки монтирования:"
 
@@ -322,8 +322,8 @@ msgstr "Отмена выбора"
 
 #: ../src/BackupManager.py:232 ../src/BackupManager.py:252
 #: ../src/ImageManager.py:240 ../src/ImageManager.py:249
-#: ../src/MountManager.py:124 ../src/MountManager.py:243
-#: ../src/MountManager.py:258
+#: ../src/MountManager.py:138 ../src/MountManager.py:257
+#: ../src/MountManager.py:272
 msgid "Device: "
 msgstr "Место хранения: "
 
@@ -462,7 +462,7 @@ msgstr "Найден нестандартный эмулятор, возможн
 msgid "Free space:"
 msgstr "Свободно:"
 
-#: ../src/MountManager.py:111
+#: ../src/MountManager.py:125
 msgid "GB"
 msgstr "ГБайт"
 
@@ -476,7 +476,7 @@ msgstr "Управление эмуляторами"
 msgid "H9SDcard Manager"
 msgstr "Файл подкачки"
 
-#: ../src/MountManager.py:64
+#: ../src/MountManager.py:78
 msgid "HARD DISK: "
 msgstr "Жёсткий диск: "
 
@@ -559,7 +559,7 @@ msgstr "Вы не указали путь для дополнительных п
 msgid "Logs"
 msgstr ""
 
-#: ../src/ImageManager.py:240 ../src/MountManager.py:113
+#: ../src/ImageManager.py:240 ../src/MountManager.py:127
 msgid "MB"
 msgstr "МБайт"
 
@@ -582,22 +582,22 @@ msgstr "Управление сохранениями настроек"
 msgid "Manage your devices mount points."
 msgstr "Работа с точками монтирования"
 
-#: ../src/MountManager.py:183
+#: ../src/MountManager.py:197
 msgid "Mount"
 msgstr "Монтировать"
 
-#: ../src/MountManager.py:248
+#: ../src/MountManager.py:262
 #, fuzzy
 msgid "Mount failed."
 msgstr "Монтирование неудачно!"
 
-#: ../src/ui.py:52 ../src/MountManager.py:175
+#: ../src/ui.py:52 ../src/MountManager.py:189
 #, fuzzy
 msgid "Mount manager"
 msgstr "Менеджер монтирования"
 
-#: ../src/MountManager.py:124 ../src/MountManager.py:242
-#: ../src/MountManager.py:257
+#: ../src/MountManager.py:138 ../src/MountManager.py:256
+#: ../src/MountManager.py:271
 msgid "Mount: "
 msgstr "Точка монтирования: "
 
@@ -713,8 +713,8 @@ msgstr ""
 msgid "No images found for selected download server...if password check validity"
 msgstr ""
 
-#: ../src/MountManager.py:89 ../src/MountManager.py:91
-#: ../src/MountManager.py:102
+#: ../src/MountManager.py:103 ../src/MountManager.py:105
+#: ../src/MountManager.py:116
 msgid "None"
 msgstr "Нет"
 
@@ -758,12 +758,12 @@ msgstr "Пожалуйста, выберите место расположени
 msgid "Please wait while plugins restore completes..."
 msgstr "Ждите, идёт восстановление плагинов..."
 
-#: ../src/MountManager.py:221
+#: ../src/MountManager.py:235
 #, fuzzy
 msgid "Please wait while scanning for devices..."
 msgstr "Подождите, сканируются накопители..."
 
-#: ../src/MountManager.py:331
+#: ../src/MountManager.py:345
 #, fuzzy
 msgid "Please wait while scanning your STB devices..."
 msgstr "Подождите, сканируются накопители..."
@@ -794,7 +794,7 @@ msgstr "Пожалуйста подождите, идет сбор информ�
 msgid "Please wait while the system gathers information..."
 msgstr "Пожалуйста подождите, идет сбор информации..."
 
-#: ../src/MountManager.py:355
+#: ../src/MountManager.py:369
 msgid "Please wait."
 msgstr "Пожалуйста, ждите..."
 
@@ -867,7 +867,7 @@ msgstr "Перезапуск"
 msgid "Restart GUI."
 msgstr "Перезапуск"
 
-#: ../src/MountManager.py:360
+#: ../src/MountManager.py:374
 #, fuzzy
 msgid "Restart STB."
 msgstr "Перезапуск"
@@ -916,7 +916,7 @@ msgstr "Выполнить"
 msgid "Run your shell scripts."
 msgstr "Запуск скриптов"
 
-#: ../src/MountManager.py:82
+#: ../src/MountManager.py:96
 msgid "SDCARD: "
 msgstr ""
 
@@ -941,7 +941,7 @@ msgid "SWAP size:"
 msgstr "Размер: "
 
 #: ../src/BackupManager.py:719 ../src/BackupManager.py:810
-#: ../src/MountManager.py:321
+#: ../src/MountManager.py:335
 msgid "Save"
 msgstr "Сохранить"
 
@@ -1003,14 +1003,14 @@ msgstr "Настройка..."
 msgid "Setup"
 msgstr ""
 
-#: ../src/MountManager.py:181
+#: ../src/MountManager.py:195
 #, fuzzy
 msgid "Setup mounts"
 msgstr "Настройки монтирования"
 
-#: ../src/MountManager.py:103 ../src/MountManager.py:109
-#: ../src/MountManager.py:111 ../src/MountManager.py:113
-#: ../src/MountManager.py:115
+#: ../src/MountManager.py:117 ../src/MountManager.py:123
+#: ../src/MountManager.py:125 ../src/MountManager.py:127
+#: ../src/MountManager.py:129
 msgid "Size: "
 msgstr "Размер: "
 
@@ -1093,7 +1093,7 @@ msgstr "Состояние:"
 msgid "Stop"
 msgstr "Стоп"
 
-#: ../src/MountManager.py:109
+#: ../src/MountManager.py:123
 msgid "TB"
 msgstr "ТВ"
 
@@ -1112,7 +1112,7 @@ msgstr "Выбранный путь не имеет достаточно сво�
 msgid "The backup location does not have enough free space.\n"
 msgstr "Выбранный путь не имеет достаточно свободного места"
 
-#: ../src/MountManager.py:358
+#: ../src/MountManager.py:372
 msgid ""
 "The changes need a system restart to take effect.\n"
 "Restart your STB now?"
@@ -1148,20 +1148,20 @@ msgstr "Нет прошивки для удаления."
 msgid "There is no image to flash."
 msgstr "Нет прошивки для загрузки."
 
-#: ../src/MountManager.py:282
+#: ../src/MountManager.py:296
 #, fuzzy
 msgid "This device is already mounted as HDD."
 msgstr "Данное устройство уже смонтировано как HDD"
 
-#: ../src/MountManager.py:124
+#: ../src/MountManager.py:138
 msgid "Type: "
 msgstr "Тип: "
 
-#: ../src/MountManager.py:76
+#: ../src/MountManager.py:90
 msgid "USB: "
 msgstr "USB: "
 
-#: ../src/MountManager.py:182
+#: ../src/MountManager.py:196
 #, fuzzy
 msgid "Un-mount"
 msgstr "Отмонтир."
@@ -1173,12 +1173,12 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../src/MountManager.py:353
+#: ../src/MountManager.py:367
 #, fuzzy
 msgid "Updating mount locations..."
 msgstr "Обновление точек монтирования"
 
-#: ../src/MountManager.py:205
+#: ../src/MountManager.py:219
 msgid "Use as HDD"
 msgstr "Использовать как HDD"
 
@@ -1325,7 +1325,7 @@ msgstr ""
 msgid "slot%s - %s (current image)"
 msgstr ""
 
-#: ../src/MountManager.py:90 ../src/MountManager.py:103
-#: ../src/MountManager.py:115
+#: ../src/MountManager.py:104 ../src/MountManager.py:117
+#: ../src/MountManager.py:129
 msgid "unavailable"
 msgstr "недоступен"

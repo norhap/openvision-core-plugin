@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-19 01:37+0330\n"
+"POT-Creation-Date: 2020-03-20 23:34+0330\n"
 "PO-Revision-Date: 2013-12-16 08:18+0100\n"
 "Last-Translator: Rob van der Does <robvddoes@gmail.com>\n"
 "Language-Team: CÜNEYT OCAKLILAR <ocaklilar@gmail.com>\n"
@@ -209,14 +209,14 @@ msgstr "MGcamd çalışırken CCcam çalışamaz"
 msgid "CCcam can't run whilst MGcamd is running."
 msgstr "MGcamd çalışırken CCcam çalışamaz"
 
-#: ../src/MountManager.py:265
+#: ../src/MountManager.py:279
 #, fuzzy
 msgid "Can't un-mount the partition; make sure it is not being used for SWAP or record/timeshift paths."
 msgstr "Bölüm çıkarılamıyor, swap veya kayıt/zaman kaydırma yollarında kullanılmadığından emin olun"
 
 #: ../src/BackupManager.py:718 ../src/BackupManager.py:809
 #: ../src/BackupManager.py:908 ../src/Multibootmgr.py:43
-#: ../src/Multibootmgr.py:65 ../src/MountManager.py:322
+#: ../src/Multibootmgr.py:65 ../src/MountManager.py:336
 msgid "Cancel"
 msgstr "İptal"
 
@@ -244,7 +244,7 @@ msgstr "Dosyaları Seçin"
 msgid "Choose local IPK's folder"
 msgstr "Yerel ipk dosyasını seç"
 
-#: ../src/MountManager.py:317
+#: ../src/MountManager.py:331
 msgid "Choose where to mount your devices to:"
 msgstr "Aygıtlarınızın bağlanacağı konumu seçin:"
 
@@ -326,8 +326,8 @@ msgstr "Seçme"
 
 #: ../src/BackupManager.py:232 ../src/BackupManager.py:252
 #: ../src/ImageManager.py:240 ../src/ImageManager.py:249
-#: ../src/MountManager.py:124 ../src/MountManager.py:243
-#: ../src/MountManager.py:258
+#: ../src/MountManager.py:138 ../src/MountManager.py:257
+#: ../src/MountManager.py:272
 msgid "Device: "
 msgstr "Aygıt:"
 
@@ -471,7 +471,7 @@ msgstr "Standart dışı softcam bulundu, başlatılmaya çalışılıyor, başa
 msgid "Free space:"
 msgstr "Boş alan:"
 
-#: ../src/MountManager.py:111
+#: ../src/MountManager.py:125
 msgid "GB"
 msgstr "GB"
 
@@ -485,7 +485,7 @@ msgstr "Softcam Yöneticisi"
 msgid "H9SDcard Manager"
 msgstr "Swap Yöneticisi"
 
-#: ../src/MountManager.py:64
+#: ../src/MountManager.py:78
 msgid "HARD DISK: "
 msgstr "HARD DISK: "
 
@@ -568,7 +568,7 @@ msgstr "Ek bir konum belirlememişsiniz, lütfen Yedekleme Yöneticisi kurulum m
 msgid "Logs"
 msgstr ""
 
-#: ../src/ImageManager.py:240 ../src/MountManager.py:113
+#: ../src/ImageManager.py:240 ../src/MountManager.py:127
 msgid "MB"
 msgstr "MB"
 
@@ -591,22 +591,22 @@ msgstr "Ayarlarınızın yedeklerini yönetin."
 msgid "Manage your devices mount points."
 msgstr "Aygıtlarınızın bağlantı noktalarını yönetin."
 
-#: ../src/MountManager.py:183
+#: ../src/MountManager.py:197
 msgid "Mount"
 msgstr "Bağla"
 
-#: ../src/MountManager.py:248
+#: ../src/MountManager.py:262
 #, fuzzy
 msgid "Mount failed."
 msgstr "Bağlantı başarısız"
 
-#: ../src/ui.py:52 ../src/MountManager.py:175
+#: ../src/ui.py:52 ../src/MountManager.py:189
 #, fuzzy
 msgid "Mount manager"
 msgstr "Bağlantı Yöneticisi"
 
-#: ../src/MountManager.py:124 ../src/MountManager.py:242
-#: ../src/MountManager.py:257
+#: ../src/MountManager.py:138 ../src/MountManager.py:256
+#: ../src/MountManager.py:271
 msgid "Mount: "
 msgstr "Bağlantı:"
 
@@ -722,8 +722,8 @@ msgstr ""
 msgid "No images found for selected download server...if password check validity"
 msgstr ""
 
-#: ../src/MountManager.py:89 ../src/MountManager.py:91
-#: ../src/MountManager.py:102
+#: ../src/MountManager.py:103 ../src/MountManager.py:105
+#: ../src/MountManager.py:116
 msgid "None"
 msgstr "Hiç"
 
@@ -767,12 +767,12 @@ msgstr "Lütfen swap dosyası konumu için kullanılacak aygıtı seçin"
 msgid "Please wait while plugins restore completes..."
 msgstr "Eklenti yüklemesi bitene kadar bekleyin..."
 
-#: ../src/MountManager.py:221
+#: ../src/MountManager.py:235
 #, fuzzy
 msgid "Please wait while scanning for devices..."
 msgstr "Lütfen aygıtlar incelenirken bekleyin..."
 
-#: ../src/MountManager.py:331
+#: ../src/MountManager.py:345
 #, fuzzy
 msgid "Please wait while scanning your STB devices..."
 msgstr "Lütfen aygıtlar incelenirken bekleyin..."
@@ -803,7 +803,7 @@ msgstr "Geri yükleme hazırlanırken lütfen bekleyin"
 msgid "Please wait while the system gathers information..."
 msgstr "Bilgi toplarken lütfen bekleyin..."
 
-#: ../src/MountManager.py:355
+#: ../src/MountManager.py:369
 msgid "Please wait."
 msgstr "Lütfen bekleyin."
 
@@ -876,7 +876,7 @@ msgstr "Yeniden başlat"
 msgid "Restart GUI."
 msgstr "Yeniden başlat"
 
-#: ../src/MountManager.py:360
+#: ../src/MountManager.py:374
 #, fuzzy
 msgid "Restart STB."
 msgstr "Yeniden başlat"
@@ -925,7 +925,7 @@ msgstr "Çalıştır"
 msgid "Run your shell scripts."
 msgstr "Shell betiklerinizi çalıştırın."
 
-#: ../src/MountManager.py:82
+#: ../src/MountManager.py:96
 msgid "SDCARD: "
 msgstr ""
 
@@ -950,7 +950,7 @@ msgid "SWAP size:"
 msgstr "Boyut:"
 
 #: ../src/BackupManager.py:719 ../src/BackupManager.py:810
-#: ../src/MountManager.py:321
+#: ../src/MountManager.py:335
 msgid "Save"
 msgstr "Sakla"
 
@@ -1012,14 +1012,14 @@ msgstr "Kuruluyor..."
 msgid "Setup"
 msgstr ""
 
-#: ../src/MountManager.py:181
+#: ../src/MountManager.py:195
 #, fuzzy
 msgid "Setup mounts"
 msgstr "Bağlantıları Kur"
 
-#: ../src/MountManager.py:103 ../src/MountManager.py:109
-#: ../src/MountManager.py:111 ../src/MountManager.py:113
-#: ../src/MountManager.py:115
+#: ../src/MountManager.py:117 ../src/MountManager.py:123
+#: ../src/MountManager.py:125 ../src/MountManager.py:127
+#: ../src/MountManager.py:129
 msgid "Size: "
 msgstr "Boyut:"
 
@@ -1102,7 +1102,7 @@ msgstr "Durum:"
 msgid "Stop"
 msgstr "Durdur"
 
-#: ../src/MountManager.py:109
+#: ../src/MountManager.py:123
 msgid "TB"
 msgstr ""
 
@@ -1121,7 +1121,7 @@ msgstr "Yedek konumunda yeterli boş yer yok."
 msgid "The backup location does not have enough free space.\n"
 msgstr "Yedek konumunda yeterli boş yer yok."
 
-#: ../src/MountManager.py:358
+#: ../src/MountManager.py:372
 #, fuzzy
 msgid ""
 "The changes need a system restart to take effect.\n"
@@ -1160,20 +1160,20 @@ msgstr "Silinecek imajınız yok."
 msgid "There is no image to flash."
 msgstr "İndirilecek imajınız yok."
 
-#: ../src/MountManager.py:282
+#: ../src/MountManager.py:296
 #, fuzzy
 msgid "This device is already mounted as HDD."
 msgstr "Bu aygıt zaten HDD olarak bağlanmış."
 
-#: ../src/MountManager.py:124
+#: ../src/MountManager.py:138
 msgid "Type: "
 msgstr "Tip:"
 
-#: ../src/MountManager.py:76
+#: ../src/MountManager.py:90
 msgid "USB: "
 msgstr ""
 
-#: ../src/MountManager.py:182
+#: ../src/MountManager.py:196
 #, fuzzy
 msgid "Un-mount"
 msgstr "Çıkar"
@@ -1185,12 +1185,12 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../src/MountManager.py:353
+#: ../src/MountManager.py:367
 #, fuzzy
 msgid "Updating mount locations..."
 msgstr "Bağlantı konumları güncelleniyor."
 
-#: ../src/MountManager.py:205
+#: ../src/MountManager.py:219
 msgid "Use as HDD"
 msgstr "HDD olarak kullan"
 
@@ -1343,7 +1343,7 @@ msgstr ""
 msgid "slot%s - %s (current image)"
 msgstr ""
 
-#: ../src/MountManager.py:90 ../src/MountManager.py:103
-#: ../src/MountManager.py:115
+#: ../src/MountManager.py:104 ../src/MountManager.py:117
+#: ../src/MountManager.py:129
 msgid "unavailable"
 msgstr "bulunamıyor"

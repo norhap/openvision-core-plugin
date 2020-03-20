@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-19 01:37+0330\n"
+"POT-Creation-Date: 2020-03-20 23:34+0330\n"
 "PO-Revision-Date: 2014-06-26 04:32+0100\n"
 "Last-Translator: Rob van der Does <robvddoes@gmail.com>\n"
 "Language-Team: Andyblac/LaZx1989\n"
@@ -196,14 +196,14 @@ msgstr "CCamm nu poate rula in timp ce MGcamd ruleaza."
 msgid "CCcam can't run whilst MGcamd is running."
 msgstr "CCamm nu poate rula in timp ce MGcamd ruleaza."
 
-#: ../src/MountManager.py:265
+#: ../src/MountManager.py:279
 #, fuzzy
 msgid "Can't un-mount the partition; make sure it is not being used for SWAP or record/timeshift paths."
 msgstr "Nu pot demonta partitia,asigura-te ca nu este utilizata pentru Swap sau ca nu este setata pentru inregistrari/timeshift."
 
 #: ../src/BackupManager.py:718 ../src/BackupManager.py:809
 #: ../src/BackupManager.py:908 ../src/Multibootmgr.py:43
-#: ../src/Multibootmgr.py:65 ../src/MountManager.py:322
+#: ../src/Multibootmgr.py:65 ../src/MountManager.py:336
 msgid "Cancel"
 msgstr "Anuleaza"
 
@@ -231,7 +231,7 @@ msgstr "Alege filele."
 msgid "Choose local IPK's folder"
 msgstr "Alege folderul local al ipk-ului."
 
-#: ../src/MountManager.py:317
+#: ../src/MountManager.py:331
 msgid "Choose where to mount your devices to:"
 msgstr "Alege unde sa montezi dispozitivele catre:"
 
@@ -313,8 +313,8 @@ msgstr "Deselecteaz"
 
 #: ../src/BackupManager.py:232 ../src/BackupManager.py:252
 #: ../src/ImageManager.py:240 ../src/ImageManager.py:249
-#: ../src/MountManager.py:124 ../src/MountManager.py:243
-#: ../src/MountManager.py:258
+#: ../src/MountManager.py:138 ../src/MountManager.py:257
+#: ../src/MountManager.py:272
 msgid "Device: "
 msgstr "Dispozitiv"
 
@@ -456,7 +456,7 @@ msgstr "Nu am gasit nici un softcam standard,incerc sa pornesc,s-ar putea sa esu
 msgid "Free space:"
 msgstr "Spatiu liber:"
 
-#: ../src/MountManager.py:111
+#: ../src/MountManager.py:125
 msgid "GB"
 msgstr "GB"
 
@@ -470,7 +470,7 @@ msgstr "Manager Softcam."
 msgid "H9SDcard Manager"
 msgstr "Manager Swap"
 
-#: ../src/MountManager.py:64
+#: ../src/MountManager.py:78
 msgid "HARD DISK: "
 msgstr "HARD DISK"
 
@@ -553,7 +553,7 @@ msgstr "Se pare ca nu ati configurat o extra locatie,va rugam configurati in men
 msgid "Logs"
 msgstr ""
 
-#: ../src/ImageManager.py:240 ../src/MountManager.py:113
+#: ../src/ImageManager.py:240 ../src/MountManager.py:127
 msgid "MB"
 msgstr "MB"
 
@@ -576,22 +576,22 @@ msgstr "Manageriati copia de rezerva a setarilor dvs."
 msgid "Manage your devices mount points."
 msgstr "Manageriati punctele de montare a dispozitivului dvs."
 
-#: ../src/MountManager.py:183
+#: ../src/MountManager.py:197
 msgid "Mount"
 msgstr "Montat"
 
-#: ../src/MountManager.py:248
+#: ../src/MountManager.py:262
 #, fuzzy
 msgid "Mount failed."
 msgstr "Montatul a esuat."
 
-#: ../src/ui.py:52 ../src/MountManager.py:175
+#: ../src/ui.py:52 ../src/MountManager.py:189
 #, fuzzy
 msgid "Mount manager"
 msgstr "Manager Montat"
 
-#: ../src/MountManager.py:124 ../src/MountManager.py:242
-#: ../src/MountManager.py:257
+#: ../src/MountManager.py:138 ../src/MountManager.py:256
+#: ../src/MountManager.py:271
 msgid "Mount: "
 msgstr "Montat:"
 
@@ -707,8 +707,8 @@ msgstr ""
 msgid "No images found for selected download server...if password check validity"
 msgstr ""
 
-#: ../src/MountManager.py:89 ../src/MountManager.py:91
-#: ../src/MountManager.py:102
+#: ../src/MountManager.py:103 ../src/MountManager.py:105
+#: ../src/MountManager.py:116
 msgid "None"
 msgstr "Nici unul"
 
@@ -752,12 +752,12 @@ msgstr "Va rugam selectati dispozitivul sa utilizeze o locatie a unei file Swap.
 msgid "Please wait while plugins restore completes..."
 msgstr "Va rugam asteptati in timp ce restaurarea pluginurilor este gata."
 
-#: ../src/MountManager.py:221
+#: ../src/MountManager.py:235
 #, fuzzy
 msgid "Please wait while scanning for devices..."
 msgstr "Va rugam asteptati in timp ce scanez dupa device-uri."
 
-#: ../src/MountManager.py:331
+#: ../src/MountManager.py:345
 #, fuzzy
 msgid "Please wait while scanning your STB devices..."
 msgstr "Va rugam asteptati in timp ce scanez dupa device-uri."
@@ -788,7 +788,7 @@ msgstr "Va rugam asteptati in timp ce restaurarea se pregateste."
 msgid "Please wait while the system gathers information..."
 msgstr "Va rugam asteptati in timp ce se strang informatii..."
 
-#: ../src/MountManager.py:355
+#: ../src/MountManager.py:369
 msgid "Please wait."
 msgstr "Va rugam asteptati."
 
@@ -859,7 +859,7 @@ msgstr "Restart"
 msgid "Restart GUI."
 msgstr "Restart"
 
-#: ../src/MountManager.py:360
+#: ../src/MountManager.py:374
 #, fuzzy
 msgid "Restart STB."
 msgstr "Restart"
@@ -908,7 +908,7 @@ msgstr "Ruleaza"
 msgid "Run your shell scripts."
 msgstr "Rulati scripturile dvs shell."
 
-#: ../src/MountManager.py:82
+#: ../src/MountManager.py:96
 msgid "SDCARD: "
 msgstr ""
 
@@ -933,7 +933,7 @@ msgid "SWAP size:"
 msgstr "Marime:"
 
 #: ../src/BackupManager.py:719 ../src/BackupManager.py:810
-#: ../src/MountManager.py:321
+#: ../src/MountManager.py:335
 msgid "Save"
 msgstr "Salveaza"
 
@@ -995,14 +995,14 @@ msgstr "Instalez..."
 msgid "Setup"
 msgstr ""
 
-#: ../src/MountManager.py:181
+#: ../src/MountManager.py:195
 #, fuzzy
 msgid "Setup mounts"
 msgstr "Configurati montarile."
 
-#: ../src/MountManager.py:103 ../src/MountManager.py:109
-#: ../src/MountManager.py:111 ../src/MountManager.py:113
-#: ../src/MountManager.py:115
+#: ../src/MountManager.py:117 ../src/MountManager.py:123
+#: ../src/MountManager.py:125 ../src/MountManager.py:127
+#: ../src/MountManager.py:129
 msgid "Size: "
 msgstr "Marime:"
 
@@ -1085,7 +1085,7 @@ msgstr "Conditie:"
 msgid "Stop"
 msgstr "Stop"
 
-#: ../src/MountManager.py:109
+#: ../src/MountManager.py:123
 msgid "TB"
 msgstr "TB"
 
@@ -1104,7 +1104,7 @@ msgstr "Locatia copiei de rezerva nu are suficient spatiu liber."
 msgid "The backup location does not have enough free space.\n"
 msgstr "Locatia copiei de rezerva nu are suficient spatiu liber..\n"
 
-#: ../src/MountManager.py:358
+#: ../src/MountManager.py:372
 #, fuzzy
 msgid ""
 "The changes need a system restart to take effect.\n"
@@ -1143,20 +1143,20 @@ msgstr "Nu aveti nici o imagine de sters."
 msgid "There is no image to flash."
 msgstr "Nu aveti nici o imagine de descarcat."
 
-#: ../src/MountManager.py:282
+#: ../src/MountManager.py:296
 #, fuzzy
 msgid "This device is already mounted as HDD."
 msgstr "Acest device este montat deja ca HDD."
 
-#: ../src/MountManager.py:124
+#: ../src/MountManager.py:138
 msgid "Type: "
 msgstr "Tip:"
 
-#: ../src/MountManager.py:76
+#: ../src/MountManager.py:90
 msgid "USB: "
 msgstr "USB:"
 
-#: ../src/MountManager.py:182
+#: ../src/MountManager.py:196
 #, fuzzy
 msgid "Un-mount"
 msgstr "Demonteaza"
@@ -1168,12 +1168,12 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../src/MountManager.py:353
+#: ../src/MountManager.py:367
 #, fuzzy
 msgid "Updating mount locations..."
 msgstr "Actualizez locatile montate."
 
-#: ../src/MountManager.py:205
+#: ../src/MountManager.py:219
 msgid "Use as HDD"
 msgstr "Foloseste ca HDD."
 
@@ -1326,7 +1326,7 @@ msgstr ""
 msgid "slot%s - %s (current image)"
 msgstr ""
 
-#: ../src/MountManager.py:90 ../src/MountManager.py:103
-#: ../src/MountManager.py:115
+#: ../src/MountManager.py:104 ../src/MountManager.py:117
+#: ../src/MountManager.py:129
 msgid "unavailable"
 msgstr "Indisponibil."

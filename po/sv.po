@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-19 01:37+0330\n"
+"POT-Creation-Date: 2020-03-20 23:34+0330\n"
 "PO-Revision-Date: 2015-01-05 22:46+0100\n"
 "Last-Translator: Robert Johansson\n"
 "Language-Team: none\n"
@@ -195,14 +195,14 @@ msgstr "CCcam kan inte startas medan MGcamd är igång"
 msgid "CCcam can't run whilst MGcamd is running."
 msgstr "CCcam kan inte startas medan MGcamd är igång"
 
-#: ../src/MountManager.py:265
+#: ../src/MountManager.py:279
 #, fuzzy
 msgid "Can't un-mount the partition; make sure it is not being used for SWAP or record/timeshift paths."
 msgstr "Kan inte avmontera partitionen, kontrollera att den inte används för växlingsfil eller inspelning/timeshift sökvägar"
 
 #: ../src/BackupManager.py:718 ../src/BackupManager.py:809
 #: ../src/BackupManager.py:908 ../src/Multibootmgr.py:43
-#: ../src/Multibootmgr.py:65 ../src/MountManager.py:322
+#: ../src/Multibootmgr.py:65 ../src/MountManager.py:336
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -230,7 +230,7 @@ msgstr "Välj Filer"
 msgid "Choose local IPK's folder"
 msgstr "Välj lokal ipk mapp"
 
-#: ../src/MountManager.py:317
+#: ../src/MountManager.py:331
 msgid "Choose where to mount your devices to:"
 msgstr "Välj hur du vill montera dina enheter:"
 
@@ -312,8 +312,8 @@ msgstr "Avmarkera"
 
 #: ../src/BackupManager.py:232 ../src/BackupManager.py:252
 #: ../src/ImageManager.py:240 ../src/ImageManager.py:249
-#: ../src/MountManager.py:124 ../src/MountManager.py:243
-#: ../src/MountManager.py:258
+#: ../src/MountManager.py:138 ../src/MountManager.py:257
+#: ../src/MountManager.py:272
 msgid "Device: "
 msgstr "Enhet:"
 
@@ -455,7 +455,7 @@ msgstr "Hittade en icke-standard softcam, försöker starta, detta kan misslycka
 msgid "Free space:"
 msgstr "Ledigt utrymme:"
 
-#: ../src/MountManager.py:111
+#: ../src/MountManager.py:125
 msgid "GB"
 msgstr "GB"
 
@@ -469,7 +469,7 @@ msgstr "Softcamhanterare"
 msgid "H9SDcard Manager"
 msgstr "Swaphanterare"
 
-#: ../src/MountManager.py:64
+#: ../src/MountManager.py:78
 msgid "HARD DISK: "
 msgstr "HÅRDDISK: "
 
@@ -552,7 +552,7 @@ msgstr "Du verkar inte ha ställt in en extra plats, vänligen ställ in i menyn
 msgid "Logs"
 msgstr ""
 
-#: ../src/ImageManager.py:240 ../src/MountManager.py:113
+#: ../src/ImageManager.py:240 ../src/MountManager.py:127
 msgid "MB"
 msgstr "MB"
 
@@ -573,22 +573,22 @@ msgstr "Hantera backuperna av dina inställningar"
 msgid "Manage your devices mount points."
 msgstr "Hantera din enhets monteringar"
 
-#: ../src/MountManager.py:183
+#: ../src/MountManager.py:197
 msgid "Mount"
 msgstr "Montera"
 
-#: ../src/MountManager.py:248
+#: ../src/MountManager.py:262
 #, fuzzy
 msgid "Mount failed."
 msgstr "Montering misslyckades"
 
-#: ../src/ui.py:52 ../src/MountManager.py:175
+#: ../src/ui.py:52 ../src/MountManager.py:189
 #, fuzzy
 msgid "Mount manager"
 msgstr "Monteringshanterare"
 
-#: ../src/MountManager.py:124 ../src/MountManager.py:242
-#: ../src/MountManager.py:257
+#: ../src/MountManager.py:138 ../src/MountManager.py:256
+#: ../src/MountManager.py:271
 msgid "Mount: "
 msgstr "Montera:"
 
@@ -704,8 +704,8 @@ msgstr ""
 msgid "No images found for selected download server...if password check validity"
 msgstr ""
 
-#: ../src/MountManager.py:89 ../src/MountManager.py:91
-#: ../src/MountManager.py:102
+#: ../src/MountManager.py:103 ../src/MountManager.py:105
+#: ../src/MountManager.py:116
 msgid "None"
 msgstr "Ingen"
 
@@ -749,11 +749,11 @@ msgstr "Var god välj en enhet för växlingsfilen"
 msgid "Please wait while plugins restore completes..."
 msgstr "Var god vänta under tiden som återställning av plugins slutförs..."
 
-#: ../src/MountManager.py:221
+#: ../src/MountManager.py:235
 msgid "Please wait while scanning for devices..."
 msgstr "Vänligen vänta, skanning efter enheter pågår..."
 
-#: ../src/MountManager.py:331
+#: ../src/MountManager.py:345
 #, fuzzy
 msgid "Please wait while scanning your STB devices..."
 msgstr "Vänligen vänta, skanning efter enheter pågår..."
@@ -784,7 +784,7 @@ msgstr "Vänligen vänta medans återställande förbereds"
 msgid "Please wait while the system gathers information..."
 msgstr "Var god vänta under tiden som information hämtas..."
 
-#: ../src/MountManager.py:355
+#: ../src/MountManager.py:369
 msgid "Please wait."
 msgstr "Var god vänta."
 
@@ -855,7 +855,7 @@ msgstr "Starta om"
 msgid "Restart GUI."
 msgstr "Starta om"
 
-#: ../src/MountManager.py:360
+#: ../src/MountManager.py:374
 #, fuzzy
 msgid "Restart STB."
 msgstr "Starta om"
@@ -904,7 +904,7 @@ msgstr "Kör"
 msgid "Run your shell scripts."
 msgstr "Kör dina shell scripts."
 
-#: ../src/MountManager.py:82
+#: ../src/MountManager.py:96
 msgid "SDCARD: "
 msgstr ""
 
@@ -929,7 +929,7 @@ msgid "SWAP size:"
 msgstr "Storlek:"
 
 #: ../src/BackupManager.py:719 ../src/BackupManager.py:810
-#: ../src/MountManager.py:321
+#: ../src/MountManager.py:335
 msgid "Save"
 msgstr "Spara"
 
@@ -991,14 +991,14 @@ msgstr "Ställer in..."
 msgid "Setup"
 msgstr ""
 
-#: ../src/MountManager.py:181
+#: ../src/MountManager.py:195
 #, fuzzy
 msgid "Setup mounts"
 msgstr "Monteringsinställningar"
 
-#: ../src/MountManager.py:103 ../src/MountManager.py:109
-#: ../src/MountManager.py:111 ../src/MountManager.py:113
-#: ../src/MountManager.py:115
+#: ../src/MountManager.py:117 ../src/MountManager.py:123
+#: ../src/MountManager.py:125 ../src/MountManager.py:127
+#: ../src/MountManager.py:129
 msgid "Size: "
 msgstr "Storlek:"
 
@@ -1081,7 +1081,7 @@ msgstr "Status:"
 msgid "Stop"
 msgstr "Stoppa"
 
-#: ../src/MountManager.py:109
+#: ../src/MountManager.py:123
 msgid "TB"
 msgstr "TB"
 
@@ -1100,7 +1100,7 @@ msgstr "Backupdestinationen har inte tillräckligt med ledigt utrymme."
 msgid "The backup location does not have enough free space.\n"
 msgstr "Platsen för backup har inte tillräckligt med ledigt utrymme.\n"
 
-#: ../src/MountManager.py:358
+#: ../src/MountManager.py:372
 #, fuzzy
 msgid ""
 "The changes need a system restart to take effect.\n"
@@ -1139,20 +1139,20 @@ msgstr "Du har ingen Image att ta bort."
 msgid "There is no image to flash."
 msgstr "Du har ingen Image att ladda ner."
 
-#: ../src/MountManager.py:282
+#: ../src/MountManager.py:296
 #, fuzzy
 msgid "This device is already mounted as HDD."
 msgstr "Enheten är redan monterad som HDD."
 
-#: ../src/MountManager.py:124
+#: ../src/MountManager.py:138
 msgid "Type: "
 msgstr "Typ: "
 
-#: ../src/MountManager.py:76
+#: ../src/MountManager.py:90
 msgid "USB: "
 msgstr "USB: "
 
-#: ../src/MountManager.py:182
+#: ../src/MountManager.py:196
 #, fuzzy
 msgid "Un-mount"
 msgstr "Avmontera"
@@ -1164,12 +1164,12 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../src/MountManager.py:353
+#: ../src/MountManager.py:367
 #, fuzzy
 msgid "Updating mount locations..."
 msgstr "Uppdaterar destinationer för montering."
 
-#: ../src/MountManager.py:205
+#: ../src/MountManager.py:219
 msgid "Use as HDD"
 msgstr "Använd som HDD"
 
@@ -1322,7 +1322,7 @@ msgstr ""
 msgid "slot%s - %s (current image)"
 msgstr ""
 
-#: ../src/MountManager.py:90 ../src/MountManager.py:103
-#: ../src/MountManager.py:115
+#: ../src/MountManager.py:104 ../src/MountManager.py:117
+#: ../src/MountManager.py:129
 msgid "unavailable"
 msgstr "ej tillgänglig"

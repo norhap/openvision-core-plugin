@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-19 01:37+0330\n"
+"POT-Creation-Date: 2020-03-20 23:34+0330\n"
 "PO-Revision-Date: 2018-11-03 16:56+0200\n"
 "Last-Translator: rimas <rimas@domeen.ee>\n"
 "Language-Team: Estonian <rimas>\n"
@@ -193,13 +193,13 @@ msgstr "MGcamd töötamisel ei saa CCcam käivituda"
 msgid "CCcam can't run whilst MGcamd is running."
 msgstr "MGcamd töötamisel ei saa CCcam käivituda"
 
-#: ../src/MountManager.py:265
+#: ../src/MountManager.py:279
 msgid "Can't un-mount the partition; make sure it is not being used for SWAP or record/timeshift paths."
 msgstr "Partitsiooni lahtihaakimine nurjus. Veendu, et seda ei kasutata saale või salvestamise/ajanihke tarbeks."
 
 #: ../src/BackupManager.py:718 ../src/BackupManager.py:809
 #: ../src/BackupManager.py:908 ../src/Multibootmgr.py:43
-#: ../src/Multibootmgr.py:65 ../src/MountManager.py:322
+#: ../src/Multibootmgr.py:65 ../src/MountManager.py:336
 msgid "Cancel"
 msgstr "Tühista"
 
@@ -223,7 +223,7 @@ msgstr "Vali failid"
 msgid "Choose local IPK's folder"
 msgstr "Vali IPK kaust"
 
-#: ../src/MountManager.py:317
+#: ../src/MountManager.py:331
 msgid "Choose where to mount your devices to:"
 msgstr "Määra seadmetele haakepunktid:"
 
@@ -301,8 +301,8 @@ msgstr "Tühista valik"
 
 #: ../src/BackupManager.py:232 ../src/BackupManager.py:252
 #: ../src/ImageManager.py:240 ../src/ImageManager.py:249
-#: ../src/MountManager.py:124 ../src/MountManager.py:243
-#: ../src/MountManager.py:258
+#: ../src/MountManager.py:138 ../src/MountManager.py:257
+#: ../src/MountManager.py:272
 msgid "Device: "
 msgstr "Asukoht: "
 
@@ -437,7 +437,7 @@ msgstr "Leiti ebastandardne EMU. Käivitamine võib nurjuda"
 msgid "Free space:"
 msgstr "Vaba ruum:"
 
-#: ../src/MountManager.py:111
+#: ../src/MountManager.py:125
 msgid "GB"
 msgstr "GB"
 
@@ -451,7 +451,7 @@ msgstr "Saale haldamine"
 msgid "H9SDcard Manager"
 msgstr "Saale haldamine"
 
-#: ../src/MountManager.py:64
+#: ../src/MountManager.py:78
 msgid "HARD DISK: "
 msgstr "KÕVAKETAS: "
 
@@ -530,7 +530,7 @@ msgstr "Lisaasukoht on määramata. Saad seda teha varukoopia halduris."
 msgid "Logs"
 msgstr "Logid"
 
-#: ../src/ImageManager.py:240 ../src/MountManager.py:113
+#: ../src/ImageManager.py:240 ../src/MountManager.py:127
 msgid "MB"
 msgstr "MB"
 
@@ -550,20 +550,20 @@ msgstr "Loo ja taasta varukoopiaid seadistustest."
 msgid "Manage your devices mount points."
 msgstr "Halda andmekandjate haakepunkte."
 
-#: ../src/MountManager.py:183
+#: ../src/MountManager.py:197
 msgid "Mount"
 msgstr "Haagi"
 
-#: ../src/MountManager.py:248
+#: ../src/MountManager.py:262
 msgid "Mount failed."
 msgstr "Haakimine nurjus."
 
-#: ../src/ui.py:52 ../src/MountManager.py:175
+#: ../src/ui.py:52 ../src/MountManager.py:189
 msgid "Mount manager"
 msgstr "Haakepunktid"
 
-#: ../src/MountManager.py:124 ../src/MountManager.py:242
-#: ../src/MountManager.py:257
+#: ../src/MountManager.py:138 ../src/MountManager.py:256
+#: ../src/MountManager.py:271
 msgid "Mount: "
 msgstr "Haagitud: "
 
@@ -673,8 +673,8 @@ msgstr ""
 msgid "No images found for selected download server...if password check validity"
 msgstr ""
 
-#: ../src/MountManager.py:89 ../src/MountManager.py:91
-#: ../src/MountManager.py:102
+#: ../src/MountManager.py:103 ../src/MountManager.py:105
+#: ../src/MountManager.py:116
 msgid "None"
 msgstr "Pole"
 
@@ -719,11 +719,11 @@ msgstr "Vali andmekandja saalefaili asukohaks"
 msgid "Please wait while plugins restore completes..."
 msgstr "Toimub pluginate taastamine"
 
-#: ../src/MountManager.py:221
+#: ../src/MountManager.py:235
 msgid "Please wait while scanning for devices..."
 msgstr "Toimub riistvara uurimine"
 
-#: ../src/MountManager.py:331
+#: ../src/MountManager.py:345
 #, fuzzy
 msgid "Please wait while scanning your STB devices..."
 msgstr "Toimub riistvara uurimine"
@@ -752,7 +752,7 @@ msgstr "Valmistumine paigaldamiseks."
 msgid "Please wait while the system gathers information..."
 msgstr "Oota, kuni süsteem kogub teavet..."
 
-#: ../src/MountManager.py:355
+#: ../src/MountManager.py:369
 msgid "Please wait."
 msgstr "Oota."
 
@@ -824,7 +824,7 @@ msgstr "Taaskäivitus"
 msgid "Restart GUI."
 msgstr "Taaskäivita E2."
 
-#: ../src/MountManager.py:360
+#: ../src/MountManager.py:374
 #, fuzzy
 msgid "Restart STB."
 msgstr "Taaskäivita E2."
@@ -872,7 +872,7 @@ msgstr "Käivita"
 msgid "Run your shell scripts."
 msgstr "Käivita skripte"
 
-#: ../src/MountManager.py:82
+#: ../src/MountManager.py:96
 #, fuzzy
 msgid "SDCARD: "
 msgstr "Vorminda SD kaart"
@@ -894,7 +894,7 @@ msgid "SWAP size:"
 msgstr "Saale suurus:"
 
 #: ../src/BackupManager.py:719 ../src/BackupManager.py:810
-#: ../src/MountManager.py:321
+#: ../src/MountManager.py:335
 msgid "Save"
 msgstr "Salvesta"
 
@@ -951,13 +951,13 @@ msgstr "Seadistamine..."
 msgid "Setup"
 msgstr "Seadistamine"
 
-#: ../src/MountManager.py:181
+#: ../src/MountManager.py:195
 msgid "Setup mounts"
 msgstr "Haakepunktid"
 
-#: ../src/MountManager.py:103 ../src/MountManager.py:109
-#: ../src/MountManager.py:111 ../src/MountManager.py:113
-#: ../src/MountManager.py:115
+#: ../src/MountManager.py:117 ../src/MountManager.py:123
+#: ../src/MountManager.py:125 ../src/MountManager.py:127
+#: ../src/MountManager.py:129
 msgid "Size: "
 msgstr "Suurus: "
 
@@ -1030,7 +1030,7 @@ msgstr "Olek:"
 msgid "Stop"
 msgstr "Peata"
 
-#: ../src/MountManager.py:109
+#: ../src/MountManager.py:123
 msgid "TB"
 msgstr "TB"
 
@@ -1046,7 +1046,7 @@ msgstr "Varukoopia asukohas ei ole piisavalt vaba ruumi."
 msgid "The backup location does not have enough free space.\n"
 msgstr "Varukoopia asukohas ei ole piisavalt vaba ruumi.\n"
 
-#: ../src/MountManager.py:358
+#: ../src/MountManager.py:372
 #, fuzzy
 msgid ""
 "The changes need a system restart to take effect.\n"
@@ -1079,19 +1079,19 @@ msgstr "Pole midagi kustutada."
 msgid "There is no image to flash."
 msgstr "Pole midagi paigaldada."
 
-#: ../src/MountManager.py:282
+#: ../src/MountManager.py:296
 msgid "This device is already mounted as HDD."
 msgstr "See andmekandja on juba kõvakettana haagitud."
 
-#: ../src/MountManager.py:124
+#: ../src/MountManager.py:138
 msgid "Type: "
 msgstr "Tüüp: "
 
-#: ../src/MountManager.py:76
+#: ../src/MountManager.py:90
 msgid "USB: "
 msgstr "USB: "
 
-#: ../src/MountManager.py:182
+#: ../src/MountManager.py:196
 msgid "Un-mount"
 msgstr "Haagi lahti"
 
@@ -1104,11 +1104,11 @@ msgstr ""
 "Unzip viga (saadeti ka silumislogidesse):\n"
 "%s"
 
-#: ../src/MountManager.py:353
+#: ../src/MountManager.py:367
 msgid "Updating mount locations..."
 msgstr "Haakepunktide uuendamine..."
 
-#: ../src/MountManager.py:205
+#: ../src/MountManager.py:219
 msgid "Use as HDD"
 msgstr "Kasuta kõvakettana"
 
@@ -1253,7 +1253,7 @@ msgstr "pesa%s - %s "
 msgid "slot%s - %s (current image)"
 msgstr "pesa%s - %s (aktiivne püsivara)"
 
-#: ../src/MountManager.py:90 ../src/MountManager.py:103
-#: ../src/MountManager.py:115
+#: ../src/MountManager.py:104 ../src/MountManager.py:117
+#: ../src/MountManager.py:129
 msgid "unavailable"
 msgstr "pole saadaval"
