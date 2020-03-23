@@ -7,6 +7,7 @@ from BackupManager import BackupManagerautostart
 from ImageManager import ImageManagerautostart
 from SwapManager import SwapAutostart
 from SoftcamManager import SoftcamAutostart
+from ScriptRunner import ScriptRunnerAutostart
 from IPKInstaller import OpkgInstaller
 
 config.misc.restorewizardrun = ConfigBoolean(default=False)
