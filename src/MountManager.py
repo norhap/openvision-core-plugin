@@ -14,7 +14,7 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 from Tools.LoadPixmap import LoadPixmap
-from Tools.Directories import SCOPE_ACTIVE_SKIN, resolveFilename
+from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
 
 blacklistedDisks = [
 	1,  	# RAM disk (/dev/ram0=0, /dev/initrd=250 [250=Initial RAM disk for old systems, new systems use 0])
@@ -76,8 +76,8 @@ def buildDeviceList(device, List):
 	# print '[MountManager]Type:%s' %SystemInfo["MountManager"]
 
 	name = _("HARD DISK: ")
-	if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "visioncore/dev_hdd.png")):
-		mypixmap = resolveFilename(SCOPE_ACTIVE_SKIN, "visioncore/dev_hdd.png")
+	if path.exists(resolveFilename(SCOPE_CURRENT_SKIN, "visioncore/dev_hdd.png")):
+		mypixmap = resolveFilename(SCOPE_CURRENT_SKIN, "visioncore/dev_hdd.png")
 	else:
 		mypixmap = '/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/images/dev_hdd.png'
 	if path.exists('/sys/block/' + device2 + '/device/model'):
@@ -88,14 +88,14 @@ def buildDeviceList(device, List):
 
 	if devicetype.find('usb') != -1:
 		name = _('USB: ')
-		if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "visioncore/dev_usb.png")):
-			mypixmap = resolveFilename(SCOPE_ACTIVE_SKIN, "visioncore/dev_usb.png")
+		if path.exists(resolveFilename(SCOPE_CURRENT_SKIN, "visioncore/dev_usb.png")):
+			mypixmap = resolveFilename(SCOPE_CURRENT_SKIN, "visioncore/dev_usb.png")
 		else:
 			mypixmap = '/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/images/dev_usb.png'
 	elif devicetype.find('mmc') != -1:
 		name = _('SDCARD: ')
-		if path.exists(resolveFilename(SCOPE_ACTIVE_SKIN, "visioncore/dev_sd.png")):
-			mypixmap = resolveFilename(SCOPE_ACTIVE_SKIN, "visioncore/dev_sd.png")
+		if path.exists(resolveFilename(SCOPE_CURRENT_SKIN, "visioncore/dev_sd.png")):
+			mypixmap = resolveFilename(SCOPE_CURRENT_SKIN, "visioncore/dev_sd.png")
 		else:
 			mypixmap = '/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/images/dev_sd.png'
 	name += model
