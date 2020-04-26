@@ -24,7 +24,7 @@ def ScriptRunnerAutostart(reason, session=None, **kwargs):
 	pass
 
 class VISIONScriptRunner(OpkgInstaller):
-	def __init__(self, session, list=None, menu_path=""):
+	def __init__(self, session, list=None):
 		if not list:
 			list = []
 			if path.exists('/usr/scripts') and not path.exists('/usr/script'):
@@ -39,20 +39,17 @@ class VISIONScriptRunner(OpkgInstaller):
 					list.append(pkg)
 		OpkgInstaller.__init__(self, session, list)
 		screentitle =  _("Script runner")
-		self.menu_path = menu_path
 		title = screentitle
 		Screen.setTitle(self, title)
-
 		self.skinName = ["VISIONScriptRunner", "OpkgInstaller"]
 		self["key_green"] = StaticText(_("Run"))
-
 		self['myactions'] = ActionMap(["MenuActions"],
 									  {
 									  "menu": self.createSetup,
 									  }, -1)
 
 	def createSetup(self):
-		self.session.open(Setup, 'visionscriptrunner', 'SystemPlugins/Vision', self.menu_path, PluginLanguageDomain)
+		self.session.open(Setup, 'visionscriptrunner', 'SystemPlugins/Vision', PluginLanguageDomain)
 
 	def install(self):
 		list = self.list.getSelectionsList()

@@ -72,21 +72,17 @@ class VISIONSoftcamManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		screentitle =  _("Softcam manager")
-		self.menu_path = _('Main menu')+' / '+_('Setup')+' / '+_('Softcam')+' / '
 		title = screentitle
 		Screen.setTitle(self, title)
-
 		self['lab1'] = Label(_('Select:'))
 		self['lab2'] = Label(_('Active:'))
 		self['activecam'] = Label()
 		self.onChangedEntry = []
-
 		self.sentsingle = ""
 		self.selectedFiles = config.softcammanager.softcams_autostart.value
 		self.defaultDir = '/usr/softcams/'
 		self.emlist = MultiFileSelectList(self.selectedFiles, self.defaultDir, showDirectories=False)
 		self["list"] = self.emlist
-
 		self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "TimerEditActions", "MenuActions"],
 									  {
 									  'ok': self.keyStart,
@@ -98,12 +94,10 @@ class VISIONSoftcamManager(Screen):
 									  'log': self.showLog,
 									  'menu': self.createSetup,
 									  }, -1)
-
 		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button("")
 		self["key_yellow"] = Button("")
 		self["key_blue"] = Button(_("Autostart"))
-
 		self.currentactivecam = ""
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.getActivecam)
@@ -118,7 +112,7 @@ class VISIONSoftcamManager(Screen):
 
 	def createSetup(self):
 		from Screens.Setup import Setup
-		self.session.open(Setup, 'visionsoftcammanager', 'SystemPlugins/Vision', self.menu_path, PluginLanguageDomain)
+		self.session.open(Setup, 'visionsoftcammanager', 'SystemPlugins/Vision', PluginLanguageDomain)
 
 	def selectionChanged(self):
 		cams = []
@@ -292,7 +286,7 @@ class VISIONSoftcamManager(Screen):
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
 
 	def showLog(self):
-		self.session.open(VISIONSoftcamLog, self.menu_path)
+		self.session.open(VISIONSoftcamLog)
 
 	def myclose(self):
 		self.close()
@@ -516,13 +510,12 @@ class VISIONSoftcamLog(Screen):
 	<widget name="list" position="0,0" size="560,400" font="Regular;14"/>
 </screen>"""
 
-	def __init__(self, session, menu_path):
+	def __init__(self, session):
 		self.session = session
 		Screen.__init__(self, session)
 		screentitle =  _("Logs")
 		title = screentitle
 		Screen.setTitle(self, title)
-
 		if path.exists('/var/volatile/tmp/cam.check.log'):
 			file = open('/var/volatile/tmp/cam.check.log')
 			softcamlog = file.read()

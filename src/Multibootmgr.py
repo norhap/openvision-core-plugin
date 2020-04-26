@@ -28,13 +28,11 @@ class MultiBoot(Screen):
 	</screen>
 	"""
 
-	def __init__(self, session,menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = "MultiBoot"
 		screentitle = _("Multiboot image manager")
-		self.menu_path = menu_path
 		title = screentitle
-		self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
 		self.title = screentitle
 		self["key_red"] = StaticText(_("Cancel"))
@@ -46,7 +44,6 @@ class MultiBoot(Screen):
 		imagedict = []
 		self.getImageList = None
 		self.startit()
-
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"],
 		{
 			"red": boundFunction(self.close, None),

@@ -30,12 +30,11 @@ class VISIONIPKInstaller(Screen):
 		</applet>
 	</screen>"""
 
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
 		screentitle =  _("IPK installer")
 		title = screentitle
 		Screen.setTitle(self, title)
-
 		self['lab1'] = Label()
 		self.defaultDir = '/tmp'
 		self.onChangedEntry = []
@@ -48,15 +47,12 @@ class VISIONIPKInstaller(Screen):
 									  'ok': self.keyInstall,
 									  "menu": self.close,
 									  }, -1)
-
 		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button(_("Install"))
 		self["key_yellow"] = Button()
-
 		self.list = []
 		self['list'] = MenuList(self.list)
 		self.populate_List()
-
 		if not self.selectionChanged in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 
@@ -170,13 +166,11 @@ class OpkgInstaller(Screen):
 		for listindex in range(len(list)):
 			if not list[listindex].split('/')[-1].startswith('._'):
 				self.list.addSelection(list[listindex].split('/')[-1], list[listindex], listindex, False)
-
 		self["key_red"] = StaticText(_("Close"))
 		self["key_green"] = StaticText(_("Install"))
 		self["key_yellow"] = StaticText()
 		self["key_blue"] = StaticText(_("Invert"))
 		self["introduction"] = StaticText(_("Press OK to toggle the selection."))
-
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
 									{
 									"ok": self.list.toggleSelection,

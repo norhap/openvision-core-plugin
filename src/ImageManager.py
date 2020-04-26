@@ -104,12 +104,10 @@ class VISIONImageManager(Screen):
 		</applet>
 	</screen>"""
 
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
 		screentitle = _("Image manager")
-		self.menu_path = menu_path
 		title = screentitle
-		self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
 
 		self["lab1"] = Label()
@@ -241,7 +239,7 @@ class VISIONImageManager(Screen):
 				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
-		self.session.openWithCallback(self.setupDone, Setup, "visionimagemanager", "SystemPlugins/Vision", self.menu_path, PluginLanguageDomain)
+		self.session.openWithCallback(self.setupDone, Setup, "visionimagemanager", "SystemPlugins/Vision", PluginLanguageDomain)
 
 	def doDownload(self):
 		self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPli",3)]
@@ -253,7 +251,7 @@ class VISIONImageManager(Screen):
 		if retval:
 			retval -= 1
 			self.urlDistro = self.urlchoices[retval]
-			self.session.openWithCallback(self.refreshList, ImageManagerDownload, self.menu_path, self.BackupDirectory, self.urlDistro)
+			self.session.openWithCallback(self.refreshList, ImageManagerDownload, self.BackupDirectory, self.urlDistro)
 
 	def setupDone(self, test=None):
 		if config.imagemanager.folderprefix.value == "":
@@ -338,7 +336,6 @@ class VISIONImageManager(Screen):
 			if job.name.startswith(_("Backup manager")):
 				break
 		self.session.openWithCallback(self.keyRestore3, JobView, job, cancelable=False, backgroundable=False, afterEventChangeable=False, afterEvent="close")
-
 
 	def keyRestore(self):
 		self.sel = self["list"].getCurrent()
@@ -1303,11 +1300,10 @@ class ImageManagerDownload(Screen):
 		</applet>
 	</screen>"""
 
-	def __init__(self, session, menu_path, BackupDirectory, urlDistro):
+	def __init__(self, session, BackupDirectory, urlDistro):
 		Screen.__init__(self, session)
 		screentitle = _("Downloads")
 		title = screentitle
-		self["menu_path_compressed"] = StaticText("")
 		Screen.setTitle(self, title)
 		self.Pli = False
 		self.urlDistro = urlDistro

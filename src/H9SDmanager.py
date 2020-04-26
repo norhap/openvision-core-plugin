@@ -24,12 +24,10 @@ class H9SDmanager(Screen):
 	</screen>
 	"""
 
-	def __init__(self, session,menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = "H9SDmanager"
 		screentitle = _("H9 SDcard manager")
-
-		self.menu_path = menu_path
 		title = screentitle
 		Screen.setTitle(self, title)
 		self.title = screentitle

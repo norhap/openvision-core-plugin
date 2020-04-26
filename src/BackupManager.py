@@ -126,19 +126,16 @@ class VISIONBackupManager(Screen):
 		</applet>
 	</screen>"""
 
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
 		screentitle =  _("Backup manager")
-		self.menu_path = menu_path
 		title = screentitle
 		Screen.setTitle(self, title)
-
 		self['lab1'] = Label()
 		self["backupstatus"] = Label()
 		self["key_green"] = Button()
 		self["key_yellow"] = Button(_("Restore"))
 		self["key_red"] = Button(_("Delete"))
-
 		self.BackupRunning = False
 		self.BackupDirectory = " "
 		self.onChangedEntry = []
@@ -252,13 +249,13 @@ class VISIONBackupManager(Screen):
 				self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
-		self.session.openWithCallback(self.setupDone, VISIONBackupManagerMenu, 'visionbackupmanager', 'SystemPlugins/Vision', self.menu_path, PluginLanguageDomain)
+		self.session.openWithCallback(self.setupDone, VISIONBackupManagerMenu, 'visionbackupmanager', 'SystemPlugins/Vision', PluginLanguageDomain)
 
 	def showLog(self):
 		self.sel = self['list'].getCurrent()
 		if self.sel:
 			filename = self.BackupDirectory + self.sel
-			self.session.open(VISIONBackupManagerLogView, self.menu_path, filename)
+			self.session.open(VISIONBackupManagerLogView, filename)
 
 	def setupDone(self, test=None):
 		if config.backupmanager.folderprefix.value == '':
@@ -709,21 +706,18 @@ class BackupSelection(Screen):
 			<widget name="checkList" position="5,50" size="550,250" transparent="1" scrollbarMode="showOnDemand"/>
 		</screen>"""
 
-	def __init__(self, session, menu_path):
+	def __init__(self, session):
 		Screen.__init__(self, session)
 		screentitle = _("Select files/folders to backup")
 		title = screentitle
 		Screen.setTitle(self, title)
-
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 		self["key_yellow"] = StaticText()
-
 		self.selectedFiles = config.backupmanager.backupdirs.value
 		defaultDir = '/'
 		self.filelist = MultiFileSelectList(self.selectedFiles, defaultDir)
 		self["checkList"] = self.filelist
-
 		self["actions"] = ActionMap(["DirectionActions", "OkCancelActions", "ShortcutActions", "MenuActions"],
 									{
 									"cancel": self.exit,
@@ -800,19 +794,16 @@ class XtraPluginsSelection(Screen):
 			<widget name="checkList" position="5,50" size="550,250" transparent="1" scrollbarMode="showOnDemand"/>
 		</screen>"""
 
-	def __init__(self, session, menu_path):
+	def __init__(self, session):
 		Screen.__init__(self, session)
 		screentitle = _("Select extra packages folder")
 		title = screentitle
 		Screen.setTitle(self, title)
-
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
-
 		defaultDir = config.backupmanager.backuplocation.value
 		self.filelist = FileList(defaultDir, showFiles=True, matchingPattern='^.*.(ipk)')
 		self["checkList"] = self.filelist
-
 		self["actions"] = ActionMap(["DirectionActions", "OkCancelActions", "ShortcutActions", "MenuActions"],
 									{
 									"cancel": self.exit,
@@ -894,27 +885,24 @@ class VISIONBackupManagerMenu(Setup):
 		<widget name="description" position="0,e-75" size="560,75" font="Regular;18" halign="center" valign="top" transparent="0" zPosition="1"/>
 	</screen>"""
 
-	def __init__(self, session, setup, plugin=None, menu_path=None, PluginLanguageDomain=None):
-		Setup.__init__(self, session, setup, plugin, menu_path, PluginLanguageDomain)
-		self.menu_path = menu_path
+	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
+		Setup.__init__(self, session, setup, plugin, PluginLanguageDomain)
 		self.skinName = "VISIONBackupManagerMenu"
-
 		self["actions2"] = ActionMap(["SetupActions", 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
 									 {
 									 "yellow": self.chooseFiles,
 									 "blue": self.chooseXtraPluginDir,
 									 }, -2)
-
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("OK"))
 		self["key_yellow"] = Button(_("Choose files"))
 		self["key_blue"] = Button(_("Choose local IPK's folder"))
 
 	def chooseFiles(self):
-		self.session.openWithCallback(self.backupfiles_choosen, BackupSelection, self.menu_path)
+		self.session.openWithCallback(self.backupfiles_choosen, BackupSelection)
 
 	def chooseXtraPluginDir(self):
-		self.session.open(XtraPluginsSelection, self.menu_path)
+		self.session.open(XtraPluginsSelection)
 
 	def backupfiles_choosen(self, ret):
 		self.backupdirs = ' '.join(config.backupmanager.backupdirs.value)
@@ -928,13 +916,12 @@ class VISIONBackupManagerLogView(Screen):
 	<widget name="list" position="0,0" size="560,400" font="Regular;16"/>
 </screen>"""
 
-	def __init__(self, session, menu_path, filename):
+	def __init__(self, session, filename):
 		self.session = session
 		Screen.__init__(self, session)
 		screentitle =  _("Logs")
 		title = screentitle
 		Screen.setTitle(self, title)
-
 		self.skinName = "VISIONBackupManagerLogView"
 		filedate = str(date.fromtimestamp(stat(filename).st_mtime))
 		backuplog = _('Backup created') + ': ' + filedate + '\n\n'
@@ -945,7 +932,6 @@ class VISIONBackupManagerLogView(Screen):
 			contents += str(file) + '\n'
 		tar.close()
 		backuplog = backuplog + contents
-
 		self["list"] = ScrollLabel(str(backuplog))
 		self["setupActions"] = ActionMap(["SetupActions", "ColorActions", "DirectionActions", "MenuActions"],
 										 {

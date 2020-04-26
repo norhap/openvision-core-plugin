@@ -40,7 +40,6 @@ class VISIONMenu(Screen, ProtectedScreen):
 		Screen.__init__(self, session)
 		ProtectedScreen.__init__(self)
 		screentitle = _("Vision")
-		self.menu_path = _("Main menu")+' / '+_("Setup")+' / '
 		title = screentitle
 		Screen.setTitle(self, title)
 		self.menu = args
@@ -58,7 +57,6 @@ class VISIONMenu(Screen, ProtectedScreen):
 				self.list.append(("H9SDcard manager", _("H9SDcard Manager"), _("Move Nand root to SD card"), None))
 		self["menu"] = List(self.list)
 		self["key_red"] = StaticText(_("Close"))
-
 		self["shortcuts"] = NumberActionMap(["ShortcutActions", "WizardActions", "InfobarEPGActions", "MenuActions", "NumberActions"],
 											{
 											"ok": self.go,
@@ -114,28 +112,28 @@ class VISIONMenu(Screen, ProtectedScreen):
 			if self.menu == 0:
 				if currentEntry == "backup-manager":
 					from BackupManager import VISIONBackupManager
-					self.session.open(VISIONBackupManager, self.menu_path)
+					self.session.open(VISIONBackupManager)
 				elif currentEntry == "image-manager":
 					from ImageManager import VISIONImageManager
-					self.session.open(VISIONImageManager, self.menu_path)
+					self.session.open(VISIONImageManager)
 				elif currentEntry == "multiboot manager":
 					from Multibootmgr import MultiBoot
-					self.session.open(MultiBoot, self.menu_path)
+					self.session.open(MultiBoot)
 				elif currentEntry == "H9SDcard manager":
 					from H9SDmanager import H9SDmanager
-					self.session.open(H9SDmanager, self.menu_path)
+					self.session.open(H9SDmanager)
 				elif currentEntry == "opkg-install":
 					from IPKInstaller import VISIONIPKInstaller
-					self.session.open(VISIONIPKInstaller, self.menu_path)
+					self.session.open(VISIONIPKInstaller)
 				elif currentEntry == "mount-manager":
 					from MountManager import VISIONDevicesPanel
-					self.session.open(VISIONDevicesPanel, self.menu_path)
+					self.session.open(VISIONDevicesPanel)
 				elif currentEntry == "script-runner":
 					from ScriptRunner import VISIONScriptRunner
-					self.session.open(VISIONScriptRunner, None, self.menu_path)
+					self.session.open(VISIONScriptRunner, None)
 				elif currentEntry == "swap-manager":
 					from SwapManager import VISIONSwap
-					self.session.open(VISIONSwap, self.menu_path)
+					self.session.open(VISIONSwap)
 
 	def closeRecursive(self):
 		self.close(True)

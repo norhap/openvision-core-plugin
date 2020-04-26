@@ -184,13 +184,11 @@ class VISIONDevicesPanel(Screen):
 		<widget name="lab1" zPosition="2" position="50,90" size="600,40" font="Regular;22" halign="center" transparent="1"/>
 	</screen>"""
 
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
 		screentitle =  _("Mount manager")
-		self.menu_path = menu_path
 		title = screentitle
 		Screen.setTitle(self, title)
-
 		self['key_red'] = Label(" ")
 		self['key_green'] = Label(_("Setup mounts"))
 		self['key_yellow'] = Label(_("Un-mount"))
@@ -245,7 +243,7 @@ class VISIONDevicesPanel(Screen):
 		self['lab1'].hide()
 
 	def SetupMounts(self):
-		self.session.openWithCallback(self.updateList, VISIONDevicePanelConf, self.menu_path)
+		self.session.openWithCallback(self.updateList, VISIONDevicePanelConf)
 
 	def Mount(self):
 		sel = self['list'].getCurrent()
@@ -324,14 +322,13 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		<widget name="Linconn" position="30,375" size="580,20" font="Regular;18" halign="center" valign="center" backgroundColor="#9f1313"/>
 	</screen>"""
 
-	def __init__(self, session, menu_path):
+	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.list = []
 		ConfigListScreen.__init__(self, self.list)
 		screentitle =  _("Choose where to mount your devices to:")
 		title = screentitle
 		Screen.setTitle(self, title)
-
 		self['key_green'] = Label(_("Save"))
 		self['key_red'] = Label(_("Cancel"))
 		self['Linconn'] = Label()

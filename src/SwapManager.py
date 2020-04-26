@@ -96,13 +96,11 @@ class VISIONSwap(Screen):
 		<widget name="active" position="160,200" size="100,30" font="Regular;20" valign="center" halign="center" backgroundColor="green"/>
 	</screen>"""
 
-	def __init__(self, session, menu_path=""):
+	def __init__(self, session):
 		Screen.__init__(self, session)
 		screentitle =  _("SWAP manager")
-		self.menu_path = menu_path
 		title = screentitle
 		Screen.setTitle(self, title)
-
 		self['lab1'] = Label()
 		self['autostart_on'] = Pixmap()
 		self['autostart_off'] = Pixmap()
