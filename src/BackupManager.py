@@ -1184,7 +1184,7 @@ class BackupFiles(Screen):
 		try:
 			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0755)
-		except Exception, e:
+		except Exception as e:
 			print(str(e))
 			print("[BackupManager] Device: " + config.backupmanager.backuplocation.value + ", i don't seem to have write access to this device.")
 

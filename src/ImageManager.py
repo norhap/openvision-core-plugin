@@ -801,7 +801,7 @@ class ImageBackup(Screen):
 			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getImageType() + "-swapfile_backup"):
 				system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getImageType() + "-swapfile_backup")
 				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getImageType() + "-swapfile_backup")
-		except Exception, e:
+		except Exception as e:
 			print(str(e))
 			print("[ImageManager] Device: " + config.imagemanager.backuplocation.value + ", i don't seem to have write access to this device.")
 

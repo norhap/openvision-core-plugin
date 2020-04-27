@@ -60,7 +60,7 @@ def checkConfigBackup():
 			return True
 		else:
 			return None
-	except IOError, e:
+	except IOError as e:
 		print("[Vision] unable to use device (%s)..." % str(e))
 		return None
 
