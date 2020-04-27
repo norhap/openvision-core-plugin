@@ -1,6 +1,6 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-#!/usr/bin/python
 import sys
 import os
 import string
