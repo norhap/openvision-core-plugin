@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import print_function
 #!/usr/bin/python
 import sys
 import os
@@ -62,7 +64,7 @@ for arg in sys.argv[1:]:
 
 	for (k, c) in attrlist:
 		print
-		print '#: ' + arg
+		print('#: ' + arg)
 # We need to escape all "s that we have in the string.
 # This replace() *must* come before anything that adds "s!! (such as the
 # newline-handling code).
@@ -73,8 +75,8 @@ for arg in sys.argv[1:]:
 		k = k.replace("\\n", "\"\n\"")
 		if c:
 			for l in c.split('\n'):
-				print "#. ", l
-		print 'msgid "' + k + '"'
-		print 'msgstr ""'
+				print("#. ", l)
+		print('msgid "' + k + '"')
+		print('msgstr ""')
 
 	attrlist = set()

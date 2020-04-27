@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from . import _
 from os import listdir, path
 from Components.config import config

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import print_function
 from . import _, PluginLanguageDomain
 import re
@@ -167,11 +168,11 @@ class VISIONSoftcamManager(Screen):
 			active.append(x[0][0])
 		activelist = ",".join(active)
 		if activelist:
-			self.Console.ePopen("ps.procps -C " + activelist + " | grep -v 'CMD' | sed 's/</ /g' | awk '{print $4}' | awk '{a[$1] = $0} END { for (x in a) { print a[x] } }'", self.showActivecam2)
+			self.Console.ePopen("ps.procps -C " + activelist + " | grep -v 'CMD' | sed 's/</ /g' | awk '{print $4}' | awk '{a[$1] = $0} END { for (x in a) { print(a[x] } }'", self.showActivecam2)
 		else:
 			self['activecam'].setText('')
 			self['activecam'].show()
-		# self.Console.ePopen("ps.procps | grep softcams | grep -v 'grep' | sed 's/</ /g' | awk '{print $5}' | awk '{a[$1] = $0} END { for (x in a) { print a[x] } }' | awk -F'[/]' '{print $4}'", self.showActivecam2)
+		# self.Console.ePopen("ps.procps | grep softcams | grep -v 'grep' | sed 's/</ /g' | awk '{print $5}' | awk '{a[$1] = $0} END { for (x in a) { print(a[x] } }' | awk -F'[/]' '{print $4}'", self.showActivecam2)
 
 	def showActivecam2(self, result, retval, extra_args):
 		if retval == 0:
@@ -576,7 +577,7 @@ class SoftcamAutoPoller:
 			Components.Task.job_manager.AddJob(self.createCheckJob())
 
 		if config.softcammanager.softcamtimerenabled.value:
-			# 			print "[SoftcamManager] Timer Check Enabled"
+			# 			print("[SoftcamManager] Timer Check Enabled")
 			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Enabled\n")
@@ -587,7 +588,7 @@ class SoftcamAutoPoller:
 			now = datetime.now()
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Disabled\n")
 			output.close()
-			# 			print "[SoftcamManager] Timer Check Disabled"
+			# 			print("[SoftcamManager] Timer Check Disabled")
 			softcamautopoller.stop()
 
 	def createCheckJob(self):

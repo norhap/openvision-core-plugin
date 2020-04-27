@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from . import _, PluginLanguageDomain
 from Screens.Screen import Screen
 from Screens.Console import Console

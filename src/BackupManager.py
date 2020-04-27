@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import print_function
 from . import _, PluginLanguageDomain
 from boxbranding import getImageDistro, getVisionVersion, getVisionRevision
@@ -517,7 +518,7 @@ class VISIONBackupManager(Screen):
 				print('[BackupManager] Backup Kernel:', kernelversion)
 				print('[BackupManager] Current Kernel:', about.getKernelVersionString())
 				if isRestorableKernel(kernelversion) and (imageversion == about.getVersionString() or isRestorablePlugins(imageversion)):
-					# print '[BackupManager] Restoring Stage 3: Kernel Version is same as backup'
+					# print('[BackupManager] Restoring Stage 3: Kernel Version is same as backup')
 					self.kernelcheck = True
 					self.Console.ePopen('opkg list-installed', self.Stage3Complete)
 				else:
@@ -617,13 +618,13 @@ class VISIONBackupManager(Screen):
 							for file in available:
 								if file:
 									fileparts = file.strip().split('_')
-									# 									print 'FILE:',fileparts
-									# 									print 'IPK:',ipk
+									# 									print('FILE:',fileparts)
+									# 									print('IPK:',ipk)
 									if fileparts[0] == ipk:
 										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 										ipk = path.join(self.thirdpartyPluginsLocation, file)
 										if path.exists(ipk):
-											# 											print 'IPK', ipk
+											# 											print('IPK', ipk)
 											self.pluginslist2.append(ipk)
 
 		print('[BackupManager] Restoring Stage 3: Complete')

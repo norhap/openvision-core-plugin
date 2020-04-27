@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import print_function
 from . import _
 from os import mkdir, path, remove, rename, statvfs, system 
 import re
@@ -34,15 +36,15 @@ def getProcPartitions(List):
 			if not parts:
 				continue
 			(devmajor, devminor, blocks, device) = parts
-			# print '[MountManager] device = %s devmajor = %s devminor = %s' %(device, devmajor, devminor)
+			# print('[MountManager] device = %s devmajor = %s devminor = %s' %(device, devmajor, devminor))
 			if devmajor == "major":
 				continue
 			devMajor = int(devmajor)
-			# print '[MountManager] parts = %s DevMajor = %s' %(parts[0], devMajor,)
+			# print('[MountManager] parts = %s DevMajor = %s' %(parts[0], devMajor,))
 			if devMajor in blacklistedDisks:									# look at disk & mmc(179)
 				continue
 			if devMajor == 179:
-				# print '[MountManager]'
+				# print('[MountManager]')
 				if not SystemInfo["HasSDnomount"]:								# only interested in h9/i55/h9combo(+dups) mmc partitions
 					continue										# h9combo(+dups) uses mmcblk1p[0-3] include
 				if SystemInfo["HasH9SD"]:
@@ -61,7 +63,7 @@ def getProcPartitions(List):
 				continue
 			buildDeviceList(device, List)
 			list2.append(device)
-			# print '[MountManager] list2 = %s' %list2
+			# print('[MountManager] list2 = %s' %list2)
 
 def buildDeviceList(device, List):
 	if re.search('mmcblk[0-1]p[0-3]', device):
@@ -70,10 +72,10 @@ def buildDeviceList(device, List):
 		device2 = re.sub('[0-9]', '', device)
 	devicetype = path.realpath('/sys/block/' + device2 + '/device')
 
-	# print '[MountManager]device: %s' %device
-	# print '[MountManager]device2: %s' %device2
-	# print '[MountManager]devicetype:%s' %devicetype
-	# print '[MountManager]Type:%s' %SystemInfo["MountManager"]
+	# print('[MountManager]device: %s' %device)
+	# print('[MountManager]device2: %s' %device2)
+	# print('[MountManager]devicetype:%s' %devicetype)
+	# print('[MountManager]Type:%s' %SystemInfo["MountManager"])
 
 	name = _("HARD DISK: ")
 	if path.exists(resolveFilename(SCOPE_CURRENT_SKIN, "visioncore/dev_hdd.png")):
@@ -285,7 +287,7 @@ class VISIONDevicesPanel(Screen):
 			parts = sel[1].split()
 			self.device = parts[5]
 			self.mountp = parts[3]
-			# print '[MountManager]saveMypoints: device = %s, mountp=%s' %(self.device, self.mountp)
+			# print('[MountManager]saveMypoints: device = %s, mountp=%s' %(self.device, self.mountp))
 			self.Console.ePopen('umount ' + self.device)
 			if self.mountp.find('/media/hdd') < 0:
 				self.Console.ePopen('umount /media/hdd')
@@ -297,7 +299,7 @@ class VISIONDevicesPanel(Screen):
 		self.device = extra_args[0]
 		self.mountp = extra_args[1]
 		self.device_uuid = 'UUID=' + result.split('UUID=')[1].split(' ')[0].replace('"', '')
-		# print '[MountManager]add_fstab: device = %s, mountp=%s, UUID=%s' %(self.device, self.mountp, self.device_uuid)
+		# print('[MountManager]add_fstab: device = %s, mountp=%s, UUID=%s' %(self.device, self.mountp, self.device_uuid))
 		if not path.exists(self.mountp):
 			mkdir(self.mountp, 0755)
 		file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if '/media/hdd' not in l])
@@ -371,7 +373,7 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		ybox.setTitle(_("Restart STB."))
 
 	def add_fstab(self, result=None, retval=None, extra_args=None):
-		# print '[MountManager] RESULT:', result
+		# print('[MountManager] RESULT:', result)
 		if result:
 			self.device = extra_args[0]
 			self.mountp = extra_args[1]

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from . import _
 from os import path
 from Screens.Screen import Screen
