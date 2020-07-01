@@ -12,7 +12,7 @@ try:
 	from _xmlplus.sax.saxlib import LexicalHandler
 
 	no_comments = False
-except ImportError:
+except ImportError as e:
 	class LexicalHandler:
 		def __init__(self):
 			pass
