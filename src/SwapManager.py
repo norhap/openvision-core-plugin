@@ -44,8 +44,8 @@ class StartSwap:
 				if line.find('sd') != -1:
 					parts = line.strip().split()
 					swap_place = parts[0]
-					tmpfile = file('/etc/fstab.tmp', 'w')
-					fstabfile = file('/etc/fstab')
+					tmpfile = open('/etc/fstab.tmp', 'w')
+					fstabfile = open('/etc/fstab')
 					tmpfile.writelines([l for l in fstabfile.readlines() if swap_place not in l])
 					rename('/etc/fstab.tmp', '/etc/fstab')
 					tmpfile.close()
@@ -66,7 +66,7 @@ class StartSwap:
 							swap_place = filename
 							print("[SwapManager] Found a SWAP file on ", swap_place)
 
-		f = file('/proc/swaps')
+		f = open('/proc/swaps')
 		swapfile = f.read()
 		if swapfile.find(swap_place) == -1:
 			print("[SwapManager] Starting SWAP file on ", swap_place)

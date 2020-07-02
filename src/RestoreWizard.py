@@ -173,7 +173,7 @@ class RestoreWizard(WizardLanguage, Rc):
 	def doRestoreSettings1(self):
 		print('[RestoreWizard] Stage 1: Check Version')
 		if fileExists('/tmp/backupimageversion'):
-			imageversion = file('/tmp/backupimageversion').read()
+			imageversion = open('/tmp/backupimageversion').read()
 			print('[RestoreWizard] Backup Image:', imageversion)
 			print('[RestoreWizard] Current Image:', about.getVersionString())
 			if imageversion == about.getVersionString() or isRestorableSettings(imageversion):
@@ -216,8 +216,8 @@ class RestoreWizard(WizardLanguage, Rc):
 	def doRestorePlugins1(self):
 		print('[RestoreWizard] Stage 3: Check Kernel')
 		if fileExists('/tmp/backupkernelversion') and fileExists('/tmp/backupimageversion'):
-			imageversion = file('/tmp/backupimageversion').read()
-			kernelversion = file('/tmp/backupkernelversion').read()
+			imageversion = open('/tmp/backupimageversion').read()
+			kernelversion = open('/tmp/backupkernelversion').read()
 			print('[RestoreWizard] Backup Image:', imageversion)
 			print('[RestoreWizard] Current Image:', about.getVersionString())
 			print('[RestoreWizard] Backup Kernel:', kernelversion)

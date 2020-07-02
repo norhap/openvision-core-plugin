@@ -344,7 +344,7 @@ class VISIONBackupManager(Screen):
 
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
 		if path.exists('/tmp/backupimageversion'):
-			imageversion = file('/tmp/backupimageversion').read()
+			imageversion = open('/tmp/backupimageversion').read()
 			print('[BackupManager] Backup Image:', imageversion)
 			print('[BackupManager] Current Image:', about.getVersionString())
 			if imageversion == about.getVersionString() or isRestorableSettings(imageversion):
@@ -512,8 +512,8 @@ class VISIONBackupManager(Screen):
 		if self.feeds == 'OK':
 			print('[BackupManager] Restoring Stage 3: Feeds are OK')
 			if path.exists('/tmp/backupkernelversion') and path.exists('/tmp/backupimageversion'):
-				kernelversion = file('/tmp/backupkernelversion').read()
-				imageversion = file('/tmp/backupimageversion').read()
+				kernelversion = open('/tmp/backupkernelversion').read()
+				imageversion = open('/tmp/backupimageversion').read()
 				print('[BackupManager] Backup Image:', imageversion)
 				print('[BackupManager] Current Image:', about.getVersionString())
 				print('[BackupManager] Backup Kernel:', kernelversion)
