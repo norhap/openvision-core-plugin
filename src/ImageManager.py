@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+from __future__ import division, print_function
 from . import _, PluginLanguageDomain
 import urllib2
 import json
@@ -186,7 +186,7 @@ class VISIONImageManager(Screen):
 		self["list"].show()
 
 	def getJobName(self, job):
-		return "%s: %s (%d%%)" % (job.getStatustext(), job.name, int(100 * job.progress / float(job.end)))
+		return "%s: %s (%d%%)" % (job.getStatustext(), job.name, int(100 * job.progress // float(job.end)))
 
 	def showJobView(self, job):
 		Components.Task.job_manager.in_background = False
@@ -228,7 +228,7 @@ class VISIONImageManager(Screen):
 			else:
 				self.BackupDirectory = config.imagemanager.backuplocation.value + "imagebackups/"
 				s = statvfs(config.imagemanager.backuplocation.value)
-				free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
+				free = (s.f_bsize * s.f_bavail) // (1024 * 1024)
 				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _("MB") + "\n" + _("Select an image to flash:"))
 			try:
 				if not path.exists(self.BackupDirectory):
@@ -806,7 +806,7 @@ class ImageBackup(Screen):
 			print("[ImageManager] Device: " + config.imagemanager.backuplocation.value + ", i don't seem to have write access to this device.")
 
 		s = statvfs(self.BackupDevice)
-		free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
+		free = (s.f_bsize * s.f_bavail) // (1024 * 1024)
 		if int(free) < 200:
 			AddPopupWithCallback(
 				self.BackupComplete,

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+from __future__ import division, print_function
 from . import _
 from os import system, stat as mystat, path, remove, rename
 from glob import glob
@@ -217,9 +217,9 @@ class VISIONSwap(Screen):
 
 		if self.swapsize > 0:
 			if self.swapsize >= 1024:
-				self.swapsize = int(self.swapsize) / 1024
+				self.swapsize = int(self.swapsize) // 1024
 				if self.swapsize >= 1024:
-					self.swapsize = int(self.swapsize) / 1024
+					self.swapsize = int(self.swapsize) // 1024
 				self.swapsize = str(self.swapsize) + ' ' + 'MB'
 			else:
 				self.swapsize = str(self.swapsize) + ' ' + 'KB'
