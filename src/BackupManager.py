@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from __future__ import division, print_function
+from __future__ import print_function
 from . import _, PluginLanguageDomain
 from boxbranding import getImageDistro, getVisionVersion, getVisionRevision
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod
@@ -186,7 +186,7 @@ class VISIONBackupManager(Screen):
 		self.activityTimer.startLongTimer(5)
 
 	def getJobName(self, job):
-		return "%s: %s (%d%%)" % (job.getStatustext(), job.name, int(100 * job.progress // float(job.end)))
+		return "%s: %s (%d%%)" % (job.getStatustext(), job.name, int(100 * job.progress / float(job.end)))
 
 	def showJobView(self, job):
 		from Screens.TaskView import JobView
@@ -1189,7 +1189,7 @@ class BackupFiles(Screen):
 			print("[BackupManager] Device: " + config.backupmanager.backuplocation.value + ", i don't seem to have write access to this device.")
 
 		s = statvfs(self.BackupDevice)
-		free = (s.f_bsize * s.f_bavail) // (1024 * 1024)
+		free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
 		if int(free) < 50:
 			self.session.open(MessageBox, _("The backup location does not have enough free space."), MessageBox.TYPE_INFO, timeout=10)
 		else:

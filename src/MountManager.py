@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from __future__ import division, print_function
+from __future__ import print_function
 from . import _
 from os import mkdir, path, remove, rename, statvfs, system 
 import re
@@ -121,11 +121,11 @@ def buildDeviceList(device, List):
 	else:
 		stat = statvfs(mediamount)
 		cap = int(stat.f_blocks * stat.f_bsize)
-		size = cap // 1000 // 1000
-		if ((float(size) // 1024) // 1024) >= 1:
-			description = _("Size: ") + str(round(((float(size) // 1024) // 1024), 2)) + _("TB")
-		elif (size // 1024) >= 1:
-			description = _("Size: ") + str(round((float(size) // 1024), 2)) + _("GB")
+		size = cap / 1000 / 1000
+		if ((float(size) / 1024) / 1024) >= 1:
+			description = _("Size: ") + str(round(((float(size) / 1024) / 1024), 2)) + _("TB")
+		elif (size / 1024) >= 1:
+			description = _("Size: ") + str(round((float(size) / 1024), 2)) + _("GB")
 		elif size >= 1:
 			description = _("Size: ") + str(size) + _("MB")
 		else:
