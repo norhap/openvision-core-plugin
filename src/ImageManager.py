@@ -1384,7 +1384,7 @@ class ImageManagerDownload(Screen):
 					urljson = path.join(self.urlDistro, model)
 					self.jsonlist = dict(json.load(urllib2.urlopen("%s" % urljson)))
 				except Exception:
-					print("[ImageManager] OpenPli/OpenATV no model: %s in downloads" % model)
+					print("[ImageManager] No model: %s in downloads" % model)
 					return
 			self.imagesList = self.jsonlist
 		if self.Pli and not self.jsonlist and not self.imagesList:
