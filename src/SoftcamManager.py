@@ -213,6 +213,11 @@ class VISIONSoftcamManager(Screen):
 						self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
 						self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
+				elif selcam.lower().startswith('ncam'):
+					if not path.exists('/etc/tuxbox/config/ncam.conf'):
+						self.session.open(MessageBox, _("No config files found, please setup Ncam first\nin /etc/tuxbox/config"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+					else:
+						self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
 				else:
 					self.session.open(MessageBox, _("Found non-standard softcam, trying to start, this may fail."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
@@ -247,11 +252,17 @@ class VISIONSoftcamManager(Screen):
 				print('[SoftcamManager] RESULT FAILED: ' + str(result))
 			if selectedcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam.conf') == True:
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
+			elif selectedcam.lower().startswith('ncam') and path.exists('/etc/tuxbox/config/ncam.conf') == True:
+				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
 			elif selectedcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam.conf') == False:
 				if not path.exists('/etc/tuxbox/config'):
 					makedirs('/etc/tuxbox/config')
 				self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-			elif not selectedcam.lower().startswith('oscam'):
+			elif selectedcam.lower().startswith('ncam') and path.exists('/etc/tuxbox/config/ncam.conf') == False:
+				if not path.exists('/etc/tuxbox/config'):
+					makedirs('/etc/tuxbox/config')
+				self.session.open(MessageBox, _("No config files found, please setup Ncam first\nin /etc/tuxbox/config."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			elif not (selectedcam.lower().startswith('oscam') or selectedcam.lower().startswith('ncam')):
 				self.session.open(MessageBox, _("Found non-standard softcam, trying to start, this may fail."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
 
@@ -334,7 +345,7 @@ class VISIONStartCam(Screen):
 			now = datetime.now()
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Starting " + startselectedcam + "\n")
 			output.close()
-			if startselectedcam.lower().startswith('oscam'):
+			if startselectedcam.lower().startswith('oscam') or startselectedcam.lower().startswith('ncam'):
 				self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + startselectedcam + ' -b')
 			else:
 				self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + startselectedcam)
@@ -615,12 +626,14 @@ class SoftcamAutoPoller:
 						now = datetime.now()
 						output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " running OK\n")
 						output.close()
-						if softcamcheck.lower().startswith('oscam'):
+						if softcamcheck.lower().startswith('oscam') or softcamcheck.lower().startswith('oscam'):
 							if path.exists('/tmp/status.html'):
 								remove('/tmp/status.html')
 							port = ''
 							if path.exists('/etc/tuxbox/config/oscam.conf'):
 								oscamconf = '/etc/tuxbox/config/oscam.conf'
+							elif path.exists('/etc/tuxbox/config/ncam.conf'):
+								oscamconf = '/etc/tuxbox/config/ncam.conf'
 							f = open(oscamconf, 'r')
 							for line in f.readlines():
 								if line.find('httpport') != -1:
@@ -653,10 +666,6 @@ class SoftcamAutoPoller:
 								output.close()
 								self.Console.ePopen("killall -9 " + softcamcheck)
 								sleep(1)
-								self.Console.ePopen("ps.procps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/oscamRuningCheck.tmp")
-								sleep(2)
-								file = open('/tmp/oscamRuningCheck.tmp')
-								file.close()
 								print('[SoftcamManager] Starting ' + softcamcheck)
 								output = open('/tmp/cam.check.log', 'a')
 								now = datetime.now()
@@ -671,7 +680,7 @@ class SoftcamAutoPoller:
 						now = datetime.now()
 						output.write(now.strftime("%Y-%m-%d %H:%M") + ": Couldn't find " + softcamcheck + " running, Starting " + softcamcheck + "\n")
 						output.close()
-						if softcamcheck.lower().startswith('oscam'):
+						if softcamcheck.lower().startswith('oscam') or softcamcheck.lower().startswith('ncam'):
 							self.Console.ePopen("ps.procps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/softcamRuningCheck.tmp")
 							sleep(2)
 							file = open('/tmp/softcamRuningCheck.tmp')
