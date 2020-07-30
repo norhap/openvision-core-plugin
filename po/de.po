@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vix-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-30 11:08+0430\n"
+"POT-Creation-Date: 2020-07-30 12:08+0430\n"
 "PO-Revision-Date: 2020-07-28 10:04+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: none\n"
@@ -158,7 +158,7 @@ msgstr "BackUp bestätigung"
 msgid "Backup created"
 msgstr "BackUp erzeugt"
 
-#: ../src/BackupManager.py:1307
+#: ../src/BackupManager.py:1301
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Backup fehlgeschlagen. Entweder falscher Ort oder nicht mehr genug freier Speicher auf Gerät."
 
@@ -655,7 +655,7 @@ msgstr "Bitte warten während das System Informationen sammelt..."
 msgid "Please wait."
 msgstr "Bitte warten."
 
-#: ../src/BackupManager.py:1239
+#: ../src/BackupManager.py:1233
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Erzeuge Plugin Liste fehlgeschlagen. Entweder falscher Ort oder nicht mehr genug freier Speicher auf dem Gerät."
 
@@ -920,7 +920,7 @@ msgstr ""
 msgid "Temp folder"
 msgstr "Temp Verzeichnis"
 
-#: ../src/BackupManager.py:1199
+#: ../src/BackupManager.py:1193
 msgid "The backup location does not have enough free space."
 msgstr "Der Ort für die Backups hat nicht genug freien Speicher."
 

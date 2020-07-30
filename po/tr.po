@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-30 11:08+0430\n"
+"POT-Creation-Date: 2020-07-30 12:08+0430\n"
 "PO-Revision-Date: 2020-03-21 01:30+0300\n"
 "Last-Translator: audi06_19 <info@dreamosat-forum.com>\n"
 "Language-Team: Turkish\n"
@@ -163,7 +163,7 @@ msgstr "Yedekleme onayı"
 msgid "Backup created"
 msgstr "Yedek oluşturuldu"
 
-#: ../src/BackupManager.py:1307
+#: ../src/BackupManager.py:1301
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Yedekleme başarısız - örn. yanlış yedekleme hedefi veya yedekleme cihazında boş alan kalmamış."
 
@@ -664,7 +664,7 @@ msgstr "Lütfen sistem bilgi toplarken bekleyin ..."
 msgid "Please wait."
 msgstr "Lütfen bekleyin."
 
-#: ../src/BackupManager.py:1239
+#: ../src/BackupManager.py:1233
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Eklenti listesi başarısız oldu - örneğin yanlış yedekleme hedefi veya yedekleme cihazında boş alan kalmadı."
 
@@ -930,7 +930,7 @@ msgstr "TB"
 msgid "Temp folder"
 msgstr "Temp klasörü"
 
-#: ../src/BackupManager.py:1199
+#: ../src/BackupManager.py:1193
 msgid "The backup location does not have enough free space."
 msgstr "Yedekleme yerinde yeterli boş alan yok."
 

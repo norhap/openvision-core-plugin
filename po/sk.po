@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-30 11:08+0430\n"
+"POT-Creation-Date: 2020-07-30 12:08+0430\n"
 "PO-Revision-Date: 2016-04-25 12:53+0200\n"
 "Last-Translator: Nicker <nickersk@gmail.com>\n"
 "Language-Team: none\n"
@@ -161,7 +161,7 @@ msgstr "Potvrdiť zálohovanie"
 msgid "Backup created"
 msgstr "Zálohu vytvorená"
 
-#: ../src/BackupManager.py:1307
+#: ../src/BackupManager.py:1301
 #, fuzzy
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Zálohovanie zlyhalo - nesprávne umiestnenie zálohy alebo žiadne voľné miesto na zálohovacom zariadení"
@@ -703,7 +703,7 @@ msgstr "Počkajte prosím, prebieha zhromažďovanie údajov ..."
 msgid "Please wait."
 msgstr "Čakajte prosím."
 
-#: ../src/BackupManager.py:1239
+#: ../src/BackupManager.py:1233
 #, fuzzy
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Výpis zoznamu zásuvných modulov zlyhal - zlé umiestnenie zálohy alebo žiadne voľné miesto na zariadení pre zálohu"
@@ -991,7 +991,7 @@ msgstr "TB"
 msgid "Temp folder"
 msgstr "Dočasný adresár"
 
-#: ../src/BackupManager.py:1199
+#: ../src/BackupManager.py:1193
 #, fuzzy
 msgid "The backup location does not have enough free space."
 msgstr "Umiestnenie pre uloženie zálohy nemá dostatok voľného miesta."

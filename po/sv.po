@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-30 11:08+0430\n"
+"POT-Creation-Date: 2020-07-30 12:08+0430\n"
 "PO-Revision-Date: 2015-01-05 22:46+0100\n"
 "Last-Translator: Robert Johansson\n"
 "Language-Team: none\n"
@@ -160,7 +160,7 @@ msgstr "Backupbekräftelse  "
 msgid "Backup created"
 msgstr "Backup Skapad"
 
-#: ../src/BackupManager.py:1307
+#: ../src/BackupManager.py:1301
 #, fuzzy
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Backupen misslyckades - möjlig felorsak, fel backupdestination eller inte tillräckligt med utrymme på backupenheten "
@@ -699,7 +699,7 @@ msgstr "Var god vänta under tiden som information hämtas..."
 msgid "Please wait."
 msgstr "Var god vänta."
 
-#: ../src/BackupManager.py:1239
+#: ../src/BackupManager.py:1233
 #, fuzzy
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Plugin-listning misslyckades - fel backup destination eller inget utrymme kvar på enheten"
@@ -987,7 +987,7 @@ msgstr "TB"
 msgid "Temp folder"
 msgstr "Temp Mapp"
 
-#: ../src/BackupManager.py:1199
+#: ../src/BackupManager.py:1193
 #, fuzzy
 msgid "The backup location does not have enough free space."
 msgstr "Backupdestinationen har inte tillräckligt med ledigt utrymme."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-30 11:08+0430\n"
+"POT-Creation-Date: 2020-07-30 12:08+0430\n"
 "PO-Revision-Date: 2014-06-26 04:32+0100\n"
 "Last-Translator: Rob van der Does <robvddoes@gmail.com>\n"
 "Language-Team: Andyblac/LaZx1989\n"
@@ -163,7 +163,7 @@ msgstr "Copie de rezerva Confirmata."
 msgid "Backup created"
 msgstr "Copie de rezerva creata."
 
-#: ../src/BackupManager.py:1307
+#: ../src/BackupManager.py:1301
 #, fuzzy
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Copia de rezerva a esuat - d.e destinatia copiei de rezerva este gresita sau nu a mai ramas spatiu pe dispozitiv."
@@ -703,7 +703,7 @@ msgstr "Va rugam asteptati in timp ce se strang informatii..."
 msgid "Please wait."
 msgstr "Va rugam asteptati."
 
-#: ../src/BackupManager.py:1239
+#: ../src/BackupManager.py:1233
 #, fuzzy
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Listarea pluginurilor a esuat - d.e destinatie gresita a copiei de rezerva ori dispozitivul nu mai este spatiu pe dispozitiv."
@@ -991,7 +991,7 @@ msgstr "TB"
 msgid "Temp folder"
 msgstr "Folder Temporar."
 
-#: ../src/BackupManager.py:1199
+#: ../src/BackupManager.py:1193
 #, fuzzy
 msgid "The backup location does not have enough free space."
 msgstr "Locatia copiei de rezerva nu are suficient spatiu liber."

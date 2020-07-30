@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-30 11:08+0430\n"
+"POT-Creation-Date: 2020-07-30 12:08+0430\n"
 "PO-Revision-Date: 2013-10-20 17:17+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@o2.co.uk>\n"
 "Language-Team: Regarto\n"
@@ -169,7 +169,7 @@ msgstr "Bekreftelse på sikkerhetskopiering"
 msgid "Backup created"
 msgstr "Sikkerhetskopiering fullført"
 
-#: ../src/BackupManager.py:1307
+#: ../src/BackupManager.py:1301
 #, fuzzy
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Sikkerhetskopiering feilet - dvs. feil målmappe for sikkerhetskopien eller ikke nok lagringskapasitet igjenn på lagringsmediumet"
@@ -705,7 +705,7 @@ msgstr "Vennligst vent mens oppstart pågår\n"
 msgid "Please wait."
 msgstr ""
 
-#: ../src/BackupManager.py:1239
+#: ../src/BackupManager.py:1233
 #, fuzzy
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Opplisting av plugin feilet - dvs. feil lokasjon for sikkerhetskopi eller for lite lagringskapasitet igjenn på enheten"
@@ -993,7 +993,7 @@ msgstr ""
 msgid "Temp folder"
 msgstr ""
 
-#: ../src/BackupManager.py:1199
+#: ../src/BackupManager.py:1193
 #, fuzzy
 msgid "The backup location does not have enough free space."
 msgstr "Lokasjonen for sikkerhetskopien har ikke nok ledig minne."

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-30 11:08+0430\n"
+"POT-Creation-Date: 2020-07-30 12:08+0430\n"
 "PO-Revision-Date: 2019-04-21 21:11+0300\n"
 "Last-Translator: mosad - مساعد الجعيد <abo-mishal@hotmail.com>\n"
 "Language-Team: mosad\n"
@@ -170,7 +170,7 @@ msgstr "تأكيد الإستعادة"
 msgid "Backup created"
 msgstr "إختصار النسخة الاحتياطية"
 
-#: ../src/BackupManager.py:1307
+#: ../src/BackupManager.py:1301
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr ""
 
@@ -684,7 +684,7 @@ msgstr "الرجاء الانتظار أثناء بدء التشغيل\n"
 msgid "Please wait."
 msgstr "الرجاء الانتظار."
 
-#: ../src/BackupManager.py:1239
+#: ../src/BackupManager.py:1233
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr ""
 
@@ -961,7 +961,7 @@ msgstr "تيرابايت"
 msgid "Temp folder"
 msgstr ""
 
-#: ../src/BackupManager.py:1199
+#: ../src/BackupManager.py:1193
 msgid "The backup location does not have enough free space."
 msgstr ""
 

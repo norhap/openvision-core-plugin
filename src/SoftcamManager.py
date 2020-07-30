@@ -679,12 +679,5 @@ class SoftcamAutoPoller:
 							self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck + " -b")
 							sleep(10)
 							remove('/tmp/softcamRuningCheck.tmp')
-						elif softcamcheck.lower().startswith('sbox'):
-							self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck)
-							sleep(7)
-						elif softcamcheck.lower().startswith('gbox'):
-							self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck)
-							sleep(3)
-							self.Console.ePopen('start-stop-daemon --start --quiet --background --exec /usr/bin/gbox')
 						else:
 							self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck)

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-30 11:08+0430\n"
+"POT-Creation-Date: 2020-07-30 12:08+0430\n"
 "PO-Revision-Date: 2018-11-03 16:56+0200\n"
 "Last-Translator: rimas <rimas@domeen.ee>\n"
 "Language-Team: Estonian <rimas>\n"
@@ -162,7 +162,7 @@ msgstr "Varundamise kinnitamine"
 msgid "Backup created"
 msgstr "Varukoopia loodud"
 
-#: ../src/BackupManager.py:1307
+#: ../src/BackupManager.py:1301
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Varundamine nurjus - nt.  vale asukoht või ruumi puudus varundamise asukohas"
 
@@ -668,7 +668,7 @@ msgstr "Oota, kuni süsteem kogub teavet..."
 msgid "Please wait."
 msgstr "Oota."
 
-#: ../src/BackupManager.py:1239
+#: ../src/BackupManager.py:1233
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Pluginate märkimine nurjus  - nt. kehtetu varukoopia asukoht või ruumipuudus."
 
@@ -937,7 +937,7 @@ msgstr "TB"
 msgid "Temp folder"
 msgstr "Temp kaust"
 
-#: ../src/BackupManager.py:1199
+#: ../src/BackupManager.py:1193
 msgid "The backup location does not have enough free space."
 msgstr "Varukoopia asukohas ei ole piisavalt vaba ruumi."
 

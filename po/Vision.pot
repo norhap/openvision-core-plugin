@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-30 11:08+0430\n"
+"POT-Creation-Date: 2020-07-30 12:08+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -151,7 +151,7 @@ msgstr ""
 msgid "Backup created"
 msgstr ""
 
-#: ../src/BackupManager.py:1307
+#: ../src/BackupManager.py:1301
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr ""
 
@@ -639,7 +639,7 @@ msgstr ""
 msgid "Please wait."
 msgstr ""
 
-#: ../src/BackupManager.py:1239
+#: ../src/BackupManager.py:1233
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr ""
 
@@ -900,7 +900,7 @@ msgstr ""
 msgid "Temp folder"
 msgstr ""
 
-#: ../src/BackupManager.py:1199
+#: ../src/BackupManager.py:1193
 msgid "The backup location does not have enough free space."
 msgstr ""
 

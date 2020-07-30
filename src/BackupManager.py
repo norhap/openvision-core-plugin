@@ -1143,12 +1143,6 @@ class BackupFiles(Screen):
 
 	def JobStart(self):
 		self.selectedFiles = config.backupmanager.backupdirs.value
-		if path.exists('/etc/CCcam.cfg') and '/etc/CCcam.cfg' not in self.selectedFiles:
-			self.selectedFiles.append('/etc/CCcam.cfg')
-		if path.exists('/etc/CCcam.channelinfo') and '/etc/CCcam.channelinfo' not in self.selectedFiles:
-			self.selectedFiles.append('/etc/CCcam.channelinfo')
-		if path.exists('/etc/CCcam.providers') and '/etc/CCcam.providers' not in self.selectedFiles:
-			self.selectedFiles.append('/etc/CCcam.providers')
 		if path.exists('/etc/wpa_supplicant.ath0.conf') and '/etc/wpa_supplicant.ath0.conf' not in self.selectedFiles:
 			self.selectedFiles.append('/etc/wpa_supplicant.ath0.conf')
 		if path.exists('/etc/wpa_supplicant.wlan0.conf') and '/etc/wpa_supplicant.wlan0.conf' not in self.selectedFiles:

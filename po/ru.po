@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vix-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-30 11:08+0430\n"
+"POT-Creation-Date: 2020-07-30 12:08+0430\n"
 "PO-Revision-Date: \n"
 "Last-Translator: litvcom\n"
 "Language-Team: Russian localization by litvcom\n"
@@ -160,7 +160,7 @@ msgstr "Подтверждение резервного копирования"
 msgid "Backup created"
 msgstr "Резервная копия создана"
 
-#: ../src/BackupManager.py:1307
+#: ../src/BackupManager.py:1301
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Ошибка резервного копирования! Неправильное место назначения или на устройстве резервного копирования не осталось места."
 
@@ -663,7 +663,7 @@ msgstr "Пожалуйста, подождите, пока система соб
 msgid "Please wait."
 msgstr "Пожалуйста, подождите."
 
-#: ../src/BackupManager.py:1239
+#: ../src/BackupManager.py:1233
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Не удалось добавить плагин! Неправильное место назначения или на устройстве резервного копирования не осталось места."
 
@@ -930,7 +930,7 @@ msgstr ""
 msgid "Temp folder"
 msgstr "Временная папка"
 
-#: ../src/BackupManager.py:1199
+#: ../src/BackupManager.py:1193
 msgid "The backup location does not have enough free space."
 msgstr "В хранилище резервных копий недостаточно свободного места."
 

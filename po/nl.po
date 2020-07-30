@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-30 11:08+0430\n"
+"POT-Creation-Date: 2020-07-30 12:08+0430\n"
 "PO-Revision-Date: 2019-12-23 14:35+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
@@ -162,7 +162,7 @@ msgstr "Back-up bevestiging"
 msgid "Backup created"
 msgstr "Back-up gemaakt"
 
-#: ../src/BackupManager.py:1307
+#: ../src/BackupManager.py:1301
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Back-up mislukt - mogelijk a.g.v. verkeerde bestemming of te weinig ruimte op het back-up medium."
 
@@ -663,7 +663,7 @@ msgstr "Wacht terwijl het systeem informatie verzamelt..."
 msgid "Please wait."
 msgstr "Even wachten."
 
-#: ../src/BackupManager.py:1239
+#: ../src/BackupManager.py:1233
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Plugin-lijst mislukt - mogelijk a.g.v. een verkeerde back-up lokatie of te weinig ruimte op het medium."
 
@@ -928,7 +928,7 @@ msgstr "TB"
 msgid "Temp folder"
 msgstr "Tijdelijke map"
 
-#: ../src/BackupManager.py:1199
+#: ../src/BackupManager.py:1193
 msgid "The backup location does not have enough free space."
 msgstr "De back-up lokatie heeft onvoldoende ruimte."
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-30 11:08+0430\n"
+"POT-Creation-Date: 2020-07-30 12:08+0430\n"
 "PO-Revision-Date: 2013-01-25 19:24+0100\n"
 "Last-Translator: Rob van der Does <robvddoes@gmail.com>\n"
 "Language-Team: www.CostaBlancaTranslations.com <maria@CostaBlancaTranslations.com>\n"
@@ -173,7 +173,7 @@ msgstr "Confirmación de copia de seguridad"
 msgid "Backup created"
 msgstr "Copia de seguridad realizada"
 
-#: ../src/BackupManager.py:1307
+#: ../src/BackupManager.py:1301
 #, fuzzy
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Copia fallida. Destino erróneo o no hay espacio suficiente en el dispositivo de almacenamiento"
@@ -714,7 +714,7 @@ msgstr "Espera mientras se recopila la información..."
 msgid "Please wait."
 msgstr "Espera por favor"
 
-#: ../src/BackupManager.py:1239
+#: ../src/BackupManager.py:1233
 #, fuzzy
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Lista de complementos fallida (destino erróneo o no hay espacio suficiente en el dispositivo de almacenamiento)"
@@ -1004,7 +1004,7 @@ msgstr "TB"
 msgid "Temp folder"
 msgstr "Carpeta temporal"
 
-#: ../src/BackupManager.py:1199
+#: ../src/BackupManager.py:1193
 #, fuzzy
 msgid "The backup location does not have enough free space."
 msgstr "El destino de copias de seguridad no tiene espacio suficiente."
