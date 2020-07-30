@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-27 01:01+0430\n"
+"POT-Creation-Date: 2020-07-30 11:08+0430\n"
 "PO-Revision-Date: 2019-12-23 14:35+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
@@ -19,64 +19,64 @@ msgstr ""
 "X-Generator: Poedit 2.2.4\n"
 
 #: ../src/BackupManager.py:155 ../src/BackupManager.py:289
-#: ../src/ImageManager.py:139 ../src/ImageManager.py:279
+#: ../src/ImageManager.py:148 ../src/ImageManager.py:288
 msgid "%a %e %b  %-H:%M"
 msgstr "%a %e %b  %-H:%M"
 
-#: ../src/SwapManager.py:299
+#: ../src/SwapManager.py:302
 msgid "128 Mb"
 msgstr "128 Mb"
 
-#: ../src/SwapManager.py:299
+#: ../src/SwapManager.py:302
 msgid "16 Mb"
 msgstr "16 Mb"
 
-#: ../src/SwapManager.py:299
+#: ../src/SwapManager.py:302
 msgid "256 Mb"
 msgstr "256 Mb"
 
-#: ../src/BackupManager.py:49 ../src/ImageManager.py:49
+#: ../src/BackupManager.py:52 ../src/ImageManager.py:62
 msgid "30 Days"
 msgstr "30 dagen"
 
-#: ../src/SwapManager.py:299
+#: ../src/SwapManager.py:302
 msgid "32 Mb"
 msgstr "32 Mb"
 
-#: ../src/SwapManager.py:299
+#: ../src/SwapManager.py:302
 msgid "64 Mb"
 msgstr "64 Mb"
 
-#: ../src/SwapManager.py:299
+#: ../src/SwapManager.py:302
 msgid "8 Mb"
 msgstr "8 Mb"
 
-#: ../src/SwapManager.py:299
+#: ../src/SwapManager.py:302
 msgid "96 Mb"
 msgstr "96 Mb"
 
-#: ../src/BackupManager.py:501 ../src/RestoreWizard.py:156
-#: ../src/RestoreWizard.py:267
+#: ../src/BackupManager.py:501 ../src/RestoreWizard.py:158
+#: ../src/RestoreWizard.py:269
 msgid "A background update check is in progress, please try again."
 msgstr "Er wordt momenteel op updates gecontroleerd; probeer het later nogmaals."
 
-#: ../src/SwapManager.py:117 ../src/SwapManager.py:240
+#: ../src/SwapManager.py:120 ../src/SwapManager.py:243
 msgid "Activate"
 msgstr "Activeer"
 
-#: ../src/SwapManager.py:115 ../src/SwapManager.py:236
+#: ../src/SwapManager.py:118 ../src/SwapManager.py:239
 msgid "Active"
 msgstr "Actief"
 
-#: ../src/SoftcamManager.py:80 ../src/SoftcamManager.py:146
+#: ../src/SoftcamManager.py:83 ../src/SoftcamManager.py:149
 msgid "Active:"
 msgstr "Actief:"
 
-#: ../src/IPKInstaller.py:122
+#: ../src/IPKInstaller.py:124
 msgid "Are you ready to install ?"
 msgstr "Bent u gereed te installeren?"
 
-#: ../src/Multibootmgr.py:93
+#: ../src/Multibootmgr.py:91
 #, python-format
 msgid "Are you sure you want to delete image slot %s ?"
 msgstr "Weet u zeker dat u het image in slot %s wilt verwijderen?"
@@ -89,7 +89,7 @@ msgstr ""
 "Weet u zeker dat u deze back-up wilt verwijderen:\n"
 " "
 
-#: ../src/ImageManager.py:287
+#: ../src/ImageManager.py:296
 msgid ""
 "Are you sure you want to delete this image backup:\n"
 " "
@@ -97,7 +97,7 @@ msgstr ""
 "Weet u zeker dat u deze image-back-up wilt verwijderen:\n"
 "  "
 
-#: ../src/ImageManager.py:1455
+#: ../src/ImageManager.py:1456
 msgid ""
 "Are you sure you want to download this image:\n"
 " "
@@ -105,7 +105,7 @@ msgstr ""
 "Weet u zeker dat u dit image wilt downloaden:\n"
 " "
 
-#: ../src/ImageManager.py:363
+#: ../src/ImageManager.py:372
 msgid ""
 "Are you sure you want to flash this image:\n"
 " "
@@ -121,48 +121,48 @@ msgstr ""
 "Weet u zeker dat u deze back-up wilt herstellen:\n"
 " "
 
-#: ../src/SoftcamManager.py:105 ../src/SwapManager.py:119
+#: ../src/SoftcamManager.py:108 ../src/SwapManager.py:122
 msgid "Autostart"
 msgstr "Autostart"
 
-#: ../src/ImageManager.py:760
+#: ../src/ImageManager.py:764
 msgid "Backing up eMMC partitions for USB flash ..."
 msgstr "Maakt back-up van eMMC partities voor USB flash..."
 
-#: ../src/ImageManager.py:764
+#: ../src/ImageManager.py:768
 msgid "Backing up eMMC partitions for USB flash..."
 msgstr "Maakt back-up van eMMC partities voor USB flash..."
 
-#: ../src/BackupManager.py:1121 ../src/BackupManager.py:1125
-#: ../src/BackupManager.py:1137 ../src/BackupManager.py:1141
+#: ../src/BackupManager.py:1114 ../src/BackupManager.py:1118
+#: ../src/BackupManager.py:1130 ../src/BackupManager.py:1134
 msgid "Backing up files..."
 msgstr "Bestanden worden geback-upped..."
 
-#: ../src/ImageManager.py:744 ../src/ImageManager.py:748
+#: ../src/ImageManager.py:748 ../src/ImageManager.py:752
 msgid "Backing up kernel..."
 msgstr "Maakt back-up van kernel..."
 
-#: ../src/ImageManager.py:752 ../src/ImageManager.py:756
+#: ../src/ImageManager.py:756 ../src/ImageManager.py:760
 msgid "Backing up root file system..."
 msgstr "Maakt back-up van root-bestandssysteem..."
 
-#: ../src/ImageManager.py:792
+#: ../src/ImageManager.py:796
 msgid "Backup complete."
 msgstr "Back-up gereed."
 
-#: ../src/BackupManager.py:1145
+#: ../src/BackupManager.py:1138
 msgid "Backup complete..."
 msgstr "Back-up gereed."
 
-#: ../src/ImageManager.py:318
+#: ../src/ImageManager.py:327
 msgid "Backup confirmation"
 msgstr "Back-up bevestiging"
 
-#: ../src/BackupManager.py:940
+#: ../src/BackupManager.py:933
 msgid "Backup created"
 msgstr "Back-up gemaakt"
 
-#: ../src/BackupManager.py:1311
+#: ../src/BackupManager.py:1307
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Back-up mislukt - mogelijk a.g.v. verkeerde bestemming of te weinig ruimte op het back-up medium."
 
@@ -174,58 +174,50 @@ msgstr ""
 "Back- up bezig.\n"
 "Wacht tot deze gereed is alvorens opnieuw te proberen."
 
-#: ../src/BackupManager.py:131 ../src/BackupManager.py:181
+#: ../src/BackupManager.py:134 ../src/BackupManager.py:181
 #: ../src/BackupManager.py:313 ../src/BackupManager.py:328
 #: ../src/BackupManager.py:371 ../src/BackupManager.py:389
-#: ../src/BackupManager.py:1103 ../src/ui.py:49 ../src/ImageManager.py:338
+#: ../src/BackupManager.py:1096 ../src/ui.py:48 ../src/ImageManager.py:347
 msgid "Backup manager"
 msgstr "Back-up manager"
 
-#: ../src/SoftcamManager.py:215
-msgid "CCcam can't run whilst MGcamd is running"
-msgstr "CCcam en MGcamd kunnen niet beide actief zijn"
-
-#: ../src/SoftcamManager.py:272
-msgid "CCcam can't run whilst MGcamd is running."
-msgstr "CCcam kan niet draaien terwijl MGcamd draait."
-
-#: ../src/MountManager.py:279
+#: ../src/MountManager.py:282
 msgid "Can't un-mount the partition; make sure it is not being used for SWAP or record/timeshift paths."
 msgstr "Kan de partitie niet unmounten; stel zeker dat deze niet in gebruik is voor SWAP/opname/timeshift/logs."
 
-#: ../src/BackupManager.py:718 ../src/BackupManager.py:809
-#: ../src/BackupManager.py:908 ../src/Multibootmgr.py:40
-#: ../src/MountManager.py:336
+#: ../src/BackupManager.py:716 ../src/BackupManager.py:805
+#: ../src/BackupManager.py:903 ../src/Multibootmgr.py:38
+#: ../src/MountManager.py:337
 msgid "Cancel"
 msgstr "Annuleer"
 
-#: ../src/IPKInstaller.py:86 ../src/IPKInstaller.py:90
+#: ../src/IPKInstaller.py:88 ../src/IPKInstaller.py:92
 msgid "Change location"
 msgstr "Verander lokatie"
 
-#: ../src/ImageManager.py:736
+#: ../src/ImageManager.py:740
 msgid "Checking free RAM.."
 msgstr "Controleert beschikbare RAM..."
 
-#: ../src/SoftcamManager.py:603
+#: ../src/SoftcamManager.py:546
 msgid "Checking softcams..."
 msgstr "Controleert softcams..."
 
-#: ../src/BackupManager.py:910
+#: ../src/BackupManager.py:905
 msgid "Choose files"
 msgstr "Kies bestanden"
 
-#: ../src/BackupManager.py:911
+#: ../src/BackupManager.py:906
 msgid "Choose local IPK's folder"
 msgstr "Kies lokale IPK-map"
 
-#: ../src/MountManager.py:331
+#: ../src/MountManager.py:334
 msgid "Choose where to mount your devices to:"
 msgstr "U wilt het apparaat mounten als:"
 
-#: ../src/ui.py:60 ../src/ImageManager.py:1316 ../src/SoftcamManager.py:102
-#: ../src/IPKInstaller.py:52 ../src/IPKInstaller.py:174
-#: ../src/SwapManager.py:116
+#: ../src/ui.py:57 ../src/ImageManager.py:1317 ../src/SoftcamManager.py:105
+#: ../src/IPKInstaller.py:54 ../src/IPKInstaller.py:176
+#: ../src/SwapManager.py:119
 msgid "Close"
 msgstr "Sluit"
 
@@ -233,75 +225,71 @@ msgstr "Sluit"
 msgid "Comparing against backup..."
 msgstr "Vergelijkt met back-up..."
 
-#: ../src/ImageManager.py:1423
+#: ../src/ImageManager.py:1424
 msgid "Compress"
 msgstr "Comprimeer"
 
-#: ../src/SwapManager.py:118 ../src/SwapManager.py:180
+#: ../src/SwapManager.py:121 ../src/SwapManager.py:183
 msgid "Create"
 msgstr "Creëer"
 
-#: ../src/ui.py:54
+#: ../src/ui.py:53
 msgid "Create and Manage your SWAP files."
 msgstr "Creeeer en beheer uw SWAP-bestanden."
 
-#: ../src/ui.py:50
+#: ../src/ui.py:49
 msgid "Create and flash complete images of your system."
 msgstr "Maakt en flasht volledige images van uw systeem."
 
-#: ../src/ui.py:56
-msgid "Create empty slot."
-msgstr "Creëert leeg slot."
-
-#: ../src/ImageManager.py:940 ../src/ImageManager.py:943
-#: ../src/ImageManager.py:946 ../src/ImageManager.py:948
-#: ../src/ImageManager.py:950
+#: ../src/ImageManager.py:944 ../src/ImageManager.py:947
+#: ../src/ImageManager.py:950 ../src/ImageManager.py:952
+#: ../src/ImageManager.py:954
 msgid "Create:"
 msgstr "Creëer:"
 
-#: ../src/ImageManager.py:740
+#: ../src/ImageManager.py:744
 msgid "Creating SWAP.."
 msgstr "Creëert SWAP..."
 
 #: ../src/BackupManager.py:403 ../src/BackupManager.py:407
-#: ../src/BackupManager.py:1113 ../src/BackupManager.py:1117
+#: ../src/BackupManager.py:1106 ../src/BackupManager.py:1110
 msgid "Creating list of installed plugins..."
 msgstr "Maakt een lijst met beschikbare plugins..."
 
-#: ../src/ImageManager.py:784 ../src/ImageManager.py:788
+#: ../src/ImageManager.py:788 ../src/ImageManager.py:792
 msgid "Creating zip..."
 msgstr "Creërt zip..."
 
-#: ../src/SwapManager.py:142 ../src/SwapManager.py:236
-#: ../src/SwapManager.py:241
+#: ../src/SwapManager.py:145 ../src/SwapManager.py:239
+#: ../src/SwapManager.py:244
 msgid "Current status:"
 msgstr "Huidige status:"
 
-#: ../src/BackupManager.py:49 ../src/ImageManager.py:49
+#: ../src/BackupManager.py:52 ../src/ImageManager.py:62
 msgid "Daily"
 msgstr "Dagelijks"
 
-#: ../src/SwapManager.py:235
+#: ../src/SwapManager.py:238
 msgid "Deactivate"
 msgstr "De-activeer"
 
-#: ../src/BackupManager.py:140 ../src/ImageManager.py:117
-#: ../src/SwapManager.py:190
+#: ../src/BackupManager.py:140 ../src/ImageManager.py:126
+#: ../src/SwapManager.py:193
 msgid "Delete"
 msgstr "Verwijder"
 
-#: ../src/BackupManager.py:752
+#: ../src/BackupManager.py:750
 msgid "Deselect"
 msgstr "Deselecteer"
 
 #: ../src/BackupManager.py:232 ../src/BackupManager.py:252
-#: ../src/ImageManager.py:232 ../src/ImageManager.py:241
-#: ../src/MountManager.py:138 ../src/MountManager.py:257
-#: ../src/MountManager.py:272
+#: ../src/ImageManager.py:241 ../src/ImageManager.py:250
+#: ../src/MountManager.py:144 ../src/MountManager.py:260
+#: ../src/MountManager.py:275
 msgid "Device: "
 msgstr "Apparaat: "
 
-#: ../src/ImageManager.py:209
+#: ../src/ImageManager.py:218
 msgid "Device: None available"
 msgstr "Apparaat: niet beschikbaar"
 
@@ -309,15 +297,15 @@ msgstr "Apparaat: niet beschikbaar"
 msgid "Device: none available"
 msgstr "Apparaat: geen beschikbaar"
 
-#: ../src/SoftcamManager.py:142
+#: ../src/SoftcamManager.py:145
 msgid "Disable startup"
 msgstr "Schakel opstarten uit"
 
-#: ../src/ImageManager.py:249
+#: ../src/ImageManager.py:258
 msgid "Do you want to change download url"
 msgstr "Wilt u de download url veranderen"
 
-#: ../src/ImageManager.py:316
+#: ../src/ImageManager.py:325
 msgid ""
 "Do you want to create a full image backup?\n"
 "This can take about 6 minutes to complete."
@@ -325,7 +313,7 @@ msgstr ""
 "Wilt u een volledige imageback-up maken?\n"
 "Dit kan wel 6 minuten duren."
 
-#: ../src/ImageManager.py:359
+#: ../src/ImageManager.py:368
 #, python-format
 msgid ""
 "Do you want to flash image\n"
@@ -334,7 +322,7 @@ msgstr ""
 "Wilt u image\n"
 "%s flashen"
 
-#: ../src/IPKInstaller.py:135
+#: ../src/IPKInstaller.py:137
 msgid "Do you want to restart GUI now ?"
 msgstr "Wilt u de gebruikersinterface nu opnieuw starten?"
 
@@ -346,31 +334,31 @@ msgstr "Wilt u uw plugins weer installeren?"
 msgid "Do you want to restore your enigma2 settings ?"
 msgstr "Wilt u de Enigma2-instellingen terugzetten?"
 
-#: ../src/ImageManager.py:1425
+#: ../src/ImageManager.py:1426
 msgid "DownLoad"
 msgstr "DownLoad"
 
-#: ../src/ImageManager.py:1317
+#: ../src/ImageManager.py:1318
 msgid "Download"
 msgstr "Download"
 
-#: ../src/ImageManager.py:1457
+#: ../src/ImageManager.py:1458
 msgid "Download confirmation"
 msgstr "Download bevestiging"
 
-#: ../src/ImageManager.py:1470
+#: ../src/ImageManager.py:1471
 msgid "Downloading"
 msgstr "Bezig met downloaden"
 
-#: ../src/ImageManager.py:119 ../src/ImageManager.py:1308
+#: ../src/ImageManager.py:128 ../src/ImageManager.py:1312
 msgid "Downloads"
 msgstr "Downloads"
 
-#: ../src/ImageManager.py:427
+#: ../src/ImageManager.py:429
 msgid "ET8500 Image Restore"
 msgstr "ET8500 Imagerestore"
 
-#: ../src/ImageManager.py:425
+#: ../src/ImageManager.py:427
 msgid ""
 "ET8500 Multiboot: Yes to restore OS1 No to restore OS2:\n"
 " "
@@ -378,250 +366,214 @@ msgstr ""
 "ET8500 Multiboot: Ja tegen restore OS1 Nee tegen restore OS2:\n"
 " "
 
-#: ../src/Multibootmgr.py:80
+#: ../src/Multibootmgr.py:78
 msgid "Empty slot"
 msgstr "Leeg slot"
 
-#: ../src/SwapManager.py:243
+#: ../src/SwapManager.py:246
 msgid "Enable SWAP at startup"
 msgstr "Activeer SWAP bij opstarten"
 
-#: ../src/SoftcamManager.py:144
+#: ../src/SoftcamManager.py:147
 msgid "Enable startup"
 msgstr "Schakel opstarten in"
 
-#: ../src/BackupManager.py:1067 ../src/ImageManager.py:616
+#: ../src/BackupManager.py:1060 ../src/ImageManager.py:618
 msgid "Enough retries, delaying till next schedule."
 msgstr "Genoeg ingangen, vertraagt tot volgende schema."
 
-#: ../src/Multibootmgr.py:43
+#: ../src/Multibootmgr.py:41
 msgid "Erase"
 msgstr "Wis"
 
-#: ../src/RestoreWizard.py:90
+#: ../src/RestoreWizard.py:92
 msgid "Exit the restore wizard"
 msgstr "Beeindig de herstel wizard"
 
-#: ../src/ImageManager.py:1423
+#: ../src/ImageManager.py:1424
 msgid "Expand"
 msgstr "Decomprimeer"
 
-#: ../src/IPKInstaller.py:81 ../src/IPKInstaller.py:100
+#: ../src/IPKInstaller.py:83 ../src/IPKInstaller.py:102
 msgid "Extra IPK's"
 msgstr "Extra IPK's"
 
-#: ../src/ImageManager.py:120
+#: ../src/ImageManager.py:129
 msgid "Flash"
 msgstr "Flash"
 
-#: ../src/ImageManager.py:365
+#: ../src/ImageManager.py:374
 msgid "Flash confirmation"
 msgstr "Bevestig flashen"
 
-#: ../src/ImageManager.py:423
+#: ../src/ImageManager.py:425
 msgid "Flash image unzip successful."
 msgstr "Unzippen van image-bestand gelukt."
 
-#: ../src/SoftcamManager.py:237 ../src/SoftcamManager.py:291
+#: ../src/SoftcamManager.py:217 ../src/SoftcamManager.py:255
 msgid "Found non-standard softcam, trying to start, this may fail."
 msgstr "Een niet-standaard softcam gevonden; probeer deze te starten maar dit kan mislukken."
 
-#: ../src/ImageManager.py:232
+#: ../src/ImageManager.py:241
 msgid "Free space:"
 msgstr "Vrije ruimte:"
 
-#: ../src/MountManager.py:125
+#: ../src/MountManager.py:131
 msgid "GB"
 msgstr "GB"
 
-#: ../src/H9SDmanager.py:30
+#: ../src/H9SDmanager.py:32
 msgid "H9 SDcard manager"
 msgstr "H9 SD-kaart manager"
 
-#: ../src/ui.py:58
+#: ../src/ui.py:55
 msgid "H9SDcard Manager"
 msgstr "H9SD-kaart Manager"
 
-#: ../src/MountManager.py:78
+#: ../src/MountManager.py:84
 msgid "HARD DISK: "
 msgstr "HARDE SCHIJF: "
 
-#: ../src/IPKInstaller.py:35 ../src/IPKInstaller.py:167
+#: ../src/IPKInstaller.py:39 ../src/IPKInstaller.py:169
 msgid "IPK installer"
 msgstr "IPK installeren"
 
-#: ../src/ImageManager.py:1360
+#: ../src/ImageManager.py:1361
 #, python-format
 msgid "Image Version %s"
 msgstr "Image versie %s"
 
-#: ../src/ui.py:50 ../src/ImageManager.py:109 ../src/ImageManager.py:159
-#: ../src/ImageManager.py:307 ../src/ImageManager.py:328
-#: ../src/ImageManager.py:730
+#: ../src/ui.py:49 ../src/ImageManager.py:122 ../src/ImageManager.py:168
+#: ../src/ImageManager.py:316 ../src/ImageManager.py:337
+#: ../src/ImageManager.py:734
 msgid "Image manager"
 msgstr "Image manager"
 
-#: ../src/SwapManager.py:114 ../src/SwapManager.py:241
+#: ../src/SwapManager.py:117 ../src/SwapManager.py:244
 msgid "Inactive"
 msgstr "Inactief"
 
-#: ../src/SwapManager.py:260 ../src/SwapManager.py:326
+#: ../src/SwapManager.py:263 ../src/SwapManager.py:329
 msgid "Info"
 msgstr "Info"
 
-#: ../src/H9SDmanager.py:38
+#: ../src/H9SDmanager.py:36
 msgid "Init SDcard"
 msgstr "Init SD-kaart"
 
-#: ../src/H9SDmanager.py:53
+#: ../src/H9SDmanager.py:51
 msgid "Init Zgemma H9 SDCARD - please reboot after use."
 msgstr "Init Zgemma H9 SD-kaart - start opnieuw op.."
 
-#: ../src/H9SDmanager.py:77
+#: ../src/H9SDmanager.py:75
 msgid "Init Zgemma H9 USB/SDA1 - please reboot after use."
 msgstr "Init Zgemma H9 USB/SDA1 - start opnieuw op."
 
-#: ../src/IPKInstaller.py:53 ../src/IPKInstaller.py:175
+#: ../src/IPKInstaller.py:55 ../src/IPKInstaller.py:177
 msgid "Install"
 msgstr "Installeer"
 
-#: ../src/ui.py:51
+#: ../src/ui.py:50
 msgid "Install IPK's from your tmp folder."
 msgstr "Installeer IPK's in uw tmp map."
 
-#: ../src/IPKInstaller.py:124
+#: ../src/IPKInstaller.py:126
 msgid "Install confirmation"
 msgstr "Installeer bevestiging"
 
-#: ../src/plugin.py:162
+#: ../src/plugin.py:157
 msgid "Install extensions."
 msgstr "Installeer extensies."
 
-#: ../src/ui.py:51
+#: ../src/ui.py:50
 msgid "Install local extension"
 msgstr "Installeer lokale extensie"
 
-#: ../src/IPKInstaller.py:132
+#: ../src/IPKInstaller.py:134
 msgid "Installing..."
 msgstr "Installeert...."
 
-#: ../src/IPKInstaller.py:177
+#: ../src/IPKInstaller.py:179
 msgid "Invert"
 msgstr "Keer om"
 
-#: ../src/IPKInstaller.py:84
+#: ../src/IPKInstaller.py:86
 msgid "It seems you have not setup an extra location. Please set it up in the Backup manager setup menu."
 msgstr "Het lijkt erop, dat u geen extra lokatie hebt ingesteld. U kunt dit doen vanuit het Back-up manager menu."
 
-#: ../src/BackupManager.py:934 ../src/SoftcamManager.py:522
+#: ../src/BackupManager.py:929 ../src/SoftcamManager.py:467
 msgid "Logs"
 msgstr "Logs"
 
-#: ../src/ImageManager.py:232 ../src/MountManager.py:127
+#: ../src/ImageManager.py:241 ../src/MountManager.py:133
 msgid "MB"
 msgstr "MB"
 
-#: ../src/SoftcamManager.py:231 ../src/SoftcamManager.py:287
-msgid "MGcamd can't run whilst CCcam is running."
-msgstr "MGcamd kan niet draaien terwijl CCcam draait."
-
-#: ../src/ui.py:43 ../src/SoftcamManager.py:75
-msgid "Main menu"
-msgstr "Hoofdmenu"
-
-#: ../src/ui.py:49
+#: ../src/ui.py:48
 msgid "Manage the backups of your settings."
 msgstr "Beheer de back-ups van uw instellingen."
 
-#: ../src/ui.py:52
+#: ../src/ui.py:51
 msgid "Manage your devices mount points."
 msgstr "Beheer hoe uw apparaten gemount zijn."
 
-#: ../src/MountManager.py:197
+#: ../src/MountManager.py:200
 msgid "Mount"
 msgstr "Mount"
 
-#: ../src/MountManager.py:262
+#: ../src/MountManager.py:265
 msgid "Mount failed."
 msgstr "Mounten mislukt."
 
-#: ../src/ui.py:52 ../src/MountManager.py:189
+#: ../src/ui.py:51 ../src/MountManager.py:195
 msgid "Mount manager"
 msgstr "Mount manager"
 
-#: ../src/MountManager.py:138 ../src/MountManager.py:256
-#: ../src/MountManager.py:271
+#: ../src/MountManager.py:144 ../src/MountManager.py:259
+#: ../src/MountManager.py:274
 msgid "Mount: "
 msgstr "Mount: "
 
-#: ../src/ui.py:58
+#: ../src/ui.py:55
 msgid "Move Nand root to SD card"
 msgstr "Verplaats Nand root naar SD-kaart"
 
-#: ../src/ImageManager.py:776 ../src/ImageManager.py:780
+#: ../src/ImageManager.py:780 ../src/ImageManager.py:784
 msgid "Moving to backup Location..."
 msgstr "Verandert back-up lokatie..."
 
-#: ../src/ui.py:56
-msgid "MultiBoot manager"
-msgstr "MultiBoot manager"
-
-#: ../src/ImageManager.py:499
+#: ../src/ImageManager.py:501
 msgid "Multiboot ERROR! - no STARTUP in boot partition."
 msgstr "Multiboot FOUT! - geen STARTUP in bootpartitie."
 
-#: ../src/Multibootmgr.py:34
+#: ../src/Multibootmgr.py:36
 msgid "Multiboot image manager"
 msgstr "Multiboot image manager"
 
-#: ../src/ImageManager.py:431 ../src/ImageManager.py:1212
+#: ../src/ImageManager.py:433 ../src/ImageManager.py:1216
 msgid "Multiboot only able to restore this backup to mmc slot1"
 msgstr "Multiboot kan deze back-up alleen maar herstellen van mmc slot1"
 
-#: ../src/RestoreWizard.py:101 ../src/RestoreWizard.py:104
+#: ../src/RestoreWizard.py:103 ../src/RestoreWizard.py:106
 msgid "NO, do not restore plugins"
 msgstr "NEE, installeer de plugins niet"
 
-#: ../src/RestoreWizard.py:94
+#: ../src/RestoreWizard.py:96
 msgid "NO, do not restore settings"
 msgstr "Nee, plaats de instellingen niet terug"
 
-#: ../src/BackupManager.py:186 ../src/ImageManager.py:164
+#: ../src/BackupManager.py:186 ../src/ImageManager.py:173
 msgid "New backup"
 msgstr "Nieuwe back-up"
 
 #: ../src/BackupManager.py:155 ../src/BackupManager.py:157
 #: ../src/BackupManager.py:289 ../src/BackupManager.py:291
-#: ../src/ImageManager.py:139 ../src/ImageManager.py:141
-#: ../src/ImageManager.py:279 ../src/ImageManager.py:281
+#: ../src/ImageManager.py:148 ../src/ImageManager.py:150
+#: ../src/ImageManager.py:288 ../src/ImageManager.py:290
 msgid "Next backup: "
 msgstr "Volgende back-up: "
 
-#: ../src/SoftcamManager.py:210 ../src/SoftcamManager.py:274
-msgid ""
-"No config files found, please setup CCcam first\n"
-"in /etc/CCcam.cfg."
-msgstr ""
-"Geen configuratiebestand gevonden. U moet eerst Ccam instellen\n"
-"in /etc/CCcam.cfg."
-
-#: ../src/SoftcamManager.py:218
-msgid ""
-"No config files found, please setup Hypercam first\n"
-"in /etc/hypercam.cfg."
-msgstr ""
-"Geen configuratiebestand gevonden. U moet eerst Hypercam instellen\n"
-"in /etc/hypercam .cfg."
-
-#: ../src/SoftcamManager.py:229 ../src/SoftcamManager.py:285
-msgid ""
-"No config files found, please setup MGcamd first\n"
-"in /usr/keys."
-msgstr ""
-"Geen configuratiebestand gevonden. U moet eerst MGcamd instellen\n"
-"in /usr/keys."
-
-#: ../src/SoftcamManager.py:223
+#: ../src/SoftcamManager.py:213
 msgid ""
 "No config files found, please setup Oscam first\n"
 "in /etc/tuxbox/config"
@@ -629,7 +581,7 @@ msgstr ""
 "Geen configuratiebestand gevonden; maak eerst de Oscam instellingen\n"
 "in /etc/tuxbox/config"
 
-#: ../src/SoftcamManager.py:280
+#: ../src/SoftcamManager.py:253
 msgid ""
 "No config files found, please setup Oscam first\n"
 "in /etc/tuxbox/config."
@@ -637,16 +589,16 @@ msgstr ""
 "Geen configuratiebestand gevonden. U moet eerst Oscam instellen\n"
 "in /etc/tuxbox/config."
 
-#: ../src/ImageManager.py:1326
+#: ../src/ImageManager.py:1327
 msgid "No images found for selected download server...if password check validity"
 msgstr "Geen images gevonden op de geselecteerde downloadserver. Indien er een wachtwoord wordt gebruikt, moet u dat controleren"
 
-#: ../src/MountManager.py:103 ../src/MountManager.py:105
-#: ../src/MountManager.py:116
+#: ../src/MountManager.py:109 ../src/MountManager.py:111
+#: ../src/MountManager.py:122
 msgid "None"
 msgstr "Geen"
 
-#: ../src/Multibootmgr.py:42
+#: ../src/Multibootmgr.py:40
 msgid "Note: slot list does not show current image or empty slots."
 msgstr "Opm.: De slot-lijst toont het huidige image en lege slots niet."
 
@@ -654,84 +606,84 @@ msgstr "Opm.: De slot-lijst toont het huidige image en lege slots niet."
 msgid "Now skipping restore process"
 msgstr "Slaat het herstel proces over"
 
-#: ../src/BackupManager.py:909 ../src/RestoreWizard.py:108
+#: ../src/BackupManager.py:904 ../src/RestoreWizard.py:110
 msgid "OK"
 msgstr "OK"
 
-#: ../src/RestoreWizard.py:90
+#: ../src/RestoreWizard.py:92
 msgid "OK, to perform a restore"
 msgstr "JA, voer een herstelactie uit"
 
-#: ../src/plugin.py:180
+#: ../src/plugin.py:175
 msgid "Opkg"
 msgstr ""
 
-#: ../src/BackupManager.py:865
+#: ../src/BackupManager.py:861
 msgid "Please enter a folder that contains some packages."
 msgstr "Kies een folder die plugins bevat."
 
-#: ../src/SwapManager.py:292
+#: ../src/SwapManager.py:295
 msgid "Please select device to use as SWAP file location."
 msgstr "Kies het medium voor het SWAP-bestand."
 
-#: ../src/RestoreWizard.py:140
+#: ../src/RestoreWizard.py:142
 msgid "Please wait while plugins restore completes..."
 msgstr "Even wachten tot het installeren van plugins gereed is..."
 
-#: ../src/MountManager.py:235
+#: ../src/MountManager.py:238
 msgid "Please wait while scanning for devices..."
 msgstr "Wacht, de apparaten worden gescand..."
 
-#: ../src/MountManager.py:345
+#: ../src/MountManager.py:346
 #, fuzzy
 msgid "Please wait while scanning your STB devices..."
 msgstr "Wacht, de apparaten worden gescand..."
 
-#: ../src/RestoreWizard.py:195
+#: ../src/RestoreWizard.py:197
 msgid "Please wait while settings restore completes..."
 msgstr "Even wachten tot het herstellen van de instellingen gereed is..."
 
-#: ../src/SoftcamManager.py:311
+#: ../src/SoftcamManager.py:275
 msgid "Please wait while starting\n"
 msgstr "Wacht terwijl er gestart wordt\n"
 
-#: ../src/SoftcamManager.py:428
+#: ../src/SoftcamManager.py:373
 msgid "Please wait while stopping\n"
 msgstr "Wacht terwijl er gestopt wordt\n"
 
-#: ../src/ImageManager.py:411
+#: ../src/ImageManager.py:413
 msgid "Please wait while the flash prepares."
 msgstr "Wacht terwijl het flashen wordt voorbereid."
 
-#: ../src/RestoreWizard.py:128 ../src/RestoreWizard.py:133
+#: ../src/RestoreWizard.py:130 ../src/RestoreWizard.py:135
 msgid "Please wait while the system gathers information..."
 msgstr "Wacht terwijl het systeem informatie verzamelt..."
 
-#: ../src/MountManager.py:369
+#: ../src/MountManager.py:370
 msgid "Please wait."
 msgstr "Even wachten."
 
-#: ../src/BackupManager.py:1246
+#: ../src/BackupManager.py:1239
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Plugin-lijst mislukt - mogelijk a.g.v. een verkeerde back-up lokatie of te weinig ruimte op het medium."
 
-#: ../src/BackupManager.py:1129 ../src/BackupManager.py:1133
+#: ../src/BackupManager.py:1122 ../src/BackupManager.py:1126
 msgid "Preparing extra plugins..."
 msgstr "Bereidt extra plugins voor.."
 
-#: ../src/BackupManager.py:213 ../src/ImageManager.py:209
+#: ../src/BackupManager.py:213 ../src/ImageManager.py:218
 msgid "Press 'Menu' to select a storage device"
 msgstr "Druk op 'Menu' om een opslagruimte te kiezen"
 
-#: ../src/IPKInstaller.py:178
+#: ../src/IPKInstaller.py:180
 msgid "Press OK to toggle the selection."
 msgstr "Druk op OK om de selectie om te wisselen.."
 
-#: ../src/H9SDmanager.py:36
+#: ../src/H9SDmanager.py:34
 msgid "Press appropiate Init to move Nand root to SDcard."
 msgstr "Drul op de betreffende Init om Nand root naar SD-kaart te verplaatsen."
 
-#: ../src/H9SDmanager.py:37
+#: ../src/H9SDmanager.py:35
 msgid "Reboot"
 msgstr "Opnieuw opstarten"
 
@@ -739,7 +691,7 @@ msgstr "Opnieuw opstarten"
 msgid "Rebooting..."
 msgstr "Bezig met rebooten..."
 
-#: ../src/ImageManager.py:357
+#: ../src/ImageManager.py:366
 #, python-format
 msgid ""
 "Recording(s) are in progress or coming up in few seconds!\n"
@@ -749,31 +701,31 @@ msgstr ""
 "Opname(s) lopen of starten zeer binnenkort!\n"
 "Wilt u toch image %s flashen?"
 
-#: ../src/Multibootmgr.py:89
+#: ../src/Multibootmgr.py:87
 #, fuzzy, python-format
-msgid "Removal of this slot will not show in STB GUI.  Are you sure you want to delete image slot %s ?"
+msgid "Removal of this slot will not show in %s Gui.  Are you sure you want to delete image slot?"
 msgstr "Het verwijderen van dit slot zal niet zichtbaar zijn in de GUI van de %s. Weet u zeker dat u het image in slot %s wilt verwijderen?"
 
-#: ../src/BackupManager.py:299 ../src/ImageManager.py:289
-#: ../src/Multibootmgr.py:91 ../src/Multibootmgr.py:95
+#: ../src/BackupManager.py:299 ../src/ImageManager.py:298
+#: ../src/Multibootmgr.py:89 ../src/Multibootmgr.py:93
 msgid "Remove confirmation"
 msgstr "Verwijder bevestiging"
 
-#: ../src/ImageManager.py:768 ../src/ImageManager.py:772
+#: ../src/ImageManager.py:772 ../src/ImageManager.py:776
 msgid "Removing temp mounts..."
 msgstr "Verwijdert tijdelijke mounts..."
 
-#: ../src/SoftcamManager.py:139
+#: ../src/SoftcamManager.py:142
 msgid "Restart"
 msgstr "Herstart"
 
-#: ../src/IPKInstaller.py:137
+#: ../src/IPKInstaller.py:139
 msgid "Restart GUI."
 msgstr "Herstart GUI."
 
-#: ../src/MountManager.py:374
+#: ../src/MountManager.py:375
 #, fuzzy
-msgid "Restart STB."
+msgid "Restart STB"
 msgstr "Herstart GUI."
 
 #: ../src/BackupManager.py:139
@@ -784,13 +736,13 @@ msgstr "Herstel"
 msgid "Restore Confirmation"
 msgstr "Bevestig herstellen"
 
-#: ../src/plugin.py:179 ../src/RestoreWizard.py:129 ../src/RestoreWizard.py:134
-#: ../src/RestoreWizard.py:141 ../src/RestoreWizard.py:147
-#: ../src/RestoreWizard.py:153 ../src/RestoreWizard.py:157
-#: ../src/RestoreWizard.py:183 ../src/RestoreWizard.py:187
-#: ../src/RestoreWizard.py:196 ../src/RestoreWizard.py:252
-#: ../src/RestoreWizard.py:256 ../src/RestoreWizard.py:260
-#: ../src/RestoreWizard.py:264 ../src/RestoreWizard.py:268
+#: ../src/plugin.py:174 ../src/RestoreWizard.py:131 ../src/RestoreWizard.py:136
+#: ../src/RestoreWizard.py:143 ../src/RestoreWizard.py:149
+#: ../src/RestoreWizard.py:155 ../src/RestoreWizard.py:159
+#: ../src/RestoreWizard.py:185 ../src/RestoreWizard.py:189
+#: ../src/RestoreWizard.py:198 ../src/RestoreWizard.py:254
+#: ../src/RestoreWizard.py:258 ../src/RestoreWizard.py:262
+#: ../src/RestoreWizard.py:266 ../src/RestoreWizard.py:270
 msgid "Restore wizard"
 msgstr "Herstel-wizard"
 
@@ -807,48 +759,48 @@ msgstr "Bezig plugins te installeren; dit kan lang duren..."
 msgid "Restoring plugins..."
 msgstr "Plaatst plugins terug..."
 
-#: ../src/Multibootmgr.py:45
+#: ../src/Multibootmgr.py:43
 msgid "Retrieving image slots - Please wait..."
 msgstr "Verkrijgt image slots - Even wachten..."
 
-#: ../src/ScriptRunner.py:47
+#: ../src/ScriptRunner.py:48
 msgid "Run"
 msgstr "Voer uit"
 
-#: ../src/ui.py:53
+#: ../src/ui.py:52
 msgid "Run your shell scripts."
 msgstr "Voer uw shell scripts uit."
 
-#: ../src/MountManager.py:96
+#: ../src/MountManager.py:102
 msgid "SDCARD: "
 msgstr "SDCARD: "
 
-#: ../src/SwapManager.py:259
+#: ../src/SwapManager.py:262
 msgid "SWAP file not found. You have to create the file before you try to activate it."
 msgstr "SWAP-bestand niet gevonden. U moet dit aanmaken alvorens het te kunnen gebruiken."
 
-#: ../src/ui.py:54 ../src/SwapManager.py:101
+#: ../src/ui.py:53 ../src/SwapManager.py:107
 msgid "SWAP manager"
 msgstr "SWAP manager"
 
-#: ../src/SwapManager.py:109
+#: ../src/SwapManager.py:112
 msgid "SWAP place:"
 msgstr "SWAP lokatie:"
 
-#: ../src/SwapManager.py:111
+#: ../src/SwapManager.py:114
 msgid "SWAP size:"
 msgstr "SWAP grootte:"
 
-#: ../src/BackupManager.py:719 ../src/BackupManager.py:810
-#: ../src/MountManager.py:335
+#: ../src/BackupManager.py:717 ../src/BackupManager.py:806
+#: ../src/MountManager.py:336
 msgid "Save"
 msgstr "Bewaar"
 
-#: ../src/ui.py:53 ../src/plugin.py:173 ../src/ScriptRunner.py:41
+#: ../src/ui.py:52 ../src/plugin.py:168 ../src/ScriptRunner.py:45
 msgid "Script runner"
 msgstr "Scriptrunner"
 
-#: ../src/BackupManager.py:754
+#: ../src/BackupManager.py:752
 msgid "Select"
 msgstr "Selecteer"
 
@@ -856,20 +808,20 @@ msgstr "Selecteer"
 msgid "Select a backup to restore:"
 msgstr "Kies een back-up om te herstellen:"
 
-#: ../src/IPKInstaller.py:104
+#: ../src/IPKInstaller.py:106
 msgid "Select a package to install:"
 msgstr "Selecteer een pakket om te installeren:"
 
-#: ../src/ImageManager.py:1315
+#: ../src/ImageManager.py:1316
 #, fuzzy
-msgid "Select an image to download for your STB:"
-msgstr "Selecteer een image om te downloaden voor %s:"
+msgid "Select an image to download:"
+msgstr "Kies een image om te flashen:"
 
-#: ../src/ImageManager.py:227 ../src/ImageManager.py:232
+#: ../src/ImageManager.py:236 ../src/ImageManager.py:241
 msgid "Select an image to flash:"
 msgstr "Kies een image om te flashen:"
 
-#: ../src/BackupManager.py:805
+#: ../src/BackupManager.py:803
 msgid "Select extra packages folder"
 msgstr "Kies de folder met extra plugins"
 
@@ -877,57 +829,49 @@ msgstr "Kies de folder met extra plugins"
 msgid "Select files/folders to backup"
 msgstr "Selecteer bestanden/mappen om te back-uppen"
 
-#: ../src/BackupManager.py:839
+#: ../src/BackupManager.py:835
 msgid "Select folder that contains plugins"
 msgstr "Kies de folder met plugins"
 
-#: ../src/SwapManager.py:300
+#: ../src/SwapManager.py:303
 msgid "Select the SWAP file size:"
 msgstr "Kies de grootte van het SWAP-bestand:"
 
-#: ../src/SoftcamManager.py:79
+#: ../src/SoftcamManager.py:82
 msgid "Select:"
 msgstr "Selecteer:"
 
-#: ../src/ImageManager.py:732
+#: ../src/ImageManager.py:736
 msgid "Setting up..."
 msgstr "Maakt instellingen..."
 
-#: ../src/ui.py:43 ../src/SoftcamManager.py:75
-msgid "Setup"
-msgstr "Instellingen"
-
-#: ../src/MountManager.py:195
+#: ../src/MountManager.py:198
 msgid "Setup mounts"
 msgstr "Mounts instellen"
 
-#: ../src/MountManager.py:117 ../src/MountManager.py:123
-#: ../src/MountManager.py:125 ../src/MountManager.py:127
-#: ../src/MountManager.py:129
+#: ../src/MountManager.py:123 ../src/MountManager.py:129
+#: ../src/MountManager.py:131 ../src/MountManager.py:133
+#: ../src/MountManager.py:135
 msgid "Size: "
 msgstr "Afmetingen: "
 
-#: ../src/SoftcamManager.py:75
-msgid "Softcam"
-msgstr "Softcam"
-
-#: ../src/plugin.py:97 ../src/plugin.py:171 ../src/SoftcamManager.py:74
+#: ../src/plugin.py:99 ../src/plugin.py:166 ../src/SoftcamManager.py:80
 msgid "Softcam manager"
 msgstr "Softcam manager"
 
-#: ../src/SoftcamManager.py:309
+#: ../src/SoftcamManager.py:273
 msgid "Softcam starting..."
 msgstr "Softcam start..."
 
-#: ../src/SoftcamManager.py:426
+#: ../src/SoftcamManager.py:371
 msgid "Softcam stopping..."
 msgstr "Softcam stopt..."
 
-#: ../src/SoftcamManager.py:601
+#: ../src/SoftcamManager.py:544
 msgid "SoftcamCheck"
 msgstr "Softcam controle"
 
-#: ../src/IPKInstaller.py:88
+#: ../src/IPKInstaller.py:90
 msgid "Sorry but that location does not exist or is not setup. Please set it up in the Backup manager setup menu."
 msgstr "Die locatie bestaat niet of is niet ingesteld.  U kunt dit doen vanuit het Back-up manager menu."
 
@@ -935,16 +879,16 @@ msgstr "Die locatie bestaat niet of is niet ingesteld.  U kunt dit doen vanuit h
 msgid "Sorry the feeds are down for maintenance. Please try again later."
 msgstr "Vanwege onderhoud zijn de feeds niet beschikbaar. Probeer het later nog eens."
 
-#: ../src/RestoreWizard.py:146
+#: ../src/RestoreWizard.py:148
 msgid "Sorry the feeds are down for maintenance. Please try using Backup manager to restore plugins later."
 msgstr "De feeds zijn momenteel niet actief vanwege onderhoud. U kunt later de Back-up manager gebruiken om de plugins alsnog te herstellen."
 
-#: ../src/RestoreWizard.py:263
+#: ../src/RestoreWizard.py:265
 msgid "Sorry the feeds are down for maintenance. Please try using the Backup manager to restore plugins later."
 msgstr "De feeds zijn momenteel niet actief vanwege onderhoud. U kunt later de Back-up manager gebruiken om de plugins alsnog te herstellen."
 
 #: ../src/BackupManager.py:355 ../src/BackupManager.py:357
-#: ../src/RestoreWizard.py:182 ../src/RestoreWizard.py:186
+#: ../src/RestoreWizard.py:184 ../src/RestoreWizard.py:188
 msgid "Sorry, but the file is not compatible with this image version."
 msgstr "Het bestand is niet verenigbaar met deze versie van de firmware."
 
@@ -952,47 +896,47 @@ msgstr "Het bestand is niet verenigbaar met deze versie van de firmware."
 msgid "Sorry, but the restore failed."
 msgstr "Het terugplaatsen is mislukt."
 
-#: ../src/SwapManager.py:294
+#: ../src/SwapManager.py:297
 msgid "Sorry, no physical devices that supports SWAP attached. Can't create SWAP file on network or fat32 file-systems."
 msgstr "Er is geen medium dat SWAP-bestanden ondersteunt. Een SWAP-bestand kan niet op een netwerk of een FAT32 systeem worden geplaatst."
 
-#: ../src/ImageManager.py:852
+#: ../src/ImageManager.py:856
 msgid "Sorry, not enough free RAM found, and no physical devices that supports SWAP attached. Can't create SWAP file on network or fat32 file-systems, unable to make backup."
 msgstr "Er is niet genoeg vrij RAM en er is geen medium dat SWAP-bestanden ondersteunt. Een SWAP-bestand kan niet op een netwerk of een FAT32 systeem worden geplaatst."
 
-#: ../src/SoftcamManager.py:133
+#: ../src/SoftcamManager.py:136
 msgid "Start"
 msgstr "Start"
 
-#: ../src/BackupManager.py:1105 ../src/BackupManager.py:1109
+#: ../src/BackupManager.py:1098 ../src/BackupManager.py:1102
 msgid "Starting..."
 msgstr "Bezig met starten...."
 
-#: ../src/SwapManager.py:113
+#: ../src/SwapManager.py:116
 msgid "Status:"
 msgstr "Status:"
 
-#: ../src/SoftcamManager.py:135
+#: ../src/SoftcamManager.py:138
 msgid "Stop"
 msgstr "Stop"
 
-#: ../src/MountManager.py:123
+#: ../src/MountManager.py:129
 msgid "TB"
 msgstr "TB"
 
-#: ../src/IPKInstaller.py:94 ../src/IPKInstaller.py:102
+#: ../src/IPKInstaller.py:96 ../src/IPKInstaller.py:104
 msgid "Temp folder"
 msgstr "Tijdelijke map"
 
-#: ../src/BackupManager.py:1206
+#: ../src/BackupManager.py:1199
 msgid "The backup location does not have enough free space."
 msgstr "De back-up lokatie heeft onvoldoende ruimte."
 
-#: ../src/ImageManager.py:814
+#: ../src/ImageManager.py:818
 msgid "The backup location does not have enough free space.\n"
 msgstr "De back-up lokatie heeft onvoldoende ruimte.\n"
 
-#: ../src/MountManager.py:372
+#: ../src/MountManager.py:373
 #, fuzzy
 msgid ""
 "The changes need a system restart to take effect.\n"
@@ -1001,11 +945,11 @@ msgstr ""
 "Het systeem moet herstart worden om deze aanpassing te effectueren.\n"
 "Uw %s %s nu herstarten?"
 
-#: ../src/BackupManager.py:229 ../src/ImageManager.py:227
+#: ../src/BackupManager.py:229 ../src/ImageManager.py:236
 msgid "The chosen location does not exist, using /media/hdd."
 msgstr "De gekozen lokatie bestaat niet; gebruikt /media/hdd."
 
-#: ../src/BackupManager.py:252 ../src/ImageManager.py:241
+#: ../src/BackupManager.py:252 ../src/ImageManager.py:250
 msgid "There is a problem with this device. Please reformat it and try again."
 msgstr "Er is een probleem met dit apparaat. Formatteer en probeer opnieuw."
 
@@ -1017,31 +961,31 @@ msgstr "Er is geen back-up om te verwijderen."
 msgid "There is no backup to restore."
 msgstr "Er is geen back-up om te herstellen."
 
-#: ../src/ImageManager.py:291
+#: ../src/ImageManager.py:300
 msgid "There is no image to delete."
 msgstr "Er is geen image om te verwijderen."
 
-#: ../src/ImageManager.py:406
+#: ../src/ImageManager.py:408
 msgid "There is no image to flash."
 msgstr "Er is geen image om te flashen."
 
-#: ../src/MountManager.py:296
+#: ../src/MountManager.py:299
 msgid "This device is already mounted as HDD."
 msgstr "Dit apparaat is al gemount als HDD."
 
-#: ../src/MountManager.py:138
+#: ../src/MountManager.py:144
 msgid "Type: "
 msgstr "Type: "
 
-#: ../src/MountManager.py:90
+#: ../src/MountManager.py:96
 msgid "USB: "
 msgstr "USB: "
 
-#: ../src/MountManager.py:196
+#: ../src/MountManager.py:199
 msgid "Un-mount"
 msgstr "Un-mount"
 
-#: ../src/ImageManager.py:437
+#: ../src/ImageManager.py:439
 #, python-format
 msgid ""
 "Unzip error (also sent to any debug log):\n"
@@ -1050,53 +994,53 @@ msgstr ""
 "Unzip-fout (ook naar enig debuglog gestuurd):\n"
 "%s"
 
-#: ../src/MountManager.py:367
+#: ../src/MountManager.py:368
 msgid "Updating mount locations..."
 msgstr "Mount-lokaties worden geüpdatet..."
 
-#: ../src/MountManager.py:219
+#: ../src/MountManager.py:222
 msgid "Use as HDD"
 msgstr "Gebruik als HDD"
 
-#: ../src/Multibootmgr.py:41
+#: ../src/Multibootmgr.py:39
 msgid "Use the cursor keys to select an installed image and then Erase button."
 msgstr "Gebruik de pijlthestoetsen om een geinstalleerd image te kiezen en vervolgens de 'wis-toets'."
 
 #: ../src/BackupManager.py:184 ../src/BackupManager.py:325
-#: ../src/BackupManager.py:368 ../src/ImageManager.py:162
-#: ../src/ImageManager.py:325
+#: ../src/BackupManager.py:368 ../src/ImageManager.py:171
+#: ../src/ImageManager.py:334
 msgid "View progress"
 msgstr "Bekijk voortgang"
 
-#: ../src/ui.py:42 ../src/plugin.py:82 ../src/plugin.py:168
+#: ../src/ui.py:44 ../src/plugin.py:84 ../src/plugin.py:163
 msgid "Vision"
 msgstr "Vision"
 
-#: ../src/plugin.py:181
+#: ../src/plugin.py:176
 msgid "Vision Backup manager"
 msgstr "Vision Back-up manager"
 
-#: ../src/plugin.py:182
+#: ../src/plugin.py:177
 msgid "Vision Image manager"
 msgstr "Vision Image manager"
 
-#: ../src/plugin.py:183
+#: ../src/plugin.py:178
 msgid "Vision Mount manager"
 msgstr "Vision Mount manager"
 
-#: ../src/plugin.py:185
+#: ../src/plugin.py:180
 msgid "Vision SWAP manager"
 msgstr "Vision SWAP manager"
 
-#: ../src/plugin.py:184
+#: ../src/plugin.py:179
 msgid "Vision Script runner"
 msgstr "Vision Script runner"
 
-#: ../src/SwapManager.py:305
+#: ../src/SwapManager.py:308
 msgid "Wait please while creating SWAP file..."
 msgstr "Wacht tijdens het aanmaken van het SWAP-bestand..."
 
-#: ../src/SoftcamManager.py:165
+#: ../src/SoftcamManager.py:168
 msgid ""
 "Wait please while scanning\n"
 "for softcam's..."
@@ -1104,23 +1048,23 @@ msgstr ""
 "Een ogenblikje geduld, zoeken \n"
 "naar softcams..."
 
-#: ../src/SwapManager.py:143
+#: ../src/SwapManager.py:146
 msgid "Wait please while scanning..."
 msgstr "Een ogenblikje geduld, zoeken is bezig..."
 
-#: ../src/BackupManager.py:49 ../src/ImageManager.py:49
+#: ../src/BackupManager.py:52 ../src/ImageManager.py:62
 msgid "Weekly"
 msgstr "Wekelijks"
 
-#: ../src/RestoreWizard.py:100 ../src/RestoreWizard.py:103
+#: ../src/RestoreWizard.py:102 ../src/RestoreWizard.py:105
 msgid "YES, to restore plugins"
 msgstr "JA, installeer plugins weer"
 
-#: ../src/RestoreWizard.py:94
+#: ../src/RestoreWizard.py:96
 msgid "YES, to restore settings"
 msgstr "JA, plaats de instellingen weer terug"
 
-#: ../src/ImageManager.py:361
+#: ../src/ImageManager.py:370
 msgid ""
 "You are about to flash an eMMC flash; we cannot take any responsibility for any errors or damage to your box during this process.\n"
 "Proceed with CAUTION!:\n"
@@ -1132,20 +1076,20 @@ msgstr ""
 "Weet u zeker dat u dit image wilt flashen:\n"
 " "
 
-#: ../src/ImageManager.py:408
+#: ../src/ImageManager.py:410
 msgid "You have decided not to flash image."
 msgstr "U heeft besloten geen image te flashen."
 
-#: ../src/SwapManager.py:325
+#: ../src/SwapManager.py:328
 msgid "You have to create a SWAP file before trying to activate the autostart."
 msgstr "U moet een SWAP-bestand aanmaken alvorens autostart te activeren."
 
-#: ../src/RestoreWizard.py:255
+#: ../src/RestoreWizard.py:257
 #, fuzzy
 msgid "Your STB could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."
 msgstr "Uw %s %s is nu niet verbonden met de plugin-feeds.  U kunt later de Back-up manager gebruiken om de plugins alsnog te herstellen."
 
-#: ../src/ImageManager.py:591
+#: ../src/ImageManager.py:593
 #, fuzzy
 msgid ""
 "Your STB is about to create a full image backup, this can take about 6 minutes to complete.\n"
@@ -1154,7 +1098,7 @@ msgstr ""
 "Uw %s %s staat op het punt een image back-up te maken; dit kan wel 6 minuten duren.\n"
 "Wilt u doorgaan?"
 
-#: ../src/BackupManager.py:1042
+#: ../src/BackupManager.py:1035
 #, fuzzy
 msgid ""
 "Your STB is about to run a backup of your settings and to detect your plugins.\n"
@@ -1168,7 +1112,7 @@ msgstr ""
 msgid "Your STB is not connected to a network. Please check your network settings and try again."
 msgstr "Uw %s %s is niet met een netwerk verbonden. Controleer uw netwerk (instellingen) en probeer het opnieuw."
 
-#: ../src/RestoreWizard.py:251
+#: ../src/RestoreWizard.py:253
 #, fuzzy
 msgid "Your STB is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."
 msgstr "Uw %s %s is niet verbonden met een netwerk.  U kunt later de Back-up manager gebruiken om de plugins alsnog te herstellen."
@@ -1178,17 +1122,17 @@ msgstr "Uw %s %s is niet verbonden met een netwerk.  U kunt later de Back-up man
 msgid "Your STB is not connected to the Internet. Please check your network settings and try again."
 msgstr "Uw  %s %s is niet verbonden met een netwerk. Controleer uw instellingen en probeer het opnieuw."
 
-#: ../src/RestoreWizard.py:152
+#: ../src/RestoreWizard.py:154
 #, fuzzy
 msgid "Your STB is not connected to the Internet. Please try using Backup manager to restore plugins later."
 msgstr "Uw %s %s is niet verbonden met het internet.  U kunt later de Back-up manager gebruiken om de plugins alsnog te herstellen."
 
-#: ../src/RestoreWizard.py:259
+#: ../src/RestoreWizard.py:261
 #, fuzzy
 msgid "Your STB is not connected to the Internet. Please try using the Backup manager to restore plugins later."
 msgstr "Uw %s %s is niet verbonden met het internet.  U kunt later de Back-up manager gebruiken om de plugins alsnog te herstellen."
 
-#: ../src/ImageManager.py:489
+#: ../src/ImageManager.py:491
 #, fuzzy, python-format
 msgid ""
 "ofgwrite error (also sent to any debug log):\n"
@@ -1197,22 +1141,22 @@ msgstr ""
 "OFGwrite-fout (ook opgenomen in enig debug log):\n"
 "%s"
 
-#: ../src/ImageManager.py:390
+#: ../src/ImageManager.py:392
 #, python-format
 msgid "slot%s - %s"
 msgstr "slot%s - %s"
 
-#: ../src/Multibootmgr.py:81
+#: ../src/Multibootmgr.py:79
 #, python-format
 msgid "slot%s - %s "
 msgstr "slot%s - %s "
 
-#: ../src/ImageManager.py:390
+#: ../src/ImageManager.py:392
 #, python-format
 msgid "slot%s - %s (current image)"
 msgstr "slot%s - %s (huidige image)"
 
-#: ../src/MountManager.py:104 ../src/MountManager.py:117
-#: ../src/MountManager.py:129
+#: ../src/MountManager.py:110 ../src/MountManager.py:123
+#: ../src/MountManager.py:135
 msgid "unavailable"
 msgstr "niet beschikbaar"

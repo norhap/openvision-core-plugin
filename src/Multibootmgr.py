@@ -33,9 +33,7 @@ class MultiBoot(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = "MultiBoot"
-		screentitle = _("Multiboot image manager")
-		title = screentitle
-		Screen.setTitle(self, title)
+		self.setTitle(_("Multiboot image manager"))
 		self.title = screentitle
 		self["key_red"] = StaticText(_("Cancel"))
 		self["labe14"] = StaticText(_("Use the cursor keys to select an installed image and then Erase button."))
@@ -46,6 +44,7 @@ class MultiBoot(Screen):
 		imagedict = []
 		self.getImageList = None
 		self.startit()
+
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"],
 		{
 			"red": boundFunction(self.close, None),
@@ -85,7 +84,7 @@ class MultiBoot(Screen):
 		if self.currentSelected != None:
 			if self.currentSelected[0][1] != "Queued":
 				if SystemInfo["MultibootStartupDevice"]:
-					message = _("Removal of this slot will not show in STB GUI.  Are you sure you want to delete image slot %s ?" %self.currentSelected[0][1])
+					message = _("Removal of this slot will not show in %s Gui.  Are you sure you want to delete image slot?" % (self.currentSelected[0][1]))
 					ybox = self.session.openWithCallback(self.doErase, MessageBox, message, MessageBox.TYPE_YESNO, default=True)
 					ybox.setTitle(_("Remove confirmation"))
 				else:

@@ -1,10 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-from . import _
 from os import mkdir, path, remove, rename, statvfs, system 
 import re
+
 from enigma import eTimer
+
+from . import _
+
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.ConfigList import ConfigListScreen
@@ -189,9 +192,8 @@ class VISIONDevicesPanel(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle =  _("Mount manager")
-		title = screentitle
-		Screen.setTitle(self, title)
+		self.setTitle(_("Mount manager"))
+
 		self['key_red'] = Label(" ")
 		self['key_green'] = Label(_("Setup mounts"))
 		self['key_yellow'] = Label(_("Un-mount"))
@@ -329,9 +331,8 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		Screen.__init__(self, session)
 		self.list = []
 		ConfigListScreen.__init__(self, self.list)
-		screentitle =  _("Choose where to mount your devices to:")
-		title = screentitle
-		Screen.setTitle(self, title)
+		self.setTitle(_("Choose where to mount your devices to:"))
+
 		self['key_green'] = Label(_("Save"))
 		self['key_red'] = Label(_("Cancel"))
 		self['Linconn'] = Label()
@@ -371,7 +372,7 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 	def delay(self, val):
 		message = _("The changes need a system restart to take effect.\nRestart your STB now?")
 		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
-		ybox.setTitle(_("Restart STB."))
+		ybox.setTitle(_("Restart STB"))
 
 	def add_fstab(self, result=None, retval=None, extra_args=None):
 		# print('[MountManager] RESULT:', result)

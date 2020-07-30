@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# for localized messages
 from . import _, PluginLanguageDomain
+
 from Screens.Screen import Screen
 from Screens.Console import Console
 from Screens.Setup import Setup
@@ -40,11 +42,11 @@ class VISIONScriptRunner(OpkgInstaller):
 				if pkg.find('.sh') >= 0:
 					list.append(pkg)
 		OpkgInstaller.__init__(self, session, list)
-		screentitle =  _("Script runner")
-		title = screentitle
-		Screen.setTitle(self, title)
+		self.setTitle(_("Script runner"))
+
 		self.skinName = ["VISIONScriptRunner", "OpkgInstaller"]
 		self["key_green"] = StaticText(_("Run"))
+
 		self['myactions'] = ActionMap(["MenuActions"],
 									  {
 									  "menu": self.createSetup,

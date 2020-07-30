@@ -1,11 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-from . import _
+# for localized messages
 from os import system, stat as mystat, path, remove, rename
 from glob import glob
 import stat
+
 from enigma import eTimer
+
+from . import _
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Screens.ChoiceBox import ChoiceBox
@@ -16,6 +19,7 @@ from Components.Pixmap import Pixmap
 from Components.Harddisk import harddiskmanager, getProcMounts
 from Components.Console import Console
 from Components.Sources.StaticText import StaticText
+
 
 config.visionsettings.swapautostart = ConfigYesNo(default=False)
 
@@ -100,9 +104,8 @@ class VISIONSwap(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle =  _("SWAP manager")
-		title = screentitle
-		Screen.setTitle(self, title)
+		self.setTitle(_("SWAP manager"))
+
 		self['lab1'] = Label()
 		self['autostart_on'] = Pixmap()
 		self['autostart_off'] = Pixmap()
