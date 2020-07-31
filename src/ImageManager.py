@@ -28,7 +28,7 @@ from Screens.Standby import TryQuitMainloop
 from Screens.TaskView import JobView
 from Tools.Directories import fileExists, pathExists, fileHas
 import Tools.CopyFiles
-from Tools.Multiboot import GetImagelist, GetCurrentImage
+from Tools.Multiboot import GetImagelist, getCurrentImage
 from Tools.Notifications import AddPopupWithCallback
 
 model = getBoxType()
@@ -386,7 +386,7 @@ class VISIONImageManager(Screen):
 			imagedict = GetImagelist()
 			choices = []
 			HIslot = len(imagedict) + 1
-			currentimageslot = GetCurrentImage()
+			currentimageslot = getCurrentImage()
 			print("ImageManager", currentimageslot, self.imagelist)
 			for x in range(1, HIslot):
 				choices.append(((_("slot%s - %s (current image)") if x == currentimageslot else _("slot%s - %s")) % (x, imagedict[x]["imagename"]), (x)))
@@ -692,7 +692,7 @@ class ImageBackup(Screen):
 		self.KERN = "mmc"
 		self.rootdir = 0
 		if SystemInfo["canMultiBoot"]:
-			slot = GetCurrentImage()
+			slot = getCurrentImage()
 			self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"].split("/")[2]
 			self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"].split("/")[2]
 			if SystemInfo["MultibootStartupDevice"]:

@@ -9,7 +9,7 @@ from Components.SystemInfo import SystemInfo
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Tools.BoundFunction import boundFunction
-from Tools.Multiboot import GetImagelist, GetCurrentImage, GetCurrentImageMode, EmptySlot
+from Tools.Multiboot import GetImagelist, getCurrentImage, getCurrentImageMode, EmptySlot
 
 class MultiBoot(Screen):
 
@@ -72,8 +72,8 @@ class MultiBoot(Screen):
 
 	def ImageList(self, imagedict):
 		list = []
-		mode = GetCurrentImageMode() or 0
-		currentimageslot = GetCurrentImage()
+		mode = getCurrentImageMode() or 0
+		currentimageslot = getCurrentImage()
 		for x in sorted(imagedict.keys()):
 			if imagedict[x]["imagename"] != _("Empty slot") and x != currentimageslot:
 				list.append(ChoiceEntryComponent('',((_("slot%s - %s ")) % (x, imagedict[x]['imagename']), x)))
