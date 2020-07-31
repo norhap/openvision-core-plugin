@@ -131,7 +131,7 @@ class VISIONImageManager(Screen):
 		self.BackupRunning = False
 		self.BackupDirectory = " "
 		if SystemInfo["canMultiBoot"]:
-			self.mtdboot = SystemInfo["MultibootStartupDevice"]
+			self.mtdboot = SystemInfo["MultibootStartupDevice"] # Maybe we can use getMachineMtdBoot() here?
 		self.imagelist = {}
 		self.getImageList = None
 		self.onChangedEntry = []
@@ -397,8 +397,8 @@ class VISIONImageManager(Screen):
 			if SystemInfo["canMultiBoot"]:
 				self.multibootslot = retval
 				print("ImageManager", retval, self.imagelist)
-				self.MTDKERNEL = SystemInfo["canMultiBoot"][self.multibootslot]["kernel"].split("/")[2]
-				self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"].split("/")[2]
+				self.MTDKERNEL = mtdkernel
+				self.MTDROOTFS = mtdrootfs
 			if self.sel:
 				if config.imagemanager.autosettingsbackup.value:
 					self.doSettingsBackup()
@@ -693,8 +693,8 @@ class ImageBackup(Screen):
 		self.rootdir = 0
 		if SystemInfo["canMultiBoot"]:
 			slot = getCurrentImage()
-			self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"].split("/")[2]
-			self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"].split("/")[2]
+			self.MTDKERNEL = mtdkernel
+			self.MTDROOTFS = mtdrootfs
 			if SystemInfo["MultibootStartupDevice"]:
 				self.ROOTFSSUBDIR = SystemInfo["canMultiBoot"][slot]["rootsubdir"]
 		else:
