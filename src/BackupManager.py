@@ -192,7 +192,7 @@ class VISIONBackupManager(Screen):
 	def showJobView(self, job):
 		from Screens.TaskView import JobView
 		Components.Task.job_manager.in_background = False
-		self.session.openWithCallback(self.JobViewCB, JobView, job, cancelable=False, afterEventChangeable=False, afterEvent="close")
+		self.session.openWithCallback(self.JobViewCB, JobView, job, cancelable=False, afterEventChangeable=False)
 
 	def JobViewCB(self, in_background):
 		Components.Task.job_manager.in_background = in_background
@@ -265,7 +265,7 @@ class VISIONBackupManager(Screen):
 			config.backupmanager.folderprefix.value = defaultprefix
 			config.backupmanager.folderprefix.save()
 # If the prefix doesn't start with the defaultprefix it is a tag...
-# 
+#
 		if not config.backupmanager.folderprefix.value.startswith(defaultprefix):
 			config.backupmanager.folderprefix.value = defaultprefix + "-" + config.backupmanager.folderprefix.value
 			config.backupmanager.folderprefix.save()
@@ -488,7 +488,7 @@ class VISIONBackupManager(Screen):
 	def Stage2Complete(self, result, retval, extra_args):
 		print('[BackupManager] Restoring Stage 2: Result ', result)
 		if result.find('wget returned 4') != -1: # probably no network adaptor connected
-			self.feeds = 'NONETWORK' 
+			self.feeds = 'NONETWORK'
 			self.Stage2Completed = True
 		if result.find('wget returned 8') != -1 or result.find('wget returned 1') != -1 or result.find('wget returned 255') != -1 or result.find('404 Not Found') != -1: # Server issued an error response, or there was a wget generic error code.
 			self.feeds = 'DOWN'
@@ -870,7 +870,7 @@ class XtraPluginsSelection(Screen):
 	def closeRecursive(self):
 		self.close(True)
 
-class VISIONBackupManagerMenu(Setup):
+class VISIONBackupManagerMenu(Screen):
 	skin = """
 	<screen name="VISIONBackupManagerMenu" position="center,center" size="560,550">
 		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
@@ -891,14 +891,18 @@ class VISIONBackupManagerMenu(Setup):
 	</screen>"""
 
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
-		Setup.__init__(self, session, setup, plugin, PluginLanguageDomain)
+		Screen.__init__(self, session, setup)
+		self.setup_title = _("Vision BackupManager Menu")
+		self.setTitle(self.setup_title)
 		self.skinName = "VISIONBackupManagerMenu"
 
 		self["actions2"] = ActionMap(["SetupActions", 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
 									 {
+									 "red": self.close,
+									 "green": config.save,
 									 "yellow": self.chooseFiles,
 									 "blue": self.chooseXtraPluginDir,
-									 }, -2)
+									 }, -4)
 
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("OK"))

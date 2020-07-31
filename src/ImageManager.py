@@ -119,7 +119,7 @@ class VISIONImageManager(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Image manager"))
+		self.setTitle(_("Vision Image manager"))
 
 		self["lab1"] = Label()
 		self["backupstatus"] = Label()
@@ -250,7 +250,7 @@ class VISIONImageManager(Screen):
 				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
-		self.session.openWithCallback(self.setupDone, Setup, "visionimagemanager", "SystemPlugins/Vision", PluginLanguageDomain)
+		self.setupDone()
 
 	def doDownload(self):
 		self.choices = [("OpenVision", 1), ("OpenATV", 2), ("OpenPli",3)]
@@ -683,7 +683,7 @@ class ImageBackup(Screen):
 		self.UBINIZE_ARGS = getMachineUBINIZE()
 		self.MKUBIFS_ARGS = getMachineMKUBIFS()
 		self.ROOTFSTYPE = imagefs.strip()
-		self.ROOTFSSUBDIR = "none"	
+		self.ROOTFSSUBDIR = "none"
 		self.EMMCIMG = "none"
 		self.MTDBOOT = "none"
 		if SystemInfo["canBackupEMC"]:

@@ -41,7 +41,7 @@ class VISIONMenu(Screen, ProtectedScreen):
 	def __init__(self, session, args=0):
 		Screen.__init__(self, session)
 		ProtectedScreen.__init__(self)
-		self.setTitle(_("Vision"))
+		self.setTitle(_("Vision Core"))
 		self.menu = args
 		self.list = []
 		if self.menu == 0:
@@ -78,7 +78,7 @@ class VISIONMenu(Screen, ProtectedScreen):
 
 	def isProtected(self):
 		return config.ParentalControl.setuppinactive.value and config.ParentalControl.config_sections.visionmenu.value
-	
+
 	def createSummary(self):
 		from Screens.PluginBrowser import PluginBrowserSummary
 
