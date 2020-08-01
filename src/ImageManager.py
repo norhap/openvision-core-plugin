@@ -131,7 +131,7 @@ class VISIONImageManager(Screen):
 		self.BackupRunning = False
 		self.BackupDirectory = " "
 		if SystemInfo["canMultiBoot"]:
-			self.mtdboot = SystemInfo["MultibootStartupDevice"]
+			self.mtdboot = SystemInfo["HasRootSubdir"]
 		self.imagelist = {}
 		self.getImageList = None
 		self.onChangedEntry = []
@@ -205,7 +205,7 @@ class VISIONImageManager(Screen):
 		Components.Task.job_manager.in_background = in_background
 
 	def populate_List(self):
-		if config.imagemanager.backuplocation.value.endswith("/"):
+		if config.imagemanager.backuplocation.getValue():
 			mount = config.imagemanager.backuplocation.value, config.imagemanager.backuplocation.value[:-1]
 		else:
 			mount = config.imagemanager.backuplocation.value + "/", config.imagemanager.backuplocation.value
@@ -452,7 +452,7 @@ class VISIONImageManager(Screen):
 			CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST
 			# normal non multiboot receiver
 			if SystemInfo["canMultiBoot"]:
-				if SystemInfo["HiSilicon"] and SystemInfo["MultibootStartupDevice"] is False:  # SF8008 type receiver with single eMMC & SD card multiboot
+				if SystemInfo["HiSilicon"] and SystemInfo["HasRootSubdir"] is False:  # SF8008 type receiver with single eMMC & SD card multiboot
 					CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
 				elif SystemInfo["HiSilicon"] and SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"] is None:	# sf8008 type receiver using SD card in multiboot
 					CMD = "/usr/bin/ofgwrite -r%s -k%s -m0 '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
@@ -475,7 +475,7 @@ class VISIONImageManager(Screen):
 		fbClass.getInstance().unlock()
 		print("[ImageManager] ofgwrite retval :", retval)
 		if retval == 0:
-			if SystemInfo["HiSilicon"] and SystemInfo["MultibootStartupDevice"] is False and self.HasSDmmc is False:	# sf8008 receiver 1 eMMC parition, No SD card
+			if SystemInfo["HiSilicon"] and SystemInfo["HasRootSubdir"] is False and self.HasSDmmc is False:	# sf8008 receiver 1 eMMC parition, No SD card
 				self.session.open(TryQuitMainloop, 2)
 			if SystemInfo["canMultiBoot"]:
 				print("[ImageManager] slot %s result %s\n" % (self.multibootslot, result))
@@ -964,7 +964,7 @@ class ImageBackup(Screen):
 				self.commands.append("mount /dev/%s %s/root" % (self.MTDROOTFS, self.TMPDIR))
 			else:
 				self.commands.append("mount --bind / %s/root" % self.TMPDIR)
-			if SystemInfo["MultibootStartupDevice"]:
+			if SystemInfo["HasRootSubdir"]:
 				self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root/%s --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR, self.ROOTFSSUBDIR))
 			else:
 				self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR))
@@ -1216,7 +1216,7 @@ class ImageBackup(Screen):
 				self.session.open(MessageBox, _("Multiboot only able to restore this backup to mmc slot1"), MessageBox.TYPE_INFO, timeout=20)
 			if path.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat"):
 				copy("/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat", self.MAINDESTROOT + "/burn.bat")
-		elif SystemInfo["MultibootStartupDevice"]:
+		elif SystemInfo["HasRootSubdir"]:
 				with open(self.MAINDEST + "/force_%s_READ.ME" % model, "w") as fileout:
 					line1 = "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick" % (model, model)
 					line2 = "When you enter the recovery menu then it will force the image to be installed in the linux selection"
@@ -1251,8 +1251,8 @@ class ImageBackup(Screen):
 	def doBackup6(self):
 		zipfolder = path.split(self.MAINDESTROOT)
 		self.commands = []
-		if SystemInfo["MultibootStartupDevice"]:
-			self.commands.append("7za a -r -bt -bd %s/%s-%s-%s-%s-%s_mmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROVERSION, self.DISTROBUILD, self.MODEL, self.BackupDate, self.MAINDESTROOT))
+		if SystemInfo["HasRootSubdir"]:
+			self.commands.append("a -r -bt -bd %s/%s-%s-%s-%s-%s_mmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROVERSION, self.DISTROBUILD, self.MODEL, self.BackupDate, self.MAINDESTROOT))
 		else:
 			self.commands.append("cd " + self.MAINDESTROOT + " && zip -r " + self.MAINDESTROOT + ".zip *")
 		self.commands.append("rm -rf " + self.MAINDESTROOT)
