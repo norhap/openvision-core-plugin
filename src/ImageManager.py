@@ -398,7 +398,7 @@ class VISIONImageManager(Screen):
 				self.multibootslot = retval
 				print("ImageManager", retval, self.imagelist)
 				self.MTDKERNEL = SystemInfo["canMultiBoot"][self.multibootslot]["kernel"].split("/")[2]
-				self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"].split("/")[2]
+				self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["device"].split("/")[2]
 			if self.sel:
 				if config.imagemanager.autosettingsbackup.value:
 					self.doSettingsBackup()
@@ -694,7 +694,7 @@ class ImageBackup(Screen):
 		if SystemInfo["canMultiBoot"]:
 			slot = getCurrentImage()
 			self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"].split("/")[2]
-			self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"].split("/")[2]
+			self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["device"].split("/")[2]
 			if SystemInfo["MultibootStartupDevice"]:
 				self.ROOTFSSUBDIR = SystemInfo["canMultiBoot"][slot]["rootsubdir"]
 		else:
