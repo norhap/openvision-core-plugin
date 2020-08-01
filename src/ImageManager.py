@@ -695,7 +695,7 @@ class ImageBackup(Screen):
 			slot = getCurrentImage()
 			self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"].split("/")[2]
 			self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["device"].split("/")[2]
-			if SystemInfo["MultibootStartupDevice"]:
+			if SystemInfo["HasRootSubdir"]:
 				self.ROOTFSSUBDIR = SystemInfo["canMultiBoot"][slot]["rootsubdir"]
 		else:
 			self.MTDKERNEL = mtdkernel
