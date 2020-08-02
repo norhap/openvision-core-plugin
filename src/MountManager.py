@@ -343,7 +343,7 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		self.updateList()
 
 	def updateList(self, result=None, retval=None, extra_args=None):
-		scanning = _("Please wait while scanning your STB devices...")
+		scanning = _("Please wait while scanning your receiver devices...")
 		self['Linconn'].setText(scanning)
 		self.activityTimer.start(10)
 
@@ -370,9 +370,9 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		ybox.setTitle(_("Please wait."))
 
 	def delay(self, val):
-		message = _("The changes need a system restart to take effect.\nRestart your STB now?")
+		message = _("The changes need a system restart to take effect.\nRestart your receiver now?")
 		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
-		ybox.setTitle(_("Restart STB"))
+		ybox.setTitle(_("Restart receiver"))
 
 	def add_fstab(self, result=None, retval=None, extra_args=None):
 		# print('[MountManager] RESULT:', result)

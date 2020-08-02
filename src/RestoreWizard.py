@@ -18,8 +18,6 @@ class RestoreWizard(WizardLanguage, Rc):
 		WizardLanguage.__init__(self, session, showSteps=False, showStepSlider=False)
 		Rc.__init__(self)
 		self.session = session
-		self.skinName = "StartWizard"
-		self.skin = "StartWizard.skin"
 		self["wizard"] = Pixmap()
 		self.selectedAction = None
 		self.NextStep = None
@@ -151,7 +149,7 @@ class RestoreWizard(WizardLanguage, Rc):
 				print('[RestoreWizard] Stage 6: No Network')
 				self.didPluginRestore = True
 				self.NextStep = 'reboot'
-				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your STB is not connected to the Internet. Please try using Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver is not connected to the Internet. Please try using Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 				self.buildListRef.setTitle(_("Restore wizard"))
 			elif self.feeds == 'ERROR':
 				self.NextStep = 'pluginrestore'
@@ -250,15 +248,15 @@ class RestoreWizard(WizardLanguage, Rc):
 		print('[RestoreWizard] Stage 4: Feeds Test Result', result)
 		if result.find('wget returned 4') != -1:
 			self.NextStep = 'reboot'
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your STB is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif result.find('wget returned 8') != -1:
 			self.NextStep = 'reboot'
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your STB could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif result.find('bad address') != -1:
 			self.NextStep = 'reboot'
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your STB is not connected to the Internet. Please try using the Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver is not connected to the Internet. Please try using the Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif result.find('wget returned 1') != -1 or result.find('wget returned 255') != -1 or result.find('404 Not Found') != -1:
 			self.NextStep = 'reboot'

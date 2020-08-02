@@ -32,9 +32,7 @@ class MultiBoot(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.skinName = "MultiBoot"
 		self.setTitle(_("Multiboot image manager"))
-		self.title = screentitle
 		self["key_red"] = StaticText(_("Cancel"))
 		self["labe14"] = StaticText(_("Use the cursor keys to select an installed image and then Erase button."))
 		self["labe15"] = StaticText(_("Note: slot list does not show current image or empty slots."))
@@ -62,10 +60,6 @@ class MultiBoot(Screen):
 			"rightRepeated": self.keyRight,
 			"menu": boundFunction(self.close, True),
 		}, -1)
-		self.onLayoutFinish.append(self.layoutFinished)
-
-	def layoutFinished(self):
-		self.setTitle(self.title)
 
 	def startit(self):
 		self.getImageList = GetImagelist(self.ImageList)

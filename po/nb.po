@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-30 12:08+0430\n"
+"POT-Creation-Date: 2020-08-03 03:15+0430\n"
 "PO-Revision-Date: 2013-10-20 17:17+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@o2.co.uk>\n"
 "Language-Team: yngvekl <yklarsen@gmail.com>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: ../src/BackupManager.py:155 ../src/BackupManager.py:289
-#: ../src/ImageManager.py:148 ../src/ImageManager.py:288
+#: ../src/BackupManager.py:158 ../src/BackupManager.py:292
+#: ../src/ImageManager.py:151 ../src/ImageManager.py:291
 msgid "%a %e %b  %-H:%M"
 msgstr "%a %e %b  %-H:%M"
 
@@ -55,8 +55,8 @@ msgstr "8 MB"
 msgid "96 Mb"
 msgstr "96 MB"
 
-#: ../src/BackupManager.py:501 ../src/RestoreWizard.py:158
-#: ../src/RestoreWizard.py:269
+#: ../src/BackupManager.py:504 ../src/RestoreWizard.py:156
+#: ../src/RestoreWizard.py:267
 #, fuzzy
 msgid "A background update check is in progress, please try again."
 msgstr "En oppdateringssjekk kjører i bakgrunnen, vennligst vent før du prøver igjen."
@@ -77,14 +77,14 @@ msgstr "Aktiv:"
 msgid "Are you ready to install ?"
 msgstr "Klar til å installere?"
 
-#: ../src/Multibootmgr.py:91
+#: ../src/Multibootmgr.py:85
 #, fuzzy, python-format
 msgid "Are you sure you want to delete image slot %s ?"
 msgstr ""
 "Sikker på at du vil slette backup'en:\n"
 " "
 
-#: ../src/BackupManager.py:297
+#: ../src/BackupManager.py:300
 msgid ""
 "Are you sure you want to delete this backup:\n"
 " "
@@ -92,7 +92,7 @@ msgstr ""
 "Sikker på at du vil slette backup'en:\n"
 " "
 
-#: ../src/ImageManager.py:296
+#: ../src/ImageManager.py:299
 #, fuzzy
 msgid ""
 "Are you sure you want to delete this image backup:\n"
@@ -101,7 +101,7 @@ msgstr ""
 "Sikker på at du vil slette backup'en:\n"
 " "
 
-#: ../src/ImageManager.py:1456
+#: ../src/ImageManager.py:1459
 msgid ""
 "Are you sure you want to download this image:\n"
 " "
@@ -109,7 +109,7 @@ msgstr ""
 "Sikker på at du vil laste ned dette imaget:\n"
 " "
 
-#: ../src/ImageManager.py:372
+#: ../src/ImageManager.py:375
 #, fuzzy
 msgid ""
 "Are you sure you want to flash this image:\n"
@@ -118,7 +118,7 @@ msgstr ""
 "Sikker på at du vil laste ned dette imaget:\n"
 " "
 
-#: ../src/BackupManager.py:360
+#: ../src/BackupManager.py:363
 msgid ""
 "Are you sure you want to restore this backup:\n"
 " "
@@ -130,55 +130,55 @@ msgstr ""
 msgid "Autostart"
 msgstr "Autostart"
 
-#: ../src/ImageManager.py:764
+#: ../src/ImageManager.py:767
 msgid "Backing up eMMC partitions for USB flash ..."
 msgstr ""
 
-#: ../src/ImageManager.py:768
+#: ../src/ImageManager.py:771
 msgid "Backing up eMMC partitions for USB flash..."
 msgstr ""
 
-#: ../src/BackupManager.py:1114 ../src/BackupManager.py:1118
-#: ../src/BackupManager.py:1130 ../src/BackupManager.py:1134
+#: ../src/BackupManager.py:1118 ../src/BackupManager.py:1122
+#: ../src/BackupManager.py:1134 ../src/BackupManager.py:1138
 msgid "Backing up files..."
 msgstr "Backup av filer pågår..."
 
-#: ../src/ImageManager.py:748 ../src/ImageManager.py:752
+#: ../src/ImageManager.py:751 ../src/ImageManager.py:755
 #, fuzzy
 msgid "Backing up kernel..."
 msgstr "Backup av filer pågår..."
 
-#: ../src/ImageManager.py:756 ../src/ImageManager.py:760
+#: ../src/ImageManager.py:759 ../src/ImageManager.py:763
 #, fuzzy
 msgid "Backing up root file system..."
 msgstr "Backup av filer pågår..."
 
-#: ../src/ImageManager.py:796
+#: ../src/ImageManager.py:799
 #, fuzzy
 msgid "Backup complete."
 msgstr "Backup fullført..."
 
-#: ../src/BackupManager.py:1138
+#: ../src/BackupManager.py:1142
 #, fuzzy
 msgid "Backup complete..."
 msgstr "Backup fullført..."
 
-#: ../src/ImageManager.py:327
+#: ../src/ImageManager.py:330
 #, fuzzy
 msgid "Backup confirmation"
 msgstr "Bekreftelse på backup"
 
-#: ../src/BackupManager.py:933
+#: ../src/BackupManager.py:937
 #, fuzzy
 msgid "Backup created"
 msgstr "Backup opprettet"
 
-#: ../src/BackupManager.py:1301
+#: ../src/BackupManager.py:1305
 #, fuzzy
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Backup mislyktes - eks. enhet er full eller feil backup destinasjon"
 
-#: ../src/BackupManager.py:344
+#: ../src/BackupManager.py:347
 #, fuzzy
 msgid ""
 "Backup in progress,\n"
@@ -187,10 +187,11 @@ msgstr ""
 "Backup pågår,\n"
 "vent til den er ferdig før du prøver igjen"
 
-#: ../src/BackupManager.py:134 ../src/BackupManager.py:181
-#: ../src/BackupManager.py:313 ../src/BackupManager.py:328
-#: ../src/BackupManager.py:371 ../src/BackupManager.py:389
-#: ../src/BackupManager.py:1096 ../src/ui.py:48 ../src/ImageManager.py:347
+#: ../src/BackupManager.py:137 ../src/BackupManager.py:184
+#: ../src/BackupManager.py:316 ../src/BackupManager.py:331
+#: ../src/BackupManager.py:374 ../src/BackupManager.py:392
+#: ../src/BackupManager.py:898 ../src/BackupManager.py:1100 ../src/ui.py:48
+#: ../src/ImageManager.py:350
 #, fuzzy
 msgid "Backup manager"
 msgstr "Backup Manager"
@@ -200,8 +201,8 @@ msgstr "Backup Manager"
 msgid "Can't un-mount the partition; make sure it is not being used for SWAP or record/timeshift paths."
 msgstr "Kan ikke koble fra partisjon, sjekk at denne ikke brukes til swap, opptak eller timeshift"
 
-#: ../src/BackupManager.py:716 ../src/BackupManager.py:805
-#: ../src/BackupManager.py:903 ../src/Multibootmgr.py:38
+#: ../src/BackupManager.py:719 ../src/BackupManager.py:808
+#: ../src/BackupManager.py:908 ../src/Multibootmgr.py:36
 #: ../src/MountManager.py:337
 msgid "Cancel"
 msgstr "Avbryt"
@@ -211,21 +212,21 @@ msgstr "Avbryt"
 msgid "Change location"
 msgstr "Endre destinasjon"
 
-#: ../src/ImageManager.py:740
+#: ../src/ImageManager.py:743
 #, fuzzy
 msgid "Checking free RAM.."
 msgstr "Sjekker ledig minne..."
 
-#: ../src/SoftcamManager.py:546
+#: ../src/SoftcamManager.py:557
 msgid "Checking softcams..."
 msgstr "Sjekker softcam'er..."
 
-#: ../src/BackupManager.py:905
+#: ../src/BackupManager.py:910
 #, fuzzy
 msgid "Choose files"
 msgstr "Velg filer"
 
-#: ../src/BackupManager.py:906
+#: ../src/BackupManager.py:911
 #, fuzzy
 msgid "Choose local IPK's folder"
 msgstr "Velg lokal ipk's mappe"
@@ -234,17 +235,17 @@ msgstr "Velg lokal ipk's mappe"
 msgid "Choose where to mount your devices to:"
 msgstr "Velg hvor enheten skal tilkobles:"
 
-#: ../src/ui.py:57 ../src/ImageManager.py:1317 ../src/SoftcamManager.py:105
+#: ../src/ui.py:57 ../src/ImageManager.py:1320 ../src/SoftcamManager.py:105
 #: ../src/IPKInstaller.py:54 ../src/IPKInstaller.py:176
 #: ../src/SwapManager.py:119
 msgid "Close"
 msgstr "Lukk"
 
-#: ../src/BackupManager.py:411 ../src/BackupManager.py:415
+#: ../src/BackupManager.py:414 ../src/BackupManager.py:418
 msgid "Comparing against backup..."
 msgstr "Sammenligner med backup..."
 
-#: ../src/ImageManager.py:1424
+#: ../src/ImageManager.py:1427
 msgid "Compress"
 msgstr ""
 
@@ -262,24 +263,24 @@ msgstr "Opprett og administrer swapfilene."
 msgid "Create and flash complete images of your system."
 msgstr "Opprett og gjenopprett komplett image av systemet"
 
-#: ../src/ImageManager.py:944 ../src/ImageManager.py:947
-#: ../src/ImageManager.py:950 ../src/ImageManager.py:952
-#: ../src/ImageManager.py:954
+#: ../src/ImageManager.py:947 ../src/ImageManager.py:950
+#: ../src/ImageManager.py:953 ../src/ImageManager.py:955
+#: ../src/ImageManager.py:957
 #, fuzzy
 msgid "Create:"
 msgstr "Opprett"
 
-#: ../src/ImageManager.py:744
+#: ../src/ImageManager.py:747
 #, fuzzy
 msgid "Creating SWAP.."
 msgstr "Oppretter swap..."
 
-#: ../src/BackupManager.py:403 ../src/BackupManager.py:407
-#: ../src/BackupManager.py:1106 ../src/BackupManager.py:1110
+#: ../src/BackupManager.py:406 ../src/BackupManager.py:410
+#: ../src/BackupManager.py:1110 ../src/BackupManager.py:1114
 msgid "Creating list of installed plugins..."
 msgstr "Oppretter liste over installerte plugins..."
 
-#: ../src/ImageManager.py:788 ../src/ImageManager.py:792
+#: ../src/ImageManager.py:791 ../src/ImageManager.py:795
 msgid "Creating zip..."
 msgstr ""
 
@@ -297,27 +298,27 @@ msgstr "Daglig"
 msgid "Deactivate"
 msgstr "Deaktiver"
 
-#: ../src/BackupManager.py:140 ../src/ImageManager.py:126
+#: ../src/BackupManager.py:143 ../src/ImageManager.py:129
 #: ../src/SwapManager.py:193
 msgid "Delete"
 msgstr "Slett"
 
-#: ../src/BackupManager.py:750
+#: ../src/BackupManager.py:753
 msgid "Deselect"
 msgstr "Fjern valg"
 
-#: ../src/BackupManager.py:232 ../src/BackupManager.py:252
-#: ../src/ImageManager.py:241 ../src/ImageManager.py:250
+#: ../src/BackupManager.py:235 ../src/BackupManager.py:255
+#: ../src/ImageManager.py:244 ../src/ImageManager.py:253
 #: ../src/MountManager.py:144 ../src/MountManager.py:260
 #: ../src/MountManager.py:275
 msgid "Device: "
 msgstr "Enhet:"
 
-#: ../src/ImageManager.py:218
+#: ../src/ImageManager.py:221
 msgid "Device: None available"
 msgstr "Enhet: ingen tilgjengelig"
 
-#: ../src/BackupManager.py:213
+#: ../src/BackupManager.py:216
 #, fuzzy
 msgid "Device: none available"
 msgstr "Enhet: ingen tilgjengelig"
@@ -327,17 +328,17 @@ msgstr "Enhet: ingen tilgjengelig"
 msgid "Disable startup"
 msgstr "Deaktiver oppstart"
 
-#: ../src/ImageManager.py:258
+#: ../src/ImageManager.py:261
 msgid "Do you want to change download url"
 msgstr ""
 
-#: ../src/ImageManager.py:325
+#: ../src/ImageManager.py:328
 msgid ""
 "Do you want to create a full image backup?\n"
 "This can take about 6 minutes to complete."
 msgstr ""
 
-#: ../src/ImageManager.py:368
+#: ../src/ImageManager.py:371
 #, fuzzy, python-format
 msgid ""
 "Do you want to flash image\n"
@@ -351,49 +352,49 @@ msgstr ""
 msgid "Do you want to restart GUI now ?"
 msgstr "Vil du gjenopprette Enigma2 plugins?"
 
-#: ../src/BackupManager.py:648
+#: ../src/BackupManager.py:651
 msgid "Do you want to restore your Enigma2 plugins ?"
 msgstr "Vil du gjenopprette Enigma2 plugins?"
 
-#: ../src/BackupManager.py:443
+#: ../src/BackupManager.py:446
 #, fuzzy
 msgid "Do you want to restore your enigma2 settings ?"
 msgstr "Vil du gjenopprette Enigma2 innstillinger?"
 
-#: ../src/ImageManager.py:1426
+#: ../src/ImageManager.py:1429
 #, fuzzy
 msgid "DownLoad"
 msgstr "Last ned"
 
-#: ../src/ImageManager.py:1318
+#: ../src/ImageManager.py:1321
 msgid "Download"
 msgstr "Last ned"
 
-#: ../src/ImageManager.py:1458
+#: ../src/ImageManager.py:1461
 #, fuzzy
 msgid "Download confirmation"
 msgstr "Bekreftelse på nedlasting"
 
-#: ../src/ImageManager.py:1471
+#: ../src/ImageManager.py:1474
 #, fuzzy
 msgid "Downloading"
 msgstr "Last ned"
 
-#: ../src/ImageManager.py:128 ../src/ImageManager.py:1312
+#: ../src/ImageManager.py:131 ../src/ImageManager.py:1315
 msgid "Downloads"
 msgstr "Nedlastinger"
 
-#: ../src/ImageManager.py:429
+#: ../src/ImageManager.py:432
 msgid "ET8500 Image Restore"
 msgstr ""
 
-#: ../src/ImageManager.py:427
+#: ../src/ImageManager.py:430
 msgid ""
 "ET8500 Multiboot: Yes to restore OS1 No to restore OS2:\n"
 " "
 msgstr ""
 
-#: ../src/Multibootmgr.py:78
+#: ../src/Multibootmgr.py:72
 msgid "Empty slot"
 msgstr ""
 
@@ -407,20 +408,20 @@ msgstr "Aktiver swap ved oppstart"
 msgid "Enable startup"
 msgstr "Aktiver oppstart"
 
-#: ../src/BackupManager.py:1060 ../src/ImageManager.py:618
+#: ../src/BackupManager.py:1064 ../src/ImageManager.py:621
 #, fuzzy
 msgid "Enough retries, delaying till next schedule."
 msgstr "Nok forsøk, utsetter til neste tidspunkt."
 
-#: ../src/Multibootmgr.py:41
+#: ../src/Multibootmgr.py:39
 msgid "Erase"
 msgstr ""
 
-#: ../src/RestoreWizard.py:92
+#: ../src/RestoreWizard.py:90
 msgid "Exit the restore wizard"
 msgstr "Avslutt veiviseren for gjenoppretting"
 
-#: ../src/ImageManager.py:1424
+#: ../src/ImageManager.py:1427
 msgid "Expand"
 msgstr ""
 
@@ -428,25 +429,25 @@ msgstr ""
 msgid "Extra IPK's"
 msgstr "Ekstra IPK's"
 
-#: ../src/ImageManager.py:129
+#: ../src/ImageManager.py:132
 msgid "Flash"
 msgstr ""
 
-#: ../src/ImageManager.py:374
+#: ../src/ImageManager.py:377
 #, fuzzy
 msgid "Flash confirmation"
 msgstr "Bekreftelse på nedlasting"
 
-#: ../src/ImageManager.py:425
+#: ../src/ImageManager.py:428
 msgid "Flash image unzip successful."
 msgstr ""
 
-#: ../src/SoftcamManager.py:217 ../src/SoftcamManager.py:255
+#: ../src/SoftcamManager.py:222 ../src/SoftcamManager.py:266
 #, fuzzy
 msgid "Found non-standard softcam, trying to start, this may fail."
 msgstr "Fant ikke-standard softcam, forsøker å starte men dette kan mislykkes"
 
-#: ../src/ImageManager.py:241
+#: ../src/ImageManager.py:244
 msgid "Free space:"
 msgstr ""
 
@@ -454,7 +455,7 @@ msgstr ""
 msgid "GB"
 msgstr "GB"
 
-#: ../src/H9SDmanager.py:32
+#: ../src/H9SDmanager.py:31
 #, fuzzy
 msgid "H9 SDcard manager"
 msgstr "Softcam Manager"
@@ -473,14 +474,13 @@ msgstr "HARDDISK: "
 msgid "IPK installer"
 msgstr "IPK Installer"
 
-#: ../src/ImageManager.py:1361
+#: ../src/ImageManager.py:1364
 #, python-format
 msgid "Image Version %s"
 msgstr ""
 
-#: ../src/ui.py:49 ../src/ImageManager.py:122 ../src/ImageManager.py:168
-#: ../src/ImageManager.py:316 ../src/ImageManager.py:337
-#: ../src/ImageManager.py:734
+#: ../src/ui.py:49 ../src/ImageManager.py:171 ../src/ImageManager.py:319
+#: ../src/ImageManager.py:340 ../src/ImageManager.py:737
 #, fuzzy
 msgid "Image manager"
 msgstr "Image Manager"
@@ -493,15 +493,15 @@ msgstr "Inaktiv"
 msgid "Info"
 msgstr "Info"
 
-#: ../src/H9SDmanager.py:36
+#: ../src/H9SDmanager.py:34
 msgid "Init SDcard"
 msgstr ""
 
-#: ../src/H9SDmanager.py:51
+#: ../src/H9SDmanager.py:45
 msgid "Init Zgemma H9 SDCARD - please reboot after use."
 msgstr ""
 
-#: ../src/H9SDmanager.py:75
+#: ../src/H9SDmanager.py:69
 msgid "Init Zgemma H9 USB/SDA1 - please reboot after use."
 msgstr ""
 
@@ -539,11 +539,11 @@ msgstr ""
 msgid "It seems you have not setup an extra location. Please set it up in the Backup manager setup menu."
 msgstr "En ekstra mappe er ikke valgt, vennligst velg mappe i oppsettsmenyen til Backup Manager"
 
-#: ../src/BackupManager.py:929 ../src/SoftcamManager.py:467
+#: ../src/BackupManager.py:934 ../src/SoftcamManager.py:478
 msgid "Logs"
 msgstr ""
 
-#: ../src/ImageManager.py:241 ../src/MountManager.py:133
+#: ../src/ImageManager.py:244 ../src/MountManager.py:133
 msgid "MB"
 msgstr "MB"
 
@@ -580,44 +580,62 @@ msgstr "Tilkobling:"
 msgid "Move Nand root to SD card"
 msgstr ""
 
-#: ../src/ImageManager.py:780 ../src/ImageManager.py:784
+#: ../src/ImageManager.py:783 ../src/ImageManager.py:787
 #, fuzzy
 msgid "Moving to backup Location..."
 msgstr "Flytter til backup destinasjon..."
 
-#: ../src/ImageManager.py:501
+#: ../src/ImageManager.py:504
 msgid "Multiboot ERROR! - no STARTUP in boot partition."
 msgstr ""
 
-#: ../src/Multibootmgr.py:36
+#: ../src/Multibootmgr.py:35
 #, fuzzy
 msgid "Multiboot image manager"
 msgstr "Image Manager"
 
-#: ../src/ImageManager.py:433 ../src/ImageManager.py:1216
+#: ../src/ImageManager.py:436 ../src/ImageManager.py:1219
 msgid "Multiboot only able to restore this backup to mmc slot1"
 msgstr ""
 
-#: ../src/RestoreWizard.py:103 ../src/RestoreWizard.py:106
+#: ../src/RestoreWizard.py:101 ../src/RestoreWizard.py:104
 msgid "NO, do not restore plugins"
 msgstr "NEI, ikke gjenopprett plugins"
 
-#: ../src/RestoreWizard.py:96
+#: ../src/RestoreWizard.py:94
 msgid "NO, do not restore settings"
 msgstr "NEI, ikke gjenopprett innstillinger"
 
-#: ../src/BackupManager.py:186 ../src/ImageManager.py:173
+#: ../src/BackupManager.py:189 ../src/ImageManager.py:176
 #, fuzzy
 msgid "New backup"
 msgstr "Ny backup"
 
-#: ../src/BackupManager.py:155 ../src/BackupManager.py:157
-#: ../src/BackupManager.py:289 ../src/BackupManager.py:291
-#: ../src/ImageManager.py:148 ../src/ImageManager.py:150
-#: ../src/ImageManager.py:288 ../src/ImageManager.py:290
+#: ../src/BackupManager.py:158 ../src/BackupManager.py:160
+#: ../src/BackupManager.py:292 ../src/BackupManager.py:294
+#: ../src/ImageManager.py:151 ../src/ImageManager.py:153
+#: ../src/ImageManager.py:291 ../src/ImageManager.py:293
 #, fuzzy
 msgid "Next backup: "
 msgstr "Neste backup: "
+
+#: ../src/SoftcamManager.py:218
+#, fuzzy
+msgid ""
+"No config files found, please setup Ncam first\n"
+"in /etc/tuxbox/config"
+msgstr ""
+"Finner ingen konfigurasjonsfiler, vennligst sett opp\n"
+"OScam i /etc/tuxbox/config først"
+
+#: ../src/SoftcamManager.py:264
+#, fuzzy
+msgid ""
+"No config files found, please setup Ncam first\n"
+"in /etc/tuxbox/config."
+msgstr ""
+"Finner ingen konfigurasjonsfiler, vennligst sett opp\n"
+"OScam i /etc/tuxbox/config først"
 
 #: ../src/SoftcamManager.py:213
 msgid ""
@@ -627,7 +645,7 @@ msgstr ""
 "Finner ingen konfigurasjonsfiler, vennligst sett opp\n"
 "OScam i /etc/tuxbox/config først"
 
-#: ../src/SoftcamManager.py:253
+#: ../src/SoftcamManager.py:260
 #, fuzzy
 msgid ""
 "No config files found, please setup Oscam first\n"
@@ -636,7 +654,7 @@ msgstr ""
 "Finner ingen konfigurasjonsfiler, vennligst sett opp\n"
 "OScam i /etc/tuxbox/config først"
 
-#: ../src/ImageManager.py:1327
+#: ../src/ImageManager.py:1330
 msgid "No images found for selected download server...if password check validity"
 msgstr ""
 
@@ -645,19 +663,19 @@ msgstr ""
 msgid "None"
 msgstr "Ingen"
 
-#: ../src/Multibootmgr.py:40
+#: ../src/Multibootmgr.py:38
 msgid "Note: slot list does not show current image or empty slots."
 msgstr ""
 
-#: ../src/BackupManager.py:665
+#: ../src/BackupManager.py:668
 msgid "Now skipping restore process"
 msgstr "Hopper over gjenoppretting nå"
 
-#: ../src/BackupManager.py:904 ../src/RestoreWizard.py:110
+#: ../src/BackupManager.py:909 ../src/RestoreWizard.py:108
 msgid "OK"
 msgstr "OK"
 
-#: ../src/RestoreWizard.py:92
+#: ../src/RestoreWizard.py:90
 msgid "OK, to perform a restore"
 msgstr "OK, for å gjenopprette"
 
@@ -665,7 +683,7 @@ msgstr "OK, for å gjenopprette"
 msgid "Opkg"
 msgstr ""
 
-#: ../src/BackupManager.py:861
+#: ../src/BackupManager.py:864
 msgid "Please enter a folder that contains some packages."
 msgstr "Vennligst angi mappe som inneholder noen pakker"
 
@@ -674,7 +692,7 @@ msgstr "Vennligst angi mappe som inneholder noen pakker"
 msgid "Please select device to use as SWAP file location."
 msgstr "Vennligst velg enhet til bruk for swap"
 
-#: ../src/RestoreWizard.py:142
+#: ../src/RestoreWizard.py:140
 msgid "Please wait while plugins restore completes..."
 msgstr "Vennligst vent til gjenoppretting av plugins er fullført..."
 
@@ -685,27 +703,27 @@ msgstr "Søker etter enheter, vennligst vent..."
 
 #: ../src/MountManager.py:346
 #, fuzzy
-msgid "Please wait while scanning your STB devices..."
+msgid "Please wait while scanning your receiver devices..."
 msgstr "Søker etter enheter, vennligst vent..."
 
-#: ../src/RestoreWizard.py:197
+#: ../src/RestoreWizard.py:195
 msgid "Please wait while settings restore completes..."
 msgstr "Vennligst vent til gjenoppretting av innstillinger er fullført..."
 
-#: ../src/SoftcamManager.py:275
+#: ../src/SoftcamManager.py:286
 msgid "Please wait while starting\n"
 msgstr "Oppstart pågår, vennligst vent\n"
 
-#: ../src/SoftcamManager.py:373
+#: ../src/SoftcamManager.py:384
 msgid "Please wait while stopping\n"
 msgstr "Stopp pågår, vennligst vent\n"
 
-#: ../src/ImageManager.py:413
+#: ../src/ImageManager.py:416
 #, fuzzy
 msgid "Please wait while the flash prepares."
 msgstr "Innsamling av informasjon pågår, vennligst vent..."
 
-#: ../src/RestoreWizard.py:130 ../src/RestoreWizard.py:135
+#: ../src/RestoreWizard.py:128 ../src/RestoreWizard.py:133
 #, fuzzy
 msgid "Please wait while the system gathers information..."
 msgstr "Innsamling av informasjon pågår, vennligst vent..."
@@ -714,16 +732,16 @@ msgstr "Innsamling av informasjon pågår, vennligst vent..."
 msgid "Please wait."
 msgstr "Vennligst vent."
 
-#: ../src/BackupManager.py:1233
+#: ../src/BackupManager.py:1237
 #, fuzzy
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Opplisting av plugins mislyktes - eks. feil plassering av backup eller ingen tilgjengelig plass på enhet"
 
-#: ../src/BackupManager.py:1122 ../src/BackupManager.py:1126
+#: ../src/BackupManager.py:1126 ../src/BackupManager.py:1130
 msgid "Preparing extra plugins..."
 msgstr "Forbereder ekstra plugins..."
 
-#: ../src/BackupManager.py:213 ../src/ImageManager.py:218
+#: ../src/BackupManager.py:216 ../src/ImageManager.py:221
 msgid "Press 'Menu' to select a storage device"
 msgstr ""
 
@@ -731,20 +749,20 @@ msgstr ""
 msgid "Press OK to toggle the selection."
 msgstr ""
 
-#: ../src/H9SDmanager.py:34
+#: ../src/H9SDmanager.py:32
 msgid "Press appropiate Init to move Nand root to SDcard."
 msgstr ""
 
-#: ../src/H9SDmanager.py:35
+#: ../src/H9SDmanager.py:33
 #, fuzzy
 msgid "Reboot"
 msgstr "Starter på nytt..."
 
-#: ../src/BackupManager.py:435
+#: ../src/BackupManager.py:438
 msgid "Rebooting..."
 msgstr "Starter på nytt..."
 
-#: ../src/ImageManager.py:366
+#: ../src/ImageManager.py:369
 #, python-format
 msgid ""
 "Recording(s) are in progress or coming up in few seconds!\n"
@@ -752,20 +770,20 @@ msgid ""
 "%s?"
 msgstr ""
 
-#: ../src/Multibootmgr.py:87
+#: ../src/Multibootmgr.py:81
 #, fuzzy, python-format
 msgid "Removal of this slot will not show in %s Gui.  Are you sure you want to delete image slot?"
 msgstr ""
 "Sikker på at du vil slette backup'en:\n"
 " "
 
-#: ../src/BackupManager.py:299 ../src/ImageManager.py:298
-#: ../src/Multibootmgr.py:89 ../src/Multibootmgr.py:93
+#: ../src/BackupManager.py:302 ../src/ImageManager.py:301
+#: ../src/Multibootmgr.py:83 ../src/Multibootmgr.py:87
 #, fuzzy
 msgid "Remove confirmation"
 msgstr "Bekreftelse på fjerning"
 
-#: ../src/ImageManager.py:772 ../src/ImageManager.py:776
+#: ../src/ImageManager.py:775 ../src/ImageManager.py:779
 msgid "Removing temp mounts..."
 msgstr "Fjerner midlertidige tilkoblinger"
 
@@ -780,46 +798,47 @@ msgstr "Omstart"
 
 #: ../src/MountManager.py:375
 #, fuzzy
-msgid "Restart STB"
+msgid "Restart receiver"
 msgstr "Omstart"
 
-#: ../src/BackupManager.py:139
+#: ../src/BackupManager.py:142
 msgid "Restore"
 msgstr "Gjenopprett"
 
-#: ../src/BackupManager.py:362
-msgid "Restore Confirmation"
+#: ../src/BackupManager.py:365
+#, fuzzy
+msgid "Restore confirmation"
 msgstr "Bekreftelse på gjenoppretting"
 
-#: ../src/plugin.py:174 ../src/RestoreWizard.py:131 ../src/RestoreWizard.py:136
-#: ../src/RestoreWizard.py:143 ../src/RestoreWizard.py:149
-#: ../src/RestoreWizard.py:155 ../src/RestoreWizard.py:159
-#: ../src/RestoreWizard.py:185 ../src/RestoreWizard.py:189
-#: ../src/RestoreWizard.py:198 ../src/RestoreWizard.py:254
-#: ../src/RestoreWizard.py:258 ../src/RestoreWizard.py:262
-#: ../src/RestoreWizard.py:266 ../src/RestoreWizard.py:270
+#: ../src/plugin.py:174 ../src/RestoreWizard.py:129 ../src/RestoreWizard.py:134
+#: ../src/RestoreWizard.py:141 ../src/RestoreWizard.py:147
+#: ../src/RestoreWizard.py:153 ../src/RestoreWizard.py:157
+#: ../src/RestoreWizard.py:183 ../src/RestoreWizard.py:187
+#: ../src/RestoreWizard.py:196 ../src/RestoreWizard.py:252
+#: ../src/RestoreWizard.py:256 ../src/RestoreWizard.py:260
+#: ../src/RestoreWizard.py:264 ../src/RestoreWizard.py:268
 #, fuzzy
 msgid "Restore wizard"
 msgstr "Gjenopprettingsveiviser"
 
-#: ../src/BackupManager.py:391 ../src/BackupManager.py:395
-#: ../src/BackupManager.py:399
+#: ../src/BackupManager.py:394 ../src/BackupManager.py:398
+#: ../src/BackupManager.py:402
 msgid "Restoring backup..."
 msgstr "Gjenoppretter backup..."
 
-#: ../src/BackupManager.py:427 ../src/BackupManager.py:431
+#: ../src/BackupManager.py:430 ../src/BackupManager.py:434
 msgid "Restoring plugins, this can take a long time..."
 msgstr "Gjenoppretter plugins, dette kan ta litt tid..."
 
-#: ../src/BackupManager.py:419 ../src/BackupManager.py:423
+#: ../src/BackupManager.py:422 ../src/BackupManager.py:426
 msgid "Restoring plugins..."
 msgstr "Gjenoppretter plugins..."
 
-#: ../src/Multibootmgr.py:43
+#: ../src/Multibootmgr.py:41
 msgid "Retrieving image slots - Please wait..."
 msgstr ""
 
-#: ../src/ScriptRunner.py:48
+#: ../src/ScriptRunner.py:47
 msgid "Run"
 msgstr "Kjør"
 
@@ -851,7 +870,7 @@ msgstr "Plassering av swap:"
 msgid "SWAP size:"
 msgstr "Størrelse: "
 
-#: ../src/BackupManager.py:717 ../src/BackupManager.py:806
+#: ../src/BackupManager.py:720 ../src/BackupManager.py:809
 #: ../src/MountManager.py:336
 msgid "Save"
 msgstr "Lagre"
@@ -861,11 +880,11 @@ msgstr "Lagre"
 msgid "Script runner"
 msgstr "Script Runner"
 
-#: ../src/BackupManager.py:752
+#: ../src/BackupManager.py:755
 msgid "Select"
 msgstr "Velg"
 
-#: ../src/BackupManager.py:229 ../src/BackupManager.py:232
+#: ../src/BackupManager.py:232 ../src/BackupManager.py:235
 #, fuzzy
 msgid "Select a backup to restore:"
 msgstr "Velg pakke som skal installeres:"
@@ -874,25 +893,25 @@ msgstr "Velg pakke som skal installeres:"
 msgid "Select a package to install:"
 msgstr "Velg pakke som skal installeres:"
 
-#: ../src/ImageManager.py:1316
+#: ../src/ImageManager.py:1319
 #, fuzzy
 msgid "Select an image to download:"
 msgstr "Velg image som skal lastes ned:"
 
-#: ../src/ImageManager.py:236 ../src/ImageManager.py:241
+#: ../src/ImageManager.py:239 ../src/ImageManager.py:244
 #, fuzzy
 msgid "Select an image to flash:"
 msgstr "Velg image som skal lastes ned:"
 
-#: ../src/BackupManager.py:803
+#: ../src/BackupManager.py:806
 msgid "Select extra packages folder"
 msgstr "Velg mappe for ekstra pakker"
 
-#: ../src/BackupManager.py:714
+#: ../src/BackupManager.py:717
 msgid "Select files/folders to backup"
 msgstr "Velg filer/mapper for backup"
 
-#: ../src/BackupManager.py:835
+#: ../src/BackupManager.py:838
 msgid "Select folder that contains plugins"
 msgstr "Velg mappe som inneholder plugins"
 
@@ -905,7 +924,7 @@ msgstr "Velg størrelse på swap fil:"
 msgid "Select:"
 msgstr "Velg:"
 
-#: ../src/ImageManager.py:736
+#: ../src/ImageManager.py:739
 #, fuzzy
 msgid "Setting up..."
 msgstr "Setter opp..."
@@ -926,17 +945,17 @@ msgstr "Størrelse: "
 msgid "Softcam manager"
 msgstr "Softcam Manager"
 
-#: ../src/SoftcamManager.py:273
+#: ../src/SoftcamManager.py:284
 #, fuzzy
 msgid "Softcam starting..."
 msgstr "Starter softcam..."
 
-#: ../src/SoftcamManager.py:371
+#: ../src/SoftcamManager.py:382
 #, fuzzy
 msgid "Softcam stopping..."
 msgstr "Stopper softcam..."
 
-#: ../src/SoftcamManager.py:544
+#: ../src/SoftcamManager.py:555
 msgid "SoftcamCheck"
 msgstr "Sjekk av softcam"
 
@@ -945,27 +964,27 @@ msgstr "Sjekk av softcam"
 msgid "Sorry but that location does not exist or is not setup. Please set it up in the Backup manager setup menu."
 msgstr "Beklager, mappen eksisterer ikke. Vennligst angi mappe i oppsettsmenyen til Backup Manager"
 
-#: ../src/BackupManager.py:547
+#: ../src/BackupManager.py:550
 #, fuzzy
 msgid "Sorry the feeds are down for maintenance. Please try again later."
 msgstr "Beklager, feeds er nede for vedlikehold. Prøv igjen senere."
 
-#: ../src/RestoreWizard.py:148
+#: ../src/RestoreWizard.py:146
 #, fuzzy
 msgid "Sorry the feeds are down for maintenance. Please try using Backup manager to restore plugins later."
 msgstr "Beklager, feeds er nede for vedlikehold. Prøv gjenoppretting av plugins med Backup Manager senere."
 
-#: ../src/RestoreWizard.py:265
+#: ../src/RestoreWizard.py:263
 #, fuzzy
 msgid "Sorry the feeds are down for maintenance. Please try using the Backup manager to restore plugins later."
 msgstr "Beklager, feeds er nede for vedlikehold. Prøv gjenoppretting av plugins med Backup Manager senere."
 
-#: ../src/BackupManager.py:355 ../src/BackupManager.py:357
-#: ../src/RestoreWizard.py:184 ../src/RestoreWizard.py:188
+#: ../src/BackupManager.py:358 ../src/BackupManager.py:360
+#: ../src/RestoreWizard.py:182 ../src/RestoreWizard.py:186
 msgid "Sorry, but the file is not compatible with this image version."
 msgstr ""
 
-#: ../src/BackupManager.py:474
+#: ../src/BackupManager.py:477
 msgid "Sorry, but the restore failed."
 msgstr "Beklager, gjenopprettingen mislyktes."
 
@@ -974,7 +993,7 @@ msgstr "Beklager, gjenopprettingen mislyktes."
 msgid "Sorry, no physical devices that supports SWAP attached. Can't create SWAP file on network or fat32 file-systems."
 msgstr "Beklager, men ingen fysiske enheter som støtter swap er tilkoblet. Kan ikke opprette swap fil på nettverksenhet eller FAT32 filsystem"
 
-#: ../src/ImageManager.py:856
+#: ../src/ImageManager.py:859
 #, fuzzy
 msgid "Sorry, not enough free RAM found, and no physical devices that supports SWAP attached. Can't create SWAP file on network or fat32 file-systems, unable to make backup."
 msgstr "Beklager, men ikke nok ledig minne og ingen fysiske enheter som støtter swap er tilkoblet. Kan ikke opprette swap fil på nettverksenhet eller FAT32 filsystem. Ikke mulig å opprette backup"
@@ -983,7 +1002,7 @@ msgstr "Beklager, men ikke nok ledig minne og ingen fysiske enheter som støtter
 msgid "Start"
 msgstr "Start"
 
-#: ../src/BackupManager.py:1098 ../src/BackupManager.py:1102
+#: ../src/BackupManager.py:1102 ../src/BackupManager.py:1106
 msgid "Starting..."
 msgstr "Starter..."
 
@@ -1004,12 +1023,12 @@ msgstr "TB"
 msgid "Temp folder"
 msgstr "Midlertidig mappe"
 
-#: ../src/BackupManager.py:1193
+#: ../src/BackupManager.py:1197
 #, fuzzy
 msgid "The backup location does not have enough free space."
 msgstr "Ikke nok ledig plass på backup destinasjon."
 
-#: ../src/ImageManager.py:818
+#: ../src/ImageManager.py:821
 #, fuzzy
 msgid "The backup location does not have enough free space.\n"
 msgstr "Ikke nok ledig plass på backup destinasjon."
@@ -1017,35 +1036,35 @@ msgstr "Ikke nok ledig plass på backup destinasjon."
 #: ../src/MountManager.py:373
 msgid ""
 "The changes need a system restart to take effect.\n"
-"Restart your STB now?"
+"Restart your receiver now?"
 msgstr ""
 
-#: ../src/BackupManager.py:229 ../src/ImageManager.py:236
+#: ../src/BackupManager.py:232 ../src/ImageManager.py:239
 #, fuzzy
 msgid "The chosen location does not exist, using /media/hdd."
 msgstr "Valgt destinasjon eksisterer ikke, bruker /media/hdd"
 
-#: ../src/BackupManager.py:252 ../src/ImageManager.py:250
+#: ../src/BackupManager.py:255 ../src/ImageManager.py:253
 #, fuzzy
 msgid "There is a problem with this device. Please reformat it and try again."
 msgstr "det var et problem med denne enheten. Formater enheten og prøv igjen."
 
-#: ../src/BackupManager.py:301
+#: ../src/BackupManager.py:304
 #, fuzzy
 msgid "There is no backup to delete."
 msgstr "Du har ingen backup å slette."
 
-#: ../src/BackupManager.py:342
+#: ../src/BackupManager.py:345
 #, fuzzy
 msgid "There is no backup to restore."
 msgstr "Du har ingen backup å gjenopprette."
 
-#: ../src/ImageManager.py:300
+#: ../src/ImageManager.py:303
 #, fuzzy
 msgid "There is no image to delete."
 msgstr "Du har ingen image å slette."
 
-#: ../src/ImageManager.py:408
+#: ../src/ImageManager.py:411
 #, fuzzy
 msgid "There is no image to flash."
 msgstr "Du har ingen image å laste ned."
@@ -1067,7 +1086,7 @@ msgstr ""
 msgid "Un-mount"
 msgstr ""
 
-#: ../src/ImageManager.py:439
+#: ../src/ImageManager.py:442
 #, python-format
 msgid ""
 "Unzip error (also sent to any debug log):\n"
@@ -1083,18 +1102,18 @@ msgstr "Oppdaterer tilkoblingspunktene."
 msgid "Use as HDD"
 msgstr "Bruk som HDD"
 
-#: ../src/Multibootmgr.py:39
+#: ../src/Multibootmgr.py:37
 msgid "Use the cursor keys to select an installed image and then Erase button."
 msgstr ""
 
-#: ../src/BackupManager.py:184 ../src/BackupManager.py:325
-#: ../src/BackupManager.py:368 ../src/ImageManager.py:171
-#: ../src/ImageManager.py:334
+#: ../src/BackupManager.py:187 ../src/BackupManager.py:328
+#: ../src/BackupManager.py:371 ../src/ImageManager.py:174
+#: ../src/ImageManager.py:337
 #, fuzzy
 msgid "View progress"
 msgstr "Vis fremgang"
 
-#: ../src/ui.py:44 ../src/plugin.py:84 ../src/plugin.py:163
+#: ../src/plugin.py:84 ../src/plugin.py:163
 msgid "Vision"
 msgstr "Vision"
 
@@ -1103,7 +1122,12 @@ msgstr "Vision"
 msgid "Vision Backup manager"
 msgstr "Backup Manager"
 
-#: ../src/plugin.py:177
+#: ../src/ui.py:44
+#, fuzzy
+msgid "Vision Core"
+msgstr "Vision"
+
+#: ../src/plugin.py:177 ../src/ImageManager.py:125
 #, fuzzy
 msgid "Vision Image manager"
 msgstr "Image Manager"
@@ -1143,15 +1167,15 @@ msgstr "Søker, vennligst vent..."
 msgid "Weekly"
 msgstr "Ukentlig"
 
-#: ../src/RestoreWizard.py:102 ../src/RestoreWizard.py:105
+#: ../src/RestoreWizard.py:100 ../src/RestoreWizard.py:103
 msgid "YES, to restore plugins"
 msgstr "JA, gjenopprett plugins"
 
-#: ../src/RestoreWizard.py:96
+#: ../src/RestoreWizard.py:94
 msgid "YES, to restore settings"
 msgstr "JA, gjenopprett innstillinger"
 
-#: ../src/ImageManager.py:370
+#: ../src/ImageManager.py:373
 msgid ""
 "You are about to flash an eMMC flash; we cannot take any responsibility for any errors or damage to your box during this process.\n"
 "Proceed with CAUTION!:\n"
@@ -1159,7 +1183,7 @@ msgid ""
 " "
 msgstr ""
 
-#: ../src/ImageManager.py:410
+#: ../src/ImageManager.py:413
 msgid "You have decided not to flash image."
 msgstr ""
 
@@ -1168,66 +1192,66 @@ msgstr ""
 msgid "You have to create a SWAP file before trying to activate the autostart."
 msgstr "Swap fil må opprettes før aktivering av autostart."
 
-#: ../src/RestoreWizard.py:257
+#: ../src/RestoreWizard.py:255
 #, fuzzy
-msgid "Your STB could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."
+msgid "Your receiver could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."
 msgstr "Beklager, feeds er nede for vedlikehold. Prøv gjenoppretting av plugins med Backup Manager senere."
 
-#: ../src/ImageManager.py:593
+#: ../src/ImageManager.py:596
 msgid ""
-"Your STB is about to create a full image backup, this can take about 6 minutes to complete.\n"
+"Your receiver is about to create a full image backup, this can take about 6 minutes to complete.\n"
 "Do you want to allow this?"
 msgstr ""
 
-#: ../src/BackupManager.py:1035
+#: ../src/BackupManager.py:1039
 msgid ""
-"Your STB is about to run a backup of your settings and to detect your plugins.\n"
+"Your receiver is about to run a backup of your settings and to detect your plugins.\n"
 "Do you want to allow this?"
 msgstr ""
 
-#: ../src/BackupManager.py:538
+#: ../src/BackupManager.py:541
 #, fuzzy
-msgid "Your STB is not connected to a network. Please check your network settings and try again."
+msgid "Your receiver is not connected to a network. Please check your network settings and try again."
 msgstr "Beklager, feeds er nede for vedlikehold. Prøv gjenoppretting av plugins med Backup Manager senere."
 
-#: ../src/RestoreWizard.py:253
+#: ../src/RestoreWizard.py:251
 #, fuzzy
-msgid "Your STB is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."
+msgid "Your receiver is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."
 msgstr "Beklager, feeds er nede for vedlikehold. Prøv gjenoppretting av plugins med Backup Manager senere."
 
-#: ../src/BackupManager.py:556
+#: ../src/BackupManager.py:559
 #, fuzzy
-msgid "Your STB is not connected to the Internet. Please check your network settings and try again."
+msgid "Your receiver is not connected to the Internet. Please check your network settings and try again."
 msgstr "Beklager, feeds er nede for vedlikehold. Prøv gjenoppretting av plugins med Backup Manager senere."
 
-#: ../src/RestoreWizard.py:154
+#: ../src/RestoreWizard.py:152
 #, fuzzy
-msgid "Your STB is not connected to the Internet. Please try using Backup manager to restore plugins later."
+msgid "Your receiver is not connected to the Internet. Please try using Backup manager to restore plugins later."
 msgstr "Beklager, feeds er nede for vedlikehold. Prøv gjenoppretting av plugins med Backup Manager senere."
 
-#: ../src/RestoreWizard.py:261
+#: ../src/RestoreWizard.py:259
 #, fuzzy
-msgid "Your STB is not connected to the Internet. Please try using the Backup manager to restore plugins later."
+msgid "Your receiver is not connected to the Internet. Please try using the Backup manager to restore plugins later."
 msgstr "Beklager, feeds er nede for vedlikehold. Prøv gjenoppretting av plugins med Backup Manager senere."
 
-#: ../src/ImageManager.py:491
+#: ../src/ImageManager.py:494
 #, python-format
 msgid ""
 "ofgwrite error (also sent to any debug log):\n"
 "%s"
 msgstr ""
 
-#: ../src/ImageManager.py:392
+#: ../src/ImageManager.py:395
 #, python-format
 msgid "slot%s - %s"
 msgstr ""
 
-#: ../src/Multibootmgr.py:79
+#: ../src/Multibootmgr.py:73
 #, python-format
 msgid "slot%s - %s "
 msgstr ""
 
-#: ../src/ImageManager.py:392
+#: ../src/ImageManager.py:395
 #, python-format
 msgid "slot%s - %s (current image)"
 msgstr ""

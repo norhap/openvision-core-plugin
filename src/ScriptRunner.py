@@ -44,7 +44,6 @@ class VISIONScriptRunner(OpkgInstaller):
 		OpkgInstaller.__init__(self, session, list)
 		self.setTitle(_("Script runner"))
 
-		self.skinName = ["VISIONScriptRunner", "OpkgInstaller"]
 		self["key_green"] = StaticText(_("Run"))
 
 		self['myactions'] = ActionMap(["MenuActions"],

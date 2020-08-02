@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-30 12:08+0430\n"
+"POT-Creation-Date: 2020-08-03 03:15+0430\n"
 "PO-Revision-Date: 2019-07-04 23:44+0200\n"
 "Last-Translator: Kojo\n"
 "Language-Team: Samzan/Kojo\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.2\n"
 
-#: ../src/BackupManager.py:155 ../src/BackupManager.py:289
-#: ../src/ImageManager.py:148 ../src/ImageManager.py:288
+#: ../src/BackupManager.py:158 ../src/BackupManager.py:292
+#: ../src/ImageManager.py:151 ../src/ImageManager.py:291
 msgid "%a %e %b  %-H:%M"
 msgstr "%a %e %b  %-H:%M"
 
@@ -54,8 +54,8 @@ msgstr "8 Mb"
 msgid "96 Mb"
 msgstr "96 Mb"
 
-#: ../src/BackupManager.py:501 ../src/RestoreWizard.py:158
-#: ../src/RestoreWizard.py:269
+#: ../src/BackupManager.py:504 ../src/RestoreWizard.py:156
+#: ../src/RestoreWizard.py:267
 msgid "A background update check is in progress, please try again."
 msgstr "Taustalla ajettava päivitystarkistus käynnissä, yritä uudelleen."
 
@@ -75,12 +75,12 @@ msgstr "Aktiivinen:"
 msgid "Are you ready to install ?"
 msgstr "Oletko valmiina asentamaan?"
 
-#: ../src/Multibootmgr.py:91
+#: ../src/Multibootmgr.py:85
 #, python-format
 msgid "Are you sure you want to delete image slot %s ?"
 msgstr "Oletko varma, että haluat poistaa imagepaikan %s ?"
 
-#: ../src/BackupManager.py:297
+#: ../src/BackupManager.py:300
 msgid ""
 "Are you sure you want to delete this backup:\n"
 " "
@@ -88,7 +88,7 @@ msgstr ""
 "Haluatko poistaa tämän varmuuskopion:\n"
 " "
 
-#: ../src/ImageManager.py:296
+#: ../src/ImageManager.py:299
 msgid ""
 "Are you sure you want to delete this image backup:\n"
 " "
@@ -96,7 +96,7 @@ msgstr ""
 "Oletko varma että haluat poistaa tämän varmuuskopion:\n"
 " "
 
-#: ../src/ImageManager.py:1456
+#: ../src/ImageManager.py:1459
 msgid ""
 "Are you sure you want to download this image:\n"
 " "
@@ -104,7 +104,7 @@ msgstr ""
 "Haluatko varmasti ladata tämän ohjelmiston:\n"
 " "
 
-#: ../src/ImageManager.py:372
+#: ../src/ImageManager.py:375
 msgid ""
 "Are you sure you want to flash this image:\n"
 " "
@@ -112,7 +112,7 @@ msgstr ""
 "Oletko varma että haluat asentaa tämän imagen:\n"
 " "
 
-#: ../src/BackupManager.py:360
+#: ../src/BackupManager.py:363
 msgid ""
 "Are you sure you want to restore this backup:\n"
 " "
@@ -124,48 +124,48 @@ msgstr ""
 msgid "Autostart"
 msgstr "Autom.käynnistys"
 
-#: ../src/ImageManager.py:764
+#: ../src/ImageManager.py:767
 msgid "Backing up eMMC partitions for USB flash ..."
 msgstr "Varmuuskopioidaan eMMC-osioita USB:lle..."
 
-#: ../src/ImageManager.py:768
+#: ../src/ImageManager.py:771
 msgid "Backing up eMMC partitions for USB flash..."
 msgstr "Varmuuskopioidaan eMMC-osioita USB:lle..."
 
-#: ../src/BackupManager.py:1114 ../src/BackupManager.py:1118
-#: ../src/BackupManager.py:1130 ../src/BackupManager.py:1134
+#: ../src/BackupManager.py:1118 ../src/BackupManager.py:1122
+#: ../src/BackupManager.py:1134 ../src/BackupManager.py:1138
 msgid "Backing up files..."
 msgstr "Varmuuskopioidaan tiedostoja..."
 
-#: ../src/ImageManager.py:748 ../src/ImageManager.py:752
+#: ../src/ImageManager.py:751 ../src/ImageManager.py:755
 msgid "Backing up kernel..."
 msgstr "Varmuuskopioidaan kernel..."
 
-#: ../src/ImageManager.py:756 ../src/ImageManager.py:760
+#: ../src/ImageManager.py:759 ../src/ImageManager.py:763
 msgid "Backing up root file system..."
 msgstr "Varmuuskopioidaan järjestelmätiedostot..."
 
-#: ../src/ImageManager.py:796
+#: ../src/ImageManager.py:799
 msgid "Backup complete."
 msgstr "Varmuuskopio valmis."
 
-#: ../src/BackupManager.py:1138
+#: ../src/BackupManager.py:1142
 msgid "Backup complete..."
 msgstr "Varmuuskopio valmis..."
 
-#: ../src/ImageManager.py:327
+#: ../src/ImageManager.py:330
 msgid "Backup confirmation"
 msgstr "Varmuuskopion vahvistus"
 
-#: ../src/BackupManager.py:933
+#: ../src/BackupManager.py:937
 msgid "Backup created"
 msgstr "Varmuuskopio luotu"
 
-#: ../src/BackupManager.py:1301
+#: ../src/BackupManager.py:1305
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Varmuuskopio epäonnistui - Saattaa johtua väärästä kohdesijainnista, tai levytilaa on liian vähän."
 
-#: ../src/BackupManager.py:344
+#: ../src/BackupManager.py:347
 msgid ""
 "Backup in progress,\n"
 "Please wait for it to finish, before trying again."
@@ -173,10 +173,11 @@ msgstr ""
 "Varmuuskopiointi käynnissä, \n"
 "Odota että se loppuu, ennen kuin yrität uudestaan."
 
-#: ../src/BackupManager.py:134 ../src/BackupManager.py:181
-#: ../src/BackupManager.py:313 ../src/BackupManager.py:328
-#: ../src/BackupManager.py:371 ../src/BackupManager.py:389
-#: ../src/BackupManager.py:1096 ../src/ui.py:48 ../src/ImageManager.py:347
+#: ../src/BackupManager.py:137 ../src/BackupManager.py:184
+#: ../src/BackupManager.py:316 ../src/BackupManager.py:331
+#: ../src/BackupManager.py:374 ../src/BackupManager.py:392
+#: ../src/BackupManager.py:898 ../src/BackupManager.py:1100 ../src/ui.py:48
+#: ../src/ImageManager.py:350
 msgid "Backup manager"
 msgstr "Varmuuskopioiden hallinnointi"
 
@@ -184,8 +185,8 @@ msgstr "Varmuuskopioiden hallinnointi"
 msgid "Can't un-mount the partition; make sure it is not being used for SWAP or record/timeshift paths."
 msgstr "Liitosta ei voi purkaa; tarkista että SWAP-tiedosto, tallennus, tai ajansiirto ei käytä sitä."
 
-#: ../src/BackupManager.py:716 ../src/BackupManager.py:805
-#: ../src/BackupManager.py:903 ../src/Multibootmgr.py:38
+#: ../src/BackupManager.py:719 ../src/BackupManager.py:808
+#: ../src/BackupManager.py:908 ../src/Multibootmgr.py:36
 #: ../src/MountManager.py:337
 msgid "Cancel"
 msgstr "Keskeytä"
@@ -194,19 +195,19 @@ msgstr "Keskeytä"
 msgid "Change location"
 msgstr "Vaihda sijainti"
 
-#: ../src/ImageManager.py:740
+#: ../src/ImageManager.py:743
 msgid "Checking free RAM.."
 msgstr "Tarkistetaan vapaana oleva RAM..."
 
-#: ../src/SoftcamManager.py:546
+#: ../src/SoftcamManager.py:557
 msgid "Checking softcams..."
 msgstr "Tarkistetaan softcameja..."
 
-#: ../src/BackupManager.py:905
+#: ../src/BackupManager.py:910
 msgid "Choose files"
 msgstr "Valitse tiedostot"
 
-#: ../src/BackupManager.py:906
+#: ../src/BackupManager.py:911
 msgid "Choose local IPK's folder"
 msgstr "Paikallinen IPK-kansio"
 
@@ -214,17 +215,17 @@ msgstr "Paikallinen IPK-kansio"
 msgid "Choose where to mount your devices to:"
 msgstr "Valitse minne laitteet liitetään:"
 
-#: ../src/ui.py:57 ../src/ImageManager.py:1317 ../src/SoftcamManager.py:105
+#: ../src/ui.py:57 ../src/ImageManager.py:1320 ../src/SoftcamManager.py:105
 #: ../src/IPKInstaller.py:54 ../src/IPKInstaller.py:176
 #: ../src/SwapManager.py:119
 msgid "Close"
 msgstr "Sulje"
 
-#: ../src/BackupManager.py:411 ../src/BackupManager.py:415
+#: ../src/BackupManager.py:414 ../src/BackupManager.py:418
 msgid "Comparing against backup..."
 msgstr "Vertaillaan varmuuskopioon..."
 
-#: ../src/ImageManager.py:1424
+#: ../src/ImageManager.py:1427
 msgid "Compress"
 msgstr "Pakkaa"
 
@@ -240,22 +241,22 @@ msgstr "Luo ja hallinnoi SWAP-tiedostoja."
 msgid "Create and flash complete images of your system."
 msgstr "Luo ja asenna image koko järjestelmästäsi."
 
-#: ../src/ImageManager.py:944 ../src/ImageManager.py:947
-#: ../src/ImageManager.py:950 ../src/ImageManager.py:952
-#: ../src/ImageManager.py:954
+#: ../src/ImageManager.py:947 ../src/ImageManager.py:950
+#: ../src/ImageManager.py:953 ../src/ImageManager.py:955
+#: ../src/ImageManager.py:957
 msgid "Create:"
 msgstr "Luo:"
 
-#: ../src/ImageManager.py:744
+#: ../src/ImageManager.py:747
 msgid "Creating SWAP.."
 msgstr "Luodaan sivutustiedostoa..."
 
-#: ../src/BackupManager.py:403 ../src/BackupManager.py:407
-#: ../src/BackupManager.py:1106 ../src/BackupManager.py:1110
+#: ../src/BackupManager.py:406 ../src/BackupManager.py:410
+#: ../src/BackupManager.py:1110 ../src/BackupManager.py:1114
 msgid "Creating list of installed plugins..."
 msgstr "Luodaan luettelo asennetuista lisäosista..."
 
-#: ../src/ImageManager.py:788 ../src/ImageManager.py:792
+#: ../src/ImageManager.py:791 ../src/ImageManager.py:795
 msgid "Creating zip..."
 msgstr "Luodaan zip..."
 
@@ -272,27 +273,27 @@ msgstr "Päivittäin"
 msgid "Deactivate"
 msgstr "Poista käytöstä"
 
-#: ../src/BackupManager.py:140 ../src/ImageManager.py:126
+#: ../src/BackupManager.py:143 ../src/ImageManager.py:129
 #: ../src/SwapManager.py:193
 msgid "Delete"
 msgstr "Poista"
 
-#: ../src/BackupManager.py:750
+#: ../src/BackupManager.py:753
 msgid "Deselect"
 msgstr "Poista valinta"
 
-#: ../src/BackupManager.py:232 ../src/BackupManager.py:252
-#: ../src/ImageManager.py:241 ../src/ImageManager.py:250
+#: ../src/BackupManager.py:235 ../src/BackupManager.py:255
+#: ../src/ImageManager.py:244 ../src/ImageManager.py:253
 #: ../src/MountManager.py:144 ../src/MountManager.py:260
 #: ../src/MountManager.py:275
 msgid "Device: "
 msgstr "Laite: "
 
-#: ../src/ImageManager.py:218
+#: ../src/ImageManager.py:221
 msgid "Device: None available"
 msgstr "Laite: ei saatavilla"
 
-#: ../src/BackupManager.py:213
+#: ../src/BackupManager.py:216
 msgid "Device: none available"
 msgstr "Laite: Ei yhtään saatavilla"
 
@@ -300,11 +301,11 @@ msgstr "Laite: Ei yhtään saatavilla"
 msgid "Disable startup"
 msgstr "Käynnistys pois päältä"
 
-#: ../src/ImageManager.py:258
+#: ../src/ImageManager.py:261
 msgid "Do you want to change download url"
 msgstr "Haluatko vaihtaa latausosoitteen?"
 
-#: ../src/ImageManager.py:325
+#: ../src/ImageManager.py:328
 msgid ""
 "Do you want to create a full image backup?\n"
 "This can take about 6 minutes to complete."
@@ -312,7 +313,7 @@ msgstr ""
 "Haluatko ottaa varmuuskopion imagesta?\n"
 "Tämä saattaa kestää noin kuusi minuuttia."
 
-#: ../src/ImageManager.py:368
+#: ../src/ImageManager.py:371
 #, python-format
 msgid ""
 "Do you want to flash image\n"
@@ -325,39 +326,39 @@ msgstr ""
 msgid "Do you want to restart GUI now ?"
 msgstr "Haluatko käynnistää käyttöliittymän nyt uudelleen?"
 
-#: ../src/BackupManager.py:648
+#: ../src/BackupManager.py:651
 msgid "Do you want to restore your Enigma2 plugins ?"
 msgstr "Haluatko palauttaa käyttämäsi Enigma2-lisäosat?"
 
-#: ../src/BackupManager.py:443
+#: ../src/BackupManager.py:446
 msgid "Do you want to restore your enigma2 settings ?"
 msgstr "Haluatko palauttaa enigma2 -asetuksesi?"
 
-#: ../src/ImageManager.py:1426
+#: ../src/ImageManager.py:1429
 msgid "DownLoad"
 msgstr "Lataa"
 
-#: ../src/ImageManager.py:1318
+#: ../src/ImageManager.py:1321
 msgid "Download"
 msgstr "Lataa"
 
-#: ../src/ImageManager.py:1458
+#: ../src/ImageManager.py:1461
 msgid "Download confirmation"
 msgstr "Latauksen varmistus"
 
-#: ../src/ImageManager.py:1471
+#: ../src/ImageManager.py:1474
 msgid "Downloading"
 msgstr "Lataa"
 
-#: ../src/ImageManager.py:128 ../src/ImageManager.py:1312
+#: ../src/ImageManager.py:131 ../src/ImageManager.py:1315
 msgid "Downloads"
 msgstr "Lataukset"
 
-#: ../src/ImageManager.py:429
+#: ../src/ImageManager.py:432
 msgid "ET8500 Image Restore"
 msgstr "ET8500 Imagen palautus"
 
-#: ../src/ImageManager.py:427
+#: ../src/ImageManager.py:430
 msgid ""
 "ET8500 Multiboot: Yes to restore OS1 No to restore OS2:\n"
 " "
@@ -365,7 +366,7 @@ msgstr ""
 "ET8500 Multiboot: Kyllä, palauttaaksesi OS1,  Ei, palauttaaksesi OS2:\n"
 " "
 
-#: ../src/Multibootmgr.py:78
+#: ../src/Multibootmgr.py:72
 msgid "Empty slot"
 msgstr "Tyhjä paikka"
 
@@ -377,19 +378,19 @@ msgstr "SWAP päälle käynnistyksessä"
 msgid "Enable startup"
 msgstr "Käynnistys päälle"
 
-#: ../src/BackupManager.py:1060 ../src/ImageManager.py:618
+#: ../src/BackupManager.py:1064 ../src/ImageManager.py:621
 msgid "Enough retries, delaying till next schedule."
 msgstr "Tarpeeksi yrityksiä, koitetaan uudestaan seuraavalla kerralla."
 
-#: ../src/Multibootmgr.py:41
+#: ../src/Multibootmgr.py:39
 msgid "Erase"
 msgstr "Pyyhi"
 
-#: ../src/RestoreWizard.py:92
+#: ../src/RestoreWizard.py:90
 msgid "Exit the restore wizard"
 msgstr "Sulje palautusohjelma"
 
-#: ../src/ImageManager.py:1424
+#: ../src/ImageManager.py:1427
 msgid "Expand"
 msgstr "Laajenna"
 
@@ -397,23 +398,23 @@ msgstr "Laajenna"
 msgid "Extra IPK's"
 msgstr "Lisä IPK:t"
 
-#: ../src/ImageManager.py:129
+#: ../src/ImageManager.py:132
 msgid "Flash"
 msgstr "Flash"
 
-#: ../src/ImageManager.py:374
+#: ../src/ImageManager.py:377
 msgid "Flash confirmation"
 msgstr "Päivityksen vahvistus"
 
-#: ../src/ImageManager.py:425
+#: ../src/ImageManager.py:428
 msgid "Flash image unzip successful."
 msgstr "Flash-imagen purku onnistui."
 
-#: ../src/SoftcamManager.py:217 ../src/SoftcamManager.py:255
+#: ../src/SoftcamManager.py:222 ../src/SoftcamManager.py:266
 msgid "Found non-standard softcam, trying to start, this may fail."
 msgstr "Löytyi epästandardi softcam. Yritetään käynnistystä, mutta tämä saattaa epäonnistua."
 
-#: ../src/ImageManager.py:241
+#: ../src/ImageManager.py:244
 msgid "Free space:"
 msgstr "Vapaa tila:"
 
@@ -421,7 +422,7 @@ msgstr "Vapaa tila:"
 msgid "GB"
 msgstr "GB"
 
-#: ../src/H9SDmanager.py:32
+#: ../src/H9SDmanager.py:31
 msgid "H9 SDcard manager"
 msgstr "H9 SD-kortin hallinnointi"
 
@@ -437,14 +438,13 @@ msgstr "Kiintolevy: "
 msgid "IPK installer"
 msgstr "IPK:n asennus"
 
-#: ../src/ImageManager.py:1361
+#: ../src/ImageManager.py:1364
 #, python-format
 msgid "Image Version %s"
 msgstr "Imagen versio %s"
 
-#: ../src/ui.py:49 ../src/ImageManager.py:122 ../src/ImageManager.py:168
-#: ../src/ImageManager.py:316 ../src/ImageManager.py:337
-#: ../src/ImageManager.py:734
+#: ../src/ui.py:49 ../src/ImageManager.py:171 ../src/ImageManager.py:319
+#: ../src/ImageManager.py:340 ../src/ImageManager.py:737
 msgid "Image manager"
 msgstr "Imagen hallinnointi"
 
@@ -456,15 +456,15 @@ msgstr "Ei käytössä"
 msgid "Info"
 msgstr "Tietoja"
 
-#: ../src/H9SDmanager.py:36
+#: ../src/H9SDmanager.py:34
 msgid "Init SDcard"
 msgstr "Alusta SDcard"
 
-#: ../src/H9SDmanager.py:51
+#: ../src/H9SDmanager.py:45
 msgid "Init Zgemma H9 SDCARD - please reboot after use."
 msgstr "Alusta Zgemma H9 SD-kortti - Vaatii uudelleenkäynnistyksen."
 
-#: ../src/H9SDmanager.py:75
+#: ../src/H9SDmanager.py:69
 msgid "Init Zgemma H9 USB/SDA1 - please reboot after use."
 msgstr "Alusta Zgemma H9 USB/SDA1 - vaatii uudelleenkäynnistyksen."
 
@@ -500,11 +500,11 @@ msgstr "Käänteinen"
 msgid "It seems you have not setup an extra location. Please set it up in the Backup manager setup menu."
 msgstr "Et ole asettanut ylimääräistä sijaintia. Aseta se Varmuuskopioiden hallintatyökalulla."
 
-#: ../src/BackupManager.py:929 ../src/SoftcamManager.py:467
+#: ../src/BackupManager.py:934 ../src/SoftcamManager.py:478
 msgid "Logs"
 msgstr "Lokit"
 
-#: ../src/ImageManager.py:241 ../src/MountManager.py:133
+#: ../src/ImageManager.py:244 ../src/MountManager.py:133
 msgid "MB"
 msgstr "MB"
 
@@ -537,40 +537,58 @@ msgstr "Liitos: "
 msgid "Move Nand root to SD card"
 msgstr "Siirrä Nand root SD-kortille"
 
-#: ../src/ImageManager.py:780 ../src/ImageManager.py:784
+#: ../src/ImageManager.py:783 ../src/ImageManager.py:787
 msgid "Moving to backup Location..."
 msgstr "Siirretään varmuuskopiohakemistoon..."
 
-#: ../src/ImageManager.py:501
+#: ../src/ImageManager.py:504
 msgid "Multiboot ERROR! - no STARTUP in boot partition."
 msgstr "Multiboot-virhe! - Käynnistys-osiota ei ole olemassa."
 
-#: ../src/Multibootmgr.py:36
+#: ../src/Multibootmgr.py:35
 msgid "Multiboot image manager"
 msgstr "Multiboot-imagen hallinnointi"
 
-#: ../src/ImageManager.py:433 ../src/ImageManager.py:1216
+#: ../src/ImageManager.py:436 ../src/ImageManager.py:1219
 msgid "Multiboot only able to restore this backup to mmc slot1"
 msgstr "Multiboot voi palauttaa tämän varmuuskopion vain mmc:lle paikkaan 1"
 
-#: ../src/RestoreWizard.py:103 ../src/RestoreWizard.py:106
+#: ../src/RestoreWizard.py:101 ../src/RestoreWizard.py:104
 msgid "NO, do not restore plugins"
 msgstr "EI, älä palauta lisäosia"
 
-#: ../src/RestoreWizard.py:96
+#: ../src/RestoreWizard.py:94
 msgid "NO, do not restore settings"
 msgstr "EI, älä palauta asetuksia"
 
-#: ../src/BackupManager.py:186 ../src/ImageManager.py:173
+#: ../src/BackupManager.py:189 ../src/ImageManager.py:176
 msgid "New backup"
 msgstr "Uusi varmuuskopio"
 
-#: ../src/BackupManager.py:155 ../src/BackupManager.py:157
-#: ../src/BackupManager.py:289 ../src/BackupManager.py:291
-#: ../src/ImageManager.py:148 ../src/ImageManager.py:150
-#: ../src/ImageManager.py:288 ../src/ImageManager.py:290
+#: ../src/BackupManager.py:158 ../src/BackupManager.py:160
+#: ../src/BackupManager.py:292 ../src/BackupManager.py:294
+#: ../src/ImageManager.py:151 ../src/ImageManager.py:153
+#: ../src/ImageManager.py:291 ../src/ImageManager.py:293
 msgid "Next backup: "
 msgstr "Seuraava varmuuskopio: "
+
+#: ../src/SoftcamManager.py:218
+#, fuzzy
+msgid ""
+"No config files found, please setup Ncam first\n"
+"in /etc/tuxbox/config"
+msgstr ""
+"Asetustiedostoja ei löytynyt, määritä Oscam\n"
+"/etc/tuxbox/config-tiedostossa"
+
+#: ../src/SoftcamManager.py:264
+#, fuzzy
+msgid ""
+"No config files found, please setup Ncam first\n"
+"in /etc/tuxbox/config."
+msgstr ""
+"Asetus-tiedostoa ei löytynyt, asenna Oscam-asetukset\n"
+"hakemistoon /etc/tuxbox/config."
 
 #: ../src/SoftcamManager.py:213
 msgid ""
@@ -580,7 +598,7 @@ msgstr ""
 "Asetustiedostoja ei löytynyt, määritä Oscam\n"
 "/etc/tuxbox/config-tiedostossa"
 
-#: ../src/SoftcamManager.py:253
+#: ../src/SoftcamManager.py:260
 msgid ""
 "No config files found, please setup Oscam first\n"
 "in /etc/tuxbox/config."
@@ -588,7 +606,7 @@ msgstr ""
 "Asetus-tiedostoa ei löytynyt, asenna Oscam-asetukset\n"
 "hakemistoon /etc/tuxbox/config."
 
-#: ../src/ImageManager.py:1327
+#: ../src/ImageManager.py:1330
 msgid "No images found for selected download server...if password check validity"
 msgstr "Valitulta palvelimelta ei löytynyt imagea, jos vaatii salasanan, varmista että se on oikein"
 
@@ -597,19 +615,19 @@ msgstr "Valitulta palvelimelta ei löytynyt imagea, jos vaatii salasanan, varmis
 msgid "None"
 msgstr "Ei mitään"
 
-#: ../src/Multibootmgr.py:40
+#: ../src/Multibootmgr.py:38
 msgid "Note: slot list does not show current image or empty slots."
 msgstr "HUOM: Paikkalistaus ei näytä nykyistä imagea, tai tyhjiä paikkoja."
 
-#: ../src/BackupManager.py:665
+#: ../src/BackupManager.py:668
 msgid "Now skipping restore process"
 msgstr "Ohitetaan palautusprosessia"
 
-#: ../src/BackupManager.py:904 ../src/RestoreWizard.py:110
+#: ../src/BackupManager.py:909 ../src/RestoreWizard.py:108
 msgid "OK"
 msgstr "OK"
 
-#: ../src/RestoreWizard.py:92
+#: ../src/RestoreWizard.py:90
 msgid "OK, to perform a restore"
 msgstr "OK, suorita palautus"
 
@@ -617,7 +635,7 @@ msgstr "OK, suorita palautus"
 msgid "Opkg"
 msgstr ""
 
-#: ../src/BackupManager.py:861
+#: ../src/BackupManager.py:864
 msgid "Please enter a folder that contains some packages."
 msgstr "Valitse hakemisto joka sisältää asennuspaketteja."
 
@@ -625,7 +643,7 @@ msgstr "Valitse hakemisto joka sisältää asennuspaketteja."
 msgid "Please select device to use as SWAP file location."
 msgstr "Valitse laite, jota käytetään SWAP-tiedoston tallentamiseen."
 
-#: ../src/RestoreWizard.py:142
+#: ../src/RestoreWizard.py:140
 msgid "Please wait while plugins restore completes..."
 msgstr "Odota, lisäosien palautusta suoritetaan..."
 
@@ -635,26 +653,26 @@ msgstr "Odota. Etsitään laitteita..."
 
 #: ../src/MountManager.py:346
 #, fuzzy
-msgid "Please wait while scanning your STB devices..."
+msgid "Please wait while scanning your receiver devices..."
 msgstr "Odota. Etsitään laitteita..."
 
-#: ../src/RestoreWizard.py:197
+#: ../src/RestoreWizard.py:195
 msgid "Please wait while settings restore completes..."
 msgstr "Odota, asetusten palautus kesken..."
 
-#: ../src/SoftcamManager.py:275
+#: ../src/SoftcamManager.py:286
 msgid "Please wait while starting\n"
 msgstr "Odota, käynnistetään\n"
 
-#: ../src/SoftcamManager.py:373
+#: ../src/SoftcamManager.py:384
 msgid "Please wait while stopping\n"
 msgstr "Odota, pysäytetään\n"
 
-#: ../src/ImageManager.py:413
+#: ../src/ImageManager.py:416
 msgid "Please wait while the flash prepares."
 msgstr "Odota kun asennusta valmistellaan."
 
-#: ../src/RestoreWizard.py:130 ../src/RestoreWizard.py:135
+#: ../src/RestoreWizard.py:128 ../src/RestoreWizard.py:133
 msgid "Please wait while the system gathers information..."
 msgstr "Ole hyvä ja odota, järjestelmä kerää tietoja..."
 
@@ -662,15 +680,15 @@ msgstr "Ole hyvä ja odota, järjestelmä kerää tietoja..."
 msgid "Please wait."
 msgstr "Odota."
 
-#: ../src/BackupManager.py:1233
+#: ../src/BackupManager.py:1237
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Pluginien listaus epäonnistui - väärä varmuuskopion sijainti tai levytila on lopussa."
 
-#: ../src/BackupManager.py:1122 ../src/BackupManager.py:1126
+#: ../src/BackupManager.py:1126 ../src/BackupManager.py:1130
 msgid "Preparing extra plugins..."
 msgstr "Valmistellaan ylimääräisiä lisäosia..."
 
-#: ../src/BackupManager.py:213 ../src/ImageManager.py:218
+#: ../src/BackupManager.py:216 ../src/ImageManager.py:221
 msgid "Press 'Menu' to select a storage device"
 msgstr ""
 
@@ -678,19 +696,19 @@ msgstr ""
 msgid "Press OK to toggle the selection."
 msgstr "Suorita valinta OK-näppäimellä."
 
-#: ../src/H9SDmanager.py:34
+#: ../src/H9SDmanager.py:32
 msgid "Press appropiate Init to move Nand root to SDcard."
 msgstr "Paina sopivaa alustusta siirtääksesi Nand root SD-kortille."
 
-#: ../src/H9SDmanager.py:35
+#: ../src/H9SDmanager.py:33
 msgid "Reboot"
 msgstr "Uudelleenkäynnistys"
 
-#: ../src/BackupManager.py:435
+#: ../src/BackupManager.py:438
 msgid "Rebooting..."
 msgstr "Käynnistyy uudelleen..."
 
-#: ../src/ImageManager.py:366
+#: ../src/ImageManager.py:369
 #, python-format
 msgid ""
 "Recording(s) are in progress or coming up in few seconds!\n"
@@ -701,17 +719,17 @@ msgstr ""
 "Haluatko silti päivittää imagen\n"
 "%s?"
 
-#: ../src/Multibootmgr.py:87
+#: ../src/Multibootmgr.py:81
 #, fuzzy, python-format
 msgid "Removal of this slot will not show in %s Gui.  Are you sure you want to delete image slot?"
 msgstr "Tämän paikan poisto ei näy %s käyttöliittymässä. Oletko varma että haluat poistaa imagen paikasta %s ?"
 
-#: ../src/BackupManager.py:299 ../src/ImageManager.py:298
-#: ../src/Multibootmgr.py:89 ../src/Multibootmgr.py:93
+#: ../src/BackupManager.py:302 ../src/ImageManager.py:301
+#: ../src/Multibootmgr.py:83 ../src/Multibootmgr.py:87
 msgid "Remove confirmation"
 msgstr "Poista vahvistus"
 
-#: ../src/ImageManager.py:772 ../src/ImageManager.py:776
+#: ../src/ImageManager.py:775 ../src/ImageManager.py:779
 msgid "Removing temp mounts..."
 msgstr "Poistetaan väliaikaiset liitokset..."
 
@@ -725,45 +743,46 @@ msgstr "Käynnistä käyttöliittymä uudelleen."
 
 #: ../src/MountManager.py:375
 #, fuzzy
-msgid "Restart STB"
-msgstr "Käynnistä käyttöliittymä uudelleen."
+msgid "Restart receiver"
+msgstr "Käynnistä uudelleen"
 
-#: ../src/BackupManager.py:139
+#: ../src/BackupManager.py:142
 msgid "Restore"
 msgstr "Palauta"
 
-#: ../src/BackupManager.py:362
-msgid "Restore Confirmation"
+#: ../src/BackupManager.py:365
+#, fuzzy
+msgid "Restore confirmation"
 msgstr "Palautuksen varmistus"
 
-#: ../src/plugin.py:174 ../src/RestoreWizard.py:131 ../src/RestoreWizard.py:136
-#: ../src/RestoreWizard.py:143 ../src/RestoreWizard.py:149
-#: ../src/RestoreWizard.py:155 ../src/RestoreWizard.py:159
-#: ../src/RestoreWizard.py:185 ../src/RestoreWizard.py:189
-#: ../src/RestoreWizard.py:198 ../src/RestoreWizard.py:254
-#: ../src/RestoreWizard.py:258 ../src/RestoreWizard.py:262
-#: ../src/RestoreWizard.py:266 ../src/RestoreWizard.py:270
+#: ../src/plugin.py:174 ../src/RestoreWizard.py:129 ../src/RestoreWizard.py:134
+#: ../src/RestoreWizard.py:141 ../src/RestoreWizard.py:147
+#: ../src/RestoreWizard.py:153 ../src/RestoreWizard.py:157
+#: ../src/RestoreWizard.py:183 ../src/RestoreWizard.py:187
+#: ../src/RestoreWizard.py:196 ../src/RestoreWizard.py:252
+#: ../src/RestoreWizard.py:256 ../src/RestoreWizard.py:260
+#: ../src/RestoreWizard.py:264 ../src/RestoreWizard.py:268
 msgid "Restore wizard"
 msgstr "Palautuksen avustaja"
 
-#: ../src/BackupManager.py:391 ../src/BackupManager.py:395
-#: ../src/BackupManager.py:399
+#: ../src/BackupManager.py:394 ../src/BackupManager.py:398
+#: ../src/BackupManager.py:402
 msgid "Restoring backup..."
 msgstr "Palautetaan varmuuskopiota..."
 
-#: ../src/BackupManager.py:427 ../src/BackupManager.py:431
+#: ../src/BackupManager.py:430 ../src/BackupManager.py:434
 msgid "Restoring plugins, this can take a long time..."
 msgstr "Palautetaan lisäosia, tämä voi kestää kauan..."
 
-#: ../src/BackupManager.py:419 ../src/BackupManager.py:423
+#: ../src/BackupManager.py:422 ../src/BackupManager.py:426
 msgid "Restoring plugins..."
 msgstr "Palautetaan lisäosia..."
 
-#: ../src/Multibootmgr.py:43
+#: ../src/Multibootmgr.py:41
 msgid "Retrieving image slots - Please wait..."
 msgstr "Haetaan image-paikkoja - Odota..."
 
-#: ../src/ScriptRunner.py:48
+#: ../src/ScriptRunner.py:47
 msgid "Run"
 msgstr "Suorita"
 
@@ -791,7 +810,7 @@ msgstr "Paikka SWAP:lle:"
 msgid "SWAP size:"
 msgstr "SWAP-koko:"
 
-#: ../src/BackupManager.py:717 ../src/BackupManager.py:806
+#: ../src/BackupManager.py:720 ../src/BackupManager.py:809
 #: ../src/MountManager.py:336
 msgid "Save"
 msgstr "Tallenna"
@@ -800,11 +819,11 @@ msgstr "Tallenna"
 msgid "Script runner"
 msgstr "Skriptien ajo"
 
-#: ../src/BackupManager.py:752
+#: ../src/BackupManager.py:755
 msgid "Select"
 msgstr "Valitse"
 
-#: ../src/BackupManager.py:229 ../src/BackupManager.py:232
+#: ../src/BackupManager.py:232 ../src/BackupManager.py:235
 msgid "Select a backup to restore:"
 msgstr "Valitse palautettava varmuskopio:"
 
@@ -812,24 +831,24 @@ msgstr "Valitse palautettava varmuskopio:"
 msgid "Select a package to install:"
 msgstr "Valitse asennettava ohjelmapaketti:"
 
-#: ../src/ImageManager.py:1316
+#: ../src/ImageManager.py:1319
 #, fuzzy
 msgid "Select an image to download:"
 msgstr "Valitse päivitettävä image:"
 
-#: ../src/ImageManager.py:236 ../src/ImageManager.py:241
+#: ../src/ImageManager.py:239 ../src/ImageManager.py:244
 msgid "Select an image to flash:"
 msgstr "Valitse päivitettävä image:"
 
-#: ../src/BackupManager.py:803
+#: ../src/BackupManager.py:806
 msgid "Select extra packages folder"
 msgstr "Valitse lisäohjelmapakettien hakemisto"
 
-#: ../src/BackupManager.py:714
+#: ../src/BackupManager.py:717
 msgid "Select files/folders to backup"
 msgstr "Valitse varmuuskopioitavat tiedostot/kansiot"
 
-#: ../src/BackupManager.py:835
+#: ../src/BackupManager.py:838
 msgid "Select folder that contains plugins"
 msgstr "Valitse hakemisto joka sisältää lisäosat"
 
@@ -841,7 +860,7 @@ msgstr "Valitse SWAP:n koko:"
 msgid "Select:"
 msgstr "Valitse:"
 
-#: ../src/ImageManager.py:736
+#: ../src/ImageManager.py:739
 msgid "Setting up..."
 msgstr "Asennus käynnissä..."
 
@@ -859,15 +878,15 @@ msgstr "Koko: "
 msgid "Softcam manager"
 msgstr "Softcam:n hallinnointi"
 
-#: ../src/SoftcamManager.py:273
+#: ../src/SoftcamManager.py:284
 msgid "Softcam starting..."
 msgstr "Softcam käynnistyy..."
 
-#: ../src/SoftcamManager.py:371
+#: ../src/SoftcamManager.py:382
 msgid "Softcam stopping..."
 msgstr "Softcam pysähtymässä..."
 
-#: ../src/SoftcamManager.py:544
+#: ../src/SoftcamManager.py:555
 msgid "SoftcamCheck"
 msgstr "Softcam-tarkistus"
 
@@ -875,24 +894,24 @@ msgstr "Softcam-tarkistus"
 msgid "Sorry but that location does not exist or is not setup. Please set it up in the Backup manager setup menu."
 msgstr "Tämä sijainti ei ole olemassa, tai sitä ei ole asetettu. Aseta se Varmuuskopioiden hallinnointityökalulla."
 
-#: ../src/BackupManager.py:547
+#: ../src/BackupManager.py:550
 msgid "Sorry the feeds are down for maintenance. Please try again later."
 msgstr "Syötteitä huolletaan, kokeile myöhemmin uudestaan."
 
-#: ../src/RestoreWizard.py:148
+#: ../src/RestoreWizard.py:146
 msgid "Sorry the feeds are down for maintenance. Please try using Backup manager to restore plugins later."
 msgstr "Syötteitä huolletaan. Yritä myöhemmin palauttaa pluginit käyttäen varmuuskopioiden hallinta-työkalua."
 
-#: ../src/RestoreWizard.py:265
+#: ../src/RestoreWizard.py:263
 msgid "Sorry the feeds are down for maintenance. Please try using the Backup manager to restore plugins later."
 msgstr "Syötteitä huolletaan. Yritä myöhemmin palauttaa pluginit käyttäen varmuuskopioiden hallinta-työkalua."
 
-#: ../src/BackupManager.py:355 ../src/BackupManager.py:357
-#: ../src/RestoreWizard.py:184 ../src/RestoreWizard.py:188
+#: ../src/BackupManager.py:358 ../src/BackupManager.py:360
+#: ../src/RestoreWizard.py:182 ../src/RestoreWizard.py:186
 msgid "Sorry, but the file is not compatible with this image version."
 msgstr "Tiedosto ei ole yhteensopiva tämän ohjelmaversion kanssa."
 
-#: ../src/BackupManager.py:474
+#: ../src/BackupManager.py:477
 msgid "Sorry, but the restore failed."
 msgstr "Palautus epäonnistui."
 
@@ -900,7 +919,7 @@ msgstr "Palautus epäonnistui."
 msgid "Sorry, no physical devices that supports SWAP attached. Can't create SWAP file on network or fat32 file-systems."
 msgstr "Fyysisiä laitteita, jotka tukevat SWAP-tiedostoa, ei ole. SWAP-tiedostoa ei pysty luomaan verkkolevylle tai FAT32-levyjärjestelmään."
 
-#: ../src/ImageManager.py:856
+#: ../src/ImageManager.py:859
 msgid "Sorry, not enough free RAM found, and no physical devices that supports SWAP attached. Can't create SWAP file on network or fat32 file-systems, unable to make backup."
 msgstr "Vapaata RAM-muistia ei ole tarpeeksi, eikä fyysistä laitetta löydy, joka tukisi SWAP-tiedostoa. SWAP-tiedostoa ei voida luoda verkkolevylle tai FAT32-tiedostojärjestelmään. Varmuuskopiota ei pysty tekemään."
 
@@ -908,7 +927,7 @@ msgstr "Vapaata RAM-muistia ei ole tarpeeksi, eikä fyysistä laitetta löydy, j
 msgid "Start"
 msgstr "Käynnistä"
 
-#: ../src/BackupManager.py:1098 ../src/BackupManager.py:1102
+#: ../src/BackupManager.py:1102 ../src/BackupManager.py:1106
 msgid "Starting..."
 msgstr "Käynnistyy..."
 
@@ -928,11 +947,11 @@ msgstr "TB"
 msgid "Temp folder"
 msgstr "Temp -hakemisto"
 
-#: ../src/BackupManager.py:1193
+#: ../src/BackupManager.py:1197
 msgid "The backup location does not have enough free space."
 msgstr "Varmuuskopioiden tallennuskohteessa ei ole riittävästi tilaa."
 
-#: ../src/ImageManager.py:818
+#: ../src/ImageManager.py:821
 msgid "The backup location does not have enough free space.\n"
 msgstr "Varmuuskopioiden tallennuskohteessa ei ole riittävästi tilaa.\n"
 
@@ -940,32 +959,32 @@ msgstr "Varmuuskopioiden tallennuskohteessa ei ole riittävästi tilaa.\n"
 #, fuzzy
 msgid ""
 "The changes need a system restart to take effect.\n"
-"Restart your STB now?"
+"Restart your receiver now?"
 msgstr ""
 "E2 on uudelleenkäynnistettävä.\n"
 "Uudelleenkäynnistä%s %s nyt?"
 
-#: ../src/BackupManager.py:229 ../src/ImageManager.py:236
+#: ../src/BackupManager.py:232 ../src/ImageManager.py:239
 msgid "The chosen location does not exist, using /media/hdd."
 msgstr "Valittua hakemistoa ei ole, käytetään /media/hdd."
 
-#: ../src/BackupManager.py:252 ../src/ImageManager.py:250
+#: ../src/BackupManager.py:255 ../src/ImageManager.py:253
 msgid "There is a problem with this device. Please reformat it and try again."
 msgstr "Tässä laitteessa on ongelma. Alusta se ja yritä uudelleen."
 
-#: ../src/BackupManager.py:301
+#: ../src/BackupManager.py:304
 msgid "There is no backup to delete."
 msgstr "Ei ole varmuuskopiota mitä poistaa."
 
-#: ../src/BackupManager.py:342
+#: ../src/BackupManager.py:345
 msgid "There is no backup to restore."
 msgstr "Ei ole varmuuskopiota mitä palauttaa."
 
-#: ../src/ImageManager.py:300
+#: ../src/ImageManager.py:303
 msgid "There is no image to delete."
 msgstr "Ei ole imagea mitä poistaa."
 
-#: ../src/ImageManager.py:408
+#: ../src/ImageManager.py:411
 msgid "There is no image to flash."
 msgstr "Ei ole imagea mitä päivittää."
 
@@ -985,7 +1004,7 @@ msgstr "USB: "
 msgid "Un-mount"
 msgstr "Poista liitos"
 
-#: ../src/ImageManager.py:439
+#: ../src/ImageManager.py:442
 #, python-format
 msgid ""
 "Unzip error (also sent to any debug log):\n"
@@ -1002,17 +1021,17 @@ msgstr "Päivitetään liitos-paikkoja..."
 msgid "Use as HDD"
 msgstr "Käytä HDD:nä"
 
-#: ../src/Multibootmgr.py:39
+#: ../src/Multibootmgr.py:37
 msgid "Use the cursor keys to select an installed image and then Erase button."
 msgstr "Käytä kursoria valitaksesi asennetun imagen, ja paina Pyyhi-nappulaa."
 
-#: ../src/BackupManager.py:184 ../src/BackupManager.py:325
-#: ../src/BackupManager.py:368 ../src/ImageManager.py:171
-#: ../src/ImageManager.py:334
+#: ../src/BackupManager.py:187 ../src/BackupManager.py:328
+#: ../src/BackupManager.py:371 ../src/ImageManager.py:174
+#: ../src/ImageManager.py:337
 msgid "View progress"
 msgstr "Tarkastele etenemistä"
 
-#: ../src/ui.py:44 ../src/plugin.py:84 ../src/plugin.py:163
+#: ../src/plugin.py:84 ../src/plugin.py:163
 msgid "Vision"
 msgstr "Vision"
 
@@ -1020,7 +1039,12 @@ msgstr "Vision"
 msgid "Vision Backup manager"
 msgstr "Vision Backup manager"
 
-#: ../src/plugin.py:177
+#: ../src/ui.py:44
+#, fuzzy
+msgid "Vision Core"
+msgstr "Vision"
+
+#: ../src/plugin.py:177 ../src/ImageManager.py:125
 msgid "Vision Image manager"
 msgstr "Vision Image manager"
 
@@ -1056,15 +1080,15 @@ msgstr "Odota, tietoja haetaan..."
 msgid "Weekly"
 msgstr "Viikoittain"
 
-#: ../src/RestoreWizard.py:102 ../src/RestoreWizard.py:105
+#: ../src/RestoreWizard.py:100 ../src/RestoreWizard.py:103
 msgid "YES, to restore plugins"
 msgstr "KYLLÄ, palauttaa lisäosat"
 
-#: ../src/RestoreWizard.py:96
+#: ../src/RestoreWizard.py:94
 msgid "YES, to restore settings"
 msgstr "KYLLÄ, palauttaa asetukset"
 
-#: ../src/ImageManager.py:370
+#: ../src/ImageManager.py:373
 msgid ""
 "You are about to flash an eMMC flash; we cannot take any responsibility for any errors or damage to your box during this process.\n"
 "Proceed with CAUTION!:\n"
@@ -1076,7 +1100,7 @@ msgstr ""
 "Are you sure you want to flash this image:\n"
 " "
 
-#: ../src/ImageManager.py:410
+#: ../src/ImageManager.py:413
 msgid "You have decided not to flash image."
 msgstr "Olet päättänyt olla päivittämättä imagea."
 
@@ -1084,55 +1108,55 @@ msgstr "Olet päättänyt olla päivittämättä imagea."
 msgid "You have to create a SWAP file before trying to activate the autostart."
 msgstr "Sinun pitää ensin luoda SWAP-tiedosto, ennen kuin aktivoit sen automaattisen käynnistyksen."
 
-#: ../src/RestoreWizard.py:257
+#: ../src/RestoreWizard.py:255
 #, fuzzy
-msgid "Your STB could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."
+msgid "Your receiver could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."
 msgstr "Sinun %s %s ei saa yhteyttä plugin-syötteisiin. Yritä myöhemmin palauttaa pluginit käyttäen varmuuskopioiden hallinta-työkalua."
 
-#: ../src/ImageManager.py:593
+#: ../src/ImageManager.py:596
 #, fuzzy
 msgid ""
-"Your STB is about to create a full image backup, this can take about 6 minutes to complete.\n"
+"Your receiver is about to create a full image backup, this can take about 6 minutes to complete.\n"
 "Do you want to allow this?"
 msgstr ""
 "Sinun %s %s aikoo tehdä täyden varmuuskopion, ja se voi kestää noin kuusi minuuttia.\n"
 "Sallitko tämän?"
 
-#: ../src/BackupManager.py:1035
+#: ../src/BackupManager.py:1039
 #, fuzzy
 msgid ""
-"Your STB is about to run a backup of your settings and to detect your plugins.\n"
+"Your receiver is about to run a backup of your settings and to detect your plugins.\n"
 "Do you want to allow this?"
 msgstr ""
 "Sinun %s %s ajaa varmuuskopion asetuksistasi, ja yrittää havaita pluginisi.\n"
 "Sallitko tämän?"
 
-#: ../src/BackupManager.py:538
+#: ../src/BackupManager.py:541
 #, fuzzy
-msgid "Your STB is not connected to a network. Please check your network settings and try again."
+msgid "Your receiver is not connected to a network. Please check your network settings and try again."
 msgstr "Sinun %s %s ei saa yhteyttä verkkoon. Tarkista verkkoasetuksesi, ja kokeile uudestaan."
 
-#: ../src/RestoreWizard.py:253
+#: ../src/RestoreWizard.py:251
 #, fuzzy
-msgid "Your STB is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."
+msgid "Your receiver is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."
 msgstr "Sinun %s %s ei saa yhteyttä verkkoon. Yritä myöhemmin palauttaa pluginit käyttäen varmuuskopioiden hallinta-työkalua, kun verkkoyhteys on saatavilla."
 
-#: ../src/BackupManager.py:556
+#: ../src/BackupManager.py:559
 #, fuzzy
-msgid "Your STB is not connected to the Internet. Please check your network settings and try again."
+msgid "Your receiver is not connected to the Internet. Please check your network settings and try again."
 msgstr "Sinun %s %s ei ole yhteydessä internettiin. Tarkasta verkkoasetukset ja kokeile uudestaan."
 
-#: ../src/RestoreWizard.py:154
+#: ../src/RestoreWizard.py:152
 #, fuzzy
-msgid "Your STB is not connected to the Internet. Please try using Backup manager to restore plugins later."
+msgid "Your receiver is not connected to the Internet. Please try using Backup manager to restore plugins later."
 msgstr "Sinun %s %s ei saa yhteyttä internettiin. Yritä myöhemmin palauttaa pluginit käyttäen varmuuskopioiden hallinta-työkalua."
 
-#: ../src/RestoreWizard.py:261
+#: ../src/RestoreWizard.py:259
 #, fuzzy
-msgid "Your STB is not connected to the Internet. Please try using the Backup manager to restore plugins later."
+msgid "Your receiver is not connected to the Internet. Please try using the Backup manager to restore plugins later."
 msgstr "Sinun %s %s ei saa yhteyttä internettiin. Yritä myöhemmin palauttaa pluginit käyttäen varmuuskopioiden hallinta-työkalua."
 
-#: ../src/ImageManager.py:491
+#: ../src/ImageManager.py:494
 #, fuzzy, python-format
 msgid ""
 "ofgwrite error (also sent to any debug log):\n"
@@ -1141,17 +1165,17 @@ msgstr ""
 "OFGwrite virhe (virhe lähetetty debug-lokiin):\n"
 "%s"
 
-#: ../src/ImageManager.py:392
+#: ../src/ImageManager.py:395
 #, python-format
 msgid "slot%s - %s"
 msgstr "paikka%s - %s"
 
-#: ../src/Multibootmgr.py:79
+#: ../src/Multibootmgr.py:73
 #, python-format
 msgid "slot%s - %s "
 msgstr "paikka%s - %s "
 
-#: ../src/ImageManager.py:392
+#: ../src/ImageManager.py:395
 #, python-format
 msgid "slot%s - %s (current image)"
 msgstr "paikka%s - %s (nykyinen image)"
