@@ -72,6 +72,9 @@ config.backupmanager.backupdirs = ConfigLocations(
 config.backupmanager.xtraplugindir = ConfigDirectory(default='')
 config.backupmanager.lastlog = ConfigText(default=' ', fixed_size=False)
 
+if not config.backupmanager.backuplocation.value.endswith("/"):
+	config.backupmanager.backuplocation = config.backupmanager.backuplocation.value + "/", config.backupmanager.backuplocation.value
+
 def isRestorableSettings(imageversion):
 	minimum_version = 4.2
 	try:
