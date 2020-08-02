@@ -201,7 +201,7 @@ class VISIONBackupManager(Screen):
 		Components.Task.job_manager.in_background = in_background
 
 	def populate_List(self):
-		if config.backupmanager.backuplocation.value.endswith('/'):
+		if config.backupmanager.backuplocation.getValue():
 			mount = config.backupmanager.backuplocation.value, config.backupmanager.backuplocation.value[:-1]
 		else:
 			mount = config.backupmanager.backuplocation.value + '/', config.backupmanager.backuplocation.value

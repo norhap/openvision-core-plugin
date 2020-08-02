@@ -208,7 +208,7 @@ class VISIONImageManager(Screen):
 		Components.Task.job_manager.in_background = in_background
 
 	def populate_List(self):
-		if config.imagemanager.backuplocation.value.endswith("/"):
+		if config.imagemanager.backuplocation.getValue():
 			mount = config.imagemanager.backuplocation.value, config.imagemanager.backuplocation.value[:-1]
 		else:
 			mount = config.imagemanager.backuplocation.value + "/", config.imagemanager.backuplocation.value
