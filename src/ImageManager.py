@@ -76,12 +76,6 @@ config.imagemanager.imagefeed_DevL = ConfigText(default="login:pswd", fixed_size
 
 autoImageManagerTimer = None
 
-if path.exists(config.imagemanager.backuplocation.value + "imagebackups/imagerestore"):
-	try:
-		rmtree(config.imagemanager.backuplocation.value + "imagebackups/imagerestore")
-	except Exception:
-		pass
-
 def ImageManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
 	global autoImageManagerTimer
@@ -432,6 +426,7 @@ class VISIONImageManager(Screen):
 				if pathExists("%s/SDAbackup" % MAINDEST) and self.multibootslot != 1:
 						self.session.open(MessageBox, _("Multiboot only able to restore this backup to mmc slot1"), MessageBox.TYPE_INFO, timeout=20)
 						print("[ImageManager] SF8008 mmc restore to SDcard failed:\n")
+						rmtree(config.imagemanager.backuplocation.getValue() + "imagebackups/imagerestore")
 						self.close()
 				else:
 					self.keyRestore6(0)
@@ -1252,7 +1247,7 @@ class ImageBackup(Screen):
 		zipfolder = path.split(self.MAINDESTROOT)
 		self.commands = []
 		if SystemInfo["HasRootSubdir"]:
-			self.commands.append("a -r -bt -bd %s/%s-%s-%s-%s-%s_mmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROVERSION, self.DISTROBUILD, self.MODEL, self.BackupDate, self.MAINDESTROOT))
+			self.commands.append("7za a -r -bt -bd %s/%s-%s-%s-%s-%s_mmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROVERSION, self.DISTROBUILD, self.MODEL, self.BackupDate, self.MAINDESTROOT))
 		else:
 			self.commands.append("cd " + self.MAINDESTROOT + " && zip -r " + self.MAINDESTROOT + ".zip *")
 		self.commands.append("rm -rf " + self.MAINDESTROOT)
