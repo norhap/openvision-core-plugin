@@ -76,9 +76,6 @@ config.imagemanager.imagefeed_DevL = ConfigText(default="login:pswd", fixed_size
 
 autoImageManagerTimer = None
 
-if not config.imagemanager.backuplocation.value.endswith("/"):
-	config.imagemanager.backuplocation = config.imagemanager.backuplocation.value + "/", config.imagemanager.backuplocation.value
-
 if path.exists(config.imagemanager.backuplocation.value + "imagebackups/imagerestore"):
 	try:
 		rmtree(config.imagemanager.backuplocation.value + "imagebackups/imagerestore")
