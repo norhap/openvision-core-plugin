@@ -1085,7 +1085,7 @@ class BackupFiles(Screen):
 		self.imagebackup = imagebackup
 		self.BackupDevice = config.backupmanager.backuplocation.value
 		print("[BackupManager] Device: " + self.BackupDevice)
-		self.BackupDirectory = config.backupmanager.backuplocation.value + 'backup/'
+		self.BackupDirectory = config.backupmanager.backuplocation.value + '/backup/'
 		print("[BackupManager] Directory: " + self.BackupDirectory)
 		self.Stage1Completed = False
 		self.Stage2Completed = False
