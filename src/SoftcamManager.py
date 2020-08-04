@@ -124,15 +124,23 @@ class VISIONSoftcamManager(Screen):
 		self.session.open(Setup, 'visionsoftcammanager', 'SystemPlugins/Vision', PluginLanguageDomain)
 
 	def selectionChanged(self):
+		if not path.exists('/usr/softcams/oscam') and path.exists('/usr/bin/oscam'):
+		   self.Console.ePopen('cp /usr/bin/oscam /usr/softcams/')
+		elif not path.exists('/usr/softcams/ncam') and path.exists('/usr/bin/ncam'):
+		   self.Console.ePopen('cp /usr/bin/ncam /usr/softcams/')
+		elif not path.exists('/usr/softcams/oscam-emu') and path.exists('/usr/bin/oscam-emu'):
+		   self.Console.ePopen('cp /usr/bin/oscam-emu /usr/softcams/')
+		elif not path.exists('/usr/softcams/oscam-smod') and path.exists('/usr/bin/oscam-smod'):
+		   self.Console.ePopen('cp /usr/bin/oscam-smod /usr/softcams/')
 		cams = []
 		if path.exists('/usr/softcams/'):
 			cams = listdir('/usr/softcams')
 		selcam = ''
 		if cams:
 			current = self["list"].getCurrent()[0]
-			selcam = current[0]
 			print('[SoftcamManager] Selectedcam: ' + str(selcam))
-			if self.currentactivecam.find(selcam) < 0:
+			selcam = current[0]
+			if self.currentactivecam.find(selcam):
 				self["key_green"].setText(_("Start"))
 			else:
 				self["key_green"].setText(_("Stop"))
