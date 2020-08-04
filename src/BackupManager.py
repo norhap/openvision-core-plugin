@@ -112,21 +112,38 @@ def BackupManagerautostart(reason, session=None, **kwargs):
 
 
 class VISIONBackupManager(Screen):
-	skin = """<screen name="VISIONBackupManager" position="center,center" size="560,400">
-		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
-		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
-		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
-		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
-		<ePixmap pixmap="buttons/key_menu.png" position="0,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
-		<ePixmap pixmap="buttons/key_info.png" position="40,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
-		<widget name="lab1" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
-		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand" />
-		<widget name="backupstatus" position="10,370" size="400,30" font="Regular;20" zPosition="5" />
-		<applet type="onLayoutFinish">
-			self["list"].instance.setItemHeight(25)
-		</applet>
+	skin = """<screen name="VISIONBackupManager" position="fill"  flags="wfNoBorder">
+	<widget source="Title" render="Label" font="FHD; 34" backgroundColor="OE_Background" position="130,40" size="1300,90" halign="center" valign="center" transparent="1"/>
+	<eLabel backgroundColor="OE_NewBg2" position="1475,45" size="400,72" transparent="0" zPosition="2" foregroundColor="white"/>
+	<eLabel backgroundColor="white" position="1480,80" size="230,2" transparent="0" zPosition="2"/>
+	<widget backgroundColor="OE_NewBg" font="RegularBold; 45" halign="left" position="1730,45" zPosition="3" render="Label" size="155,60" source="global.CurrentTime" transparent="1" valign="center" foregroundColor="white">
+	<convert type="ClockToText"></convert>
+	</widget>
+	<widget backgroundColor="OE_NewBg2" font="RegularBold; 26" halign="center" position="1480,45" zPosition="3" render="Label" size="230,35" source="global.CurrentTime" transparent="1">
+	<convert type="ClockToText">Date</convert>
+	</widget>
+	<widget backgroundColor="OE_NewBg2" font="RegularBold; 26" halign="center" position="1480,80" zPosition="3" render="Label" size="230,35" source="global.CurrentTime" transparent="1">
+	<convert type="ClockToText">FullDate</convert>
+	</widget>
+	<eLabel backgroundColor="OE_Background" foregroundColor="OE_Background" name="" position="0,45" size="1475,990" zPosition="-15"/>
+	<eLabel backgroundColor="OE_NewBg2" foregroundColor="white" name="" position="40,0" size="80,1080" zPosition="-11" valign="center"/>
+	<ePixmap alphatest="blend" pixmap="colors/o_logo.png" position="42,30" size="75,75" transparent="1" zPosition="1"/>
+	<eLabel name="" foregroundColor="white" backgroundColor="blue_light" position="140,135" size="1300,2" zPosition="-9"/>
+	<eLabel backgroundColor="blue_light" name="" position="140,965" size="1300,2" zPosition="-9"/>
+	<ePixmap alphatest="blend" pixmap="buttons/key_red.png" position="170,980" size="40,40"/>
+	<ePixmap alphatest="blend" pixmap="buttons/key_green.png" position="500,980" size="40,40"/>
+	<ePixmap alphatest="blend" pixmap="buttons/key_yellow.png" position="830,980" size="40,40"/>
+	<ePixmap alphatest="blend" pixmap="buttons/key_menu.png" position="48,920" size="64,43"/>
+	<ePixmap alphatest="blend" pixmap="buttons/key_info.png" position="48,985" size="64,43"/>
+	<widget name="key_red" font="FHD; 28" backgroundColor="OE_Background" position="220,965" size="270,70" halign="left" valign="center" transparent="1" zPosition="1"/>
+	<widget name="key_green" font="FHD; 28" backgroundColor="OE_Background" position="550,965" size="270,70" halign="left" valign="center" transparent="1" zPosition="1"/>
+	<widget name="key_yellow" font="FHD; 28" backgroundColor="OE_Background" position="880,965" size="270,70" halign="left" valign="center" transparent="1" zPosition="1"/>
+	<widget name="lab1" position="125,150" size="400,150" font="FHD; 30" backgroundColor="OE_Background" foregroundColor="blue_light" halign="center" valign="center" transparent="1" zPosition="3"/>
+	<widget name="list" borderWidth="1" scrollbarMode="showOnDemand" backgroundColor="OE_Background" position="140,300" zPosition="10" size="1300,850" transparent="1"/>
+	<widget name="backupstatus" font="FHD; 30" backgroundColor="OE_Background" foregroundColor="blue_light" position="140,750" size="640,300" transparent="1" valign="top"/>
+	<applet type="onLayoutFinish">
+		self["list"].instance.setItemHeight(50)
+	</applet>
 	</screen>"""
 
 	def __init__(self, session):
