@@ -77,7 +77,7 @@ class VISIONSoftcamManager(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Softcam manager"))
+		self.setTitle(_("Softcam Vision"))
 
 		self['lab1'] = Label(_('Select:'))
 		self['lab2'] = Label(_('Active:'))
@@ -90,7 +90,7 @@ class VISIONSoftcamManager(Screen):
 		self.emlist = MultiFileSelectList(self.selectedFiles, self.defaultDir, showDirectories=False)
 		self["list"] = self.emlist
 
-		self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "TimerEditActions", "MenuActions"],
+		self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "TimerEditActions"],
 									  {
 									  'ok': self.keyStart,
 									  'cancel': self.close,
@@ -99,7 +99,6 @@ class VISIONSoftcamManager(Screen):
 									  'yellow': self.getRestartPID,
 									  'blue': self.changeSelectionState,
 									  'log': self.showLog,
-									  'menu': self.createSetup,
 									  }, -1)
 
 		self["key_red"] = Button(_("Close"))
@@ -119,20 +118,27 @@ class VISIONSoftcamManager(Screen):
 		from Screens.PluginBrowser import PluginBrowserSummary
 		return PluginBrowserSummary
 
-	def createSetup(self):
-		from Screens.Setup import Setup
-		self.session.open(Setup, 'visionsoftcammanager', 'SystemPlugins/Vision', PluginLanguageDomain)
+	def createSetup(self, setup):
+		self.session.open(setup, PluginLanguageDomain)
 
 	def selectionChanged(self):
+		if not path.exists('/usr/softcams/oscam') and path.exists('/usr/bin/oscam'):
+		   self.Console.ePopen('cp /usr/bin/oscam /usr/softcams/')
+		elif not path.exists('/usr/softcams/ncam') and path.exists('/usr/bin/ncam'):
+		   self.Console.ePopen('cp /usr/bin/ncam /usr/softcams/')
+		elif not path.exists('/usr/softcams/oscam-emu') and path.exists('/usr/bin/oscam-emu'):
+		   self.Console.ePopen('cp /usr/bin/oscam-emu /usr/softcams/')
+		elif not path.exists('/usr/softcams/oscam-smod') and path.exists('/usr/bin/oscam-smod'):
+		   self.Console.ePopen('cp /usr/bin/oscam-smod /usr/softcams/')
 		cams = []
 		if path.exists('/usr/softcams/'):
 			cams = listdir('/usr/softcams')
 		selcam = ''
 		if cams:
 			current = self["list"].getCurrent()[0]
-			selcam = current[0]
 			print('[SoftcamManager] Selectedcam: ' + str(selcam))
-			if self.currentactivecam.find(selcam) < 0:
+			selcam = current[0]
+			if self.currentactivecam.find(selcam):
 				self["key_green"].setText(_("Start"))
 			else:
 				self["key_green"].setText(_("Stop"))
@@ -208,14 +214,24 @@ class VISIONSoftcamManager(Screen):
 			self.sel = self['list'].getCurrent()[0]
 			selcam = self.sel[0]
 			if self.currentactivecam.find(selcam) < 0:
-				if selcam.lower().startswith('oscam'):
-					if not path.exists('/etc/tuxbox/config/oscam.conf'):
-						self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+				if selcam.lower().endswith('oscam'):
+					if not path.exists('/etc/tuxbox/config/oscam/oscam.conf'):
+						self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config/oscam"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+					else:
+						self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
+				elif selcam.lower().endswith('smod'):
+					if not path.exists('/etc/tuxbox/config/oscam-smod/oscam.conf'):
+						self.session.open(MessageBox, _("No config files found, please setup Oscam-smod first\nin /etc/tuxbox/config/oscam-smod"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+					else:
+						self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
+				elif selcam.lower().endswith('emu'):
+					if not path.exists('/etc/tuxbox/config/oscam-emu/oscam.conf'):
+						self.session.open(MessageBox, _("No config files found, please setup Oscam-emu first\nin /etc/tuxbox/config/oscam-emu"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
 						self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
 				elif selcam.lower().startswith('ncam'):
-					if not path.exists('/etc/tuxbox/config/ncam.conf'):
-						self.session.open(MessageBox, _("No config files found, please setup Ncam first\nin /etc/tuxbox/config"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+					if not path.exists('/etc/tuxbox/config/ncam/ncam.conf'):
+						self.session.open(MessageBox, _("No config files found, please setup Ncam first\nin /etc/tuxbox/config/ncam"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
 						self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
 				else:
@@ -250,19 +266,31 @@ class VISIONSoftcamManager(Screen):
 				sleep(4)
 			else:
 				print('[SoftcamManager] RESULT FAILED: ' + str(result))
-			if selectedcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam.conf') == True:
+			if selectedcam.lower().endswith('oscam') and path.exists('/etc/tuxbox/config/oscam/oscam.conf') == True:
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-			elif selectedcam.lower().startswith('ncam') and path.exists('/etc/tuxbox/config/ncam.conf') == True:
+			if selectedcam.lower().startswith('ncam') and path.exists('/etc/tuxbox/config/ncam/ncam.conf') == True:
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-			elif selectedcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam.conf') == False:
-				if not path.exists('/etc/tuxbox/config'):
-					makedirs('/etc/tuxbox/config')
-				self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-			elif selectedcam.lower().startswith('ncam') and path.exists('/etc/tuxbox/config/ncam.conf') == False:
-				if not path.exists('/etc/tuxbox/config'):
-					makedirs('/etc/tuxbox/config')
-				self.session.open(MessageBox, _("No config files found, please setup Ncam first\nin /etc/tuxbox/config."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-			elif not (selectedcam.lower().startswith('oscam') or selectedcam.lower().startswith('ncam')):
+			if selectedcam.lower().endswith('smod') and path.exists('/etc/tuxbox/config/oscam-smod/oscam.conf') == True:
+				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
+			if selectedcam.lower().endswith('emu') and path.exists('/etc/tuxbox/config/oscam-emu/oscam.conf') == True:
+				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
+			if selectedcam.lower().endswith('oscam') and path.exists('/etc/tuxbox/config/oscam/oscam.conf') == False:
+				if not path.exists('/etc/tuxbox/config/oscam'):
+					makedirs('/etc/tuxbox/config/oscam')
+				self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config/oscam."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			if selectedcam.lower().startswith('ncam') and path.exists('/etc/tuxbox/config/ncam/ncam.conf') == False:
+				if not path.exists('/etc/tuxbox/config/ncam'):
+					makedirs('/etc/tuxbox/config/ncam')
+				self.session.open(MessageBox, _("No config files found, please setup Ncam first\nin /etc/tuxbox/config/ncam."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			if selectedcam.lower().endswith('emu') and path.exists('/etc/tuxbox/config/oscam-emu/oscam.conf') == False:
+				if not path.exists('/etc/tuxbox/config/oscam-emu'):
+					makedirs('/etc/tuxbox/config/oscam-emu')
+				self.session.open(MessageBox, _("No config files found, please setup Oscam-emu first\nin /etc/tuxbox/config/oscam-emu."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			if selectedcam.lower().endswith('smod') and path.exists('/etc/tuxbox/config/oscam-smod/oscam.conf') == False:
+				if not path.exists('/etc/tuxbox/config/oscam-smod'):
+					makedirs('/etc/tuxbox/config/oscam-smod')
+				self.session.open(MessageBox, _("No config files found, please setup Oscam-smod first\nin /etc/tuxbox/config/oscam-smod."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			if not (selectedcam.lower().endswith('oscam') or not selectedcam.lower().startswith('ncam') or not selectedcam.lower().endswith('emu') or not selectedcam.lower().endswith('smod')):
 				self.session.open(MessageBox, _("Found non-standard softcam, trying to start, this may fail."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
 
@@ -630,10 +658,14 @@ class SoftcamAutoPoller:
 							if path.exists('/tmp/status.html'):
 								remove('/tmp/status.html')
 							port = ''
-							if path.exists('/etc/tuxbox/config/oscam.conf'):
-								oscamconf = '/etc/tuxbox/config/oscam.conf'
-							elif path.exists('/etc/tuxbox/config/ncam.conf'):
-								oscamconf = '/etc/tuxbox/config/ncam.conf'
+							if path.exists('/etc/tuxbox/config/oscam/oscam.conf'):
+								oscamconf = '/etc/tuxbox/config/oscam/oscam.conf'
+							elif path.exists('/etc/tuxbox/config/ncam/ncam.conf'):
+								oscamconf = '/etc/tuxbox/config/ncam/ncam.conf'
+							elif path.exists('/etc/tuxbox/config/oscam-emu/oscam.conf'):
+								oscamconf = '/etc/tuxbox/config/oscam-emu/oscam.conf'
+							elif path.exists('/etc/tuxbox/config/oscam-smod/oscam.conf'):
+								oscamconf = '/etc/tuxbox/config/oscam-smod/oscam.conf'
 							f = open(oscamconf, 'r')
 							for line in f.readlines():
 								if line.find('httpport') != -1:
