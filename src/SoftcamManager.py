@@ -77,7 +77,7 @@ class VISIONSoftcamManager(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Softcam manager"))
+		self.setTitle(_("Softcam Vision"))
 
 		self['lab1'] = Label(_('Select:'))
 		self['lab2'] = Label(_('Active:'))
@@ -90,7 +90,7 @@ class VISIONSoftcamManager(Screen):
 		self.emlist = MultiFileSelectList(self.selectedFiles, self.defaultDir, showDirectories=False)
 		self["list"] = self.emlist
 
-		self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "TimerEditActions", "MenuActions"],
+		self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "TimerEditActions"],
 									  {
 									  'ok': self.keyStart,
 									  'cancel': self.close,
@@ -99,7 +99,6 @@ class VISIONSoftcamManager(Screen):
 									  'yellow': self.getRestartPID,
 									  'blue': self.changeSelectionState,
 									  'log': self.showLog,
-									  'menu': self.createSetup,
 									  }, -1)
 
 		self["key_red"] = Button(_("Close"))
@@ -119,9 +118,8 @@ class VISIONSoftcamManager(Screen):
 		from Screens.PluginBrowser import PluginBrowserSummary
 		return PluginBrowserSummary
 
-	def createSetup(self):
-		from Screens.Setup import Setup
-		self.session.open(Setup, 'visionsoftcammanager', 'SystemPlugins/Vision', PluginLanguageDomain)
+	def createSetup(self, setup):
+		self.session.open(setup, PluginLanguageDomain)
 
 	def selectionChanged(self):
 		if not path.exists('/usr/softcams/oscam') and path.exists('/usr/bin/oscam'):
