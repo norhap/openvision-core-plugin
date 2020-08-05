@@ -123,13 +123,13 @@ class VISIONSoftcamManager(Screen):
 
 	def selectionChanged(self):
 		if not path.exists('/usr/softcams/oscam') and path.exists('/usr/bin/oscam'):
-		   self.Console.ePopen('cp /usr/bin/oscam /usr/softcams/')
+		   self.Console.ePopen('ln -s /usr/bin/oscam /usr/softcams/oscam')
 		elif not path.exists('/usr/softcams/ncam') and path.exists('/usr/bin/ncam'):
-		   self.Console.ePopen('cp /usr/bin/ncam /usr/softcams/')
+		   self.Console.ePopen('ln -s /usr/bin/ncam /usr/softcams/ncam')
 		elif not path.exists('/usr/softcams/oscam-emu') and path.exists('/usr/bin/oscam-emu'):
-		   self.Console.ePopen('cp /usr/bin/oscam-emu /usr/softcams/')
+		   self.Console.ePopen('ln -s /usr/bin/oscam-emu /usr/softcams/oscam-emu')
 		elif not path.exists('/usr/softcams/oscam-smod') and path.exists('/usr/bin/oscam-smod'):
-		   self.Console.ePopen('cp /usr/bin/oscam-smod /usr/softcams/')
+		   self.Console.ePopen('ln -s /usr/bin/oscam-smod /usr/softcams/oscam-smod')
 		cams = []
 		if path.exists('/usr/softcams/'):
 			cams = listdir('/usr/softcams')
