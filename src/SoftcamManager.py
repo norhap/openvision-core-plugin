@@ -584,7 +584,7 @@ class SoftcamAutoPoller:
 		self.Console = Console()
 		if not path.exists('/usr/softcams/oscam'):
 			self.Console.ePopen('ln -s /usr/bin/*oscam* /usr/softcams/')
-		if not path.exists('/usr/softcams/ncam'):
+		if not path.exists('/usr/softcams/ncam') and path.exists('/usr/bin/ncam'):
 		    self.Console.ePopen('ln -s /usr/bin/ncam /usr/softcams/')
 		if path.exists('/tmp/cam.check.log'):
 			if path.getsize('/tmp/cam.check.log') > 40000:
