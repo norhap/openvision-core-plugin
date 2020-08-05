@@ -122,23 +122,14 @@ class VISIONSoftcamManager(Screen):
 		self.session.open(setup, PluginLanguageDomain)
 
 	def selectionChanged(self):
-		if not path.exists('/usr/softcams/oscam') and path.exists('/usr/bin/oscam'):
-		   self.Console.ePopen('ln -s /usr/bin/oscam /usr/softcams/oscam')
-		elif not path.exists('/usr/softcams/ncam') and path.exists('/usr/bin/ncam'):
-		   self.Console.ePopen('ln -s /usr/bin/ncam /usr/softcams/ncam')
-		elif not path.exists('/usr/softcams/oscam-emu') and path.exists('/usr/bin/oscam-emu'):
-		   self.Console.ePopen('ln -s /usr/bin/oscam-emu /usr/softcams/oscam-emu')
-		elif not path.exists('/usr/softcams/oscam-smod') and path.exists('/usr/bin/oscam-smod'):
-		   self.Console.ePopen('ln -s /usr/bin/oscam-smod /usr/softcams/oscam-smod')
 		cams = []
-		if path.exists('/usr/softcams/'):
-			cams = listdir('/usr/softcams')
+		cams = listdir('/usr/softcams')
 		selcam = ''
-		if cams:
+		if path.islink('/usr/softcams/oscam'):
 			current = self["list"].getCurrent()[0]
 			print('[SoftcamManager] Selectedcam: ' + str(selcam))
 			selcam = current[0]
-			if self.currentactivecam.find(selcam):
+			if self.currentactivecam.find(selcam) < 0:
 				self["key_green"].setText(_("Start"))
 			else:
 				self["key_green"].setText(_("Stop"))
@@ -373,7 +364,7 @@ class VISIONStartCam(Screen):
 			now = datetime.now()
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Starting " + startselectedcam + "\n")
 			output.close()
-			if startselectedcam.lower().startswith('oscam') or startselectedcam.lower().startswith('ncam'):
+			if startselectedcam.lower().startswith('oscam') or startselectedcam.lower().startswith('ncam') or startselectedcam.lower().startswith('oscam-smod') or startselectedcam.lower().startswith('oscam-emu'):
 				self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + startselectedcam + ' -b')
 			else:
 				self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + startselectedcam)
@@ -591,6 +582,10 @@ class SoftcamAutoPoller:
 	def JobStart(self):
 		self.autostartcams = config.softcammanager.softcams_autostart.value
 		self.Console = Console()
+		if not path.exists('/usr/softcams/oscam'):
+			self.Console.ePopen('ln -s /usr/bin/*oscam* /usr/softcams/')
+		if not path.exists('/usr/softcams/ncam'):
+		    self.Console.ePopen('ln -s /usr/bin/ncam /usr/softcams/')
 		if path.exists('/tmp/cam.check.log'):
 			if path.getsize('/tmp/cam.check.log') > 40000:
 				fh = open('/tmp/cam.check.log', 'rb+')
