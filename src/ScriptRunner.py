@@ -46,9 +46,9 @@ class VISIONScriptRunner(OpkgInstaller):
 
 		self["key_green"] = StaticText(_("Run"))
 
-		self['myactions'] = ActionMap(["MenuActions"],
+		self['myactions'] = ActionMap(["ColorActions"],
 									  {
-									  "menu": self.createSetup,
+									  "red": self.close,
 									  }, -1)
 
 	def createSetup(self):
