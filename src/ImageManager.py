@@ -55,7 +55,7 @@ for p in harddiskmanager.getMountedPartitions():
 			hddchoices.append((p.mountpoint, d))
 config.imagemanager = ConfigSubsection()
 defaultprefix = imagedistro + "-" + model
-config.imagemanager.folderprefix = ConfigText(default=getBoxType(), fixed_size=False)
+config.imagemanager.folderprefix = ConfigText(default=model, fixed_size=False)
 config.imagemanager.backuplocation = ConfigSelection(choices=hddchoices)
 config.imagemanager.schedule = ConfigYesNo(default=False)
 config.imagemanager.scheduletime = ConfigClock(default=0)  # 1:00
