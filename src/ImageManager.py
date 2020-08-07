@@ -9,12 +9,12 @@ from enigma import eTimer, fbClass, getBoxType, getBoxBrand
 from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, statvfs, chmod, walk
 from shutil import rmtree, move, copy, copyfile
 from time import localtime, time, strftime, mktime
-
+from Components.ConfigList import ConfigListScreen
 from . import _, PluginLanguageDomain
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
-from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock
+from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock, getConfigListEntry
 from Components.Console import Console
 from Components.Harddisk import harddiskmanager, getProcMounts
 from Components.Label import Label
@@ -55,7 +55,7 @@ for p in harddiskmanager.getMountedPartitions():
 			hddchoices.append((p.mountpoint, d))
 config.imagemanager = ConfigSubsection()
 defaultprefix = imagedistro + "-" + model
-config.imagemanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)
+config.imagemanager.folderprefix = ConfigText(default=getBoxType(), fixed_size=False)
 config.imagemanager.backuplocation = ConfigSelection(choices=hddchoices)
 config.imagemanager.schedule = ConfigYesNo(default=False)
 config.imagemanager.scheduletime = ConfigClock(default=0)  # 1:00
@@ -91,6 +91,106 @@ def ImageManagerautostart(reason, session=None, **kwargs):
 		if autoImageManagerTimer is not None:
 			print("[ImageManager] Stop")
 			autoImageManagerTimer.stop()
+
+class VISIONImageManagerMenu(ConfigListScreen, Screen):
+	skin = """
+	<screen name="VISIONImageManagerMenu" position="center,center" size="560,550">
+		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
+		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
+		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
+		<widget name="config" position="0,90" size="560,375" transparent="0" enableWrapAround="1" scrollbarMode="showOnDemand"/>
+	</screen>"""
+
+	def __init__(self, session):
+		Screen.__init__(self, session)
+		ConfigListScreen.__init__(self, [])
+		self.session = session
+		self.skin = VISIONImageManagerMenu.skin
+		self.skinName = "VISIONImageManagerMenu"
+		Screen.setTitle(self, _("Vision Image Manager Setup"))
+
+		self.onChangedEntry = [ ]
+		self.list = []
+		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry)
+		self.createSetup()
+
+		self["actions"] = ActionMap(['SetupActions', 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
+		{
+			"ok": self.keySave,
+			"cancel": self.keyCancel,
+			"red": self.keyCancel,
+			"green": self.keySave,
+			'showVirtualKeyboard': self.KeyText,
+			"menu": self.keyCancel,
+		}, -2)
+
+		self["key_red"] = Button(_("Cancel"))
+		self["key_green"] = Button(_("OK"))
+
+	def createSetup(self):
+		imparts = []
+		for p in harddiskmanager.getMountedPartitions():
+			if path.exists(p.mountpoint):
+				d = path.normpath(p.mountpoint)
+				m = d + '/', p.mountpoint
+				if p.mountpoint != '/':
+					imparts.append((d + '/', p.mountpoint))
+
+		config.imagemanager.backuplocation.setChoices(imparts)
+		self.editListEntry = None
+		self.list = []
+		self.list.append(getConfigListEntry(_("Backup Location"), config.imagemanager.backuplocation))
+		self.list.append(getConfigListEntry(_("Folder Prefix"), config.imagemanager.folderprefix))
+		self.list.append(getConfigListEntry(_("Schedule Backups"), config.imagemanager.schedule))
+		if config.imagemanager.schedule.value:
+			self.list.append(getConfigListEntry(_("Time of Backup to start in minutes"), config.imagemanager.scheduletime))
+			self.list.append(getConfigListEntry(_("Repeat how often"), config.imagemanager.repeattype))
+		self["config"].list = self.list
+		self["config"].setList(self.list)
+
+	def changedEntry(self):
+		if self["config"].getCurrent() == _("Schedule Backups"):
+			self.createSetup()
+		for x in self.onChangedEntry:
+			x()
+
+	def getCurrentEntry(self):
+		return self["config"].getCurrent()
+
+	def KeyText(self):
+		if self['config'].getCurrent():
+			if self['config'].getCurrent()[0] == _("Folder Prefix"):
+				from Screens.VirtualKeyBoard import VirtualKeyBoard
+				self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].getValue())
+
+	def VirtualKeyBoardCallback(self, callback = None):
+		if callback is not None and len(callback):
+			self["config"].getCurrent()[1].setValue(callback)
+			self["config"].invalidate(self["config"].getCurrent())
+
+	def saveAll(self):
+		for x in self["config"].list:
+			x[1].save()
+		config.save()
+
+	def keySave(self):
+		self.saveAll()
+		self.close()
+
+	def cancelConfirm(self, result):
+		if not result:
+			return
+
+		for x in self["config"].list:
+			x[1].cancel()
+		self.close()
+
+	def keyCancel(self):
+		if self["config"].isChanged():
+			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"))
+		else:
+			self.close()
 
 class VISIONImageManager(Screen):
 	skin = """<screen name="VISIONImageManager" position="center,center" size="560,400">
@@ -244,7 +344,7 @@ class VISIONImageManager(Screen):
 				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
-		self.setupDone()
+		self.session.openWithCallback(self.setupDone, VISIONImageManagerMenu)
 
 	def doDownload(self):
 		self.choices = [("OpenVision", 1), ("OpenATV", 2), ("OpenPli",3)]
