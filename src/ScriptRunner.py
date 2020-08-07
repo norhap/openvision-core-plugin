@@ -42,7 +42,7 @@ class VISIONScriptRunner(OpkgInstaller):
 				if pkg.find('.sh') >= 0:
 					list.append(pkg)
 		OpkgInstaller.__init__(self, session, list)
-		self.setTitle(_("Script runner"))
+		self.setTitle(_("Vision Script runner"))
 
 		self["key_green"] = StaticText(_("Run"))
 
