@@ -131,7 +131,7 @@ class VISIONBackupManager(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Backup manager"))
+		self.setTitle(_("Vision Backup manager"))
 
 		self['lab1'] = Label()
 		self["backupstatus"] = Label()
