@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 # for localized messages
-from boxbranding import getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild
+from boxbranding import getVisionVersion, getImageDistro, getImageVersion, getVisionRevision, getImageDevBuild
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod
 from time import localtime, time, strftime, mktime
 from datetime import date, datetime
@@ -43,7 +43,7 @@ for p in harddiskmanager.getMountedPartitions():
 			hddchoices.append((p.mountpoint, d))
 
 config.backupmanager = ConfigSubsection()
-config.backupmanager.showboxname = ConfigYesNo(default=False)
+config.backupmanager.showmodel = ConfigYesNo(default=False)
 defaultprefix = getImageDistro()[4:]
 config.backupmanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)
 config.backupmanager.backuplocation = ConfigSelection(choices=hddchoices)
@@ -1277,13 +1277,12 @@ class BackupFiles(Screen):
 			backupType = "-SU-"
 		elif self.imagebackup:
 			backupType = "-IM-"
-		imageSubBuild = ""
-		if getImageType() != 'release':
-			imageSubBuild = ".%s" % getImageDevBuild()
-		boxname = ''
-		if config.backupmanager.showboxname.value:
-			boxname = '-' + getBoxType()
-		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + boxname + '-' + getImageType()[0:3] + backupType + getImageVersion() + '.' + getImageBuild() + imageSubBuild + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
+		getImageType = ""
+		if getVisionVersion():
+			model = getBoxType()
+		if config.backupmanager.showmodel.value:
+			model = getBoxType()
+		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageDistro() + backupType + getVisionVersion() + '-' + getVisionRevision() + '-' + model + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
 # Need to create a list of what to backup, so that spaces and special
 # characters don't get lost on, or mangle, the command line
 #
