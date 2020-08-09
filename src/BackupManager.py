@@ -350,17 +350,17 @@ class VISIONBackupManager(Screen):
 			self.session.open(MessageBox, _("Backup in progress,\nPlease wait for it to finish, before trying again."), MessageBox.TYPE_INFO, timeout=10)
 
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
-		if path.exists('/tmp/backupimageversion'):
-			imageversion = open('/tmp/backupimageversion').read()
-			print('[BackupManager] Backup Image:', imageversion)
-			print('[BackupManager] Current Image:', about.getVersionString())
-			if imageversion == about.getVersionString() or isRestorableSettings(imageversion):
+		if path.exists('/tmp/backupkernelversion'):
+			kernel = open('/tmp/backupkernelversion').read()
+			print('[BackupManager] Backup Image:', kernel)
+			print('[BackupManager] Current Image:', about.getKernelVersionString())
+			if kernel == about.getKernelVersionString():
 				print('[BackupManager] Stage 1: Image ver OK')
 				self.keyResstore1()
 			else:
-				self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout=10)
+				self.session.open(MessageBox, _("Sorry, but the file is not compatible with this kernel version."), MessageBox.TYPE_INFO, timeout=10)
 		else:
-			self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout=10)
+			self.session.open(MessageBox, _("Sorry, but the file is not compatible with this kernel version."), MessageBox.TYPE_INFO, timeout=10)
 
 	def keyResstore1(self):
 		message = _("Are you sure you want to restore this backup:\n ") + self.sel
