@@ -1306,15 +1306,18 @@ class ImageBackup(Screen):
 				with open(self.MAINDEST + "/reboot.update", "w") as fileout:
 					line = "This file forces a reboot after the update."
 					fileout.write(line)
+					fileout.close()
 		elif brand in ("xtrend","gigablue","octagon","odin","xp","ini"):
 			if brand in ("xtrend","octagon","odin","ini"):
 				with open(self.MAINDEST + "/noforce", "w") as fileout:
 					line = "rename this file to 'force' to force an update without confirmation"
 					fileout.write(line)
+					fileout.close()
 			if SystemInfo["HiSilicon"] and self.KERN == "mmc":
 				with open(self.MAINDEST + "/SDAbackup", "w") as fileout:
 					line = "SF8008 indicate type of backup %s" % self.KERN
 					fileout.write(line)
+					fileout.close()
 				self.session.open(MessageBox, _("Multiboot only able to restore this backup to mmc slot1"), MessageBox.TYPE_INFO, timeout=20)
 			if path.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat"):
 				copy("/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat", self.MAINDESTROOT + "/burn.bat")
@@ -1324,10 +1327,11 @@ class ImageBackup(Screen):
 					line2 = "When you enter the recovery menu then it will force the image to be installed in the linux selection"
 					fileout.write(line1)
 					fileout.write(line2)
+					fileout.close()
 				with open(self.MAINDEST2 + "/unforce_%s.txt" % model, "w") as fileout:
 					line1 = "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation" % (model, model)
 					fileout.write(line1)
-
+					fileout.close()
 		print("[ImageManager] Stage5: Removing Swap.")
 		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup"):
 			system("swapoff " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")

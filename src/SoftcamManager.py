@@ -186,9 +186,7 @@ class VISIONSoftcamManager(Screen):
 			self.currentactivecam = self.currentactivecam.replace('\n', ', ')
 			print('[SoftcamManager] Active: ' + self.currentactivecam.replace("\n", ", "))
 			if path.exists('/tmp/SoftcamsScriptsRunning'):
-				file = open('/tmp/SoftcamsScriptsRunning')
-				SoftcamsScriptsRunning = file.read()
-				file.close()
+				SoftcamsScriptsRunning = open('/tmp/SoftcamsScriptsRunning').read()
 				SoftcamsScriptsRunning = SoftcamsScriptsRunning.replace('\n', ', ')
 				self.currentactivecam += SoftcamsScriptsRunning
 			self['activecam'].setText(self.currentactivecam)
@@ -249,10 +247,8 @@ class VISIONSoftcamManager(Screen):
 			if retval == 0:
 				stopcam = str(result)
 				print('[SoftcamManager] Stopping ' + selectedcam + ' PID ' + stopcam.replace("\n", ""))
-				output = open('/tmp/cam.check.log', 'a')
 				now = datetime.now()
-				output.write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping: " + selectedcam + "\n")
-				output.close()
+				open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping: " + selectedcam + "\n")
 				self.Console.ePopen("kill -9 " + stopcam.replace("\n", ""))
 				sleep(4)
 			else:
@@ -317,53 +313,33 @@ class VISIONStartCam(Screen):
 		self['connect'].setPixmapNum(0)
 		if startselectedcam.endswith('.sh'):
 			if path.exists('/tmp/SoftcamsScriptsRunning'):
-				file = open('/tmp/SoftcamsScriptsRunning')
-				data = file.read()
-				file.close()
+				data = open('/tmp/SoftcamsScriptsRunning').read()
 				if data.find(startselectedcam) >= 0:
 					filewrite = open('/tmp/SoftcamsScriptsRunning.tmp', 'w')
 					fileread = open('/tmp/SoftcamsScriptsRunning')
 					filewrite.writelines([l for l in fileread.readlines() if startselectedcam not in l])
-					fileread.close()
-					filewrite.close()
 					rename('/tmp/SoftcamsScriptsRunning.tmp', '/tmp/SoftcamsScriptsRunning')
 				elif data.find(startselectedcam) < 0:
-					fileout = open('/tmp/SoftcamsScriptsRunning', 'a')
-					line = startselectedcam + '\n'
-					fileout.write(line)
-					fileout.close()
+					open('/tmp/SoftcamsScriptsRunning', 'a').write(startselectedcam + '\n')
 			else:
-				fileout = open('/tmp/SoftcamsScriptsRunning', 'w')
-				line = startselectedcam + '\n'
-				fileout.write(line)
-				fileout.close()
+				open('/tmp/SoftcamsScriptsRunning', 'w').write(startselectedcam + '\n')
 			print('[SoftcamManager] Starting ' + startselectedcam)
-			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
-			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Starting " + startselectedcam + "\n")
-			output.close()
+			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Starting " + startselectedcam + "\n")
 			self.Console.ePopen('/usr/softcams/' + startselectedcam + ' start')
 		else:
 			if path.exists('/tmp/SoftcamsDisableCheck'):
-				file = open('/tmp/SoftcamsDisableCheck')
-				data = file.read()
-				file.close()
+				data = open('/tmp/SoftcamsDisableCheck').read()
 				if data.find(startselectedcam) >= 0:
-					output = open('/tmp/cam.check.log', 'a')
 					now = datetime.now()
-					output.write(now.strftime("%Y-%m-%d %H:%M") + ": Initialised timed check for " + stopselectedcam + "\n")
-					output.close()
+					open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Initialised timed check for " + stopselectedcam + "\n")
 					fileread = open('/tmp/SoftcamsDisableCheck')
 					filewrite = open('/tmp/SoftcamsDisableCheck.tmp', 'w')
 					filewrite.writelines([l for l in fileread.readlines() if startselectedcam not in l])
-					fileread.close()
-					filewrite.close()
 					rename('/tmp/SoftcamsDisableCheck.tmp', '/tmp/SoftcamsDisableCheck')
 			print('[SoftcamManager] Starting ' + startselectedcam)
-			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
-			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Starting " + startselectedcam + "\n")
-			output.close()
+			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Starting " + startselectedcam + "\n")
 			if startselectedcam.lower().startswith('oscam') or startselectedcam.lower().startswith('ncam') or startselectedcam.lower().startswith('oscam-smod') or startselectedcam.lower().startswith('oscam-emu'):
 				self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + startselectedcam + ' -b')
 			else:
@@ -413,28 +389,19 @@ class VISIONStopCam(Screen):
 			self.count = 0
 			self['connect'].setPixmapNum(0)
 			print('[SoftcamManager] Stopping ' + stopselectedcam)
-			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
-			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping " + stopselectedcam + "\n")
-			output.close()
+			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping " + stopselectedcam + "\n")
 			self.Console.ePopen('/usr/softcams/' + stopselectedcam + ' stop')
 			if path.exists('/tmp/SoftcamsScriptsRunning'):
 				remove('/tmp/SoftcamsScriptsRunning')
 			if path.exists('/etc/SoftcamsAutostart'):
-				file = open('/etc/SoftcamsAutostart')
-				data = file.read()
-				file.close()
+				data = open('/etc/SoftcamsAutostart').read()
 				finddata = data.find(stopselectedcam)
 				if data.find(stopselectedcam) >= 0:
 					print('[SoftcamManager] Temporarily disabled timed check for ' + stopselectedcam)
-					output = open('/tmp/cam.check.log', 'a')
 					now = datetime.now()
-					output.write(now.strftime("%Y-%m-%d %H:%M") + ": Temporarily disabled timed check for " + stopselectedcam + "\n")
-					output.close()
-					fileout = open('/tmp/SoftcamsDisableCheck', 'a')
-					line = stopselectedcam + '\n'
-					fileout.write(line)
-					fileout.close()
+					open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Temporarily disabled timed check for " + stopselectedcam + "\n")
+					open('/tmp/SoftcamsDisableCheck', 'a').write(stopselectedcam + '\n')
 			self.activityTimer.start(1)
 		else:
 			self.Console.ePopen("pidof " + stopselectedcam, self.startShow)
@@ -446,25 +413,16 @@ class VISIONStopCam(Screen):
 			self['connect'].setPixmapNum(0)
 			stopcam = str(result)
 			if path.exists('/etc/SoftcamsAutostart'):
-				file = open('/etc/SoftcamsAutostart')
-				data = file.read()
-				file.close()
+				data = open('/etc/SoftcamsAutostart').read()
 				finddata = data.find(stopselectedcam)
 				if data.find(stopselectedcam) >= 0:
 					print('[SoftcamManager] Temporarily disabled timed check for ' + stopselectedcam)
-					output = open('/tmp/cam.check.log', 'a')
 					now = datetime.now()
-					output.write(now.strftime("%Y-%m-%d %H:%M") + ": Temporarily disabled timed check for " + stopselectedcam + "\n")
-					output.close()
-					fileout = open('/tmp/SoftcamsDisableCheck', 'a')
-					line = stopselectedcam + '\n'
-					fileout.write(line)
-					fileout.close()
+					open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Temporarily disabled timed check for " + stopselectedcam + "\n")
+					open('/tmp/SoftcamsDisableCheck', 'a').write(stopselectedcam + '\n')
 			print('[SoftcamManager] Stopping ' + stopselectedcam + ' PID ' + stopcam.replace("\n", ""))
-			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
-			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping " + stopselectedcam + "\n")
-			output.close()
+			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping " + stopselectedcam + "\n")
 			self.Console.ePopen("kill -9 " + stopcam.replace("\n", ""))
 			self.activityTimer.start(1)
 
@@ -497,9 +455,7 @@ class VISIONSoftcamLog(Screen):
 		self.setTitle(_("Logs"))
 
 		if path.exists('/var/volatile/tmp/cam.check.log'):
-			file = open('/var/volatile/tmp/cam.check.log')
-			softcamlog = file.read()
-			file.close()
+			softcamlog = open('/var/volatile/tmp/cam.check.log').read()
 		else:
 			softcamlog = ""
 		self["list"] = ScrollLabel(str(softcamlog))
@@ -557,16 +513,12 @@ class SoftcamAutoPoller:
 
 		if config.softcammanager.softcamtimerenabled.value:
 			# 			print("[SoftcamManager] Timer Check Enabled")
-			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
-			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Enabled\n")
-			output.close()
+			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Enabled\n")
 			self.timer.startLongTimer(config.softcammanager.softcamtimer.value * 60)
 		else:
-			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
-			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Disabled\n")
-			output.close()
+			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Disabled\n")
 			# 			print("[SoftcamManager] Timer Check Disabled")
 			softcamautopoller.stop()
 
@@ -601,35 +553,23 @@ class SoftcamAutoPoller:
 			softcamcheck = softcamcheck.replace("\n", "")
 			if softcamcheck.endswith('.sh'):
 				if path.exists('/tmp/SoftcamsDisableCheck'):
-					file = open('/tmp/SoftcamsDisableCheck')
-					data = file.read()
-					file.close()
+					data = open('/tmp/SoftcamsDisableCheck').read()
 				else:
 					data = ''
 				if data.find(softcamcheck) < 0:
 					if path.exists('/tmp/SoftcamsScriptsRunning'):
-						file = open('/tmp/SoftcamsScriptsRunning')
-						data = file.read()
-						file.close()
+						data = open('/tmp/SoftcamsScriptsRunning').read()
 						if data.find(softcamcheck) < 0:
-							fileout = open('/tmp/SoftcamsScriptsRunning', 'a')
-							line = softcamcheck + '\n'
-							fileout.write(line)
-							fileout.close()
+							open('/tmp/SoftcamsScriptsRunning', 'a').write(softcamcheck + '\n')
 							print('[SoftcamManager] Starting ' + softcamcheck)
 							self.Console.ePopen('/usr/softcams/' + softcamcheck + ' start')
 					else:
-						fileout = open('/tmp/SoftcamsScriptsRunning', 'w')
-						line = softcamcheck + '\n'
-						fileout.write(line)
-						fileout.close()
+						open('/tmp/SoftcamsScriptsRunning', 'w').write(softcamcheck + '\n')
 						print('[SoftcamManager] Starting ' + softcamcheck)
 						self.Console.ePopen('/usr/softcams/' + softcamcheck + ' start')
 			else:
 				if path.exists('/tmp/SoftcamsDisableCheck'):
-					file = open('/tmp/SoftcamsDisableCheck')
-					data = file.read()
-					file.close()
+					data = open('/tmp/SoftcamsDisableCheck').read()
 				else:
 					data = ''
 				if data.find(softcamcheck) < 0:
@@ -645,10 +585,8 @@ class SoftcamAutoPoller:
 						if path.exists('/tmp/index.html'):
 							remove('/tmp/index.html')
 						print('[SoftcamManager] ' + softcamcheck + ' already running')
-						output = open('/tmp/cam.check.log', 'a')
 						now = datetime.now()
-						output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " running OK\n")
-						output.close()
+						open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " running OK\n")
 						if softcamcheck.lower().startswith('oscam') or softcamcheck.lower().startswith('oscam'):
 							if path.exists('/tmp/status.html'):
 								remove('/tmp/status.html')
@@ -671,47 +609,35 @@ class SoftcamAutoPoller:
 								port = "16000"
 							self.Console.ePopen("wget -T 1 http://127.0.0.1:" + port + "/status.html -O /tmp/status.html &> /tmp/frozen")
 							sleep(2)
-							f = open('/tmp/frozen')
-							frozen = f.read()
-							f.close()
+							frozen = open('/tmp/frozen').read()
 							if frozen.find('Unauthorized') != -1 or frozen.find('Authorization Required') != -1 or frozen.find('Forbidden') != -1 or frozen.find('Connection refused') != -1 or frozen.find('100%') != -1 or path.exists('/tmp/status.html'):
 								print('[SoftcamManager] ' + softcamcheck + ' is responding like it should')
-								output = open('/tmp/cam.check.log', 'a')
 								now = datetime.now()
-								output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is responding like it should\n")
-								output.close()
+								open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is responding like it should\n")
 							else:
 								print('[SoftcamManager] ' + softcamcheck + ' is frozen, Restarting...')
-								output = open('/tmp/cam.check.log', 'a')
 								now = datetime.now()
-								output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is frozen, Restarting...\n")
-								output.close()
+								open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is frozen, Restarting...\n")
 								print('[SoftcamManager] Stopping ' + softcamcheck)
-								output = open('/tmp/cam.check.log', 'a')
 								now = datetime.now()
-								output.write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStopping: " + softcamcheck + "\n")
-								output.close()
+								open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStopping: " + softcamcheck + "\n")
 								self.Console.ePopen("killall -9 " + softcamcheck)
 								sleep(1)
 								print('[SoftcamManager] Starting ' + softcamcheck)
-								output = open('/tmp/cam.check.log', 'a')
 								now = datetime.now()
-								output.write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStarting: " + softcamcheck + "\n")
-								output.close()
+								open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStarting: " + softcamcheck + "\n")
 								self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck + ' -b')
 								sleep(10)
 
 					elif softcamcheck_process == "":
 						print("[SoftcamManager] Couldn't find " + softcamcheck + " running, Starting " + softcamcheck)
-						output = open('/tmp/cam.check.log', 'a')
 						now = datetime.now()
-						output.write(now.strftime("%Y-%m-%d %H:%M") + ": Couldn't find " + softcamcheck + " running, Starting " + softcamcheck + "\n")
-						output.close()
+						open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Couldn't find " + softcamcheck + " running, Starting " + softcamcheck + "\n")
 						if softcamcheck.lower().startswith('oscam') or softcamcheck.lower().startswith('ncam'):
 							self.Console.ePopen("ps.procps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/softcamRuningCheck.tmp")
 							sleep(2)
-							file = open('/tmp/softcamRuningCheck.tmp')
-							file.close()
+							
+#							open('/tmp/softcamRuningCheck.tmp')
 							self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck + " -b")
 							sleep(10)
 							remove('/tmp/softcamRuningCheck.tmp')

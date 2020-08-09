@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 # for localized messages
-from boxbranding import getVisionVersion, getImageDistro, getImageVersion, getVisionRevision, getImageDevBuild
+from boxbranding import getVisionVersion, getImageDistro, getImageVersion, getVisionRevision, getImageDevBuild, getKernelVersion
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod
 from time import localtime, time, strftime, mktime
 from datetime import date, datetime
@@ -27,6 +27,8 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Tools.Notifications import AddPopupWithCallback
+
+currentkernelversion = getKernelVersion()
 
 autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = 'RestoreSettingsNotification'
@@ -87,12 +89,6 @@ def isRestorablePlugins(imageversion):
 	except:
 		return False
 	return imageversion >= minimum_version
-
-def isRestorableKernel(kernelversion):
-	# This check should no longer be necessary since auto-installed packages are no longer listed in the plugins backup.
-	# For more information please consult commit https://github.com/OpenVisionE2/openvision-core-plugin/commit/53a95067677651a3f2579a1b0d1f70172ccc493b
-	return True
-	#return kernelversion == about.getKernelVersionString()
 
 def BackupManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
@@ -353,8 +349,8 @@ class VISIONBackupManager(Screen):
 		if path.exists('/tmp/backupkernelversion'):
 			kernel = open('/tmp/backupkernelversion').read()
 			print('[BackupManager] Backup Image:', kernel)
-			print('[BackupManager] Current Image:', about.getKernelVersionString())
-			if kernel == about.getKernelVersionString():
+			print('[BackupManager] Current Image:', currentkernelversion)
+			if kernel == currentkernelversion:
 				print('[BackupManager] Stage 1: Image ver OK')
 				self.keyResstore1()
 			else:
@@ -524,8 +520,8 @@ class VISIONBackupManager(Screen):
 				print('[BackupManager] Backup Image:', imageversion)
 				print('[BackupManager] Current Image:', about.getVersionString())
 				print('[BackupManager] Backup Kernel:', kernelversion)
-				print('[BackupManager] Current Kernel:', about.getKernelVersionString())
-				if isRestorableKernel(kernelversion) and (imageversion == about.getVersionString() or isRestorablePlugins(imageversion)):
+				print('[BackupManager] Current Kernel:', currentkernelversion)
+				if imageversion == about.getVersionString() or isRestorablePlugins(imageversion):
 					# print('[BackupManager] Restoring Stage 3: Kernel Version is same as backup')
 					self.kernelcheck = True
 					self.Console.ePopen('opkg list-installed', self.Stage3Complete)
@@ -1278,10 +1274,8 @@ class BackupFiles(Screen):
 		self.Stage1Completed = True
 
 	def Stage2(self):
-		output = open('/var/log/backupmanager.log', 'w')
 		now = datetime.now()
-		output.write(now.strftime("%Y-%m-%d %H:%M") + ": Backup started\n")
-		output.close()
+		open('/var/log/backupmanager.log', 'w').write(now.strftime("%Y-%m-%d %H:%M") + ": Backup started\n")
 		self.backupdirs = ' '.join(config.backupmanager.backupdirs.value)
 		print('[BackupManager] Listing installed plugins')
 		self.Console.ePopen('opkg status', self.Stage2Complete)
@@ -1302,9 +1296,7 @@ class BackupFiles(Screen):
 					if plugin and line.startswith('Status') and 'user installed' in line:
 						plugins_out.append(plugin)
 						break
-			output = open('/tmp/ExtraInstalledPlugins', 'w')
-			output.write('\n'.join(plugins_out))
-			output.close()
+			open('/tmp/ExtraInstalledPlugins', 'w').write('\n'.join(plugins_out))
 
 		if path.exists('/tmp/ExtraInstalledPlugins'):
 			print('[BackupManager] Listing completed.')
@@ -1315,14 +1307,10 @@ class BackupFiles(Screen):
 			print("{BackupManager] Plugin listing failed - e. g. wrong backup destination or no space left on backup device")
 
 	def Stage3(self):
-		print('[BackupManager] Finding kernel version:' + about.getKernelVersionString())
-		output = open('/tmp/backupkernelversion', 'w')
-		output.write(about.getKernelVersionString())
-		output.close()
+		print('[BackupManager] Finding kernel version:' + currentkernelversion)
+		open('/tmp/backupkernelversion', 'w').write(currentkernelversion)
 		print('[BackupManager] Finding image version:' + about.about.getVersionString())
-		output = open('/tmp/backupimageversion', 'w')
-		output.write(about.about.getVersionString())
-		output.close()
+		open('/tmp/backupimageversion', 'w').write(about.about.getVersionString())
 		self.Stage3Completed = True
 
 	def Stage4(self):
@@ -1332,9 +1320,8 @@ class BackupFiles(Screen):
 				if file.endswith('.ipk'):
 					parts = file.strip().split('_')
 					output.write(parts[0] + '\n')
-			output = open('/tmp/3rdPartyPluginsLocation', 'w')
-			output.write(config.backupmanager.xtraplugindir.value)
-			output.close()
+					output.close()
+			open('/tmp/3rdPartyPluginsLocation', 'w').write(config.backupmanager.xtraplugindir.value)
 		self.Stage4Completed = True
 
 # Filename for backup list
