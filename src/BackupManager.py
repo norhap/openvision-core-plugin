@@ -44,7 +44,6 @@ for p in harddiskmanager.getMountedPartitions():
 			hddchoices.append((p.mountpoint, d))
 
 config.backupmanager = ConfigSubsection()
-config.backupmanager.showmodel = ConfigYesNo(default=False)
 defaultprefix = getImageDistro()[4:]
 config.backupmanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)
 config.backupmanager.backuplocation = ConfigSelection(choices=hddchoices)
@@ -1349,12 +1348,7 @@ class BackupFiles(Screen):
 			backupType = "-SU-"
 		elif self.imagebackup:
 			backupType = "-IM-"
-		getImageType = ""
-		if getVisionVersion():
-			model = getBoxType()
-		if config.backupmanager.showmodel.value:
-			model = getBoxType()
-		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageDistro() + backupType + getVisionVersion() + '-' + getVisionRevision() + '-' + model + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
+		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageDistro() + backupType + getVisionVersion() + '-' + getVisionRevision() + '-' + getBoxType() + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
 # Need to create a list of what to backup, so that spaces and special
 # characters don't get lost on, or mangle, the command line
 #

@@ -758,7 +758,9 @@ class ImageBackup(Screen):
 		self.BackupDate = strftime("%Y%m%d_%H%M%S", localtime())
 		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-temp"
 		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-mount"
-		backupType = "-extralanguage-"
+		if fileExists("/etc/openvision/visionlanguage"):
+			visionlanguage = open("/etc/openvision/visionlanguage", "r").read().strip()
+			backupType = "-" + visionlanguage + "-"
 		if updatebackup:
 			backupType = "-SoftwareUpdate-"
 		imageSubBuild = ""
