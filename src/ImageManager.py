@@ -150,7 +150,7 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 		self["config"].setList(self.list)
 
 	def changedEntry(self):
-		if self["config"].getCurrent() == _("Schedule Backups"):
+		if self["config"].getCurrent()[0] == _("Schedule Backups"):
 			self.createSetup()
 		for x in self.onChangedEntry:
 			x()
@@ -304,7 +304,7 @@ class VISIONImageManager(Screen):
 		else:
 			mount = config.imagemanager.backuplocation.value + "/", config.imagemanager.backuplocation.value
 		hdd = "/media/hdd/", "/media/hdd"
-		if mount not in config.imagemanager.backuplocation.choices.choices and hdd not in config.imagemanager.backuplocation.choices.choices:
+		if mount in config.imagemanager.backuplocation.choices.choices and hdd not in config.imagemanager.backuplocation.choices.choices:
 			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
 				"cancel": self.close,
 				"menu": self.createSetup,
@@ -328,6 +328,11 @@ class VISIONImageManager(Screen):
 				config.imagemanager.backuplocation.value = "/media/hdd/"
 				config.imagemanager.backuplocation.save()
 				self["lab1"].setText(_("The chosen location does not exist, using /media/hdd.") + "\n" + _("Select an image to flash:"))
+			if mount not in config.imagemanager.backuplocation.choices.choices and hdd not in config.imagemanager.backuplocation.choices.choices:
+				self.BackupDirectory = "/media/usb/imagebackups/"
+				config.imagemanager.backuplocation.value = "/media/usb/"
+				config.imagemanager.backuplocation.save()
+				self["lab1"].setText(_("The chosen location does not exist, using /media/usb.") + "\n" + _("Select an image to flash:"))
 			else:
 				self.BackupDirectory = config.imagemanager.backuplocation.value + "imagebackups/"
 				s = statvfs(config.imagemanager.backuplocation.value)

@@ -203,7 +203,7 @@ class VISIONBackupManager(Screen):
 		else:
 			mount = config.backupmanager.backuplocation.value + "/", config.backupmanager.backuplocation.value
 		hdd = "/media/hdd/", "/media/hdd"
-		if mount not in config.backupmanager.backuplocation.choices.choices and hdd not in config.backupmanager.backuplocation.choices.choices:
+		if mount in config.backupmanager.backuplocation.choices.choices and hdd not in config.backupmanager.backuplocation.choices.choices:
 			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
 				"cancel": self.close,
 				"menu": self.createSetup,
@@ -225,6 +225,14 @@ class VISIONBackupManager(Screen):
 					config.backupmanager.backuplocation.value = '/media/hdd/'
 					config.backupmanager.backuplocation.save()
 					self['lab1'].setText(_("The chosen location does not exist, using /media/hdd.") + "\n" + _("Select a backup to restore:"))
+			else:
+				self.BackupDirectory = config.backupmanager.backuplocation.value + 'backup/'
+				self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("Select a backup to restore:"))
+			if mount not in config.backupmanager.backuplocation.choices.choices and hdd not in config.backupmanager.backuplocation.choices.choices:
+					self.BackupDirectory = '/media/usb/backup/'
+					config.backupmanager.backuplocation.value = '/media/usb/'
+					config.backupmanager.backuplocation.save()
+					self['lab1'].setText(_("The chosen location does not exist, using /media/usb.") + "\n" + _("Select a backup to restore:"))
 			else:
 				self.BackupDirectory = config.backupmanager.backuplocation.value + 'backup/'
 				self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("Select a backup to restore:"))
