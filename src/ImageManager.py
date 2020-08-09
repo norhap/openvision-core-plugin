@@ -4,7 +4,7 @@ from __future__ import print_function
 from urllib2 import urlopen, HTTPError
 import json
 
-from boxbranding import getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getImageFolder, getImageFileSystem, getMachineBuild, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
+from boxbranding import getImageDistro, getVisionVersion, getImageVersion, getVisionRevision, getImageDevBuild, getImageFolder, getImageFileSystem, getMachineBuild, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
 from enigma import eTimer, fbClass, getBoxType, getBoxBrand
 from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, statvfs, chmod, walk
 from shutil import rmtree, move, copy, copyfile
@@ -37,10 +37,10 @@ platform = getMachineBuild()
 kernelfile = getMachineKernelFile()
 mtdkernel = getMachineMtdKernel()
 mtdrootfs = getMachineMtdRoot()
-imagetype = getImageType()
+imagetype = getImageVersion()
 imagedistro = getImageDistro()
-imageversion = getImageVersion()
-imagebuild = getImageBuild()
+imageversion = getVisionVersion()
+imagebuild = getVisionRevision()
 imagedir = getImageFolder()
 imagefs = getImageFileSystem()
 
@@ -54,8 +54,8 @@ for p in harddiskmanager.getMountedPartitions():
 		if p.mountpoint != "/":
 			hddchoices.append((p.mountpoint, d))
 config.imagemanager = ConfigSubsection()
-defaultprefix = imagedistro + "-" + model
-config.imagemanager.folderprefix = ConfigText(default=model, fixed_size=False)
+defaultprefix = imagedistro
+config.imagemanager.folderprefix = ConfigText(default=imagedistro, fixed_size=False)
 config.imagemanager.backuplocation = ConfigSelection(choices=hddchoices)
 config.imagemanager.schedule = ConfigYesNo(default=False)
 config.imagemanager.scheduletime = ConfigClock(default=0)  # 1:00
@@ -150,7 +150,7 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 		self["config"].setList(self.list)
 
 	def changedEntry(self):
-		if self["config"].getCurrent() == _("Schedule Backups"):
+		if self["config"].getCurrent()[0] == _("Schedule Backups"):
 			self.createSetup()
 		for x in self.onChangedEntry:
 			x()
@@ -304,7 +304,7 @@ class VISIONImageManager(Screen):
 		else:
 			mount = config.imagemanager.backuplocation.value + "/", config.imagemanager.backuplocation.value
 		hdd = "/media/hdd/", "/media/hdd"
-		if mount not in config.imagemanager.backuplocation.choices.choices and hdd not in config.imagemanager.backuplocation.choices.choices:
+		if mount in config.imagemanager.backuplocation.choices.choices and hdd not in config.imagemanager.backuplocation.choices.choices:
 			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
 				"cancel": self.close,
 				"menu": self.createSetup,
@@ -328,6 +328,11 @@ class VISIONImageManager(Screen):
 				config.imagemanager.backuplocation.value = "/media/hdd/"
 				config.imagemanager.backuplocation.save()
 				self["lab1"].setText(_("The chosen location does not exist, using /media/hdd.") + "\n" + _("Select an image to flash:"))
+			if mount not in config.imagemanager.backuplocation.choices.choices and hdd not in config.imagemanager.backuplocation.choices.choices:
+				self.BackupDirectory = "/media/usb/imagebackups/"
+				config.imagemanager.backuplocation.value = "/media/usb/"
+				config.imagemanager.backuplocation.save()
+				self["lab1"].setText(_("The chosen location does not exist, using /media/usb.") + "\n" + _("Select an image to flash:"))
 			else:
 				self.BackupDirectory = config.imagemanager.backuplocation.value + "imagebackups/"
 				s = statvfs(config.imagemanager.backuplocation.value)
@@ -400,7 +405,7 @@ class VISIONImageManager(Screen):
 			if self.sel.endswith(".zip"):
 				remove(self.BackupDirectory + self.sel)
 			else:
-				rmtree(self.BackupDirectory + self.sel)
+				self.Console.ePopen("rm -rf " + self.BackupDirectory + self.sel)
 		self.refreshList()
 
 	def GreenPressed(self):
@@ -758,13 +763,15 @@ class ImageBackup(Screen):
 		self.BackupDate = strftime("%Y%m%d_%H%M%S", localtime())
 		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-temp"
 		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-mount"
-		backupType = "-"
+		if fileExists("/etc/openvision/visionlanguage"):
+			visionlanguage = open("/etc/openvision/visionlanguage", "r").read().strip()
+			backupType = "-" + visionlanguage + "-"
 		if updatebackup:
 			backupType = "-SoftwareUpdate-"
 		imageSubBuild = ""
-		if imagetype != "release":
+		if imagetype != "develop":
 			imageSubBuild = ".%s" % getImageDevBuild()
-		self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + backupType + imageversion + "." + imagebuild + imageSubBuild + "-" + self.BackupDate
+		self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + backupType + imageversion + "-" + imagebuild + imageSubBuild + "-" + model + "-" + self.BackupDate
 		self.KERNELFILE = kernelfile
 		self.ROOTFSFILE = getMachineRootFile()
 		self.MAINDEST = self.MAINDESTROOT + "/" + imagedir + "/"

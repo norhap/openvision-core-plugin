@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 # for localized messages
-from boxbranding import getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild
+from boxbranding import getVisionVersion, getImageDistro, getImageVersion, getVisionRevision, getImageDevBuild
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod
 from time import localtime, time, strftime, mktime
 from datetime import date, datetime
@@ -12,7 +12,8 @@ from . import _, PluginLanguageDomain
 from Components.About import about
 from Components.ActionMap import ActionMap
 from Components.Button import Button
-from Components.config import configfile, config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, ConfigLocations, NoSave, ConfigClock, ConfigDirectory
+from Components.config import configfile, config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, ConfigLocations, NoSave, ConfigClock, ConfigDirectory, getConfigListEntry
+from Components.ConfigList import ConfigListScreen
 from Components.Console import Console
 from Components.FileList import MultiFileSelectList, FileList
 from Components.Harddisk import harddiskmanager
@@ -43,7 +44,6 @@ for p in harddiskmanager.getMountedPartitions():
 			hddchoices.append((p.mountpoint, d))
 
 config.backupmanager = ConfigSubsection()
-config.backupmanager.showboxname = ConfigYesNo(default=False)
 defaultprefix = getImageDistro()[4:]
 config.backupmanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)
 config.backupmanager.backuplocation = ConfigSelection(choices=hddchoices)
@@ -201,16 +201,14 @@ class VISIONBackupManager(Screen):
 		if config.backupmanager.backuplocation.getValue():
 			mount = config.backupmanager.backuplocation.value, config.backupmanager.backuplocation.value[:-1]
 		else:
-			mount = config.backupmanager.backuplocation.value + '/', config.backupmanager.backuplocation.value
-		hdd = '/media/hdd/', '/media/hdd'
-		if mount not in config.backupmanager.backuplocation.choices.choices and hdd not in config.backupmanager.backuplocation.choices.choices:
-			self['myactions'] = ActionMap(['OkCancelActions', "MenuActions"],
-										  {
-										  'cancel': self.close,
-										  "menu": self.createSetup,
-										  }, -1)
-
-			self['lab1'].setText(_("Device: none available") + "\n" + _("Press 'Menu' to select a storage device"))
+			mount = config.backupmanager.backuplocation.value + "/", config.backupmanager.backuplocation.value
+		hdd = "/media/hdd/", "/media/hdd"
+		if mount in config.backupmanager.backuplocation.choices.choices and hdd not in config.backupmanager.backuplocation.choices.choices:
+			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
+				"cancel": self.close,
+				"menu": self.createSetup,
+			}, -1)
+			self["lab1"].setText(_("Device: None available") + "\n" + _("Press 'Menu' to select a storage device"))
 		else:
 			self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "TimerEditActions"],
 										  {
@@ -227,6 +225,14 @@ class VISIONBackupManager(Screen):
 					config.backupmanager.backuplocation.value = '/media/hdd/'
 					config.backupmanager.backuplocation.save()
 					self['lab1'].setText(_("The chosen location does not exist, using /media/hdd.") + "\n" + _("Select a backup to restore:"))
+			else:
+				self.BackupDirectory = config.backupmanager.backuplocation.value + 'backup/'
+				self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("Select a backup to restore:"))
+			if mount not in config.backupmanager.backuplocation.choices.choices and hdd not in config.backupmanager.backuplocation.choices.choices:
+					self.BackupDirectory = '/media/usb/backup/'
+					config.backupmanager.backuplocation.value = '/media/usb/'
+					config.backupmanager.backuplocation.save()
+					self['lab1'].setText(_("The chosen location does not exist, using /media/usb.") + "\n" + _("Select a backup to restore:"))
 			else:
 				self.BackupDirectory = config.backupmanager.backuplocation.value + 'backup/'
 				self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("Select a backup to restore:"))
@@ -252,7 +258,7 @@ class VISIONBackupManager(Screen):
 				self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
-		self.session.openWithCallback(self.setupDone, VISIONBackupManagerMenu, 'visionbackupmanager', 'SystemPlugins/Vision', PluginLanguageDomain)
+		self.session.openWithCallback(self.setupDone, VISIONBackupManagerMenu)
 
 	def showLog(self):
 		self.sel = self['list'].getCurrent()
@@ -344,17 +350,17 @@ class VISIONBackupManager(Screen):
 			self.session.open(MessageBox, _("Backup in progress,\nPlease wait for it to finish, before trying again."), MessageBox.TYPE_INFO, timeout=10)
 
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
-		if path.exists('/tmp/backupimageversion'):
-			imageversion = open('/tmp/backupimageversion').read()
-			print('[BackupManager] Backup Image:', imageversion)
-			print('[BackupManager] Current Image:', about.getVersionString())
-			if imageversion == about.getVersionString() or isRestorableSettings(imageversion):
+		if path.exists('/tmp/backupkernelversion'):
+			kernel = open('/tmp/backupkernelversion').read()
+			print('[BackupManager] Backup Image:', kernel)
+			print('[BackupManager] Current Image:', about.getKernelVersionString())
+			if kernel == about.getKernelVersionString():
 				print('[BackupManager] Stage 1: Image ver OK')
 				self.keyResstore1()
 			else:
-				self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout=10)
+				self.session.open(MessageBox, _("Sorry, but the file is not compatible with this kernel version."), MessageBox.TYPE_INFO, timeout=10)
 		else:
-			self.session.open(MessageBox, _("Sorry, but the file is not compatible with this image version."), MessageBox.TYPE_INFO, timeout=10)
+			self.session.open(MessageBox, _("Sorry, but the file is not compatible with this kernel version."), MessageBox.TYPE_INFO, timeout=10)
 
 	def keyResstore1(self):
 		message = _("Are you sure you want to restore this backup:\n ") + self.sel
@@ -870,7 +876,7 @@ class XtraPluginsSelection(Screen):
 	def closeRecursive(self):
 		self.close(True)
 
-class VISIONBackupManagerMenu(Screen):
+class VISIONBackupManagerMenu(Screen, ConfigListScreen):
 	skin = """
 	<screen name="VISIONBackupManagerMenu" position="center,center" size="560,550">
 		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
@@ -890,34 +896,107 @@ class VISIONBackupManagerMenu(Screen):
 		<widget name="description" position="0,e-75" size="560,75" font="Regular;18" halign="center" valign="top" transparent="0" zPosition="1"/>
 	</screen>"""
 
-	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
-		Screen.__init__(self, session, setup)
-		self.setTitle(_("Backup manager"))
-
-		self["actions2"] = ActionMap(["SetupActions", 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
-									 {
-									 "red": self.close,
-									 "green": config.save,
-									 "yellow": self.chooseFiles,
-									 "blue": self.chooseXtraPluginDir,
-									 }, -4)
+	def __init__(self, session):
+		Screen.__init__(self, session)
+		self.skinName = "VISIONBackupManagerMenu"
+		Screen.setTitle(self, _("Vision Backup Manager Setup"))
+		self["actions"] = ActionMap(['SetupActions', 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
+		{
+			"ok": self.keySave,
+			"cancel": self.keyCancel,
+			"red": self.keyCancel,
+			"green": self.keySave,
+			"yellow": self.chooseFiles,
+			"blue": self.chooseXtraPluginDir,
+			'showVirtualKeyboard': self.KeyText,
+			"menu": self.keyCancel,
+		}, -2)
 
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("OK"))
 		self["key_yellow"] = Button(_("Choose files"))
 		self["key_blue"] = Button(_("Choose local IPK's folder"))
 
+		self.onChangedEntry = [ ]
+		self.list = []
+		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry)
+		self.createSetup()
+
 	def chooseFiles(self):
-		self.session.openWithCallback(self.backupfiles_choosen, BackupSelection)
+		self.session.openWithCallback(self.backupfiles_choosen,BackupSelection)
 
 	def chooseXtraPluginDir(self):
-		self.session.open(XtraPluginsSelection)
+		self.session.openWithCallback(self.backupfiles_choosen,XtraPluginsSelection)
 
 	def backupfiles_choosen(self, ret):
 		self.backupdirs = ' '.join(config.backupmanager.backupdirs.value)
 		config.backupmanager.backupdirs.save()
 		config.backupmanager.save()
 		config.save()
+
+	def createSetup(self):
+		imparts = []
+		for p in harddiskmanager.getMountedPartitions():
+			if path.exists(p.mountpoint):
+				d = path.normpath(p.mountpoint)
+				m = d + '/', p.mountpoint
+				if p.mountpoint != '/':
+					imparts.append((d + '/', p.mountpoint))
+
+		config.backupmanager.backuplocation.setChoices(imparts)
+		self.editListEntry = None
+		self.list = []
+		self.list.append(getConfigListEntry(_("Backup Location"), config.backupmanager.backuplocation))
+		self.list.append(getConfigListEntry(_("Folder Prefix"), config.backupmanager.folderprefix))
+		self.list.append(getConfigListEntry(_("Schedule Backups"), config.backupmanager.schedule))
+		if config.backupmanager.schedule.value:
+			self.list.append(getConfigListEntry(_("Time of Backup to start in minutes"), config.backupmanager.scheduletime))
+			self.list.append(getConfigListEntry(_("Repeat how often"), config.backupmanager.repeattype))
+		self["config"].list = self.list
+		self["config"].setList(self.list)
+
+	def changedEntry(self):
+		if self["config"].getCurrent()[0] == _("Schedule Backups"):
+			self.createSetup()
+		for x in self.onChangedEntry:
+			x()
+
+	def getCurrentEntry(self):
+		return self["config"].getCurrent()
+
+	def KeyText(self):
+		if self['config'].getCurrent():
+			if self['config'].getCurrent()[0] == _("Folder Prefix"):
+				from Screens.VirtualKeyBoard import VirtualKeyBoard
+				self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].getValue())
+
+	def VirtualKeyBoardCallback(self, callback = None):
+		if callback is not None and len(callback):
+			self["config"].getCurrent()[1].setValue(callback)
+			self["config"].invalidate(self["config"].getCurrent())
+
+	def saveAll(self):
+		for x in self["config"].list:
+			x[1].save()
+		config.save()
+
+	def keySave(self):
+		self.saveAll()
+		self.close()
+
+	def cancelConfirm(self, result):
+		if not result:
+			return
+
+		for x in self["config"].list:
+			x[1].cancel()
+		self.close()
+
+	def keyCancel(self):
+		if self["config"].isChanged():
+			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"))
+		else:
+			self.close()
 
 class VISIONBackupManagerLogView(Screen):
 	skin = """
@@ -1085,7 +1164,7 @@ class BackupFiles(Screen):
 		self.imagebackup = imagebackup
 		self.BackupDevice = config.backupmanager.backuplocation.value
 		print("[BackupManager] Device: " + self.BackupDevice)
-		self.BackupDirectory = config.backupmanager.backuplocation.value + '/backup/'
+		self.BackupDirectory = config.backupmanager.backuplocation.value + 'backup/'
 		print("[BackupManager] Directory: " + self.BackupDirectory)
 		self.Stage1Completed = False
 		self.Stage2Completed = False
@@ -1277,13 +1356,7 @@ class BackupFiles(Screen):
 			backupType = "-SU-"
 		elif self.imagebackup:
 			backupType = "-IM-"
-		imageSubBuild = ""
-		if getImageType() != 'release':
-			imageSubBuild = ".%s" % getImageDevBuild()
-		boxname = ''
-		if config.backupmanager.showboxname.value:
-			boxname = '-' + getBoxType()
-		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + boxname + '-' + getImageType()[0:3] + backupType + getImageVersion() + '.' + getImageBuild() + imageSubBuild + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
+		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageDistro() + backupType + getVisionVersion() + '-' + getVisionRevision() + '-' + getBoxType() + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
 # Need to create a list of what to backup, so that spaces and special
 # characters don't get lost on, or mangle, the command line
 #
