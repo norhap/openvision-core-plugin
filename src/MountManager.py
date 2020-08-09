@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-from os import mkdir, path, remove, rename, statvfs, system 
+from os import mkdir, path, remove, rename, statvfs, system
 import re
 
 from enigma import eTimer
@@ -53,7 +53,7 @@ def getProcPartitions(List):
 					continue										# h9combo(+dups) uses mmcblk1p[0-3] include
 				if SystemInfo["HasH9SD"]:
 					if not re.search('mmcblk0p1', device):							# h9/i55 only mmcblk0p1 mmc partition
-						continue	
+						continue
 					if SystemInfo["HasMMC"]:								# h9/i55 reject mmcblk0p1 mmc partition if root device
 						continue
 				if SystemInfo["HasSDnomount"][0] and not re.search('mmcblk1p[0-3]', device):			# h9combo(+dups) uses mmcblk1p[0-3] include
@@ -115,7 +115,7 @@ def buildDeviceList(device, List):
 			if line.find(device) != -1:
 				parts = line.strip().split()
 				mediamount = parts[1]		# media mount e.g. /media/xxxxx
-				devicetype = parts[2]		# device type e.g. ext4 
+				devicetype = parts[2]		# device type e.g. ext4
 				rw = parts[3]			# read/write
 				break
 
@@ -275,7 +275,7 @@ class VISIONDevicesPanel(Screen):
 			device = parts[2].replace(_("Device: "), '')
 			system('umount ' + mountp)
 			try:
-				with open("/proc/mounts") as f: 
+				with open("/proc/mounts") as f:
 					for line in f.readlines():
 						parts = line.strip().split(" ")
 						if path.realpath(parts[0]).startswith(device):
