@@ -21,7 +21,7 @@ from Components.Console import Console
 from Components.Sources.StaticText import StaticText
 
 
-config.visionsettings.swapautostart = ConfigYesNo(default=False)
+config.swapautostart = ConfigYesNo(default=False)
 
 startswap = None
 
@@ -29,7 +29,7 @@ startswap = None
 def SwapAutostart(reason, session=None, **kwargs):
 	global startswap
 	if reason == 0:
-		if config.visionsettings.swapautostart.value:
+		if config.swapautostart.value:
 			print("[SwapManager] autostart")
 			startswap = StartSwap()
 			startswap.start()
@@ -151,8 +151,8 @@ class VISIONSwap(Screen):
 		self.activityTimer.stop()
 		if path.exists('/etc/rcS.d/S98SwapManager'):
 			remove('/etc/rcS.d/S98SwapManager')
-			config.visionsettings.swapautostart.value = True
-			config.visionsettings.swapautostart.save()
+			config.swapautostart.value = True
+			config.swapautostart.save()
 		if path.exists('/tmp/swapdevices.tmp'):
 			remove('/tmp/swapdevices.tmp')
 		self.Console.ePopen("parted -l /dev/sd? | grep swap", self.updateSwap2)
@@ -195,12 +195,12 @@ class VISIONSwap(Screen):
 						self.swapsize = info[stat.ST_SIZE]
 						continue
 
-		if config.visionsettings.swapautostart.value and self.swap_place:
+		if config.swapautostart.value and self.swap_place:
 			self['autostart_off'].hide()
 			self['autostart_on'].show()
 		else:
-			config.visionsettings.swapautostart.setValue(False)
-			config.visionsettings.swapautostart.save()
+			config.swapautostart.setValue(False)
+			config.swapautostart.save()
 			configfile.save()
 			self['autostart_on'].hide()
 			self['autostart_off'].show()
@@ -277,9 +277,9 @@ class VISIONSwap(Screen):
 	def createDel2(self, result, retval, extra_args=None):
 		if retval == 0:
 			remove(self.swap_place)
-			if config.visionsettings.swapautostart.value:
-				config.visionsettings.swapautostart.setValue(False)
-				config.visionsettings.swapautostart.save()
+			if config.swapautostart.value:
+				config.swapautostart.setValue(False)
+				config.swapautostart.save()
 				configfile.save()
 			self.updateSwap()
 
@@ -317,12 +317,12 @@ class VISIONSwap(Screen):
 
 	def autoSsWap(self):
 		if self.swap_place:
-			if config.visionsettings.swapautostart.value:
-				config.visionsettings.swapautostart.setValue(False)
-				config.visionsettings.swapautostart.save()
+			if config.swapautostart.value:
+				config.swapautostart.setValue(False)
+				config.swapautostart.save()
 			else:
-				config.visionsettings.swapautostart.setValue(True)
-				config.visionsettings.swapautostart.save()
+				config.swapautostart.setValue(True)
+				config.swapautostart.save()
 			configfile.save()
 		else:
 			mybox = self.session.open(MessageBox, _("You have to create a SWAP file before trying to activate the autostart."), MessageBox.TYPE_INFO)

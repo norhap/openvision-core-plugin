@@ -766,6 +766,9 @@ class ImageBackup(Screen):
 		if fileExists("/etc/openvision/visionlanguage"):
 			visionlanguage = open("/etc/openvision/visionlanguage", "r").read().strip()
 			backupType = "-" + visionlanguage + "-"
+		else:
+		    backupType = "-"
+		    
 		if updatebackup:
 			backupType = "-SoftwareUpdate-"
 		imageSubBuild = ""

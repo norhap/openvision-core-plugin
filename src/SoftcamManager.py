@@ -582,7 +582,7 @@ class SoftcamAutoPoller:
 	def JobStart(self):
 		self.autostartcams = config.softcammanager.softcams_autostart.value
 		self.Console = Console()
-		if not path.exists('/usr/softcams/oscam'):
+		if not path.exists('/usr/softcams/oscam') and path.exists('/usr/bin/oscam'):
 			self.Console.ePopen('ln -s /usr/bin/*oscam* /usr/softcams/')
 		if not path.exists('/usr/softcams/ncam') and path.exists('/usr/bin/ncam'):
 		    self.Console.ePopen('ln -s /usr/bin/ncam /usr/softcams/')
