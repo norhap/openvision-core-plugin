@@ -6,7 +6,7 @@ import re
 from os import path, makedirs, remove, rename, symlink, mkdir, listdir
 from datetime import datetime
 from time import time, sleep
-
+from boxbranding import getImageArch
 from enigma import eTimer
 
 from . import _, PluginLanguageDomain
@@ -185,8 +185,10 @@ class VISIONSoftcamManager(Screen):
 			self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
 			self.currentactivecam = self.currentactivecam.replace('\n', ', ')
 			print('[SoftcamManager] Active: ' + self.currentactivecam.replace("\n", ", "))
-			if path.exists('/tmp/SoftcamsScriptsRunning'):
-				SoftcamsScriptsRunning = open('/tmp/SoftcamsScriptsRunning').read()
+			if path.exists('/tmp/SoftcamsScriptsRunning') or path.exists('/tmp/SoftcamsScriptsRunning'):
+				file = open('/tmp/SoftcamsScriptsRunning')
+				SoftcamsScriptsRunning = file.read()
+				file.close()
 				SoftcamsScriptsRunning = SoftcamsScriptsRunning.replace('\n', ', ')
 				self.currentactivecam += SoftcamsScriptsRunning
 			self['activecam'].setText(self.currentactivecam)
@@ -202,6 +204,7 @@ class VISIONSoftcamManager(Screen):
 		if cams:
 			self.sel = self['list'].getCurrent()[0]
 			selcam = self.sel[0]
+			CCcam = "CCcam"
 			if self.currentactivecam.find(selcam) < 0:
 				if selcam.lower().endswith('oscam'):
 					if not path.exists('/etc/tuxbox/config/oscam/oscam.conf'):
@@ -223,9 +226,19 @@ class VISIONSoftcamManager(Screen):
 						self.session.open(MessageBox, _("No config files found, please setup Ncam first\nin /etc/tuxbox/config/ncam"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
 						self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-				else:
-					self.session.open(MessageBox, _("Found non-standard softcam, trying to start, this may fail."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-					self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
+				elif selcam.lower().startswith('wicardd'):
+					if not path.exists('/etc/tuxbox/config/wicardd/wicardd.conf'):
+						self.session.open(MessageBox, _("No config files found, please setup Wicardd first\nin /etc/tuxbox/config/wicardd"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+					else:
+						self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
+				elif self.currentactivecam.find(selcam) < 0:
+					if not path.exists('/etc/CCcam.cfg'):
+						self.session.open(MessageBox, _("No config files found, please setup CCcam.cfg first\nin /etc/CCcam.cfg"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+					else:
+						self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0]), self.Console.ePopen('/usr/softcams/' + CCcam)
+				elif selcam.lower().startswith('mgcamd'):
+					if not path.exists('/usr/keys/mg_cfg'):
+						self.session.open(MessageBox, _("No config files found, please setup MGcamd first\nin /usr/keys"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			else:
 				self.session.openWithCallback(self.showActivecam, VISIONStopCam, self.sel[0])
 
@@ -241,6 +254,7 @@ class VISIONSoftcamManager(Screen):
 	def keyRestart(self, result, retval, extra_args):
 		selectedcam = extra_args
 		strpos = self.currentactivecam.find(selectedcam)
+		CCcam = "CCcam"
 		if strpos < 0:
 			return
 		else:
@@ -250,36 +264,46 @@ class VISIONSoftcamManager(Screen):
 				now = datetime.now()
 				open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping: " + selectedcam + "\n")
 				self.Console.ePopen("kill -9 " + stopcam.replace("\n", ""))
-				sleep(4)
 			else:
 				print('[SoftcamManager] RESULT FAILED: ' + str(result))
 			if selectedcam.lower().endswith('oscam') and path.exists('/etc/tuxbox/config/oscam/oscam.conf') == True:
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-			if selectedcam.lower().startswith('ncam') and path.exists('/etc/tuxbox/config/ncam/ncam.conf') == True:
+			elif selectedcam.lower().startswith('ncam') and path.exists('/etc/tuxbox/config/ncam/ncam.conf') == True:
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-			if selectedcam.lower().endswith('smod') and path.exists('/etc/tuxbox/config/oscam-smod/oscam.conf') == True:
+			elif selectedcam.lower().endswith('smod') and path.exists('/etc/tuxbox/config/oscam-smod/oscam.conf') == True:
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-			if selectedcam.lower().endswith('emu') and path.exists('/etc/tuxbox/config/oscam-emu/oscam.conf') == True:
+			elif selectedcam.lower().endswith('emu') and path.exists('/etc/tuxbox/config/oscam-emu/oscam.conf') == True:
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-			if selectedcam.lower().endswith('oscam') and path.exists('/etc/tuxbox/config/oscam/oscam.conf') == False:
+			elif selectedcam.lower().startswith('wicardd') and path.exists('/etc/tuxbox/config/wicardd/wicardd.conf') == True:
+				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
+			elif CCcam:
+				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0]), self.Console.ePopen('/usr/softcams/' + CCcam)
+			elif selectedcam.lower().startswith('mgcamd') and path.exists('/usr/keys/mg_cfg') == True:
+				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
+			elif selectedcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam/oscam.conf') == False:
 				if not path.exists('/etc/tuxbox/config/oscam'):
 					makedirs('/etc/tuxbox/config/oscam')
 				self.session.open(MessageBox, _("No config files found, please setup Oscam first\nin /etc/tuxbox/config/oscam."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-			if selectedcam.lower().startswith('ncam') and path.exists('/etc/tuxbox/config/ncam/ncam.conf') == False:
+			elif selectedcam.lower().endswith('ncam') and path.exists('/etc/tuxbox/config/ncam/ncam.conf') == False:
 				if not path.exists('/etc/tuxbox/config/ncam'):
 					makedirs('/etc/tuxbox/config/ncam')
 				self.session.open(MessageBox, _("No config files found, please setup Ncam first\nin /etc/tuxbox/config/ncam."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-			if selectedcam.lower().endswith('emu') and path.exists('/etc/tuxbox/config/oscam-emu/oscam.conf') == False:
+			elif selectedcam.lower().endswith('emu') and path.exists('/etc/tuxbox/config/oscam-emu/oscam.conf') == False:
 				if not path.exists('/etc/tuxbox/config/oscam-emu'):
 					makedirs('/etc/tuxbox/config/oscam-emu')
 				self.session.open(MessageBox, _("No config files found, please setup Oscam-emu first\nin /etc/tuxbox/config/oscam-emu."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-			if selectedcam.lower().endswith('smod') and path.exists('/etc/tuxbox/config/oscam-smod/oscam.conf') == False:
+			elif selectedcam.lower().endswith('oscam-smod') and path.exists('/etc/tuxbox/config/oscam-smod/oscam.conf') == False:
 				if not path.exists('/etc/tuxbox/config/oscam-smod'):
 					makedirs('/etc/tuxbox/config/oscam-smod')
 				self.session.open(MessageBox, _("No config files found, please setup Oscam-smod first\nin /etc/tuxbox/config/oscam-smod."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-			if not (selectedcam.lower().endswith('oscam') or not selectedcam.lower().startswith('ncam') or not selectedcam.lower().endswith('emu') or not selectedcam.lower().endswith('smod')):
-				self.session.open(MessageBox, _("Found non-standard softcam, trying to start, this may fail."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
+			elif selectedcam.lower().startswith('wicardd') and path.exists('/etc/tuxbox/config/wicardd/wicardd.conf') == False:
+				if not path.exists('/etc/tuxbox/config/wicardd'):
+					makedirs('/etc/tuxbox/config/wicardd')
+				self.session.open(MessageBox, _("No config files found, please setup Wicardd first\nin /etc/tuxbox/config/wicardd."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			elif selectedcam.lower().startswith('mgcamd') and path.exists('/usr/keys/mg_cfg') == False:
+				if not path.exists('/usr/keys'):
+					makedirs('/usr/keys')
+				self.session.open(MessageBox, _("No config files found, please setup MgCamd first\nin /usr/keys."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 
 	def showLog(self):
 		self.session.open(VISIONSoftcamLog)
@@ -313,37 +337,62 @@ class VISIONStartCam(Screen):
 		self['connect'].setPixmapNum(0)
 		if startselectedcam.endswith('.sh'):
 			if path.exists('/tmp/SoftcamsScriptsRunning'):
-				data = open('/tmp/SoftcamsScriptsRunning').read()
+				file = open('/tmp/SoftcamsScriptsRunning')
+				data = file.read()
+				file.close()
 				if data.find(startselectedcam) >= 0:
 					filewrite = open('/tmp/SoftcamsScriptsRunning.tmp', 'w')
 					fileread = open('/tmp/SoftcamsScriptsRunning')
 					filewrite.writelines([l for l in fileread.readlines() if startselectedcam not in l])
+					fileread.close()
+					filewrite.close()
 					rename('/tmp/SoftcamsScriptsRunning.tmp', '/tmp/SoftcamsScriptsRunning')
 				elif data.find(startselectedcam) < 0:
-					open('/tmp/SoftcamsScriptsRunning', 'a').write(startselectedcam + '\n')
+					fileout = open('/tmp/SoftcamsScriptsRunning', 'a')
+					line = startselectedcam + '\n'
+					fileout.write(line)
+					fileout.close()
 			else:
-				open('/tmp/SoftcamsScriptsRunning', 'w').write(startselectedcam + '\n')
+				fileout = open('/tmp/SoftcamsScriptsRunning', 'w')
+				line = startselectedcam + '\n'
+				fileout.write(line)
+				fileout.close()
 			print('[SoftcamManager] Starting ' + startselectedcam)
+			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
-			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Starting " + startselectedcam + "\n")
+			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Starting " + startselectedcam + "\n")
+			output.close()
 			self.Console.ePopen('/usr/softcams/' + startselectedcam + ' start')
 		else:
 			if path.exists('/tmp/SoftcamsDisableCheck'):
-				data = open('/tmp/SoftcamsDisableCheck').read()
+				file = open('/tmp/SoftcamsDisableCheck')
+				data = file.read()
+				file.close()
 				if data.find(startselectedcam) >= 0:
+					output = open('/tmp/cam.check.log', 'a')
 					now = datetime.now()
-					open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Initialised timed check for " + stopselectedcam + "\n")
+					output.write(now.strftime("%Y-%m-%d %H:%M") + ": Initialised timed check for " + stopselectedcam + "\n")
+					output.close()
 					fileread = open('/tmp/SoftcamsDisableCheck')
 					filewrite = open('/tmp/SoftcamsDisableCheck.tmp', 'w')
 					filewrite.writelines([l for l in fileread.readlines() if startselectedcam not in l])
+					fileread.close()
+					filewrite.close()
 					rename('/tmp/SoftcamsDisableCheck.tmp', '/tmp/SoftcamsDisableCheck')
 			print('[SoftcamManager] Starting ' + startselectedcam)
+			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
-			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Starting " + startselectedcam + "\n")
+			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Starting " + startselectedcam + "\n")
+			output.close()
+			if startselectedcam.lower().startswith('wicardd'):
+				self.Console.ePopen('/usr/softcams/' + startselectedcam + ' -c' + ' /etc/tuxbox/config/wicardd/wicardd.conf')
+			if startselectedcam.lower().startswith('CCcam'):
+				self.Console.ePopen('/usr/softcams/' + startselectedcam)
+			if getImageArch() == "armv7vehf-neon-vfpv4" and startselectedcam.lower().startswith('mgcamd') or getImageArch() == "cortexa15hf-neon-vfpv4" and startselectedcam.lower().startswith('mgcamd') or getImageArch() == "armv7ahf-neon" and startselectedcam.lower().startswith('mgcamd'):
+				self.Console.ePopen('/usr/bin/env LD_PRELOAD=/usr/local/lib/libcrypto.so.1.0.0 /usr/softcams/' + startselectedcam)
 			if startselectedcam.lower().startswith('oscam') or startselectedcam.lower().startswith('ncam') or startselectedcam.lower().startswith('oscam-smod') or startselectedcam.lower().startswith('oscam-emu'):
 				self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + startselectedcam + ' -b')
-			else:
-				self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + startselectedcam)
+
 		self.activityTimer.start(1)
 
 	def updatepix(self):
@@ -389,19 +438,28 @@ class VISIONStopCam(Screen):
 			self.count = 0
 			self['connect'].setPixmapNum(0)
 			print('[SoftcamManager] Stopping ' + stopselectedcam)
+			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
-			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping " + stopselectedcam + "\n")
+			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping " + stopselectedcam + "\n")
+			output.close()
 			self.Console.ePopen('/usr/softcams/' + stopselectedcam + ' stop')
 			if path.exists('/tmp/SoftcamsScriptsRunning'):
 				remove('/tmp/SoftcamsScriptsRunning')
 			if path.exists('/etc/SoftcamsAutostart'):
-				data = open('/etc/SoftcamsAutostart').read()
+				file = open('/etc/SoftcamsAutostart')
+				data = file.read()
+				file.close()
 				finddata = data.find(stopselectedcam)
 				if data.find(stopselectedcam) >= 0:
 					print('[SoftcamManager] Temporarily disabled timed check for ' + stopselectedcam)
+					output = open('/tmp/cam.check.log', 'a')
 					now = datetime.now()
-					open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Temporarily disabled timed check for " + stopselectedcam + "\n")
-					open('/tmp/SoftcamsDisableCheck', 'a').write(stopselectedcam + '\n')
+					output.write(now.strftime("%Y-%m-%d %H:%M") + ": Temporarily disabled timed check for " + stopselectedcam + "\n")
+					output.close()
+					fileout = open('/tmp/SoftcamsDisableCheck', 'a')
+					line = stopselectedcam + '\n'
+					fileout.write(line)
+					fileout.close()
 			self.activityTimer.start(1)
 		else:
 			self.Console.ePopen("pidof " + stopselectedcam, self.startShow)
@@ -413,16 +471,25 @@ class VISIONStopCam(Screen):
 			self['connect'].setPixmapNum(0)
 			stopcam = str(result)
 			if path.exists('/etc/SoftcamsAutostart'):
-				data = open('/etc/SoftcamsAutostart').read()
+				file = open('/etc/SoftcamsAutostart')
+				data = file.read()
+				file.close()
 				finddata = data.find(stopselectedcam)
 				if data.find(stopselectedcam) >= 0:
 					print('[SoftcamManager] Temporarily disabled timed check for ' + stopselectedcam)
+					output = open('/tmp/cam.check.log', 'a')
 					now = datetime.now()
-					open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Temporarily disabled timed check for " + stopselectedcam + "\n")
-					open('/tmp/SoftcamsDisableCheck', 'a').write(stopselectedcam + '\n')
+					output.write(now.strftime("%Y-%m-%d %H:%M") + ": Temporarily disabled timed check for " + stopselectedcam + "\n")
+					output.close()
+					fileout = open('/tmp/SoftcamsDisableCheck', 'a')
+					line = stopselectedcam + '\n'
+					fileout.write(line)
+					fileout.close()
 			print('[SoftcamManager] Stopping ' + stopselectedcam + ' PID ' + stopcam.replace("\n", ""))
+			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
-			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping " + stopselectedcam + "\n")
+			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping " + stopselectedcam + "\n")
+			output.close()
 			self.Console.ePopen("kill -9 " + stopcam.replace("\n", ""))
 			self.activityTimer.start(1)
 
@@ -455,7 +522,9 @@ class VISIONSoftcamLog(Screen):
 		self.setTitle(_("Logs"))
 
 		if path.exists('/var/volatile/tmp/cam.check.log'):
-			softcamlog = open('/var/volatile/tmp/cam.check.log').read()
+			file = open('/var/volatile/tmp/cam.check.log')
+			softcamlog = file.read()
+			file.close()
 		else:
 			softcamlog = ""
 		self["list"] = ScrollLabel(str(softcamlog))
@@ -513,12 +582,16 @@ class SoftcamAutoPoller:
 
 		if config.softcammanager.softcamtimerenabled.value:
 			# 			print("[SoftcamManager] Timer Check Enabled")
+			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
-			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Enabled\n")
+			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Enabled\n")
+			output.close()
 			self.timer.startLongTimer(config.softcammanager.softcamtimer.value * 60)
 		else:
+			output = open('/tmp/cam.check.log', 'a')
 			now = datetime.now()
-			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Disabled\n")
+			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Disabled\n")
+			output.close()
 			# 			print("[SoftcamManager] Timer Check Disabled")
 			softcamautopoller.stop()
 
@@ -534,10 +607,16 @@ class SoftcamAutoPoller:
 	def JobStart(self):
 		self.autostartcams = config.softcammanager.softcams_autostart.value
 		self.Console = Console()
-		if SystemInfo["OScamInstalled"]:
+		if SystemInfo["OScamInstalled"] and not path.exists("/usr/softcams/oscam"):
 			self.Console.ePopen('ln -s /usr/bin/*oscam* /usr/softcams/')
-		if SystemInfo["NCamInstalled"]:
+		if SystemInfo["NCamInstalled"] and not path.exists("/usr/softcams/ncam"):
 		    self.Console.ePopen('ln -s /usr/bin/ncam /usr/softcams/')
+		if path.exists("/usr/bin/wicardd") and not path.exists("/usr/softcams/wicardd"):
+		    self.Console.ePopen('ln -s /usr/bin/wicardd /usr/softcams/')
+		if path.exists("/usr/bin/mgcamd_1.38") and not path.exists("/usr/softcams/mgcamd_1.38") or path.exists("/usr/bin/mgcamd_1.35a") and not path.exists("/usr/softcams/mgcamd_1.35a"):
+		    self.Console.ePopen('ln -s /usr/bin/*mgcamd* /usr/softcams/')
+		if path.exists("/usr/bin/CCcam") and not path.exists("/usr/softcams/CCcam"):
+		    self.Console.ePopen('ln -s /usr/bin/CCcam /usr/softcams/')
 		if path.exists('/tmp/cam.check.log'):
 			if path.getsize('/tmp/cam.check.log') > 40000:
 				fh = open('/tmp/cam.check.log', 'rb+')
@@ -553,23 +632,35 @@ class SoftcamAutoPoller:
 			softcamcheck = softcamcheck.replace("\n", "")
 			if softcamcheck.endswith('.sh'):
 				if path.exists('/tmp/SoftcamsDisableCheck'):
-					data = open('/tmp/SoftcamsDisableCheck').read()
+					file = open('/tmp/SoftcamsDisableCheck')
+					data = file.read()
+					file.close()
 				else:
 					data = ''
 				if data.find(softcamcheck) < 0:
 					if path.exists('/tmp/SoftcamsScriptsRunning'):
-						data = open('/tmp/SoftcamsScriptsRunning').read()
+						file = open('/tmp/SoftcamsScriptsRunning')
+						data = file.read()
+						file.close()
 						if data.find(softcamcheck) < 0:
-							open('/tmp/SoftcamsScriptsRunning', 'a').write(softcamcheck + '\n')
+							fileout = open('/tmp/SoftcamsScriptsRunning', 'a')
+							line = softcamcheck + '\n'
+							fileout.write(line)
+							fileout.close()
 							print('[SoftcamManager] Starting ' + softcamcheck)
 							self.Console.ePopen('/usr/softcams/' + softcamcheck + ' start')
 					else:
-						open('/tmp/SoftcamsScriptsRunning', 'w').write(softcamcheck + '\n')
+						fileout = open('/tmp/SoftcamsScriptsRunning', 'w')
+						line = softcamcheck + '\n'
+						fileout.write(line)
+						fileout.close()
 						print('[SoftcamManager] Starting ' + softcamcheck)
 						self.Console.ePopen('/usr/softcams/' + softcamcheck + ' start')
 			else:
 				if path.exists('/tmp/SoftcamsDisableCheck'):
-					data = open('/tmp/SoftcamsDisableCheck').read()
+					file = open('/tmp/SoftcamsDisableCheck')
+					data = file.read()
+					file.close()
 				else:
 					data = ''
 				if data.find(softcamcheck) < 0:
@@ -585,9 +676,11 @@ class SoftcamAutoPoller:
 						if path.exists('/tmp/index.html'):
 							remove('/tmp/index.html')
 						print('[SoftcamManager] ' + softcamcheck + ' already running')
+						output = open('/tmp/cam.check.log', 'a')
 						now = datetime.now()
-						open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " running OK\n")
-						if softcamcheck.lower().startswith('oscam') or softcamcheck.lower().startswith('oscam'):
+						output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " running OK\n")
+						output.close()
+						if softcamcheck.lower().startswith('oscam') or softcamcheck.lower().startswith('ncam'):
 							if path.exists('/tmp/status.html'):
 								remove('/tmp/status.html')
 							port = ''
@@ -609,37 +702,55 @@ class SoftcamAutoPoller:
 								port = "16000"
 							self.Console.ePopen("wget -T 1 http://127.0.0.1:" + port + "/status.html -O /tmp/status.html &> /tmp/frozen")
 							sleep(2)
-							frozen = open('/tmp/frozen').read()
-							if frozen.find('Unauthorized') != -1 or frozen.find('Authorization Required') != -1 or frozen.find('Forbidden') != -1 or frozen.find('Connection refused') != -1 or frozen.find('100%') != -1 or path.exists('/tmp/status.html'):
+							f = open('/tmp/frozen')
+							frozen = f.read()
+							f.close()
+							if frozen.find('Unauthorized') != -1 or frozen.find('Authorization Required') != -1 or frozen.find('Forbidden') != -1 or frozen.find('Connection refused') != -1 or frozen.find('100%') != -1 or path.exists('/tmp/status.html') or getImageArch() != "armv7vehf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() != "cortexa15hf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() != "armv7ahf-neon" and softcamcheck.lower().startswith('mgcamd'):
 								print('[SoftcamManager] ' + softcamcheck + ' is responding like it should')
+								output = open('/tmp/cam.check.log', 'a')
 								now = datetime.now()
-								open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is responding like it should\n")
+								output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is responding like it should\n")
+								output.close()
 							else:
 								print('[SoftcamManager] ' + softcamcheck + ' is frozen, Restarting...')
+								output = open('/tmp/cam.check.log', 'a')
 								now = datetime.now()
-								open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is frozen, Restarting...\n")
+								output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is frozen, Restarting...\n")
+								output.close()
 								print('[SoftcamManager] Stopping ' + softcamcheck)
+								output = open('/tmp/cam.check.log', 'a')
 								now = datetime.now()
-								open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStopping: " + softcamcheck + "\n")
+								output.write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStopping: " + softcamcheck + "\n")
+								output.close()
 								self.Console.ePopen("killall -9 " + softcamcheck)
 								sleep(1)
 								print('[SoftcamManager] Starting ' + softcamcheck)
+								output = open('/tmp/cam.check.log', 'a')
 								now = datetime.now()
-								open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStarting: " + softcamcheck + "\n")
+								output.write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStarting: " + softcamcheck + "\n")
+								output.close()
 								self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck + ' -b')
 								sleep(10)
 
 					elif softcamcheck_process == "":
 						print("[SoftcamManager] Couldn't find " + softcamcheck + " running, Starting " + softcamcheck)
+						output = open('/tmp/cam.check.log', 'a')
 						now = datetime.now()
-						open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Couldn't find " + softcamcheck + " running, Starting " + softcamcheck + "\n")
+						output.write(now.strftime("%Y-%m-%d %H:%M") + ": Couldn't find " + softcamcheck + " running, Starting " + softcamcheck + "\n")
+						output.close()
 						if softcamcheck.lower().startswith('oscam') or softcamcheck.lower().startswith('ncam'):
 							self.Console.ePopen("ps.procps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/softcamRuningCheck.tmp")
 							sleep(2)
-
-#							open('/tmp/softcamRuningCheck.tmp')
+							file = open('/tmp/softcamRuningCheck.tmp')
+							file.close()
 							self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck + " -b")
 							sleep(10)
 							remove('/tmp/softcamRuningCheck.tmp')
+						if softcamcheck.lower().startswith('wicardd'):
+						    self.Console.ePopen('/usr/softcams/' + softcamcheck + " -c" + " /etc/tuxbox/config/wicardd/wicardd.conf")
+						if softcamcheck.lower().startswith('CCcam'):
+						    self.Console.ePopen('/usr/softcams/' + softcamcheck + " &")
+						if getImageArch() == "armv7vehf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "cortexa15hf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "armv7ahf-neon" and softcamcheck.lower().startswith('mgcamd'):
+						   self.Console.ePopen('/usr/bin/env LD_PRELOAD=/usr/local/lib/libcrypto.so.1.0.0 /usr/softcams/' + softcamcheck)
 						else:
 							self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck)
