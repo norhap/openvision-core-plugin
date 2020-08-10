@@ -79,9 +79,9 @@ def UpgradeMain(session, **kwargs):
 	session.open(VISIONMenu)
 
 def startSetup(menuid):
-	if menuid != "setup":
+	if menuid != "mainmenu":
 		return []
-	return [(_("Vision"), UpgradeMain, "vision_menu", 1010)]
+	return [(_("Vision Core"), UpgradeMain, "vision_menu", 1010)]
 
 def RestoreWizard(*args, **kwargs):
 	from RestoreWizard import RestoreWizard
