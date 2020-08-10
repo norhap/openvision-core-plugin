@@ -747,7 +747,7 @@ class BackupSelection(Screen):
 		self.selectionChanged()
 
 	def selectionChanged(self):
-		current = self["checkList"].getCurrent()[0]
+		current = self["checkList"].getCurrent()
 		if current[2] is True:
 			self["key_yellow"].setText(_("Deselect"))
 		else:
