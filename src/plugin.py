@@ -160,7 +160,7 @@ def filescan(**kwargs):
 
 def Plugins(**kwargs):
 	plist = [PluginDescriptor(where=PluginDescriptor.WHERE_MENU, needsRestart=False, fnc=startSetup),
-			 PluginDescriptor(name=_("Vision"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=UpgradeMain),
+			 PluginDescriptor(name=_("Vision Core"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=UpgradeMain),
 			 PluginDescriptor(where=PluginDescriptor.WHERE_MENU, fnc=SoftcamSetup)]
 	if config.softcammanager.showinextensions.value:
 		plist.append(PluginDescriptor(name=_("Softcam Vision"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=SoftcamMenu))

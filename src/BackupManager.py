@@ -29,6 +29,7 @@ from Screens.Setup import Setup
 from Tools.Notifications import AddPopupWithCallback
 
 currentkernelversion = getKernelVersion()
+currentimageversion = getImageVersion()
 
 autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = 'RestoreSettingsNotification'
@@ -73,22 +74,6 @@ config.backupmanager.backupdirs = ConfigLocations(
 			 eEnv.resolve('${sysconfdir}/resolv.conf'), eEnv.resolve('${sysconfdir}/ushare.conf'), eEnv.resolve('${sysconfdir}/inadyn.conf'), eEnv.resolve('${sysconfdir}/tuxbox/config/'), eEnv.resolve('${sysconfdir}/wpa_supplicant.conf'), '/usr/softcams/'])
 config.backupmanager.xtraplugindir = ConfigDirectory(default='')
 config.backupmanager.lastlog = ConfigText(default=' ', fixed_size=False)
-
-def isRestorableSettings(imageversion):
-	minimum_version = 4.2
-	try:
-		imageversion = float(imageversion)
-	except:
-		return False
-	return imageversion >= minimum_version
-
-def isRestorablePlugins(imageversion):
-	minimum_version = 4.2
-	try:
-		imageversion = float(imageversion)
-	except:
-		return False
-	return imageversion >= minimum_version
 
 def BackupManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
@@ -347,11 +332,11 @@ class VISIONBackupManager(Screen):
 
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
 		if path.exists('/tmp/backupkernelversion'):
-			kernel = open('/tmp/backupkernelversion').read()
-			print('[BackupManager] Backup Image:', kernel)
-			print('[BackupManager] Current Image:', currentkernelversion)
-			if kernel == currentkernelversion:
-				print('[BackupManager] Stage 1: Image ver OK')
+			kernelversion = open('/tmp/backupkernelversion').read()
+			print('[BackupManager] Backup Kernel:', kernelversion)
+			print('[BackupManager] Current Kernel:', currentkernelversion)
+			if kernelversion == currentkernelversion:
+				print('[BackupManager] Stage 1: Kernel OK')
 				self.keyResstore1()
 			else:
 				self.session.open(MessageBox, _("Sorry, but the file is not compatible with this kernel version."), MessageBox.TYPE_INFO, timeout=10)
@@ -518,10 +503,10 @@ class VISIONBackupManager(Screen):
 				kernelversion = open('/tmp/backupkernelversion').read()
 				imageversion = open('/tmp/backupimageversion').read()
 				print('[BackupManager] Backup Image:', imageversion)
-				print('[BackupManager] Current Image:', about.getVersionString())
+				print('[BackupManager] Current Image:', currentimageversion)
 				print('[BackupManager] Backup Kernel:', kernelversion)
 				print('[BackupManager] Current Kernel:', currentkernelversion)
-				if imageversion == about.getVersionString() or isRestorablePlugins(imageversion):
+				if kernelversion == currentkernelversion:
 					# print('[BackupManager] Restoring Stage 3: Kernel Version is same as backup')
 					self.kernelcheck = True
 					self.Console.ePopen('opkg list-installed', self.Stage3Complete)
@@ -1278,7 +1263,7 @@ class BackupFiles(Screen):
 		open('/var/log/backupmanager.log', 'w').write(now.strftime("%Y-%m-%d %H:%M") + ": Backup started\n")
 		self.backupdirs = ' '.join(config.backupmanager.backupdirs.value)
 		print('[BackupManager] Listing installed plugins')
-		self.Console.ePopen('opkg status', self.Stage2Complete)
+		self.Console.ePopen('cat /var/lib/opkg/status', self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
 		if result:
@@ -1293,7 +1278,7 @@ class BackupFiles(Screen):
 						if len(parts) > 1 and parts[1] not in ('opkg', 'openvision-base'):
 							plugin = parts[1]
 							continue
-					if plugin and line.startswith('Status') and 'user installed' in line:
+					if plugin and not line.startswith('Auto-Installed: yes'):
 						plugins_out.append(plugin)
 						break
 			open('/tmp/ExtraInstalledPlugins', 'w').write('\n'.join(plugins_out))
