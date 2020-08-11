@@ -1294,7 +1294,7 @@ class BackupFiles(Screen):
 				plugin = ''
 				opkg_status_split = opkg_status.split('\n')
 				for line in opkg_status_split:
-					if line.startswith('Package: enigma2-plugin'):
+					if line.startswith('Package'):
 						parts = line.strip().split()
 						if len(parts) > 1 and parts[1] not in ('opkg', 'openvision-base'):
 							plugin = parts[1]
