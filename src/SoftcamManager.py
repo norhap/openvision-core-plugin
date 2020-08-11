@@ -125,7 +125,7 @@ class VISIONSoftcamManager(Screen):
 		cams = []
 		cams = listdir('/usr/softcams')
 		selcam = ''
-		if path.islink('/usr/softcams/oscam'):
+		if path.islink('/usr/softcams/oscam') or path.islink('/usr/softcams/wicardd') or path.islink('/usr/softcams/mgcamd_1.38') or path.islink('/usr/softcams/mgcamd_1.35a') or path.islink('/usr/softcams/CCcam'):
 			current = self["list"].getCurrent()[0]
 			print('[SoftcamManager] Selectedcam: ' + str(selcam))
 			selcam = current[0]
@@ -749,8 +749,6 @@ class SoftcamAutoPoller:
 						if softcamcheck.lower().startswith('wicardd'):
 						    self.Console.ePopen('/usr/softcams/' + softcamcheck + " -c" + " /etc/tuxbox/config/wicardd/wicardd.conf")
 						if softcamcheck.lower().startswith('CCcam'):
-						    self.Console.ePopen('/usr/softcams/' + softcamcheck + " &")
+						    self.Console.ePopen('/usr/softcams/' + softcamcheck)
 						if getImageArch() == "armv7vehf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "cortexa15hf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "armv7ahf-neon" and softcamcheck.lower().startswith('mgcamd'):
 						   self.Console.ePopen('/usr/bin/env LD_PRELOAD=/usr/local/lib/libcrypto.so.1.0.0 /usr/softcams/' + softcamcheck)
-						else:
-							self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck)
