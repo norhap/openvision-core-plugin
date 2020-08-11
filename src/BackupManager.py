@@ -1284,7 +1284,7 @@ class BackupFiles(Screen):
 		output.close()
 		self.backupdirs = ' '.join(config.backupmanager.backupdirs.value)
 		print('[BackupManager] Listing installed plugins')
-		self.Console.ePopen('opkg status', self.Stage2Complete)
+		self.Console.ePopen('cat /var/lib/opkg/status', self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
 		if result:
@@ -1294,12 +1294,12 @@ class BackupFiles(Screen):
 				plugin = ''
 				opkg_status_split = opkg_status.split('\n')
 				for line in opkg_status_split:
-					if line.startswith('Package'):
+					if line.startswith('Package: enigma2-plugin'):
 						parts = line.strip().split()
 						if len(parts) > 1 and parts[1] not in ('opkg', 'openvision-base'):
 							plugin = parts[1]
 							continue
-					if plugin and line.startswith('Status') and 'user installed' in line:
+					if plugin and not line.startswith('Auto-Installed: yes'):
 						plugins_out.append(plugin)
 						break
 			output = open('/tmp/ExtraInstalledPlugins', 'w')
