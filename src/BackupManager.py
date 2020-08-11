@@ -525,7 +525,7 @@ class VISIONBackupManager(Screen):
 				print('[BackupManager] Current Image:', about.getVersionString())
 				print('[BackupManager] Backup Kernel:', kernelversion)
 				print('[BackupManager] Current Kernel:', about.getKernelVersionString())
-				if isRestorableKernel(kernelversion) and (imageversion == about.getVersionString() or isRestorablePlugins(imageversion)):
+				if kernelversion:
 					# print('[BackupManager] Restoring Stage 3: Kernel Version is same as backup')
 					self.kernelcheck = True
 					self.Console.ePopen('opkg list-installed', self.Stage3Complete)
