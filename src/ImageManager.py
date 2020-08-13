@@ -304,7 +304,7 @@ class VISIONImageManager(Screen):
 		else:
 			mount = config.imagemanager.backuplocation.value + "/", config.imagemanager.backuplocation.value
 		hdd = "/media/hdd/", "/media/hdd"
-		if mount in config.imagemanager.backuplocation.choices.choices and hdd not in config.imagemanager.backuplocation.choices.choices:
+		if mount in config.imagemanager.backuplocation.choices.choices and not self.BackupDirectory:
 			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
 				"cancel": self.close,
 				"menu": self.createSetup,
@@ -329,12 +329,13 @@ class VISIONImageManager(Screen):
 				config.imagemanager.backuplocation.save()
 				self["lab1"].setText(_("The chosen location does not exist, using /media/hdd.") + "\n" + _("Select an image to flash:"))
 			if mount not in config.imagemanager.backuplocation.choices.choices and hdd not in config.imagemanager.backuplocation.choices.choices:
-				self.BackupDirectory = "/media/usb/imagebackups/"
-				config.imagemanager.backuplocation.value = "/media/usb/"
-				config.imagemanager.backuplocation.save()
-				self["lab1"].setText(_("The chosen location does not exist, using /media/usb.") + "\n" + _("Select an image to flash:"))
+				self.BackupDirectory = config.backupmanager.backuplocation.value + '/imagebackups/'
+				s = statvfs(config.imagemanager.backuplocation.value)
+				free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
+				config.backupmanager.backuplocation.save()
+				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _("MB") + "\n" + _("Select an image to flash:"))
 			else:
-				self.BackupDirectory = config.imagemanager.backuplocation.value + "imagebackups/"
+				self.BackupDirectory = config.imagemanager.backuplocation.value + "/imagebackups/"
 				s = statvfs(config.imagemanager.backuplocation.value)
 				free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
 				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _("MB") + "\n" + _("Select an image to flash:"))
