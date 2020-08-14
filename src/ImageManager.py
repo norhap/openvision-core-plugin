@@ -140,9 +140,9 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 		config.imagemanager.backuplocation.setChoices(imparts)
 		self.editListEntry = None
 		self.list = []
-		self.list.append(getConfigListEntry(_("Backup Location"), config.imagemanager.backuplocation))
-		self.list.append(getConfigListEntry(_("Folder Prefix"), config.imagemanager.folderprefix))
-		self.list.append(getConfigListEntry(_("Schedule Backups"), config.imagemanager.schedule))
+#		self.list.append(getConfigListEntry(_("Backup Location"), config.imagemanager.backuplocation))
+#		self.list.append(getConfigListEntry(_("Folder Prefix"), config.imagemanager.folderprefix))
+#		self.list.append(getConfigListEntry(_("Schedule Backups"), config.imagemanager.schedule))
 		if config.imagemanager.schedule.value:
 			self.list.append(getConfigListEntry(_("Time of Backup to start in minutes"), config.imagemanager.scheduletime))
 			self.list.append(getConfigListEntry(_("Repeat how often"), config.imagemanager.repeattype))
@@ -329,10 +329,10 @@ class VISIONImageManager(Screen):
 				config.imagemanager.backuplocation.save()
 				self["lab1"].setText(_("The chosen location does not exist, using /media/hdd.") + "\n" + _("Select an image to flash:"))
 			if mount not in config.imagemanager.backuplocation.choices.choices and hdd not in config.imagemanager.backuplocation.choices.choices:
-				self.BackupDirectory = config.backupmanager.backuplocation.value + '/imagebackups/'
+				self.BackupDirectory = config.imagemanager.backuplocation.value + '/imagebackups/'
 				s = statvfs(config.imagemanager.backuplocation.value)
 				free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
-				config.backupmanager.backuplocation.save()
+				config.imagemanager.backuplocation.save()
 				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _("MB") + "\n" + _("Select an image to flash:"))
 			else:
 				self.BackupDirectory = config.imagemanager.backuplocation.value + "/imagebackups/"
