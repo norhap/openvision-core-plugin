@@ -59,13 +59,19 @@ class StartSwap:
 			devicelist = []
 			for p in harddiskmanager.getMountedPartitions():
 				d = path.normpath(p.mountpoint)
-				if (path.exists(p.mountpoint) and p.mountpoint != "/"
-					 and not p.mountpoint.startswith('/media/net/')
-					 and not p.mountpoint.startswith('/media/autofs/')):
+				if path.exists("/media/"):
 					devicelist.append((p.description, d))
 			if len(devicelist):
 				for device in devicelist:
 					for filename in glob(device[1] + '/swap*'):
+						if path.exists(filename):
+							swap_place = filename
+							print("[SwapManager] Found a SWAP file on ", swap_place)
+				if path.exists('/swapfile'):
+					devicelist.append((p.description, d))
+			if len(devicelist):
+				for device in devicelist:
+					for filename in glob(device[1] + 'swapfile'):
 						if path.exists(filename):
 							swap_place = filename
 							print("[SwapManager] Found a SWAP file on ", swap_place)
@@ -184,11 +190,22 @@ class VISIONSwap(Screen):
 			devicelist = []
 			for p in harddiskmanager.getMountedPartitions():
 				d = path.normpath(p.mountpoint)
-				if path.exists(p.mountpoint) and p.mountpoint != "/" and not p.mountpoint.startswith('/media/net'):
+				if path.exists("/media/"):
 					devicelist.append((p.description, d))
 			if len(devicelist):
 				for device in devicelist:
 					for filename in glob(device[1] + '/swap*'):
+						self.swap_place = filename
+						self['key_blue'].setText(_("Delete"))
+						info = mystat(self.swap_place)
+						self.swapsize = info[stat.ST_SIZE]
+						continue
+
+				if not path.exists("/media/") and p.mountpoint == "/":
+					devicelist.append((p.description, d))
+			if len(devicelist):
+				for device in devicelist:
+					for filename in glob(device[1] + 'swapfile'):
 						self.swap_place = filename
 						self['key_blue'].setText(_("Delete"))
 						info = mystat(self.swap_place)
