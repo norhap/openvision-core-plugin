@@ -29,7 +29,7 @@ from Screens.Setup import Setup
 from Tools.Notifications import AddPopupWithCallback
 
 currentkernelversion = getKernelVersion()
-currentimageversion = getVisionVersion()
+currentimageversion = getVisionVersion() + "-" + getVisionRevision()
 
 autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = 'RestoreSettingsNotification'
