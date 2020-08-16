@@ -9,7 +9,6 @@ from datetime import date, datetime
 import tarfile, glob
 from enigma import eTimer, eEnv, eDVBDB, quitMainloop, getBoxType
 from . import _, PluginLanguageDomain
-from Components.About import about
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.config import configfile, config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, ConfigLocations, NoSave, ConfigClock, ConfigDirectory, getConfigListEntry
