@@ -353,7 +353,7 @@ class VISIONImageManager(Screen):
 		self.session.openWithCallback(self.setupDone, VISIONImageManagerMenu)
 
 	def doDownload(self):
-		self.choices = [("OpenVision", 1), ("OpenATV", 2), ("OpenPli",3)]
+		self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPli",3)]
 		self.urlchoices = [config.imagemanager.imagefeed_ViX.value, config.imagemanager.imagefeed_ATV.value, config.imagemanager.imagefeed_Pli.value]
 		self.message = _("Do you want to change download url")
 		self.session.openWithCallback(self.doDownload2, MessageBox, self.message, list=self.choices, default=1, simple=True)
@@ -1398,7 +1398,7 @@ class ImageBackup(Screen):
 
 class ImageManagerDownload(Screen):
 	skin = """
-	<screen name="VISIONImageManager" position="center,center" size="560,400">
+	<screen name="VISIONImageManager" position="center,center" size="1000,500">
 		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on" />
 		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on" />
 		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
@@ -1408,9 +1408,9 @@ class ImageManagerDownload(Screen):
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
 		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1" />
 		<widget name="lab1" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
-		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand" />
+		<widget name="list" position="10,105" size="980,480" scrollbarMode="showOnDemand" />
 		<applet type="onLayoutFinish">
-			self["list"].instance.setItemHeight(25)
+			self["list"].instance.setItemHeight(50)
 		</applet>
 	</screen>"""
 
