@@ -29,7 +29,7 @@ from Screens.Setup import Setup
 from Tools.Notifications import AddPopupWithCallback
 
 currentkernelversion = getKernelVersion()
-currentimageversion = getImageVersion()
+currentimageversion = getVisionVersion()
 
 autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = 'RestoreSettingsNotification'
@@ -1293,8 +1293,8 @@ class BackupFiles(Screen):
 	def Stage3(self):
 		print('[BackupManager] Finding kernel version:' + currentkernelversion)
 		open('/tmp/backupkernelversion', 'w').write(currentkernelversion)
-		print('[BackupManager] Finding image version:' + about.about.getVersionString())
-		open('/tmp/backupimageversion', 'w').write(about.about.getVersionString())
+		print('[BackupManager] Finding image version:' + currentimageversion)
+		open('/tmp/backupimageversion', 'w').write(currentimageversion)
 		self.Stage3Completed = True
 
 	def Stage4(self):
