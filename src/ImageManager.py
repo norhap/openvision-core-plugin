@@ -353,7 +353,7 @@ class VISIONImageManager(Screen):
 		self.session.openWithCallback(self.setupDone, VISIONImageManagerMenu)
 
 	def doDownload(self):
-		self.choices = [("OpenVision", 1), ("OpenATV", 2), ("OpenPli",3)]
+		self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPli",3)]
 		self.urlchoices = [config.imagemanager.imagefeed_ViX.value, config.imagemanager.imagefeed_ATV.value, config.imagemanager.imagefeed_Pli.value]
 		self.message = _("Do you want to change download url")
 		self.session.openWithCallback(self.doDownload2, MessageBox, self.message, list=self.choices, default=1, simple=True)
