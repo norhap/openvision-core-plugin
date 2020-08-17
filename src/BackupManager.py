@@ -68,7 +68,7 @@ config.backupmanager.backupretrycount = NoSave(ConfigNumber(default=0))
 config.backupmanager.nextscheduletime = NoSave(ConfigNumber(default=0))
 config.backupmanager.backupdirs = ConfigLocations(
 	default=[eEnv.resolve('${sysconfdir}/enigma2/'), eEnv.resolve('${sysconfdir}/fstab'), eEnv.resolve('${sysconfdir}/hostname'), eEnv.resolve('${sysconfdir}/network/interfaces'), eEnv.resolve('${sysconfdir}/passwd'), eEnv.resolve('${sysconfdir}/shadow'), eEnv.resolve('${sysconfdir}/etc/shadow'),
-			 eEnv.resolve('${sysconfdir}/resolv.conf'), eEnv.resolve('${sysconfdir}/ushare.conf'), eEnv.resolve('${sysconfdir}/inadyn.conf'), eEnv.resolve('${sysconfdir}/tuxbox/config/'), eEnv.resolve('${sysconfdir}/wpa_supplicant.conf'), '/usr/softcams/'])
+			 eEnv.resolve('${sysconfdir}/resolv.conf'), eEnv.resolve('${sysconfdir}/ushare.conf'), eEnv.resolve('${sysconfdir}/inadyn.conf'), eEnv.resolve('${sysconfdir}/tuxbox/config/'), eEnv.resolve('${sysconfdir}/wpa_supplicant.conf')])
 config.backupmanager.xtraplugindir = ConfigDirectory(default='')
 config.backupmanager.lastlog = ConfigText(default=' ', fixed_size=False)
 
@@ -116,9 +116,11 @@ class VISIONBackupManager(Screen):
 		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on" />
 		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on" />
 		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphatest="on"/>
 		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
+		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
 		<ePixmap pixmap="buttons/key_menu.png" position="0,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
 		<ePixmap pixmap="buttons/key_info.png" position="40,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
 		<widget name="lab1" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center" />
@@ -138,6 +140,7 @@ class VISIONBackupManager(Screen):
 		self["key_green"] = Button()
 		self["key_yellow"] = Button(_("Restore"))
 		self["key_red"] = Button(_("Delete"))
+		self["key_blue"] = Button(_("Restore Settings"))
 
 		self.BackupRunning = False
 		self.BackupDirectory = " "
@@ -217,6 +220,7 @@ class VISIONBackupManager(Screen):
 										  'red': self.keyDelete,
 										  'green': self.GreenPressed,
 										  'yellow': self.keyResstore,
+										  'blue': self.RestoreOnlySettings,
 										  "menu": self.createSetup,
 										  'log': self.showLog,
 										  }, -1)
@@ -348,6 +352,11 @@ class VISIONBackupManager(Screen):
 		else:
 			self.session.open(MessageBox, _("Backup in progress,\nPlease wait for it to finish, before trying again."), MessageBox.TYPE_INFO, timeout=10)
 
+	def RestoreOnlySettings(self):
+		self.sel = self['list'].getCurrent()
+		if not self.BackupRunning:
+				self.StageRestoreSettings()
+
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
 		if path.exists('/tmp/backupkernelversion'):
 			kernel = open('/tmp/backupkernelversion').read()
@@ -450,6 +459,11 @@ class VISIONBackupManager(Screen):
 							 10,
 							 SETTINGSRESTOREQUESTIONID
 		)
+
+	def StageRestoreSettings(self, answer=None):
+		if answer == None:
+		     print('[BackupManager] Restoring only settings:')
+		     self.Console.ePopen("/sbin/init 4" + "&&" + "sleep 5" + "&&" + "tar -xzvf" + self.BackupDirectory + self.sel + " -C /" + "&&" + "/sbin/init 3", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring settings wait please..."), MessageBox.TYPE_INFO))
 
 	def Stage1(self, answer=None):
 		print('[BackupManager] Restoring Stage 1:')
