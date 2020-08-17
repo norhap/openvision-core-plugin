@@ -1176,3 +1176,6 @@ msgstr "Use las teclas del cursor para seleccionar una imagen instalada y luego 
 
 msgid "Restore Settings"
 msgstr "Restaurar Configuración"
+
+msgid "Softcam Vision Setup"
+msgstr "Softcam Vision Configuración"
