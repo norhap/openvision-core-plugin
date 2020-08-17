@@ -1174,23 +1174,5 @@ msgstr "Lo sentimos, los feeds no funcionan por alguna razón. Intente usar el A
 msgid "Use the cursor keys to select an installed image and then Erase button."
 msgstr "Use las teclas del cursor para seleccionar una imagen instalada y luego el botón Borrar."
 
-msgid "Backup Manager"
-msgstr "Administrador Copias de Configuración"
-
-msgid "Image Manager"
-msgstr "Administrador de Imagen"
-
-msgid "Opkg Install"
-msgstr "Instalar IPKG"
-
-msgid "Mount Manager"
-msgstr "Administrador de Montajes"
-
-msgid "Script Runner"
-msgstr "Ejecutar Scripts"
-
-msgid "Swap Manager"
-msgstr "Administrador SWAP"
-
-msgid "H9SDcard manager"
-msgstr "Administrador H9SDcard"
+msgid "Restore Settings"
+msgstr "Restaurar Configuración"
