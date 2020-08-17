@@ -16,7 +16,7 @@ from Components.Label import Label
 from Components.Button import Button
 from Components.ScrollLabel import ScrollLabel
 from Components.Pixmap import MultiPixmap
-from Components.config import configfile, config, ConfigSubsection, ConfigYesNo, ConfigNumber, ConfigLocations
+from Components.config import configfile, config, ConfigSubsection, ConfigYesNo, ConfigNumber, ConfigLocations, getConfigListEntry
 from Components.Console import Console
 from Components.FileList import MultiFileSelectList
 from Components.PluginComponent import plugins
@@ -24,6 +24,7 @@ from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Components.SystemInfo import SystemInfo
+from Components.ConfigList import ConfigListScreen
 
 config.softcammanager = ConfigSubsection()
 config.softcammanager.softcams_autostart = ConfigLocations(default='')
@@ -90,7 +91,7 @@ class VISIONSoftcamManager(Screen):
 		self.emlist = MultiFileSelectList(self.selectedFiles, self.defaultDir, showDirectories=False)
 		self["list"] = self.emlist
 
-		self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "TimerEditActions"],
+		self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "TimerEditActions", "MenuActions"],
 									  {
 									  'ok': self.keyStart,
 									  'cancel': self.close,
@@ -99,6 +100,7 @@ class VISIONSoftcamManager(Screen):
 									  'yellow': self.getRestartPID,
 									  'blue': self.changeSelectionState,
 									  'log': self.showLog,
+									  'menu': self.createSetup,
 									  }, -1)
 
 		self["key_red"] = Button(_("Close"))
@@ -117,9 +119,6 @@ class VISIONSoftcamManager(Screen):
 	def createSummary(self):
 		from Screens.PluginBrowser import PluginBrowserSummary
 		return PluginBrowserSummary
-
-	def createSetup(self, setup):
-		self.session.open(setup, PluginLanguageDomain)
 
 	def selectionChanged(self):
 		cams = []
@@ -284,7 +283,83 @@ class VISIONSoftcamManager(Screen):
 	def showLog(self):
 		self.session.open(VISIONSoftcamLog)
 
+	def createSetup(self):
+		self.session.open(VISIONSoftcamMenu)
+
 	def myclose(self):
+		self.close()
+
+class VISIONSoftcamMenu(ConfigListScreen, Screen):
+	skin = """
+		<screen name="VISIONSoftcamMenu" position="center,center" size="500,285" title="Softcam Menu">
+			<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
+			<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
+			<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+			<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
+			<widget name="config" position="10,45" size="480,250" scrollbarMode="showOnDemand" />
+		</screen>"""
+
+	def __init__(self, session):
+		Screen.__init__(self, session)
+		ConfigListScreen.__init__(self, [])
+		self.skinName = "VISIONSoftcamMenu"
+		Screen.setTitle(self, _("Softcam Vision Setup"))
+
+		self.onChangedEntry = [ ]
+		self.list = []
+		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry)
+		self.createSetup()
+
+		self["actions"] = ActionMap(["SetupActions", "MenuActions"],
+		{
+		  "cancel": self.keyCancel,
+		  "save": self.keySave,
+		  "menu": self.closeRecursive,
+		}, -2)
+		self["key_red"] = Button(_("Cancel"))
+		self["key_green"] = Button(_("Save"))
+
+	def createSetup(self):
+		self.editListEntry = None
+		self.list = []
+		self.list.append(getConfigListEntry(_("Enable Auto Timer Check"), config.softcammanager.softcamtimerenabled))
+		if config.softcammanager.softcamtimerenabled.value:
+			self.list.append(getConfigListEntry(_("Check every minutes"), config.softcammanager.softcamtimer))
+		self["config"].list = self.list
+		self["config"].setList(self.list)
+
+	def keyLeft(self):
+		ConfigListScreen.keyLeft(self)
+		self.createSetup()
+
+	def keyRight(self):
+		ConfigListScreen.keyRight(self)
+		self.createSetup()
+
+	def changedEntry(self):
+		for x in self.onChangedEntry:
+			x()
+
+	def getCurrentEntry(self):
+		return self["config"].getCurrent()[0]
+
+	def getCurrentValue(self):
+		return str(self["config"].getCurrent()[1].getText())
+
+	def keySave(self):
+		for x in self["config"].list:
+			x[1].save()
+		if config.softcammanager.softcamtimerenabled.value:
+			print("[SoftcamManager] Timer Check Enabled")
+			softcamautopoller.start()
+		else:
+			print("[SoftcamManager] Timer Check Disabled")
+			softcamautopoller.stop()
+		self.close()
+
+	def keyCancel(self):
+		for x in self["config"].list:
+			x[1].cancel()
 		self.close()
 
 class VISIONStartCam(Screen):
@@ -452,7 +527,7 @@ class VISIONSoftcamLog(Screen):
 	def __init__(self, session):
 		self.session = session
 		Screen.__init__(self, session)
-		self.setTitle(_("Logs"))
+		self.setTitle(_("Softcam Vision Logs"))
 
 		if path.exists('/var/volatile/tmp/cam.check.log'):
 			softcamlog = open('/var/volatile/tmp/cam.check.log').read()
