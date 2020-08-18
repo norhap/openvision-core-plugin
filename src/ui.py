@@ -45,14 +45,14 @@ class VISIONMenu(Screen, ProtectedScreen):
 		self.menu = args
 		self.list = []
 		if self.menu == 0:
-			self.list.append(("Backup Manager", _("Backup manager"), _("Manage the backups of your settings."), None))
-			self.list.append(("Image Manager", _("Image manager"), _("Create and flash complete images of your system."), None))
-			self.list.append(("Opkg Install", _("Install local extension"), _("Install IPK's from your tmp folder."), None))
-			self.list.append(("Mount Manager", _("Mount manager"), _("Manage your devices mount points."), None))
-			self.list.append(("Script Runner", _("Script runner"), _("Run your shell scripts."), None))
-			self.list.append(("Swap Manager", _("SWAP manager"), _("Create and Manage your SWAP files."), None))
+			self.list.append(("Backup manager", _("Backup manager"), _("Manage the backups of your settings."), None))
+			self.list.append(("Image manager", _("Image manager"), _("Create and flash complete images of your system."), None))
+			self.list.append(("Opkg install", _("Install local extension"), _("Install IPK's from your tmp folder."), None))
+			self.list.append(("Mount manager", _("Mount manager"), _("Manage your devices mount points."), None))
+			self.list.append(("Script runner", _("Script runner"), _("Run your shell scripts."), None))
+			self.list.append(("Swap manager", _("Swap manager"), _("Create and Manage your SWAP files."), None))
  			if SystemInfo["HasH9SD"]:
-				self.list.append(("H9SDcard manager", _("H9SDcard Manager"), _("Move Nand root to SD card"), None))
+				self.list.append(("H9 SDcard manager", _("H9 SDcard manager"), _("Move Nand root to SD card"), None))
 		self["menu"] = List(self.list)
 		self["key_red"] = StaticText(_("Close"))
 
@@ -109,25 +109,25 @@ class VISIONMenu(Screen, ProtectedScreen):
 		if current:
 			currentEntry = current[0]
 			if self.menu == 0:
-				if currentEntry == "Backup Manager":
+				if currentEntry == "Backup manager":
 					from BackupManager import VISIONBackupManager
 					self.session.open(VISIONBackupManager)
-				elif currentEntry == "Image Manager":
+				elif currentEntry == "Image manager":
 					from ImageManager import VISIONImageManager
 					self.session.open(VISIONImageManager)
-				elif currentEntry == "H9SDcard manager":
+				elif currentEntry == "H9 SDcard manager":
 					from H9SDmanager import H9SDmanager
 					self.session.open(H9SDmanager)
-				elif currentEntry == "Opkg Install":
+				elif currentEntry == "Opkg install":
 					from IPKInstaller import VISIONIPKInstaller
 					self.session.open(VISIONIPKInstaller)
-				elif currentEntry == "Mount Manager":
+				elif currentEntry == "Mount manager":
 					from MountManager import VISIONDevicesPanel
 					self.session.open(VISIONDevicesPanel)
-				elif currentEntry == "Script Runner":
+				elif currentEntry == "Script runner":
 					from ScriptRunner import VISIONScriptRunner
 					self.session.open(VISIONScriptRunner, None)
-				elif currentEntry == "Swap Manager":
+				elif currentEntry == "Swap manager":
 					from SwapManager import VISIONSwap
 					self.session.open(VISIONSwap)
 

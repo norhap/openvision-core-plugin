@@ -42,7 +42,7 @@ class H9SDmanager(Screen):
 
 	def SDInit(self):
 		if SystemInfo["HasH9SD"]:
-			self.TITLE = _("Init Zgemma H9 SDCARD - please reboot after use.")
+			self.TITLE = _("Init Zgemma H9 SDcard - please reboot after use.")
 			cmdlist = []
 			cmdlist.append("opkg update")
 			cmdlist.append("opkg install rsync")

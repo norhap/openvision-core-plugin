@@ -78,7 +78,7 @@ class MultiBoot(Screen):
 		if self.currentSelected != None:
 			if self.currentSelected[0][1] != "Queued":
 				if SystemInfo["HasRootSubdir"]:
-					message = _("Removal of this slot will not show in %s Gui.  Are you sure you want to delete image slot?" % (self.currentSelected[0][1]))
+					message = _("Removal of this slot will not show in %s GUI.  Are you sure you want to delete image slot?" % (self.currentSelected[0][1]))
 					ybox = self.session.openWithCallback(self.doErase, MessageBox, message, MessageBox.TYPE_YESNO, default=True)
 					ybox.setTitle(_("Remove confirmation"))
 				else:

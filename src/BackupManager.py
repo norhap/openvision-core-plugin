@@ -51,7 +51,7 @@ config.backupmanager.folderprefix = ConfigText(default=defaultprefix, fixed_size
 config.backupmanager.backuplocation = ConfigSelection(choices=hddchoices)
 config.backupmanager.schedule = ConfigYesNo(default=False)
 config.backupmanager.scheduletime = ConfigClock(default=0)  # 1:00
-config.backupmanager.repeattype = ConfigSelection(default="daily", choices=[("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
+config.backupmanager.repeattype = ConfigSelection(default="daily", choices=[("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("Monthly"))])
 
 # Querying is enabled by default - asthat is what used to happen always
 #
@@ -80,7 +80,7 @@ def BackupManagerautostart(reason, session=None, **kwargs):
 	global _session
 	now = int(time())
 	if reason == 0:
-		print("[BackupManager] AutoStart Enabled")
+		print("[BackupManager] Autostart enabled")
 		if session is not None:
 			_session = session
 			if autoBackupManagerTimer is None:
@@ -120,7 +120,7 @@ class VISIONBackupManager(Screen):
 		self["key_green"] = Button()
 		self["key_yellow"] = Button(_("Restore"))
 		self["key_red"] = Button(_("Delete"))
-		self["key_blue"] = Button(_("Restore Settings"))
+		self["key_blue"] = Button(_("Restore settings"))
 
 		self.BackupRunning = False
 		self.BackupDirectory = " "
@@ -340,8 +340,8 @@ class VISIONBackupManager(Screen):
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
 		if path.exists('/tmp/backupkernelversion'):
 			kernelversion = open('/tmp/backupkernelversion').read()
-			print('[BackupManager] Backup Kernel:', kernelversion)
-			print('[BackupManager] Current Kernel:', currentkernelversion)
+			print('[BackupManager] Backup kernel:', kernelversion)
+			print('[BackupManager] Current kernel:', currentkernelversion)
 			if kernelversion == currentkernelversion:
 				print('[BackupManager] Stage 1: Kernel OK')
 				self.keyResstore1()
@@ -441,7 +441,7 @@ class VISIONBackupManager(Screen):
 		)
 
 	def Stage1(self, answer=None):
-		print('[BackupManager] Restoring Stage 1:')
+		print('[BackupManager] Restoring stage 1:')
 		if answer is True:
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /", self.Stage1SettingsComplete)
 		elif answer is False:
@@ -453,10 +453,10 @@ class VISIONBackupManager(Screen):
 		     self.Console.ePopen("/sbin/init 4" + "&&" + "sleep 5" + "&&" + "tar -xzvf" + self.BackupDirectory + self.sel + " -C /" + "&&" + "/sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring settings, receiver rebooting..."), MessageBox.TYPE_INFO))
 
 	def Stage1SettingsComplete(self, result, retval, extra_args):
-		print('[BackupManager] Restoring Stage 1 RESULT:', result)
-		print('[BackupManager] Restoring Stage 1 retval:', retval)
+		print('[BackupManager] Restoring stage 1 result:', result)
+		print('[BackupManager] Restoring stage 1 retval:', retval)
 		if retval == 0:
-			print('[BackupManager] Restoring Stage 1 Complete:')
+			print('[BackupManager] Restoring stage 1 complete:')
 			self.didSettingsRestore = True
 			self.Stage1Completed = True
 			eDVBDB.getInstance().reloadServicelist()
@@ -468,7 +468,7 @@ class VISIONBackupManager(Screen):
 			self.session.nav.RecordTimer.loadTimer(justLoad=True)
 			configfile.load()
 		else:
-			print('[BackupManager] Restoring Stage 1 Failed:')
+			print('[BackupManager] Restoring stage 1 failed:')
 			AddPopupWithCallback(self.Stage2,
 								 _("Sorry, but the restore failed."),
 								 MessageBox.TYPE_INFO,
@@ -477,15 +477,15 @@ class VISIONBackupManager(Screen):
 			)
 
 	def Stage1PluginsComplete(self, result, retval, extra_args):
-		print('[BackupManager] Restoring Stage 1 Complete:')
+		print('[BackupManager] Restoring stage 1 complete:')
 		self.Stage1Completed = True
 
 	def Stage2(self, result=False):
-		print('[BackupManager] Restoring Stage 2: Checking feeds')
+		print('[BackupManager] Restoring stage 2: Checking feeds')
 		self.Console.ePopen('opkg update', self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
-		print('[BackupManager] Restoring Stage 2: Result ', result)
+		print('[BackupManager] Restoring stage 2: Result ', result)
 		if result.find('wget returned 4') != -1: # probably no network adaptor connected
 			self.feeds = 'NONETWORK'
 			self.Stage2Completed = True
@@ -503,35 +503,35 @@ class VISIONBackupManager(Screen):
 								 NOPLUGINS
 			)
 		else:
-			print('[BackupManager] Restoring Stage 2: Complete')
+			print('[BackupManager] Restoring stage 2: Complete')
 			self.feeds = 'OK'
 			self.Stage2Completed = True
 
 	def Stage3(self):
-		print('[BackupManager] Restoring Stage 3: Kernel Version/Feeds Checks')
+		print('[BackupManager] Restoring stage 3: Kernel version/feeds checks')
 		if self.feeds == 'OK':
-			print('[BackupManager] Restoring Stage 3: Feeds are OK')
+			print('[BackupManager] Restoring stage 3: Feeds are OK')
 			if path.exists('/tmp/backupkernelversion') and path.exists('/tmp/backupimageversion'):
 				kernelversion = open('/tmp/backupkernelversion').read()
 				imageversion = open('/tmp/backupimageversion').read()
-				print('[BackupManager] Backup Image:', imageversion)
-				print('[BackupManager] Current Image:', currentimageversion)
-				print('[BackupManager] Backup Kernel:', kernelversion)
-				print('[BackupManager] Current Kernel:', currentkernelversion)
+				print('[BackupManager] Backup image:', imageversion)
+				print('[BackupManager] Current image:', currentimageversion)
+				print('[BackupManager] Backup kernel:', kernelversion)
+				print('[BackupManager] Current kernel:', currentkernelversion)
 				if kernelversion == currentkernelversion:
-					# print('[BackupManager] Restoring Stage 3: Kernel Version is same as backup')
+					# print('[BackupManager] Restoring stage 3: Kernel version is same as backup')
 					self.kernelcheck = True
 					self.Console.ePopen('opkg list-installed', self.Stage3Complete)
 				else:
-					print('[BackupManager] Restoring Stage 3: Kernel or Image Version does not match, exiting')
+					print('[BackupManager] Restoring stage 3: Kernel or image version does not match, exiting')
 					self.kernelcheck = False
 					self.Stage6()
 			else:
-				print('[BackupManager] Restoring Stage 3: Kernel or Image Version check failed')
+				print('[BackupManager] Restoring stage 3: Kernel or image version check failed')
 				self.kernelcheck = False
 				self.Stage6()
 		elif self.feeds == 'NONETWORK':
-			print('[BackupManager] Restoring Stage 3: No network connection, plugin restore not possible')
+			print('[BackupManager] Restoring stage 3: No network connection, plugin restore not possible')
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
 								 _("Your receiver is not connected to a network. Please check your network settings and try again."),
@@ -540,7 +540,7 @@ class VISIONBackupManager(Screen):
 								 NOPLUGINS
 			)
 		elif self.feeds == 'DOWN':
-			print('[BackupManager] Restoring Stage 3: Feeds are down, plugin restore not possible')
+			print('[BackupManager] Restoring stage 3: Feeds are down, plugin restore not possible')
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
 								 _("Sorry the feeds are down for maintenance. Please try again later."),
@@ -549,7 +549,7 @@ class VISIONBackupManager(Screen):
 								 NOPLUGINS
 			)
 		elif self.feeds == 'BAD':
-			print('[BackupManager] Restoring Stage 3: no network connection, plugin restore not possible')
+			print('[BackupManager] Restoring stage 3: No network connection, plugin restore not possible')
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
 								 _("Your receiver is not connected to the Internet. Please check your network settings and try again."),
@@ -558,7 +558,7 @@ class VISIONBackupManager(Screen):
 								 NOPLUGINS
 			)
 		else:
-			print('[BackupManager] Restoring Stage 3: Feeds state is unknown aborting')
+			print('[BackupManager] Restoring stage 3: Feeds state is unknown aborting')
 			self.Stage6()
 
 	def Stage3Complete(self, result, retval, extra_args):
@@ -628,7 +628,7 @@ class VISIONBackupManager(Screen):
 											# 											print('IPK', ipk)
 											self.pluginslist2.append(ipk)
 
-		print('[BackupManager] Restoring Stage 3: Complete')
+		print('[BackupManager] Restoring stage 3: Complete')
 		self.Stage3Completed = True
 
 	def Stage4(self):
@@ -641,8 +641,8 @@ class VISIONBackupManager(Screen):
 				self.pluginslist2 = " ".join(self.pluginslist2)
 			else:
 				self.pluginslist2 = ""
-			print('[BackupManager] Restoring Stage 4: Plugins to restore (extra plugins)', self.pluginslist)
-			print('[BackupManager] Restoring Stage 4: Plugins to restore (3rd party plugins)', self.pluginslist2)
+			print('[BackupManager] Restoring stage 4: Plugins to restore (extra plugins)', self.pluginslist)
+			print('[BackupManager] Restoring stage 4: Plugins to restore (3rd party plugins)', self.pluginslist2)
 			AddPopupWithCallback(self.Stage4Complete,
 								 _("Do you want to restore your Enigma2 plugins ?"),
 								 MessageBox.TYPE_YESNO,
@@ -650,16 +650,16 @@ class VISIONBackupManager(Screen):
 								 PLUGINRESTOREQUESTIONID
 			)
 		else:
-			print('[BackupManager] Restoring Stage 4: plugin restore not required')
+			print('[BackupManager] Restoring stage 4: Plugin restore not required')
 			self.Stage6()
 
 	def Stage4Complete(self, answer=None):
 		if answer is True:
-			print('[BackupManager] Restoring Stage 4: plugin restore chosen')
+			print('[BackupManager] Restoring stage 4: Plugin restore chosen')
 			self.doPluginsRestore = True
 			self.Stage4Completed = True
 		elif answer is False:
-			print('[BackupManager] Restoring Stage 4: plugin restore skipped by user')
+			print('[BackupManager] Restoring stage 4: Plugin restore skipped by user')
 			AddPopupWithCallback(self.Stage6,
 								 _("Now skipping restore process"),
 								 MessageBox.TYPE_INFO,
@@ -669,11 +669,11 @@ class VISIONBackupManager(Screen):
 
 	def Stage5(self):
 		if self.doPluginsRestore:
-			print('[BackupManager] Restoring Stage 5: starting plugin restore')
+			print('[BackupManager] Restoring stage 5: Starting plugin restore')
 			print('[BackupManager] Console command: ', 'opkg install ' + self.pluginslist + ' ' + self.pluginslist2)
 			self.Console.ePopen('opkg install ' + self.pluginslist + ' ' + self.pluginslist2, self.Stage5Complete)
 		else:
-			print('[BackupManager] Restoring Stage 5: plugin restore not requested')
+			print('[BackupManager] Restoring stage 5: Plugin restore not requested')
 			self.Stage6()
 
 	def Stage5Complete(self, result, retval, extra_args):
@@ -681,7 +681,7 @@ class VISIONBackupManager(Screen):
 			print("[BackupManager] opkg install result:\n", result)
 			self.didPluginsRestore = True
 			self.Stage5Completed = True
-			print('[BackupManager] Restoring Stage 5: Completed')
+			print('[BackupManager] Restoring stage 5: Completed')
 
 	def Stage6(self, result=None, retval=None, extra_args=None):
 		self.Stage1Completed = True
@@ -690,7 +690,7 @@ class VISIONBackupManager(Screen):
 		self.Stage4Completed = True
 		self.Stage5Completed = True
 		if self.didPluginsRestore or self.didSettingsRestore:
-			print('[BackupManager] Restoring Completed rebooting')
+			print('[BackupManager] Restoring completed rebooting')
 			quitMainloop(2)
 		else:
 			print('[BackupManager] Restoring failed or canceled')
@@ -892,7 +892,7 @@ class VISIONBackupManagerMenu(Screen, ConfigListScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = "VISIONBackupManagerMenu"
-		Screen.setTitle(self, _("Vision Backup Manager Setup"))
+		Screen.setTitle(self, _("Vision Backup manager setup"))
 		self["actions"] = ActionMap(['SetupActions', 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
 		{
 			"ok": self.keySave,
@@ -939,17 +939,17 @@ class VISIONBackupManagerMenu(Screen, ConfigListScreen):
 		config.backupmanager.backuplocation.setChoices(imparts)
 		self.editListEntry = None
 		self.list = []
-		self.list.append(getConfigListEntry(_("Backup Location"), config.backupmanager.backuplocation))
-		self.list.append(getConfigListEntry(_("Folder Prefix"), config.backupmanager.folderprefix))
-		self.list.append(getConfigListEntry(_("Schedule Backups"), config.backupmanager.schedule))
+		self.list.append(getConfigListEntry(_("Backup location"), config.backupmanager.backuplocation))
+		self.list.append(getConfigListEntry(_("Folder prefix"), config.backupmanager.folderprefix))
+		self.list.append(getConfigListEntry(_("Schedule backups"), config.backupmanager.schedule))
 		if config.backupmanager.schedule.value:
-			self.list.append(getConfigListEntry(_("Time of Backup to start in minutes"), config.backupmanager.scheduletime))
+			self.list.append(getConfigListEntry(_("Time of backup to start in minutes"), config.backupmanager.scheduletime))
 			self.list.append(getConfigListEntry(_("Repeat how often"), config.backupmanager.repeattype))
 		self["config"].list = self.list
 		self["config"].setList(self.list)
 
 	def changedEntry(self):
-		if self["config"].getCurrent()[0] == _("Schedule Backups"):
+		if self["config"].getCurrent()[0] == _("Schedule backups"):
 			self.createSetup()
 		for x in self.onChangedEntry:
 			x()
@@ -959,7 +959,7 @@ class VISIONBackupManagerMenu(Screen, ConfigListScreen):
 
 	def KeyText(self):
 		if self['config'].getCurrent():
-			if self['config'].getCurrent()[0] == _("Folder Prefix"):
+			if self['config'].getCurrent()[0] == _("Folder prefix"):
 				from Screens.VirtualKeyBoard import VirtualKeyBoard
 				self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].getValue())
 
@@ -1000,7 +1000,7 @@ class VISIONBackupManagerLogView(Screen):
 	def __init__(self, session, filename):
 		self.session = session
 		Screen.__init__(self, session)
-		self.setTitle(_("Logs"))
+		self.setTitle(_("Vision Backup manager logs"))
 
 		filedate = str(date.fromtimestamp(stat(filename).st_mtime))
 		backuplog = _('Backup created') + ': ' + filedate + '\n\n'
@@ -1038,16 +1038,16 @@ class AutoBackupManagerTimer:
 		now = int(time())
 		global BackupTime
 		if config.backupmanager.schedule.value:
-			print("[BackupManager] Backup Schedule Enabled at ", strftime("%c", localtime(now)))
+			print("[BackupManager] Backup schedule enabled at ", strftime("%c", localtime(now)))
 			if now > 1262304000:
 				self.backupupdate()
 			else:
-				print("[BackupManager] Backup Time not yet set.")
+				print("[BackupManager] Backup time not yet set.")
 				BackupTime = 0
 				self.backupactivityTimer.start(36000)
 		else:
 			BackupTime = 0
-			print("[BackupManager] Backup Schedule Disabled at", strftime("(now=%c)", localtime(now)))
+			print("[BackupManager] Backup schedule disabled at", strftime("(now=%c)", localtime(now)))
 			self.backupactivityTimer.stop()
 
 	def backupupdatedelay(self):
@@ -1081,14 +1081,14 @@ class AutoBackupManagerTimer:
 			if BackupTime < now + atLeast:
 # Backup missed - run it 60s from now
 				self.backuptimer.startLongTimer(60)
-				print("[BackupManager] Backup Time overdue - running in 60s")
+				print("[BackupManager] Backup time overdue - running in 60s")
 			else:
 # Backup in future - set the timer...
 				delay = BackupTime - now
 				self.backuptimer.startLongTimer(delay)
 		else:
 			BackupTime = -1
-		print("[BackupManager] Backup Time set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now)))
+		print("[BackupManager] Backup time set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now)))
 		return BackupTime
 
 	def backupstop(self):
@@ -1101,7 +1101,7 @@ class AutoBackupManagerTimer:
 		# If we're close enough, we're okay...
 		atLeast = 0
 		if wake - now < 60:
-			print("[BackupManager] Backup onTimer occured at", strftime("%c", localtime(now)))
+			print("[BackupManager] Backup on timer occured at", strftime("%c", localtime(now)))
 			from Screens.Standby import inStandby
 # Check for querying enabled
 			if not inStandby and config.backupmanager.query.value:
@@ -1109,7 +1109,7 @@ class AutoBackupManagerTimer:
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout=30)
 				ybox.setTitle('Scheduled backup.')
 			else:
-				print("[BackupManager] in standby or no querying, so just running backup", strftime("%c", localtime(now)))
+				print("[BackupManager] In standby or no querying, so just running backup", strftime("%c", localtime(now)))
 				self.doBackup(True)
 		else:
 			print('[BackupManager] We are not close enough', strftime("%c", localtime(now)))
@@ -1125,16 +1125,16 @@ class AutoBackupManagerTimer:
 				repeat += 1
 				config.backupmanager.backupretrycount.value = repeat
 				BackupTime = now + (int(config.backupmanager.backupretry.value) * 60)
-				print("[BackupManager] Backup Time now set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now)))
+				print("[BackupManager] Backup time now set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now)))
 				self.backuptimer.startLongTimer(int(config.backupmanager.backupretry.value) * 60)
 			else:
 				atLeast = 60
-				print("[BackupManager] Enough Retries, delaying till next schedule.", strftime("%c", localtime(now)))
+				print("[BackupManager] Enough retries, delaying till next schedule.", strftime("%c", localtime(now)))
 				self.session.open(MessageBox, _("Enough retries, delaying till next schedule."), MessageBox.TYPE_INFO, timeout=10)
 				config.backupmanager.backupretrycount.value = 0
 				self.backupupdate(atLeast)
 		else:
-			print("[BackupManager] Running Backup", strftime("%c", localtime(now)))
+			print("[BackupManager] Running backup", strftime("%c", localtime(now)))
 			self.BackupFiles = BackupFiles(self.session)
 			Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
 # Note that fact that the job has been *scheduled*.

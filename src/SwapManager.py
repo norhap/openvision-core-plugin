@@ -30,7 +30,7 @@ def SwapAutostart(reason, session=None, **kwargs):
 	global startswap
 	if reason == 0:
 		if config.visionsettings.swapautostart.value:
-			print("[SwapManager] autostart")
+			print("[SwapManager] Autostart")
 			startswap = StartSwap()
 			startswap.start()
 
@@ -54,7 +54,7 @@ class StartSwap:
 					rename('/etc/fstab.tmp', '/etc/fstab')
 					tmpfile.close()
 					fstabfile.close()
-					print("[SwapManager] Found a SWAP partition:", swap_place)
+					print("[SwapManager] Found a swap partition:", swap_place)
 		else:
 			devicelist = []
 			for p in harddiskmanager.getMountedPartitions():
@@ -66,7 +66,7 @@ class StartSwap:
 					for filename in glob(device[1] + '/swap*'):
 						if path.exists(filename):
 							swap_place = filename
-							print("[SwapManager] Found a SWAP file on ", swap_place)
+							print("[SwapManager] Found a swap file on ", swap_place)
 				if path.exists('/swapfile'):
 					devicelist.append((p.description, d))
 			if len(devicelist):
@@ -74,15 +74,15 @@ class StartSwap:
 					for filename in glob(device[1] + 'swapfile'):
 						if path.exists(filename):
 							swap_place = filename
-							print("[SwapManager] Found a SWAP file on ", swap_place)
+							print("[SwapManager] Found a swap file on ", swap_place)
 
 		f = open('/proc/swaps')
 		swapfile = f.read()
 		if swapfile.find(swap_place) == -1:
-			print("[SwapManager] Starting SWAP file on ", swap_place)
+			print("[SwapManager] Starting swap file on ", swap_place)
 			system('swapon ' + swap_place)
 		else:
-			print("[SwapManager] SWAP file is already active on ", swap_place)
+			print("[SwapManager] Swap file is already active on ", swap_place)
 		f.close()
 
 class VISIONSwap(Screen):
@@ -110,14 +110,14 @@ class VISIONSwap(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Vision SWAP manager"))
+		self.setTitle(_("Vision Swap manager"))
 
 		self['lab1'] = Label()
 		self['autostart_on'] = Pixmap()
 		self['autostart_off'] = Pixmap()
-		self['lab2'] = Label(_("SWAP place:"))
+		self['lab2'] = Label(_("Swap place:"))
 		self['labplace'] = Label()
-		self['lab3'] = Label(_("SWAP size:"))
+		self['lab3'] = Label(_("Swap size:"))
 		self['labsize'] = Label()
 		self['lab4'] = Label(_("Status:"))
 		self['inactive'] = Label(_("Inactive"))
@@ -260,7 +260,7 @@ class VISIONSwap(Screen):
 			self['key_green'].setText(_("Activate"))
 			self['swapactive_summary'].setText(_("Current status:") + ' ' + _("Inactive"))
 
-		scanning = _("Enable SWAP at startup")
+		scanning = _("Enable swap at startup")
 		self['lab1'].setText(scanning)
 		self['lab1'].show()
 		self["actions"].setEnabled(True)
@@ -276,7 +276,7 @@ class VISIONSwap(Screen):
 				if self.swap_place != '':
 					self.Console.ePopen('swapon ' + self.swap_place, self.updateSwap)
 				else:
-					mybox = self.session.open(MessageBox, _("SWAP file not found. You have to create the file before you try to activate it."), MessageBox.TYPE_INFO)
+					mybox = self.session.open(MessageBox, _("Swap file not found. You have to create the file before you try to activate it."), MessageBox.TYPE_INFO)
 					mybox.setTitle(_("Info"))
 			else:
 				self.Console.ePopen('swapon ' + self.swap_place, self.updateSwap)
@@ -317,12 +317,12 @@ class VISIONSwap(Screen):
 		if name:
 			self.new_place = name[1]
 			myoptions = [[_("8 Mb"), '8192'], [_("16 Mb"), '16384'], [_("32 Mb"), '32768'], [_("64 Mb"), '65536'], [_("96 Mb"), '98304'], [_("128 Mb"), '131072'], [_("256 Mb"), '262144']]
-			self.session.openWithCallback(self.doCSsize, ChoiceBox, title=_("Select the SWAP file size:"), list=myoptions)
+			self.session.openWithCallback(self.doCSsize, ChoiceBox, title=_("Select the swap file size:"), list=myoptions)
 
 	def doCSsize(self, swapsize):
 		if swapsize:
 			self["actions"].setEnabled(False)
-			scanning = _("Wait please while creating SWAP file...")
+			scanning = _("Wait please while creating swap file...")
 			self['lab1'].setText(scanning)
 			self['lab1'].show()
 			swapsize = swapsize[1]
@@ -342,6 +342,6 @@ class VISIONSwap(Screen):
 				config.visionsettings.swapautostart.save()
 			configfile.save()
 		else:
-			mybox = self.session.open(MessageBox, _("You have to create a SWAP file before trying to activate the autostart."), MessageBox.TYPE_INFO)
+			mybox = self.session.open(MessageBox, _("You have to create a swap file before trying to activate the autostart."), MessageBox.TYPE_INFO)
 			mybox.setTitle(_("Info"))
 		self.updateSwap()

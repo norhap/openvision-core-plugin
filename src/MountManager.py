@@ -48,7 +48,6 @@ def getProcPartitions(List):
 			if devMajor in blacklistedDisks:									# look at disk & mmc(179)
 				continue
 			if devMajor == 179:
-				# print('[MountManager]')
 				if not SystemInfo["HasSDnomount"]:								# only interested in h9/i55/h9combo(+dups) mmc partitions
 					continue										# h9combo(+dups) uses mmcblk1p[0-3] include
 				if SystemInfo["HasH9SD"]:
@@ -76,12 +75,12 @@ def buildDeviceList(device, List):
 		device2 = re.sub('[0-9]', '', device)
 	devicetype = path.realpath('/sys/block/' + device2 + '/device')
 
-	# print('[MountManager]device: %s' %device)
-	# print('[MountManager]device2: %s' %device2)
-	# print('[MountManager]devicetype:%s' %devicetype)
-	# print('[MountManager]Type:%s' %SystemInfo["MountManager"])
+	# print('[MountManager] device: %s' %device)
+	# print('[MountManager] device2: %s' %device2)
+	# print('[MountManager] devicetype:%s' %devicetype)
+	# print('[MountManager] Type:%s' %SystemInfo["MountManager"])
 
-	name = _("HARD DISK: ")
+	name = _("Hard disk: ")
 	if path.exists(resolveFilename(SCOPE_CURRENT_SKIN, "visioncore/dev_hdd.png")):
 		mypixmap = resolveFilename(SCOPE_CURRENT_SKIN, "visioncore/dev_hdd.png")
 	else:
@@ -196,7 +195,7 @@ class VISIONDevicesPanel(Screen):
 
 		self['key_red'] = Label(" ")
 		self['key_green'] = Label(_("Setup mounts"))
-		self['key_yellow'] = Label(_("Un-mount"))
+		self['key_yellow'] = Label(_("Unmount"))
 		self['key_blue'] = Label(_("Mount"))
 		self['lab1'] = Label()
 		self.onChangedEntry = []
@@ -279,7 +278,7 @@ class VISIONDevicesPanel(Screen):
 					for line in f.readlines():
 						parts = line.strip().split(" ")
 						if path.realpath(parts[0]).startswith(device):
-							self.session.open(MessageBox, _("Can't un-mount the partition; make sure it is not being used for SWAP or record/timeshift paths."), MessageBox.TYPE_INFO)
+							self.session.open(MessageBox, _("Can't unmount the partition; make sure it is not being used for swap or record/timeshift paths."), MessageBox.TYPE_INFO)
 			except IOError:
 				return -1
 			self.updateList()
@@ -290,7 +289,7 @@ class VISIONDevicesPanel(Screen):
 			parts = sel[1].split()
 			self.device = parts[5]
 			self.mountp = parts[3]
-			# print('[MountManager]saveMypoints: device = %s, mountp=%s' %(self.device, self.mountp))
+			# print('[MountManager] saveMypoints: device = %s, mountp=%s' %(self.device, self.mountp))
 			self.Console.ePopen('umount ' + self.device)
 			if self.mountp.find('/media/hdd') < 0:
 				self.Console.ePopen('umount /media/hdd')
@@ -302,7 +301,7 @@ class VISIONDevicesPanel(Screen):
 		self.device = extra_args[0]
 		self.mountp = extra_args[1]
 		self.device_uuid = 'UUID=' + result.split('UUID=')[1].split(' ')[0].replace('"', '')
-		# print('[MountManager]add_fstab: device = %s, mountp=%s, UUID=%s' %(self.device, self.mountp, self.device_uuid))
+		# print('[MountManager] add_fstab: device = %s, mountp=%s, UUID=%s' %(self.device, self.mountp, self.device_uuid))
 		if not path.exists(self.mountp):
 			mkdir(self.mountp, 0755)
 		open('/etc/fstab.tmp', 'w').writelines([l for l in open('/etc/fstab').readlines() if '/media/hdd' not in l])
@@ -375,7 +374,7 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		ybox.setTitle(_("Restart receiver"))
 
 	def add_fstab(self, result=None, retval=None, extra_args=None):
-		# print('[MountManager] RESULT:', result)
+		# print('[MountManager] Result:', result)
 		if result:
 			self.device = extra_args[0]
 			self.mountp = extra_args[1]

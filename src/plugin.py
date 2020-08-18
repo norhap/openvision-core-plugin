@@ -53,7 +53,7 @@ def checkConfigBackup():
 						if file.endswith('.tar.gz') and "vision" in file.lower():
 							list.append((path.join(devpath, file)))
  		if len(list):
-			print('[Vision] Backup Image:', list[0])
+			print('[Vision] Backup image:', list[0])
 			backupfile = list[0]
 			if path.isfile(backupfile):
 				setLanguageFromBackup(backupfile)
@@ -61,7 +61,7 @@ def checkConfigBackup():
 		else:
 			return None
 	except IOError as e:
-		print("[Vision] unable to use device (%s)..." % str(e))
+		print("[Vision] Unable to use device (%s)..." % str(e))
 		return None
 
 if config.misc.firstrun.value and not config.misc.restorewizardrun.value:
@@ -96,7 +96,7 @@ def SoftcamMenu(session, **kwargs):
 
 def SoftcamSetup(menuid):
 	if menuid == "cam":
-		return [(_("Softcam Vision"), SoftcamMenu, "softcamsetup", 1005)]
+		return [(_("Vision Softcam"), SoftcamMenu, "softcamsetup", 1005)]
 	return []
 
 def BackupManager(session):
@@ -163,9 +163,9 @@ def Plugins(**kwargs):
 			 PluginDescriptor(name=_("Vision Core"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=UpgradeMain),
 			 PluginDescriptor(where=PluginDescriptor.WHERE_MENU, fnc=SoftcamSetup)]
 	if config.softcammanager.showinextensions.value:
-		plist.append(PluginDescriptor(name=_("Softcam Vision"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=SoftcamMenu))
+		plist.append(PluginDescriptor(name=_("Vision Softcam"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=SoftcamMenu))
 	if config.scriptrunner.showinextensions.value:
-		plist.append(PluginDescriptor(name=_("Script runner"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=ScriptRunnerMenu))
+		plist.append(PluginDescriptor(name=_("Vision Script runner"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=ScriptRunnerMenu))
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_AUTOSTART, fnc=SoftcamAutostart))
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_AUTOSTART, fnc=SwapAutostart))
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=ImageManagerautostart))

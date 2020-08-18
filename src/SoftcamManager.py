@@ -45,7 +45,7 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during shutdown, with reason=0 at startup?"""
 	global softcamautopoller
 	if reason == 0:
-		print("[SoftcamManager] AutoStart Enabled")
+		print("[SoftcamManager] Autostart enabled")
 		if path.exists('/tmp/SoftcamsDisableCheck'):
 			remove('/tmp/SoftcamsDisableCheck')
 		softcamautopoller = SoftcamAutoPoller()
@@ -78,7 +78,7 @@ class VISIONSoftcamManager(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Softcam Vision"))
+		self.setTitle(_("Vision Softcam"))
 
 		self['lab1'] = Label(_('Select:'))
 		self['lab2'] = Label(_('Active:'))
@@ -126,7 +126,7 @@ class VISIONSoftcamManager(Screen):
 		selcam = ''
 		if path.islink('/usr/softcams/oscam'):
 			current = self["list"].getCurrent()[0]
-			print('[SoftcamManager] Selectedcam: ' + str(selcam))
+			print('[SoftcamManager] Selected cam: ' + str(selcam))
 			selcam = current[0]
 			if self.currentactivecam.find(selcam) < 0:
 				self["key_green"].setText(_("Start"))
@@ -191,7 +191,7 @@ class VISIONSoftcamManager(Screen):
 			self['activecam'].setText(self.currentactivecam)
 			self['activecam'].show()
 		else:
-			print('[SoftcamManager] RESULT FAILED: ' + str(result))
+			print('[SoftcamManager] Result failed: ' + str(result))
 		self.selectionChanged()
 
 	def keyStart(self):
@@ -251,7 +251,7 @@ class VISIONSoftcamManager(Screen):
 				self.Console.ePopen("kill -9 " + stopcam.replace("\n", ""))
 				sleep(4)
 			else:
-				print('[SoftcamManager] RESULT FAILED: ' + str(result))
+				print('[SoftcamManager] Result failed: ' + str(result))
 			if selectedcam.lower().endswith('oscam') and path.exists('/etc/tuxbox/config/oscam/oscam.conf') == True:
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
 			if selectedcam.lower().startswith('ncam') and path.exists('/etc/tuxbox/config/ncam/ncam.conf') == True:
@@ -303,7 +303,7 @@ class VISIONSoftcamMenu(ConfigListScreen, Screen):
 		Screen.__init__(self, session)
 		ConfigListScreen.__init__(self, [])
 		self.skinName = "VISIONSoftcamMenu"
-		Screen.setTitle(self, _("Softcam Vision Setup"))
+		Screen.setTitle(self, _("Vision Softcam setup"))
 
 		self.onChangedEntry = [ ]
 		self.list = []
@@ -322,7 +322,7 @@ class VISIONSoftcamMenu(ConfigListScreen, Screen):
 	def createSetup(self):
 		self.editListEntry = None
 		self.list = []
-		self.list.append(getConfigListEntry(_("Enable Auto Timer Check"), config.softcammanager.softcamtimerenabled))
+		self.list.append(getConfigListEntry(_("Enable auto timer check"), config.softcammanager.softcamtimerenabled))
 		if config.softcammanager.softcamtimerenabled.value:
 			self.list.append(getConfigListEntry(_("Check every minutes"), config.softcammanager.softcamtimer))
 		self["config"].list = self.list
@@ -350,10 +350,10 @@ class VISIONSoftcamMenu(ConfigListScreen, Screen):
 		for x in self["config"].list:
 			x[1].save()
 		if config.softcammanager.softcamtimerenabled.value:
-			print("[SoftcamManager] Timer Check Enabled")
+			print("[SoftcamManager] Timer check enabled")
 			softcamautopoller.start()
 		else:
-			print("[SoftcamManager] Timer Check Disabled")
+			print("[SoftcamManager] Timer check disabled")
 			softcamautopoller.stop()
 		self.close()
 
@@ -527,7 +527,7 @@ class VISIONSoftcamLog(Screen):
 	def __init__(self, session):
 		self.session = session
 		Screen.__init__(self, session)
-		self.setTitle(_("Softcam Vision Logs"))
+		self.setTitle(_("Vision Softcam logs"))
 
 		if path.exists('/var/volatile/tmp/cam.check.log'):
 			softcamlog = open('/var/volatile/tmp/cam.check.log').read()
@@ -587,14 +587,14 @@ class SoftcamAutoPoller:
 			Components.Task.job_manager.AddJob(self.createCheckJob())
 
 		if config.softcammanager.softcamtimerenabled.value:
-			# 			print("[SoftcamManager] Timer Check Enabled")
+			# 			print("[SoftcamManager] Timer check enabled")
 			now = datetime.now()
 			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Enabled\n")
 			self.timer.startLongTimer(config.softcammanager.softcamtimer.value * 60)
 		else:
 			now = datetime.now()
 			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Disabled\n")
-			# 			print("[SoftcamManager] Timer Check Disabled")
+			# 			print("[SoftcamManager] Timer check disabled")
 			softcamautopoller.stop()
 
 	def createCheckJob(self):
@@ -690,7 +690,7 @@ class SoftcamAutoPoller:
 								now = datetime.now()
 								open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is responding like it should\n")
 							else:
-								print('[SoftcamManager] ' + softcamcheck + ' is frozen, Restarting...')
+								print('[SoftcamManager] ' + softcamcheck + ' is frozen, restarting...')
 								now = datetime.now()
 								open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is frozen, Restarting...\n")
 								print('[SoftcamManager] Stopping ' + softcamcheck)
@@ -705,7 +705,7 @@ class SoftcamAutoPoller:
 								sleep(10)
 
 					elif softcamcheck_process == "":
-						print("[SoftcamManager] Couldn't find " + softcamcheck + " running, Starting " + softcamcheck)
+						print("[SoftcamManager] Couldn't find " + softcamcheck + " running, starting " + softcamcheck)
 						now = datetime.now()
 						open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Couldn't find " + softcamcheck + " running, Starting " + softcamcheck + "\n")
 						if softcamcheck.lower().startswith('oscam') or softcamcheck.lower().startswith('ncam'):

@@ -59,7 +59,7 @@ config.imagemanager.folderprefix = ConfigText(default=imagedistro, fixed_size=Fa
 config.imagemanager.backuplocation = ConfigSelection(choices=hddchoices)
 config.imagemanager.schedule = ConfigYesNo(default=False)
 config.imagemanager.scheduletime = ConfigClock(default=0)  # 1:00
-config.imagemanager.repeattype = ConfigSelection(default="daily", choices=[("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
+config.imagemanager.repeattype = ConfigSelection(default="daily", choices=[("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("Monthly"))])
 config.imagemanager.backupretry = ConfigNumber(default=30)
 config.imagemanager.backupretrycount = NoSave(ConfigNumber(default=0))
 config.imagemanager.nextscheduletime = NoSave(ConfigNumber(default=0))
@@ -82,7 +82,7 @@ def ImageManagerautostart(reason, session=None, **kwargs):
 	global _session
 	now = int(time())
 	if reason == 0:
-		print("[ImageManager] AutoStart Enabled")
+		print("[ImageManager] Autostart enabled")
 		if session is not None:
 			_session = session
 			if autoImageManagerTimer is None:
@@ -108,7 +108,7 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 		self.session = session
 		self.skin = VISIONImageManagerMenu.skin
 		self.skinName = "VISIONImageManagerMenu"
-		Screen.setTitle(self, _("Vision Image Manager Setup"))
+		Screen.setTitle(self, _("Vision Image manager setup"))
 
 		self.onChangedEntry = [ ]
 		self.list = []
@@ -140,17 +140,17 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 		config.imagemanager.backuplocation.setChoices(imparts)
 		self.editListEntry = None
 		self.list = []
-		self.list.append(getConfigListEntry(_("Backup Location"), config.imagemanager.backuplocation))
-		self.list.append(getConfigListEntry(_("Folder Prefix"), config.imagemanager.folderprefix))
-		self.list.append(getConfigListEntry(_("Schedule Backups"), config.imagemanager.schedule))
+		self.list.append(getConfigListEntry(_("Backup location"), config.imagemanager.backuplocation))
+		self.list.append(getConfigListEntry(_("Folder prefix"), config.imagemanager.folderprefix))
+		self.list.append(getConfigListEntry(_("Schedule backups"), config.imagemanager.schedule))
 		if config.imagemanager.schedule.value:
-			self.list.append(getConfigListEntry(_("Time of Backup to start in minutes"), config.imagemanager.scheduletime))
+			self.list.append(getConfigListEntry(_("Time of backup to start in minutes"), config.imagemanager.scheduletime))
 			self.list.append(getConfigListEntry(_("Repeat how often"), config.imagemanager.repeattype))
 		self["config"].list = self.list
 		self["config"].setList(self.list)
 
 	def changedEntry(self):
-		if self["config"].getCurrent()[0] == _("Schedule Backups"):
+		if self["config"].getCurrent()[0] == _("Schedule backups"):
 			self.createSetup()
 		for x in self.onChangedEntry:
 			x()
@@ -160,7 +160,7 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 
 	def KeyText(self):
 		if self['config'].getCurrent():
-			if self['config'].getCurrent()[0] == _("Folder Prefix"):
+			if self['config'].getCurrent()[0] == _("Folder prefix"):
 				from Screens.VirtualKeyBoard import VirtualKeyBoard
 				self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].getValue())
 
@@ -375,13 +375,13 @@ class VISIONImageManager(Screen):
 		now = int(time())
 		if config.imagemanager.schedule.value:
 			if autoImageManagerTimer is not None:
-				print("[ImageManager] Backup Schedule Enabled at", strftime("%c", localtime(now)))
+				print("[ImageManager] Backup schedule enabled at", strftime("%c", localtime(now)))
 				autoImageManagerTimer.backupupdate()
 		else:
 			if autoImageManagerTimer is not None:
 				global BackupTime
 				BackupTime = 0
-				print("[ImageManager] Backup Schedule Disabled at", strftime("%c", localtime(now)))
+				print("[ImageManager] Backup schedule disabled at", strftime("%c", localtime(now)))
 				autoImageManagerTimer.backupstop()
 		if BackupTime > 0:
 			t = localtime(BackupTime)
@@ -466,7 +466,7 @@ class VISIONImageManager(Screen):
 			self.message = _("Recording(s) are in progress or coming up in few seconds!\nDo you still want to flash image\n%s?") % self.sel
 		else:
 			self.message = _("Do you want to flash image\n%s") % self.sel
-		if imagefs.replace(" ","") in ("tar.bz2", "hd-emmc", "hdemmc", "octagonemmc", "dinobotemmc"):
+		if "emmc" in imagefs or imagefs.replace(" ","") == "tar.bz2":
 			message = _("You are about to flash an eMMC flash; we cannot take any responsibility for any errors or damage to your box during this process.\nProceed with CAUTION!:\nAre you sure you want to flash this image:\n ") + self.sel
 		else:
 			message = _("Are you sure you want to flash this image:\n ") + self.sel
@@ -524,14 +524,14 @@ class VISIONImageManager(Screen):
 		if retval == 0:
 			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("Flash image unzip successful."), MessageBox.TYPE_INFO, timeout=4)
 			if model == "et8500" and self.dualboot:
-				message = _("ET8500 Multiboot: Yes to restore OS1 No to restore OS2:\n ") + self.sel
+				message = _("ET8500 Multiboot: Yes to restore OS1\nNo to restore OS2:\n ") + self.sel
 				ybox = self.session.openWithCallback(self.keyRestore5_ET8500, MessageBox, message, MessageBox.TYPE_YESNO)
-				ybox.setTitle(_("ET8500 Image Restore"))
+				ybox.setTitle(_("ET8500 image restore"))
 			else:
 				MAINDEST = "%s/%s" % (self.TEMPDESTROOT, imagedir)
 				if pathExists("%s/SDAbackup" % MAINDEST) and self.multibootslot != 1:
-						self.session.open(MessageBox, _("Multiboot only able to restore this backup to mmc slot1"), MessageBox.TYPE_INFO, timeout=20)
-						print("[ImageManager] SF8008 mmc restore to SDcard failed:\n")
+						self.session.open(MessageBox, _("Multiboot only able to restore this backup to MMC slot1"), MessageBox.TYPE_INFO, timeout=20)
+						print("[ImageManager] SF8008 MMC restore to SDcard failed:\n")
 						rmtree(config.imagemanager.backuplocation.getValue() + "imagebackups/imagerestore")
 						self.close()
 				else:
@@ -568,13 +568,13 @@ class VISIONImageManager(Screen):
 					rename("%s/rootfs.tar.bz2" % MAINDEST, "%s/xx.txt" % MAINDEST)
 		else:
 			CMD = "/usr/bin/ofgwrite -rmtd4 -kmtd3  %s/" % MAINDEST  # Xtrend ET8500 with OS2 multiboot
-		print("[ImageManager] running commnd:", CMD)
+		print("[ImageManager] Running commnd:", CMD)
 		self.Console.ePopen(CMD, self.ofgwriteResult)
 		fbClass.getInstance().lock()
 
 	def ofgwriteResult(self, result, retval, extra_args=None):
 		fbClass.getInstance().unlock()
-		print("[ImageManager] ofgwrite retval :", retval)
+		print("[ImageManager] ofgwrite retval:", retval)
 		if retval == 0:
 			if SystemInfo["HiSilicon"] and SystemInfo["HasRootSubdir"] is False and self.HasSDmmc is False:	# sf8008 receiver 1 eMMC parition, No SD card
 				self.session.open(TryQuitMainloop, 2)
@@ -590,7 +590,7 @@ class VISIONImageManager(Screen):
 				self.session.open(TryQuitMainloop, 2)
 		else:
 			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("ofgwrite error (also sent to any debug log):\n%s") % result, MessageBox.TYPE_INFO, timeout=20)
-			print("[ImageManager] OFGWriteResult failed:\n", result)
+			print("[ImageManager] ofgwrite result failed:\n", result)
 
 	def ContainterFallback(self, data=None, retval=None, extra_args=None):
 		self.container.killAll()
@@ -599,7 +599,7 @@ class VISIONImageManager(Screen):
 			copyfile("/tmp/startupmount/%s" % SystemInfo["canMultiBoot"][self.multibootslot]["startupfile"].replace("boxmode=12'", "boxmode=1'"), "/tmp/startupmount/STARTUP")
 			self.session.open(TryQuitMainloop, 2)
 		else:
-			self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in boot partition."), MessageBox.TYPE_INFO, timeout=20)
+			self.session.open(MessageBox, _("Multiboot error! - no STARTUP in boot partition."), MessageBox.TYPE_INFO, timeout=20)
 
 	def dualBoot(self):
 		rootfs2 = False
@@ -626,16 +626,16 @@ class AutoImageManagerTimer:
 		now = int(time())
 		global BackupTime
 		if config.imagemanager.schedule.value:
-			print("[ImageManager] Backup Schedule Enabled at ", strftime("%c", localtime(now)))
+			print("[ImageManager] Backup schedule enabled at ", strftime("%c", localtime(now)))
 			if now > 1262304000:
 				self.backupupdate()
 			else:
-				print("[ImageManager] Backup Time not yet set.")
+				print("[ImageManager] Backup time not yet set.")
 				BackupTime = 0
 				self.backupactivityTimer.start(36000)
 		else:
 			BackupTime = 0
-			print("[ImageManager] Backup Schedule Disabled at", strftime("(now=%c)", localtime(now)))
+			print("[ImageManager] Backup schedule disabled at", strftime("(now=%c)", localtime(now)))
 			self.backupactivityTimer.stop()
 
 	def backupupdatedelay(self):
@@ -668,13 +668,13 @@ class AutoImageManagerTimer:
 		if BackupTime > 0:
 			if BackupTime < now + atLeast:
 				self.backuptimer.startLongTimer(60)  # Backup missed - run it 60s from now
-				print("[ImageManager] Backup Time overdue - running in 60s")
+				print("[ImageManager] Backup time overdue - running in 60s")
 			else:
 				delay = BackupTime - now  # Backup in future - set the timer...
 				self.backuptimer.startLongTimer(delay)
 		else:
 			BackupTime = -1
-		print("[ImageManager] Backup Time set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now)))
+		print("[ImageManager] Backup time set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now)))
 		return BackupTime
 
 	def backupstop(self):
@@ -687,7 +687,7 @@ class AutoImageManagerTimer:
 		# If we're close enough, we're okay...
 		atLeast = 0
 		if wake - now < 60:
-			print("[ImageManager] Backup onTimer occured at", strftime("%c", localtime(now)))
+			print("[ImageManager] Backup on timer occured at", strftime("%c", localtime(now)))
 			from Screens.Standby import inStandby
 
 			if not inStandby and config.imagemanager.query.value:
@@ -695,7 +695,7 @@ class AutoImageManagerTimer:
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout=30)
 				ybox.setTitle("Scheduled backup.")
 			else:
-				print("[ImageManager] in Standby or no querying, so just running backup", strftime("%c", localtime(now)))
+				print("[ImageManager] In Standby or no querying, so just running backup", strftime("%c", localtime(now)))
 				self.doBackup(True)
 		else:
 			print("[ImageManager] We are not close enough", strftime("%c", localtime(now)))
@@ -711,16 +711,16 @@ class AutoImageManagerTimer:
 				repeat += 1
 				config.imagemanager.backupretrycount.setValue(repeat)
 				BackupTime = now + (int(config.imagemanager.backupretry.value) * 60)
-				print("[ImageManager] Backup Time now set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now)))
+				print("[ImageManager] Backup time now set to", strftime("%c", localtime(BackupTime)), strftime("(now=%c)", localtime(now)))
 				self.backuptimer.startLongTimer(int(config.imagemanager.backupretry.value) * 60)
 			else:
 				atLeast = 60
-				print("[ImageManager] Enough Retries, delaying till next schedule.", strftime("%c", localtime(now)))
+				print("[ImageManager] Enough retries, delaying till next schedule.", strftime("%c", localtime(now)))
 				self.session.open(MessageBox, _("Enough retries, delaying till next schedule."), MessageBox.TYPE_INFO, timeout=10)
 				config.imagemanager.backupretrycount.setValue(0)
 				self.backupupdate(atLeast)
 		else:
-			print("[ImageManager] Running Backup", strftime("%c", localtime(now)))
+			print("[ImageManager] Running backup", strftime("%c", localtime(now)))
 			self.ImageBackup = ImageBackup(self.session)
 			Components.Task.job_manager.AddJob(self.ImageBackup.createBackupJob())
 			#      Note that fact that the job has been *scheduled*.
@@ -808,12 +808,12 @@ class ImageBackup(Screen):
 			self.GB4Krescue = "rescue.bin"
 		if "sda" in self.MTDKERNEL:
 			self.KERN = "sda"
-		print("[ImageManager] Model:", self.MODEL)
-		print("[ImageManager] Machine Build:", self.MCBUILD)
-		print("[ImageManager] Kernel File:", self.KERNELFILE)
-		print("[ImageManager] Root File:", self.ROOTFSFILE)
-		print("[ImageManager] MTD Kernel:", self.MTDKERNEL)
-		print("[ImageManager] MTD Root:", self.MTDROOTFS)
+		print("[ImageManager] MODEL:", self.MODEL)
+		print("[ImageManager] MCBUILD:", self.MCBUILD)
+		print("[ImageManager] KERNELFILE:", self.KERNELFILE)
+		print("[ImageManager] ROOTFSFILE:", self.ROOTFSFILE)
+		print("[ImageManager] MTDKERNEL:", self.MTDKERNEL)
+		print("[ImageManager] MTDROOTFS:", self.MTDROOTFS)
 		print("[ImageManager] ROOTFSSUBDIR:", self.ROOTFSSUBDIR)
 		print("[ImageManager] ROOTFSTYPE:", self.ROOTFSTYPE)
 		print("[ImageManager] MAINDESTROOT:", self.MAINDESTROOT)
@@ -840,11 +840,11 @@ class ImageBackup(Screen):
 		task.work = self.JobStart
 		task.weighting = 5
 
-		task = Components.Task.ConditionTask(job, _("Checking free RAM.."), timeoutCount=10)
+		task = Components.Task.ConditionTask(job, _("Checking free ram.."), timeoutCount=10)
 		task.check = lambda: self.RamChecked
 		task.weighting = 5
 
-		task = Components.Task.ConditionTask(job, _("Creating SWAP.."), timeoutCount=120)
+		task = Components.Task.ConditionTask(job, _("Creating swap.."), timeoutCount=120)
 		task.check = lambda: self.SwapCreated
 		task.weighting = 5
 
@@ -938,7 +938,7 @@ class ImageBackup(Screen):
 					parts = line.strip().split()
 					swapfree = int(parts[1])
 		TotalFree = memfree + swapfree
-		print("[ImageManager] Stage1: Free Mem", TotalFree)
+		print("[ImageManager] Stage 1: Free mem", TotalFree)
 		if int(TotalFree) < 3000:
 			supported_filesystems = frozenset(("ext4", "ext3", "ext2"))
 			candidates = []
@@ -949,20 +949,20 @@ class ImageBackup(Screen):
 			for swapdevice in candidates:
 				self.swapdevice = swapdevice[1]
 			if self.swapdevice:
-				print("[ImageManager] Stage1: Creating SWAP file.")
+				print("[ImageManager] Stage 1: Creating swap file.")
 				self.RamChecked = True
 				self.MemCheck2()
 			else:
 				print("[ImageManager] Sorry, not enough free RAM found, and no physical devices that supports SWAP attached")
 				AddPopupWithCallback(
 					self.BackupComplete,
-					_("Sorry, not enough free RAM found, and no physical devices that supports SWAP attached. Can't create SWAP file on network or fat32 file-systems, unable to make backup."),
+					_("Sorry, not enough free RAM found, and no physical devices that supports swap attached. Can't create SWAP file on network or FAT32 file-systems, unable to make backup."),
 					MessageBox.TYPE_INFO,
 					10,
 					"RamCheckFailedNotification"
 				)
 		else:
-			print("[ImageManager] Stage1: Found Enough RAM")
+			print("[ImageManager] Stage 1: Found enough RAM")
 			self.RamChecked = True
 			self.SwapCreated = True
 
@@ -981,8 +981,8 @@ class ImageBackup(Screen):
 		self.SwapCreated = True
 
 	def doBackup1(self):
-		print("[ImageManager] Stage1: Creating tmp folders.", self.BackupDirectory)
-		print("[ImageManager] Stage1: Creating backup Folders.")
+		print("[ImageManager] Stage 1: Creating tmp folders.", self.BackupDirectory)
+		print("[ImageManager] Stage 1: Creating backup folders.")
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
 		mkdir(self.WORKDIR, 0644)
@@ -997,7 +997,7 @@ class ImageBackup(Screen):
 		makedirs(self.MAINDESTROOT, 0644)
 		self.commands = []
 		makedirs(self.MAINDEST, 0644)
-		print("[ImageManager] Stage1: Making Kernel Image.")
+		print("[ImageManager] Stage 1: Making kernel image.")
 		if "bin" or "uImage" in self.KERNELFILE:
 			self.command = "dd if=/dev/%s of=%s/vmlinux.bin" % (self.MTDKERNEL, self.WORKDIR)
 		else:
@@ -1007,12 +1007,12 @@ class ImageBackup(Screen):
 	def Stage1Complete(self, result, retval, extra_args=None):
 		if retval == 0:
 			self.Stage1Completed = True
-			print("[ImageManager] Stage1: Complete.")
+			print("[ImageManager] Stage 1: Complete.")
 
 	def doBackup2(self):
-		print("[ImageManager] Stage2: Making Root Image.")
+		print("[ImageManager] Stage 2: Making root image.")
 		if "jffs2" in self.ROOTFSTYPE.split():
-			print("[ImageManager] Stage2: JFFS2 Detected.")
+			print("[ImageManager] Stage 2: JFFS2 detected.")
 			self.ROOTFSTYPE = "jffs2"
 			if model == "gb800solo":
 				JFFS2OPTIONS = " --disable-compressor=lzo -e131072 -l -p125829120"
@@ -1021,7 +1021,7 @@ class ImageBackup(Screen):
 			self.commands.append("mount --bind / %s/root" % self.TMPDIR)
 			self.commands.append("mkfs.jffs2 --root=%s/root --faketime --output=%s/rootfs.jffs2 %s" % (self.TMPDIR, self.WORKDIR, JFFS2OPTIONS))
 		elif "ubi" in self.ROOTFSTYPE.split():
-			print("[ImageManager] Stage2: UBIFS Detected.")
+			print("[ImageManager] Stage 2: UBIFS detected.")
 			self.ROOTFSTYPE = "ubifs"
 			with open("%s/ubinize.cfg" % self.WORKDIR, "w") as output:
 				output.write("[ubifs]\n")
@@ -1061,7 +1061,7 @@ class ImageBackup(Screen):
 				self.commands.append("mkfs.ubifs -r %s/root -o %s/root.ubi %s" % (self.TMPDIR, self.WORKDIR, self.MKUBIFS_ARGS))
 				self.commands.append("ubinize -o %s/rootfs.ubifs %s %s/ubinize.cfg" % (self.WORKDIR, self.UBINIZE_ARGS, self.WORKDIR))
 		else:
-			print("[ImageManager] Stage2: TAR.BZIP Detected.")
+			print("[ImageManager] Stage 2: TAR.BZIP detected.")
 			self.ROOTFSTYPE = "tar.bz2"
 			if SystemInfo["canMultiBoot"]:
 				self.commands.append("mount /dev/%s %s/root" % (self.MTDROOTFS, self.TMPDIR))
@@ -1075,21 +1075,21 @@ class ImageBackup(Screen):
 			if platform == "gb7252" or model == "gbx34k":
 				self.commands.append("dd if=/dev/mmcblk0p1 of=%s/boot.bin" % self.WORKDIR)
 				self.commands.append("dd if=/dev/mmcblk0p3 of=%s/rescue.bin" % self.WORKDIR)
-				print("[ImageManager] Stage2: Create: boot dump boot.bin:", self.MODEL)
-				print("[ImageManager] Stage2: Create: rescue dump rescue.bin:", self.MODEL)
+				print("[ImageManager] Stage 2: Create: boot dump boot.bin:", self.MODEL)
+				print("[ImageManager] Stage 2: Create: rescue dump rescue.bin:", self.MODEL)
 		print("[ImageManager] ROOTFSTYPE:", self.ROOTFSTYPE)
 		self.Console.eBatch(self.commands, self.Stage2Complete, debug=False)
 
 	def Stage2Complete(self, extra_args=None):
 		if len(self.Console.appContainers) == 0:
 			self.Stage2Completed = True
-			print("[ImageManager] Stage2: Complete.")
+			print("[ImageManager] Stage 2: Complete.")
 
 	def doBackup3(self):
-		print("[ImageManager] Stage3: Making eMMC Image.")
+		print("[ImageManager] Stage 3: Making eMMC image.")
 		self.commandMB = []
 		if self.EMMCIMG == "disk.img":
-			print("[ImageManager] hd51/h7: EMMC Detected.")  # hd51 receiver with multiple eMMC partitions in class
+			print("[ImageManager] hd51/h7: eMMC detected.")  # hd51 receiver with multiple eMMC partitions in class
 			EMMC_IMAGE = "%s/%s" % (self.WORKDIR, self.EMMCIMG)
 			BLOCK_SIZE = 512
 			BLOCK_SECTOR = 2
@@ -1141,7 +1141,7 @@ class ImageBackup(Screen):
 			self.Console.eBatch(self.commandMB, self.Stage3Complete, debug=False)
 
 		elif self.EMMCIMG == "emmc.img":
-			print("[ImageManager] osmio4k: EMMC Detected.")  # osmio4k receiver with multiple eMMC partitions in class
+			print("[ImageManager] osmio4k: eMMC detected.")  # osmio4k receiver with multiple eMMC partitions in class
 			IMAGE_ROOTFS_ALIGNMENT = 1024
 			BOOT_PARTITION_SIZE = 3072
 			KERNEL_PARTITION_SIZE = 8192
@@ -1188,7 +1188,7 @@ class ImageBackup(Screen):
 			self.Console.eBatch(self.commandMB, self.Stage3Complete, debug=False)
 
 		elif self.EMMCIMG == "usb_update.bin":
-			print("[ImageManager] Trio4K sf8008 bewonwiz: Making emmc_partitions.xml")
+			print("[ImageManager] gbtrio4k sf8008 bewonwizv2: Making emmc_partitions.xml")
 			with open("%s/emmc_partitions.xml" % self.WORKDIR, "w") as f:
 				f.write('<?xml version="1.0" encoding="GB2312" ?>\n')
 				f.write('<Partition_Info>\n')
@@ -1204,7 +1204,7 @@ class ImageBackup(Screen):
 				f.write('<Part Sel="1" PartitionName="rootfs" FlashType="emmc" FileSystem="ext3/4" Start="98M" Length="7000M" SelectFile="rootfs.ext4"/>\n')
 				f.write('</Partition_Info>\n')
 
-			print('[ImageManager] Trio4K sf8008: Executing', '/usr/bin/mkupdate -s 00000003-00000001-01010101 -f %s/emmc_partitions.xml -d %s/%s' % (self.WORKDIR, self.WORKDIR, self.EMMCIMG))
+			print('[ImageManager] gbtrio4k sf8008: Executing', '/usr/bin/mkupdate -s 00000003-00000001-01010101 -f %s/emmc_partitions.xml -d %s/%s' % (self.WORKDIR, self.WORKDIR, self.EMMCIMG))
 			self.commandMB.append('echo " "')
 			self.commandMB.append('echo "Create: fastboot dump"')
 			self.commandMB.append("dd if=/dev/mmcblk0p1 of=%s/fastboot.bin" % self.WORKDIR)
@@ -1233,14 +1233,14 @@ class ImageBackup(Screen):
 			self.Console.eBatch(self.commandMB, self.Stage3Complete, debug=False)
 		else:
 			self.Stage3Completed = True
-			print("[ImageManager] Stage3 bypassed: Complete.")
+			print("[ImageManager] Stage 3 bypassed: Complete.")
 
 	def Stage3Complete(self, extra_args=None):
 		self.Stage3Completed = True
-		print("[ImageManager] Stage3: Complete.")
+		print("[ImageManager] Stage 3: Complete.")
 
 	def doBackup4(self):
-		print("[ImageManager] Stage4: Unmounting and removing tmp system")
+		print("[ImageManager] Stage 4: Unmounting and removing tmp system")
 		if path.exists(self.TMPDIR + "/root") and path.ismount(self.TMPDIR + "/root"):
 			self.command = "umount " + self.TMPDIR + "/root && rm -rf " + self.TMPDIR
 			self.Console.ePopen(self.command, self.Stage4Complete)
@@ -1252,10 +1252,10 @@ class ImageBackup(Screen):
 	def Stage4Complete(self, result, retval, extra_args=None):
 		if retval == 0:
 			self.Stage4Completed = True
-			print("[ImageManager] Stage4: Complete.")
+			print("[ImageManager] Stage 4: Complete.")
 
 	def doBackup5(self):
-		print("[ImageManager] Stage5: Moving from work to backup folders")
+		print("[ImageManager] Stage 5: Moving from work to backup folders")
 		if self.EMMCIMG == "emmc.img" or self.EMMCIMG == "disk.img" and path.exists("%s/%s" % (self.WORKDIR, self.EMMCIMG)):
 			move("%s/%s" % (self.WORKDIR, self.EMMCIMG), "%s/%s" % (self.MAINDEST, self.EMMCIMG))
 
@@ -1291,7 +1291,7 @@ class ImageBackup(Screen):
 			move("%s/%s" % (self.WORKDIR, self.GB4Kbin), "%s/%s" % (self.MAINDEST, self.GB4Kbin))
 			move("%s/%s" % (self.WORKDIR, self.GB4Krescue), "%s/%s" % (self.MAINDEST, self.GB4Krescue))
 			system("cp -f /usr/share/gpt.bin %s/gpt.bin" % self.MAINDEST)
-			print("[ImageManager] Stage5: Create: gpt.bin:", self.MODEL)
+			print("[ImageManager] Stage 5: Create gpt.bin:", self.MODEL)
 
 		with open(self.MAINDEST + "/imageversion", "w") as fileout:
 			line = defaultprefix + "-" + imagetype + "-backup-" + imageversion + "." + imagebuild + "-" + self.BackupDate
@@ -1319,7 +1319,7 @@ class ImageBackup(Screen):
 					line = "SF8008 indicate type of backup %s" % self.KERN
 					fileout.write(line)
 					fileout.close()
-				self.session.open(MessageBox, _("Multiboot only able to restore this backup to mmc slot1"), MessageBox.TYPE_INFO, timeout=20)
+				self.session.open(MessageBox, _("Multiboot only able to restore this backup to MMC slot1"), MessageBox.TYPE_INFO, timeout=20)
 			if path.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat"):
 				copy("/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat", self.MAINDESTROOT + "/burn.bat")
 		elif SystemInfo["HasRootSubdir"]:
@@ -1333,7 +1333,7 @@ class ImageBackup(Screen):
 					line1 = "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation" % (model, model)
 					fileout.write(line1)
 					fileout.close()
-		print("[ImageManager] Stage5: Removing Swap.")
+		print("[ImageManager] Stage 5: Removing swap.")
 		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup"):
 			system("swapoff " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
 			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
@@ -1345,15 +1345,15 @@ class ImageBackup(Screen):
 					chmod(path.join(root, momo), 0644)
 				for momo in files:
 					chmod(path.join(root, momo), 0644)
-			print("[ImageManager] Stage5: Image created in " + self.MAINDESTROOT)
+			print("[ImageManager] Stage 5: Image created in " + self.MAINDESTROOT)
 			self.Stage5Complete()
 		else:
-			print("[ImageManager] Stage5: Image creation failed - e. g. wrong backup destination or no space left on backup device")
+			print("[ImageManager] Stage 5: Image creation failed - e. g. wrong backup destination or no space left on backup device")
 			self.BackupComplete()
 
 	def Stage5Complete(self):
 		self.Stage5Completed = True
-		print("[ImageManager] Stage5: Complete.")
+		print("[ImageManager] Stage 5: Complete.")
 
 	def doBackup6(self):
 		zipfolder = path.split(self.MAINDESTROOT)
@@ -1367,7 +1367,7 @@ class ImageBackup(Screen):
 
 	def Stage6Complete(self, answer=None):
 		self.Stage6Completed = True
-		print("[ImageManager] Stage6: Complete.")
+		print("[ImageManager] Stage 6: Complete.")
 
 	def BackupComplete(self, answer=None):
 		#    trim the number of backups kept...
@@ -1465,13 +1465,13 @@ class ImageManagerDownload(Screen):
 
 		if not self.Pli and not self.imagesList:
 			for version in reversed(sorted(imagecat)):
-				newversion = _("Image Version %s") % version
+				newversion = _("Image version %s") % version
 				countimage = []
 				try:
 					conn = urlopen(self.urlBox)
 					html = conn.read()
 				except:
-					print("[ImageManager] HTTP download ERROR: %s" % e.code)
+					print("[ImageManager] HTTP download error: %s" % e.code)
 					continue
 				soup = BeautifulSoup(html)
 				links = soup.find_all("a")
