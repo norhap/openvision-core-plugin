@@ -44,8 +44,6 @@ class H9SDmanager(Screen):
 		if SystemInfo["HasH9SD"]:
 			self.TITLE = _("Init Zgemma H9 SDcard - please reboot after use.")
 			cmdlist = []
-			cmdlist.append("opkg update")
-			cmdlist.append("opkg install rsync")
 			cmdlist.append("umount /dev/mmcblk0p1")
 			cmdlist.append("dd if=/dev/zero of=/dev/mmcblk0p1 bs=1M count=150")
 			cmdlist.append('mkfs.ext4 -L "H9-ROOTFS" /dev/mmcblk0p1')
@@ -68,8 +66,6 @@ class H9SDmanager(Screen):
 	def USBInit(self):
 			self.TITLE = _("Init Zgemma H9 USB/SDA1 - please reboot after use.")
 			cmdlist = []
-			cmdlist.append("opkg update")
-			cmdlist.append("opkg install rsync")
 			cmdlist.append("umount /dev/mmcblk0p1")
 			cmdlist.append("dd if=/dev/zero of=/dev/sda1 bs=1M count=150")
 			cmdlist.append('mkfs.ext4 -L "H9-ROOTFS" /dev/sda1')
