@@ -463,7 +463,7 @@ class VISIONBackupManager(Screen):
 	def StageRestoreSettings(self, answer=None):
 		if answer == None:
 		     print('[BackupManager] Restoring only settings:')
-		     self.Console.ePopen("/sbin/init 4" + "&&" + "sleep 5" + "&&" + "tar -xzvf" + self.BackupDirectory + self.sel + " -C /" + "&&" + "/sbin/init 3", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring settings wait please..."), MessageBox.TYPE_INFO))
+		     self.Console.ePopen("/sbin/init 4" + "&&" + "sleep 5" + "&&" + "tar -xzvf" + self.BackupDirectory + self.sel + " -C /" + "&&" + "/sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring settings, receiver rebooting..."), MessageBox.TYPE_INFO))
 
 	def Stage1(self, answer=None):
 		print('[BackupManager] Restoring Stage 1:')
