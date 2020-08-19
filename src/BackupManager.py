@@ -186,12 +186,12 @@ class VISIONBackupManager(Screen):
 		else:
 			mount = config.backupmanager.backuplocation.value + "/", config.backupmanager.backuplocation.value
 		hdd = "/media/hdd/", "/media/hdd"
-		if mount in config.backupmanager.backuplocation.choices.choices and not self.BackupDirectory:
+		if not config.backupmanager.backuplocation.value:
 			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
 				"cancel": self.close,
 				"menu": self.createSetup,
 			}, -1)
-			self["lab1"].setText(_("Device: None available") + "\n" + _("Press 'Menu' to select a storage device"))
+			self["lab1"].setText(_("Device: None available") + "\n" + _("Use Mount Manager Please"))
 		else:
 			self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "TimerEditActions"],
 										  {
@@ -204,14 +204,11 @@ class VISIONBackupManager(Screen):
 										  "menu": self.createSetup,
 										  'log': self.showLog,
 										  }, -1)
+
 			if mount not in config.backupmanager.backuplocation.choices.choices:
-					self.BackupDirectory = '/media/hdd/backup/'
-					config.backupmanager.backuplocation.value = '/media/hdd/'
+					self.BackupDirectory = config.backupmanager.backuplocation.value + '/backup/'
 					config.backupmanager.backuplocation.save()
-					self['lab1'].setText(_("The chosen location does not exist, using /media/hdd.") + "\n" + _("Select a backup to restore:"))
-			else:
-				self.BackupDirectory = config.backupmanager.backuplocation.value + '/backup/'
-				self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("Select a backup to restore:"))
+					self['lab1'].setText(_("The chosen location does not exist, using.") + "\n" + _("Select a backup to restore:"))
 			if mount not in config.backupmanager.backuplocation.choices.choices and hdd not in config.backupmanager.backuplocation.choices.choices:
 					self.BackupDirectory = config.backupmanager.backuplocation.value + '/backup/'
 					config.backupmanager.backuplocation.save()
