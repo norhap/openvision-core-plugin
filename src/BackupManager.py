@@ -184,7 +184,7 @@ class VISIONBackupManager(Screen):
 		if config.backupmanager.backuplocation.getValue():
 			mount = config.backupmanager.backuplocation.value, config.backupmanager.backuplocation.value[:-1]
 		else:
-			mount = config.backupmanager.backuplocation.value + "/", config.backupmanager.backuplocation.value
+			mount = config.backupmanager.backuplocation.value
 		hdd = "/media/hdd/", "/media/hdd"
 		if not config.backupmanager.backuplocation.value:
 			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
@@ -1154,7 +1154,7 @@ class BackupFiles(Screen):
 		self.imagebackup = imagebackup
 		self.BackupDevice = config.backupmanager.backuplocation.value
 		print("[BackupManager] Device: " + self.BackupDevice)
-		self.BackupDirectory = config.backupmanager.backuplocation.value + 'backup/'
+		self.BackupDirectory = config.backupmanager.backuplocation.value + '/backup/'
 		print("[BackupManager] Directory: " + self.BackupDirectory)
 		self.Stage1Completed = False
 		self.Stage2Completed = False
