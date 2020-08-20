@@ -192,7 +192,7 @@ class VISIONDevicesPanel(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Vision Mount manager"))
+		self.setTitle(_("Vision Mount Manager"))
 
 		self['key_red'] = Label(" ")
 		self['key_green'] = Label(_("Setup mounts"))
