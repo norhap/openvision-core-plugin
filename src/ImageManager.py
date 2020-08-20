@@ -299,17 +299,12 @@ class VISIONImageManager(Screen):
 		Components.Task.job_manager.in_background = in_background
 
 	def populate_List(self):
-		if config.imagemanager.backuplocation.getValue():
-			mount = config.imagemanager.backuplocation.value, config.imagemanager.backuplocation.value[:-1]
-		else:
-			mount = config.imagemanager.backuplocation.value + "/", config.imagemanager.backuplocation.value
-		hdd = "/media/hdd/", "/media/hdd"
-		if not config.imagemanager.backuplocation.value:
+		if not config.imagemanager.backuplocation.getValue():
 			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
 				"cancel": self.close,
 				"menu": self.createSetup,
 			}, -1)
-			self["lab1"].setText(_("Device: None available") + "\n" + _("Use Mount Manager Please"))
+			self["lab1"].setText(_("Device: Un-mount") + "\n" + _("Use Mount Manager and press green setup mounts"))
 		else:
 			self["myactions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "HelpActions"], {
 				"cancel": self.close,
@@ -323,16 +318,13 @@ class VISIONImageManager(Screen):
 				"down": self.refreshDown,
 				"displayHelp": self.doDownload,
 			}, -1)
-			if mount not in config.imagemanager.backuplocation.choices.choices:
-					self.BackupDirectory = config.imagemanager.backuplocation.value + '/imagebackups/'
-					config.imagemanager.backuplocation.save()
-					self['lab1'].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("Select an image to flash:"))
-			if mount in config.imagemanager.backuplocation.choices.choices and hdd in config.imagemanager.backuplocation.choices.choices:
-				self.BackupDirectory = config.imagemanager.backuplocation.value + '/imagebackups/'
+			if hddchoices:
+				self.BackupDirectory = config.imagemanager.backuplocation.value + "/imagebackups/"
+				config.imagemanager.backuplocation.save()
 				s = statvfs(config.imagemanager.backuplocation.value)
 				free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
-				config.imagemanager.backuplocation.save()
-				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _("MB") + "\n" + _("Select an image to flash:"))
+				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _("MB") + "\n" + _("Select what you want to do"))
+
 			try:
 				if not path.exists(self.BackupDirectory):
 					mkdir(self.BackupDirectory, 0755)
@@ -753,7 +745,7 @@ class ImageBackup(Screen):
 		self.Console = Console()
 		self.BackupDevice = config.imagemanager.backuplocation.value
 		print("[ImageManager] Device: " + self.BackupDevice)
-		self.BackupDirectory = config.imagemanager.backuplocation.value + "imagebackups/"
+		self.BackupDirectory = config.imagemanager.backuplocation.value + "/imagebackups/"
 		print("[ImageManager] Directory: " + self.BackupDirectory)
 		self.BackupDate = strftime("%Y%m%d_%H%M%S", localtime())
 		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-temp"
