@@ -113,7 +113,7 @@ class VISIONBackupManager(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Vision Backup manager"))
+		self.setTitle(_("Vision Backup Manager"))
 
 		self['lab1'] = Label()
 		self["backupstatus"] = Label()
@@ -889,7 +889,7 @@ class VISIONBackupManagerMenu(Screen, ConfigListScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = "VISIONBackupManagerMenu"
-		Screen.setTitle(self, _("Vision Backup manager setup"))
+		Screen.setTitle(self, _("Vision Backup Manager Setup"))
 		self["actions"] = ActionMap(['SetupActions', 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
 		{
 			"ok": self.keySave,

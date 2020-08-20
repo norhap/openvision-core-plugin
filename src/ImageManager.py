@@ -108,7 +108,7 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 		self.session = session
 		self.skin = VISIONImageManagerMenu.skin
 		self.skinName = "VISIONImageManagerMenu"
-		Screen.setTitle(self, _("Vision Image manager setup"))
+		Screen.setTitle(self, _("Vision Image Manager Setup"))
 
 		self.onChangedEntry = [ ]
 		self.list = []
@@ -213,7 +213,7 @@ class VISIONImageManager(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Vision Image manager"))
+		self.setTitle(_("Vision Image Manager"))
 
 		self["lab1"] = Label()
 		self["backupstatus"] = Label()

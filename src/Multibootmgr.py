@@ -32,7 +32,7 @@ class MultiBoot(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Vision Multiboot image manager"))
+		self.setTitle(_("Vision Multiboot Image Manager"))
 		self["key_red"] = StaticText(_("Cancel"))
 		self["labe14"] = StaticText(_("Use the cursor keys to select an installed image and then Erase button."))
 		self["labe15"] = StaticText(_("Note: slot list does not show current image or empty slots."))

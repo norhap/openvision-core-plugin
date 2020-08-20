@@ -110,7 +110,7 @@ class VISIONSwap(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Vision Swap manager"))
+		self.setTitle(_("Vision Swap Manager"))
 
 		self['lab1'] = Label()
 		self['autostart_on'] = Pixmap()
