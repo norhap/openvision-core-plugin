@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-from os import mkdir, path, remove, rename, statvfs, system 
+from os import mkdir, path, remove, rename, statvfs, system
 import re
 
 from enigma import eTimer
@@ -48,12 +48,11 @@ def getProcPartitions(List):
 			if devMajor in blacklistedDisks:									# look at disk & mmc(179)
 				continue
 			if devMajor == 179:
-				# print('[MountManager]')
 				if not SystemInfo["HasSDnomount"]:								# only interested in h9/i55/h9combo(+dups) mmc partitions
 					continue										# h9combo(+dups) uses mmcblk1p[0-3] include
 				if SystemInfo["HasH9SD"]:
 					if not re.search('mmcblk0p1', device):							# h9/i55 only mmcblk0p1 mmc partition
-						continue	
+						continue
 					if SystemInfo["HasMMC"]:								# h9/i55 reject mmcblk0p1 mmc partition if root device
 						continue
 				if SystemInfo["HasSDnomount"][0] and not re.search('mmcblk1p[0-3]', device):			# h9combo(+dups) uses mmcblk1p[0-3] include
@@ -76,12 +75,12 @@ def buildDeviceList(device, List):
 		device2 = re.sub('[0-9]', '', device)
 	devicetype = path.realpath('/sys/block/' + device2 + '/device')
 
-	# print('[MountManager]device: %s' %device)
-	# print('[MountManager]device2: %s' %device2)
-	# print('[MountManager]devicetype:%s' %devicetype)
-	# print('[MountManager]Type:%s' %SystemInfo["MountManager"])
+	# print('[MountManager] device: %s' %device)
+	# print('[MountManager] device2: %s' %device2)
+	# print('[MountManager] devicetype:%s' %devicetype)
+	# print('[MountManager] Type:%s' %SystemInfo["MountManager"])
 
-	name = _("HARD DISK: ")
+	name = _("Hard disk: ")
 	if path.exists(resolveFilename(SCOPE_CURRENT_SKIN, "visioncore/dev_hdd.png")):
 		mypixmap = resolveFilename(SCOPE_CURRENT_SKIN, "visioncore/dev_hdd.png")
 	else:
@@ -115,7 +114,7 @@ def buildDeviceList(device, List):
 			if line.find(device) != -1:
 				parts = line.strip().split()
 				mediamount = parts[1]		# media mount e.g. /media/xxxxx
-				devicetype = parts[2]		# device type e.g. ext4 
+				devicetype = parts[2]		# device type e.g. ext4
 				rw = parts[3]			# read/write
 				break
 
@@ -196,7 +195,7 @@ class VISIONDevicesPanel(Screen):
 
 		self['key_red'] = Label(" ")
 		self['key_green'] = Label(_("Setup mounts"))
-		self['key_yellow'] = Label(_("Un-mount"))
+		self['key_yellow'] = Label(_("Unmount"))
 		self['key_blue'] = Label(_("Mount"))
 		self['lab1'] = Label()
 		self.onChangedEntry = []
@@ -217,22 +216,25 @@ class VISIONDevicesPanel(Screen):
 		for line in sel:
 			try:
 				line = line.strip()
-				if line.find('Mount') >= 0:
+				if _('Mount: ') in line:
 					if line.find('/media/hdd') < 0:
-						self["key_red"].setText(_("Use as HDD"))
+					    self["key_red"].setText(_("Use as HDD"))
 				else:
 					self["key_red"].setText(" ")
 			except:
 				pass
-		name = description = ""
 		if sel:
 			try:
 				name = str(sel[0])
-				description = str(sel[1].replace('\t', '  '))
+				desc = str(sel[1].replace('\t', '  '))
 			except:
-				pass
+				name = ""
+				desc = ""
+		else:
+			name = ""
+			desc = ""
 		for cb in self.onChangedEntry:
-			cb(name, description)
+			cb(name, desc)
 
 	def updateList(self, result=None, retval=None, extra_args=None):
 		scanning = _("Please wait while scanning for devices...")
@@ -275,34 +277,33 @@ class VISIONDevicesPanel(Screen):
 			device = parts[2].replace(_("Device: "), '')
 			system('umount ' + mountp)
 			try:
-				with open("/proc/mounts") as f: 
+				with open("/proc/mounts") as f:
 					for line in f.readlines():
 						parts = line.strip().split(" ")
 						if path.realpath(parts[0]).startswith(device):
-							self.session.open(MessageBox, _("Can't un-mount the partition; make sure it is not being used for SWAP or record/timeshift paths."), MessageBox.TYPE_INFO)
+							self.session.open(MessageBox, _("Can't unmount the partition; make sure it is not being used for swap or record/timeshift paths."), MessageBox.TYPE_INFO)
 			except IOError:
 				return -1
 			self.updateList()
 
 	def saveMypoints(self):
+		if len(self['list'].list) < 1: return
 		sel = self['list'].getCurrent()
 		if sel:
-			parts = sel[1].split()
-			self.device = parts[5]
-			self.mountp = parts[3]
-			# print('[MountManager]saveMypoints: device = %s, mountp=%s' %(self.device, self.mountp))
-			self.Console.ePopen('umount ' + self.device)
-			if self.mountp.find('/media/hdd') < 0:
-				self.Console.ePopen('umount /media/hdd')
-				self.Console.ePopen("/sbin/blkid | grep " + self.device, self.add_fstab, [self.device, self.mountp])
-			else:
-				self.session.open(MessageBox, _("This device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			des = sel[1]
+			des = des.replace('\n', '\t')
+			parts = des.strip().split('\t')
+			device = parts[2].replace(_("Device: "), '')
+			moremount = sel[1]
+			adv_title = moremount != "" and _("Warning, this device is used for more than one mount point!\n") or ""
+			message = adv_title + _("Really use and mount %s as HDD ?") % device
+			self.session.open(MessageBox, _("This device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 
 	def add_fstab(self, result=None, retval=None, extra_args=None):
 		self.device = extra_args[0]
 		self.mountp = extra_args[1]
 		self.device_uuid = 'UUID=' + result.split('UUID=')[1].split(' ')[0].replace('"', '')
-		# print('[MountManager]add_fstab: device = %s, mountp=%s, UUID=%s' %(self.device, self.mountp, self.device_uuid))
+		# print('[MountManager] add_fstab: device = %s, mountp=%s, UUID=%s' %(self.device, self.mountp, self.device_uuid))
 		if not path.exists(self.mountp):
 			mkdir(self.mountp, 0755)
 		open('/etc/fstab.tmp', 'w').writelines([l for l in open('/etc/fstab').readlines() if '/media/hdd' not in l])
@@ -315,6 +316,53 @@ class VISIONDevicesPanel(Screen):
 			line = self.device_uuid + '\t/media/hdd\tauto\tdefaults\t0 0\n'
 			out.write(line)
 		self.Console.ePopen('mount -a', self.updateList)
+
+	def saveMypoints(self):
+		if len(self['list'].list) < 1: return
+		sel = self['list'].getCurrent()
+		if sel:
+			des = sel[1]
+			des = des.replace('\n', '\t')
+			parts = des.strip().split('\t')
+			device = parts[2].replace(_("Device: "), '')
+			moremount = sel[1]
+			adv_title = moremount != "" and _("Warning, this device is used for more than one mount point!\n") or ""
+			message = adv_title + _("Really use and mount %s as HDD ?") % device
+			self.session.openWithCallback(self.saveMypointAnswer, MessageBox, message, MessageBox.TYPE_YESNO)
+
+	def saveMypointAnswer(self, answer):
+		if answer:
+			sel = self['list'].getCurrent()
+			if sel:
+				des = sel[1]
+				des = des.replace('\n', '\t')
+				parts = des.strip().split('\t')
+				self.mountp = parts[1].replace(_("Mount: "), '')
+				self.device = parts[2].replace(_("Device: "), '')
+				if self.mountp.find('/media/hdd') < 0:
+					pass
+				else:
+					self.session.open(MessageBox, _("This Device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout = 6, close_on_any_key = True)
+					return
+				system('[ -e /media/hdd/swapfile ] && swapoff /media/hdd/swapfile')
+				system('umount /media/hdd')
+				try:
+					f = open('/proc/mounts', 'r')
+				except IOError:
+					return
+				for line in f.readlines():
+					if '/media/hdd' in line:
+						f.close()
+						self.session.open(MessageBox, _("Cannot unmount from the previous device from /media/hdd.\nA record in progress, timeshift or some external tools (like samba, nfsd,transmission and etc) may cause this problem.\nPlease stop this actions/applications and try again!"), MessageBox.TYPE_ERROR)
+						return
+					else:
+						pass
+				f.close()
+				if self.mountp.find('/media/hdd') < 0:
+					if self.mountp != _("None"):
+						system('umount ' + self.mountp)
+					system('umount ' + self.device)
+					self.Console.ePopen("/sbin/blkid | grep " + self.device, self.add_fstab, [self.device, self.mountp])
 
 class VISIONDevicePanelConf(Screen, ConfigListScreen):
 	skin = """
@@ -375,7 +423,7 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		ybox.setTitle(_("Restart receiver"))
 
 	def add_fstab(self, result=None, retval=None, extra_args=None):
-		# print('[MountManager] RESULT:', result)
+		# print('[MountManager] Result:', result)
 		if result:
 			self.device = extra_args[0]
 			self.mountp = extra_args[1]
