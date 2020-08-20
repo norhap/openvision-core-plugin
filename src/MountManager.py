@@ -216,22 +216,25 @@ class VISIONDevicesPanel(Screen):
 		for line in sel:
 			try:
 				line = line.strip()
-				if line.find('Mount') >= 0:
+				if _('Mount: ') in line:
 					if line.find('/media/hdd') < 0:
-						self["key_red"].setText(_("Use as HDD"))
+					    self["key_red"].setText(_("Use as HDD"))
 				else:
 					self["key_red"].setText(" ")
 			except:
 				pass
-		name = description = ""
 		if sel:
 			try:
 				name = str(sel[0])
-				description = str(sel[1].replace('\t', '  '))
+				desc = str(sel[1].replace('\t', '  '))
 			except:
-				pass
+				name = ""
+				desc = ""
+		else:
+			name = ""
+			desc = ""
 		for cb in self.onChangedEntry:
-			cb(name, description)
+			cb(name, desc)
 
 	def updateList(self, result=None, retval=None, extra_args=None):
 		scanning = _("Please wait while scanning for devices...")
@@ -284,18 +287,17 @@ class VISIONDevicesPanel(Screen):
 			self.updateList()
 
 	def saveMypoints(self):
+		if len(self['list'].list) < 1: return
 		sel = self['list'].getCurrent()
 		if sel:
-			parts = sel[1].split()
-			self.device = parts[5]
-			self.mountp = parts[3]
-			# print('[MountManager] saveMypoints: device = %s, mountp=%s' %(self.device, self.mountp))
-			self.Console.ePopen('umount ' + self.device)
-			if self.mountp.find('/media/hdd') < 0:
-				self.Console.ePopen('umount /media/hdd')
-				self.Console.ePopen("/sbin/blkid | grep " + self.device, self.add_fstab, [self.device, self.mountp])
-			else:
-				self.session.open(MessageBox, _("This device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			des = sel[1]
+			des = des.replace('\n', '\t')
+			parts = des.strip().split('\t')
+			device = parts[2].replace(_("Device: "), '')
+			moremount = sel[1]
+			adv_title = moremount != "" and _("Warning, this device is used for more than one mount point!\n") or ""
+			message = adv_title + _("Really use and mount %s as HDD ?") % device
+			self.session.open(MessageBox, _("This device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 
 	def add_fstab(self, result=None, retval=None, extra_args=None):
 		self.device = extra_args[0]
@@ -314,6 +316,53 @@ class VISIONDevicesPanel(Screen):
 			line = self.device_uuid + '\t/media/hdd\tauto\tdefaults\t0 0\n'
 			out.write(line)
 		self.Console.ePopen('mount -a', self.updateList)
+
+	def saveMypoints(self):
+		if len(self['list'].list) < 1: return
+		sel = self['list'].getCurrent()
+		if sel:
+			des = sel[1]
+			des = des.replace('\n', '\t')
+			parts = des.strip().split('\t')
+			device = parts[2].replace(_("Device: "), '')
+			moremount = sel[1]
+			adv_title = moremount != "" and _("Warning, this device is used for more than one mount point!\n") or ""
+			message = adv_title + _("Really use and mount %s as HDD ?") % device
+			self.session.openWithCallback(self.saveMypointAnswer, MessageBox, message, MessageBox.TYPE_YESNO)
+
+	def saveMypointAnswer(self, answer):
+		if answer:
+			sel = self['list'].getCurrent()
+			if sel:
+				des = sel[1]
+				des = des.replace('\n', '\t')
+				parts = des.strip().split('\t')
+				self.mountp = parts[1].replace(_("Mount: "), '')
+				self.device = parts[2].replace(_("Device: "), '')
+				if self.mountp.find('/media/hdd') < 0:
+					pass
+				else:
+					self.session.open(MessageBox, _("This Device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout = 6, close_on_any_key = True)
+					return
+				system('[ -e /media/hdd/swapfile ] && swapoff /media/hdd/swapfile')
+				system('umount /media/hdd')
+				try:
+					f = open('/proc/mounts', 'r')
+				except IOError:
+					return
+				for line in f.readlines():
+					if '/media/hdd' in line:
+						f.close()
+						self.session.open(MessageBox, _("Cannot unmount from the previous device from /media/hdd.\nA record in progress, timeshift or some external tools (like samba, nfsd,transmission and etc) may cause this problem.\nPlease stop this actions/applications and try again!"), MessageBox.TYPE_ERROR)
+						return
+					else:
+						pass
+				f.close()
+				if self.mountp.find('/media/hdd') < 0:
+					if self.mountp != _("None"):
+						system('umount ' + self.mountp)
+					system('umount ' + self.device)
+					self.Console.ePopen("/sbin/blkid | grep " + self.device, self.add_fstab, [self.device, self.mountp])
 
 class VISIONDevicePanelConf(Screen, ConfigListScreen):
 	skin = """
