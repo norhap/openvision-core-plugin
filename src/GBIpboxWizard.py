@@ -532,7 +532,7 @@ class GBIpboxMenu(Screen, ConfigListScreen):
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
 		{
 			"cancel": self.keyCancel,
-			"red": self.keyCancel,
+			"red": self.closeRecursive,
 			"green": self.keySave,
 			"yellow": self.keyScan,
 			"blue": self.keyAbout
@@ -597,10 +597,8 @@ class GBIpboxMenu(Screen, ConfigListScreen):
 		self.timer.callback.append(self.download)
 		self.timer.start(100)
 
-	def keyCancel(self):
-		for x in self["config"].list:
-			x[1].cancel()
-		GBIpboxMenu.instance = self.session.open(TryQuitMainloop, 3)
+	def closeRecursive(self):
+		self.close(True)
 
 	def keyAbout(self):
 		self.session.open(GBIpboxAbout)
