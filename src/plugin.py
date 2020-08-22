@@ -11,8 +11,7 @@ from SwapManager import SwapAutostart
 from SoftcamManager import SoftcamAutostart
 from ScriptRunner import ScriptRunnerAutostart
 from IPKInstaller import OpkgInstaller
-
-from GBIpboxWizard import GBIpboxWizard
+from ClientModeBox import ClientModeBoxWizard
 
 config.ipboxclient = ConfigSubsection()
 config.ipboxclient.host = ConfigText(default = "", fixed_size = False)
@@ -157,8 +156,8 @@ def SwapManager(session):
 def SwapManagerMenu(session, **kwargs):
 	session.open(SwapManager)
 	
-def GBIpboxWizardMenu(session, **kwargs):
-	session.open(GBIpboxWizard)
+def ClientModeBoxMenu(session, **kwargs):
+	session.open(ClientModeBox)
 
 def filescan_open(list, session, **kwargs):
 	filelist = [x.path for x in list]
@@ -197,5 +196,5 @@ def Plugins(**kwargs):
 	plist.append(PluginDescriptor(name=_("Vision Mount manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=MountManagerMenu))
 	plist.append(PluginDescriptor(name=_("Vision Script runner"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ScriptRunnerMenu))
 	plist.append(PluginDescriptor(name=_("Vision SWAP manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=SwapManagerMenu))
-	plist.append(PluginDescriptor(name=_("Vision BOX MODE"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=GBIpboxWizardMenu))
+	plist.append(PluginDescriptor(name=_("Receptor En Modo Cliente"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ClientModeBoxMenu))
 	return plist

@@ -51,7 +51,7 @@ class VISIONMenu(Screen, ProtectedScreen):
 			self.list.append(("Administrador de Montajes", _("Mount manager"), _("Manage your devices mount points."), None))
 			self.list.append(("Ejecutar Scripts", _("Script runner"), _("Run your shell scripts."), None))
 			self.list.append(("Administrador SWAP", _("SWAP manager"), _("Create and Manage your SWAP files."), None))
-			self.list.append(("BOX MODE CLIENT", _("BOX MODE CLIENT"), _("BOX EN MODE CLIENT"), None))			
+			self.list.append(("Receptor En Modo Cliente", _("Poner Receptor en Modo Cliente"), _("Poner el Receptor en Modo Cliente"), None))			
  			if SystemInfo["HasH9SD"]:
 				self.list.append(("H9SDcard manager", _("H9SDcard Manager"), _("Move Nand root to SD card"), None))
 		self["menu"] = List(self.list)
@@ -131,9 +131,9 @@ class VISIONMenu(Screen, ProtectedScreen):
 				elif currentEntry == "Administrador SWAP":
 					from SwapManager import VISIONSwap
 					self.session.open(VISIONSwap)
-				elif currentEntry == "BOX MODE CLIENT":
-					from GBIpboxWizard import GBIpboxWizard
-					self.session.open(GBIpboxWizard)
+				elif currentEntry == "Receptor En Modo Cliente":
+					from ClientModeBox import ClientModeBoxWizard
+					self.session.open(ClientModeBoxWizard)
 
 	def closeRecursive(self):
 		self.close(True)

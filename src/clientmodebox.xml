@@ -1,0 +1,71 @@
+<wizard>
+		<step id="welcome">
+			<text value="Bienvenido.\n\nEste asistente le ayudara a configurar su Receptor." />
+			<list>
+				<listentry caption="Buscar un servidor" step="scan" />
+				<listentry caption="Terminar este Asistente" step="abort" />
+			</list>
+			<code>
+			</code>
+		</step>
+
+		<step id="scan" nextstep="choose">
+			<text value="Espere mientras el escaneo esta en progreso.\nEsta operacion puede tardar un poco." />
+			<code>
+self.scan()
+			</code>
+		</step>
+		
+		<step id="choose">
+			<text value="Elija el receptor encontrado" />
+			<list type="dynamic" source="getScanList" evaluation="selectionMade" />
+			<code>
+			</code>
+		</step>
+
+		<step id="download" nextstep="end">
+			<text value="Espere mientras la descarga esta en curso.\nNOTA: Si tiene habilitado el control parental en el receptor remoto, la configuración local se sobreescribira." />
+			<code>
+self.download()
+			</code>
+		</step>
+		
+		<step id="abort">
+			<text value="Your Box is not configured.Please press OK to close this Wizard." />
+			<text value="Presione OK para cerrar este asistente." />
+			<code>
+config.ipboxclient.firstconf.value = True
+config.ipboxclient.firstconf.save()
+			</code>
+			<code pos="after">
+self.close()
+			</code>
+		</step>
+
+		<step id="nodevices">
+			<text value="No se encontraron receptores.\nPresiona OK para cerrar este asistente." />
+			<list>
+				<listentry caption="Try to scan again" step="scan" />
+				<listentry caption="Abort this Wizard" step="abort" />
+			</list>
+			<code>
+			</code>
+		</step>
+		
+		<step id="nodownload">
+			<text value="No se pueden descargar datos Lo sentimos, no podemos configurar su receptor en este momento.\nPor favor pulsa OK para salir de este asistente." />
+			<list>
+				<listentry caption="Try to download again" step="download" />
+				<listentry caption="Abort this Wizard" step="abort" />
+			</list>
+			<code>
+			</code>
+		</step>
+		
+		<step id="end">
+			<text value="Gracias por utilizar el asistente. Tu Box ahora esta configurado.\nPresiona OK para continuar." />
+			<code>
+			</code>
+		</step>
+</wizard>
+

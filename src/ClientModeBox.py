@@ -63,7 +63,7 @@ def getValueFromNode(event, key):
 
 	return ""
 
-class GBIpboxWizard(Wizard):
+class ClientModeBoxWizard(Wizard):
 
 	skin = """
 		<screen position="0,0" size="720,576" flags="wfNoBorder" >
@@ -167,11 +167,11 @@ class GBIpboxWizard(Wizard):
 		</screen>"""
 
 	def __init__(self, session):
-		self.xmlfile = Directories.resolveFilename(Directories.SCOPE_PLUGINS, "SystemPlugins/Vision/gbipboxwizard.xml")
+		self.xmlfile = Directories.resolveFilename(Directories.SCOPE_PLUGINS, "SystemPlugins/Vision/clientmodebox.xml")
 
 		Wizard.__init__(self, session)
 
-		self.setTitle(_('GBIpbox Client'))
+		self.setTitle(_('Vision Client Mode Box'))
 
 		self.skinName = ["StartWizard"]
 
@@ -182,7 +182,7 @@ class GBIpboxWizard(Wizard):
 									  }, -1)
 
 	def Menu(self, session=None, **kwargs):
-		self.session.openWithCallback(GBIpboxTimer, GBIpboxMenu, GBIpboxMount)
+		self.session.openWithCallback(ClientModeBoxTimer, ClientModeBoxMenu, ClientModeBoxMount)
 
 	def exit(self):
 		self.close(True)
@@ -197,7 +197,7 @@ class GBIpboxWizard(Wizard):
 
 	def doscan(self):
 		self.timer.stop()
-		scanner = GBIpboxScan(self.session)
+		scanner = ClientModeBoxScan(self.session)
 		self.scanresults = scanner.scan()
 		if self.scanresults and len(self.scanresults) > 0:
 			self.currStep = self.getStepWithID('choose')
@@ -232,7 +232,7 @@ class GBIpboxWizard(Wizard):
 			config.ipboxclient.firstconf.value = True
 			config.ipboxclient.firstconf.save()
 
-			mount = GBIpboxMount(self.session)
+			mount = ClientModeBoxMount(self.session)
 			mount.remount()
 
 			self.currStep = self.getStepWithID('download')
@@ -246,7 +246,7 @@ class GBIpboxWizard(Wizard):
 
 	def dodownload(self):
 		self.timer.stop()
-		downloader = GBIpboxDownloader(self.session)
+		downloader = ClientModeBoxDownloader(self.session)
 		try:
 			downloader.download()
 			self.currStep = self.getStepWithID('end')
@@ -279,18 +279,18 @@ class ScanHost(threading.Thread):
 		except socket.error:
 			self.isopen = False
 
-class GBIpboxScan:
+class ClientModeBoxScan:
 	def __init__(self, session):
 		self.session = session
 
 	def scan(self):
-		print("[GBIpboxClient] network scan started")
+		print("[Vision Client Mode Box] network scan started")
 		devices = []
 		for key in iNetwork.ifaces:
 			if iNetwork.ifaces[key]['up']:
 				devices += self.scanNetwork(iNetwork.ifaces[key]['ip'], iNetwork.ifaces[key]['netmask'])
 
-		print("[GBIpboxClient] network scan completed. Found " + str(len(devices)) + " devices")
+		print("[Vision Client Mode Box] network scan completed. Found " + str(len(devices)) + " devices")
 		return devices
 
 	def ipRange(self, start_ip, end_ip):
@@ -324,7 +324,7 @@ class GBIpboxScan:
 		return None
 
 	def scanNetwork(self, ipaddress, subnet):
-		print("[GBIpboxClient] scan interface with ip address", ipaddress, "and subnet", subnet)
+		print("[Vision Client Mode Box] scan interface with ip address", ipaddress, "and subnet", subnet)
 		cidr = self.getNetSize(subnet)
 
 		startip = []
@@ -336,14 +336,14 @@ class GBIpboxScan:
 		for i in range(brange):
 			endip[3 - i/8] = endip[3 - i/8] + (1 << (i % 8))
 
-		if startip[0] == 0:	# if start with 0, we suppose the interface is not properly configured
-			print("[GBIpboxClient] your start ip address seem invalid. Skip interface scan.")
+		if startip[0] == 0:
+			print("[Vision Client Mode Box] your start ip address seem invalid. Skip interface scan.")
 			return []
 
 		startip[3] += 1
 		endip[3] -= 1
 
-		print("[GBIpboxClient] scan from ip", startip, "to", endip)
+		print("[Vision Client Mode Box] scan from ip", startip, "to", endip)
 
 		threads = []
 		threads_completed = []
@@ -364,16 +364,16 @@ class GBIpboxScan:
 		devices = []
 		for scanhost in threads_completed:
 			if scanhost.isopen:
-				print("[GBIpboxClient] device with ip " + scanhost.ipaddress + " listen on port 80, check if it's enigma2")
+				print("[Vision Client Mode Box] device with ip " + scanhost.ipaddress + " listen on port 80, check if it's enigma2")
 				boxname = self.getBoxName(scanhost.ipaddress)
 				if boxname:
-					print("[GBIpboxClient] found " + boxname + " on ip " + scanhost.ipaddress)
+					print("[Vision Client Mode Box] found " + boxname + " on ip " + scanhost.ipaddress)
 					devices.append((str(boxname), scanhost.ipaddress))
 				else:
-					print("[GBIpboxClient] no enigma2 found. Skip host")
+					print("[Vision Client Mode Box] no enigma2 found. Skip host")
 		return devices
 ###################IPBOXMOUNT
-class GBIpboxMount:
+class ClientModeBoxMount:
 	def __init__(self, session):
 		self.session = session
 		self.console = Console()
@@ -424,9 +424,9 @@ class GBIpboxMount:
 			pass
 		return os.system('mount -t cifs -o rw,nolock,noatime,noserverino,iocharset=utf8,vers=2.0,username=guest,password= //' + ip + '/' + share + ' ' + path) == 0
 ###############################################MENU
-class GBIpboxMenu(Screen, ConfigListScreen):
+class ClientModeBoxMenu(Screen, ConfigListScreen):
 	skin = """
-		<screen name="GBIpboxMenu" position="360,150" size="560,400">
+		<screen name="ClientModeBoxMenu" position="360,150" size="560,400">
 			<widget name="config"
 					position="10,10"
 					zPosition="3"
@@ -521,7 +521,7 @@ class GBIpboxMenu(Screen, ConfigListScreen):
 		Screen.__init__(self, session)
 		ConfigListScreen.__init__(self, self.list)
 
-		self.setTitle(_('GBIpbox Client'))
+		self.setTitle(_('Vision Client Mode Box'))
 
 		self["VKeyIcon"] = Boolean(False)
 		self["text"] = StaticText(_('NOTE: the remote HDD feature require samba installed on server box.'))
@@ -589,7 +589,7 @@ class GBIpboxMenu(Screen, ConfigListScreen):
 		config.ipboxclient.firstconf.value = True
 		config.ipboxclient.firstconf.save()
 
-		mount = GBIpboxMount(self.session)
+		mount = ClientModeBoxMount(self.session)
 		mount.remount()
 
 		self.messagebox = self.session.open(MessageBox, _('Please wait while download is in progress.\nNOTE: If you have parental control enabled on remote box, the local settings will be overwritten.'), MessageBox.TYPE_INFO, enable_input = False)
@@ -601,7 +601,7 @@ class GBIpboxMenu(Screen, ConfigListScreen):
 		self.close(True)
 
 	def keyAbout(self):
-		self.session.open(GBIpboxAbout)
+		self.session.open(ClientModeBoxAbout)
 
 	def keyScan(self):
 		self.messagebox = self.session.open(MessageBox, _('Please wait while scan is in progress.\nThis operation may take a while'), MessageBox.TYPE_INFO, enable_input = False)
@@ -611,7 +611,7 @@ class GBIpboxMenu(Screen, ConfigListScreen):
 
 	def scan(self):
 		self.timer.stop()
-		scanner = GBIpboxScan(self.session)
+		scanner = ClientModeBoxScan(self.session)
 		self.scanresults = scanner.scan()
 		self.messagebox.close()
 		self.timer = eTimer()
@@ -643,14 +643,14 @@ class GBIpboxMenu(Screen, ConfigListScreen):
 			config.ipboxclient.firstconf.value = True
 			config.ipboxclient.firstconf.save()
 
-			mount = GBIpboxMount(self.session)
+			mount = ClientModeBoxMount(self.session)
 			mount.remount()
 
 			self.populateMenu()
 
 	def download(self):
 		self.timer.stop()
-		downloader = GBIpboxDownloader(self.session)
+		downloader = ClientModeBoxDownloader(self.session)
 		try:
 			downloader.download()
 			self.messagebox.close()
@@ -681,11 +681,11 @@ class GBIpboxMenu(Screen, ConfigListScreen):
 		self.timer.stop()
 		self.session.open(MessageBox, _("Cannot download data. Please check your configuration"), type = MessageBox.TYPE_ERROR)
 
-class GBIpboxTimer:
+class ClientModeBoxTimer:
 	def __init__(self, session):
 		self.session = session
-		self.skinName = "GBIpboxMenu"
-		self.keys = "GBIpboxMenu"
+		self.skinName = "ClientModeBoxMenu"
+		self.keys = "ClientModeBoxMenu"
 		self.ipboxdownloadtimer = eTimer()
 		self.ipboxdownloadtimer.callback.append(self.onIpboxDownloadTimer)
 
@@ -732,7 +732,7 @@ class GBIpboxTimer:
 		now = int(time())
 		wake = self.getTodayScheduledTime()
 		if wake - now < 60:
-			downloader = GBIpboxDownloader(self.session)
+			downloader = ClientModeBoxDownloader(self.session)
 			try:
 				downloader.download()
 			except Exception as e:
@@ -751,7 +751,7 @@ class GBIpboxTimer:
 			self.scheduledtime = 0
 			self.ipboxpolltimer.stop()
 
-class GBIpboxDownloader:
+class ClientModeBoxDownloader:
 	def __init__(self, session):
 		self.session = session
 
@@ -771,25 +771,25 @@ class GBIpboxDownloader:
 		baseurl += str(config.ipboxclient.port.value)
 		streamingurl += str(config.ipboxclient.streamport.value)
 
-		print("[GBIpboxClient] web interface url: " + baseurl)
-		print("[GBIpboxClient] streaming url: " + streamingurl)
+		print("[Vision Client Mode Box] web interface url: " + baseurl)
+		print("[Vision Client Mode Box] streaming url: " + streamingurl)
 
 		for stype in [ "tv", "radio" ]:
-			print("[GBIpboxClient] download " + stype + " bouquets from " + baseurl)
+			print("[Vision Client Mode Box] download " + stype + " bouquets from " + baseurl)
 			bouquets = self.downloadBouquets(baseurl, stype)
-			print("[GBIpboxClient] save " + stype + " bouquets from " + streamingurl)
+			print("[Vision Client Mode Box] save " + stype + " bouquets from " + streamingurl)
 			self.saveBouquets(bouquets, streamingurl, '/etc/enigma2/bouquets.' + stype)
 
-		print("[GBIpboxClient] reload bouquets")
+		print("[Vision Client Mode Box] reload bouquets")
 		self.reloadBouquets()
 
-		print("[GBIpboxClient] sync EPG")
+		print("[Vision Client Mode Box] sync EPG")
 		self.downloadEPG(baseurl)
 
-		print("[GBIpboxClient] sync parental control")
+		print("[Vision Client Mode Box] sync parental control")
 		self.downloadParentalControl(baseurl)
 
-		print("[GBIpboxClient] sync is done!")
+		print("[Vision Client Mode Box] sync is done!")
 
 	def getSetting(self, baseurl, key):
 		httprequest = urllib2.urlopen(baseurl + '/web/settings')
@@ -839,7 +839,7 @@ class GBIpboxDownloader:
 	def downloadBouquets(self, baseurl, stype):
 		bouquets = []
 		httprequest = urllib2.urlopen(baseurl + '/web/bouquets?stype=' + stype)
-		print("[GBIpboxClient] download bouquets from " + baseurl + '/web/bouquets?stype=' + stype)
+		print("[Vision Client Mode Box] download bouquets from " + baseurl + '/web/bouquets?stype=' + stype)
 		xmldoc = minidom.parseString(httprequest.read())
 		services = xmldoc.getElementsByTagName('e2service')
 		for service in services:
@@ -874,7 +874,7 @@ class GBIpboxDownloader:
 	def saveBouquets(self, bouquets, streamingurl, destinationfile):
 		bouquetsfile = open(destinationfile, "w")
 		bouquetsfile.write("#NAME Bouquets (TV)" + "\n")
-		print("[GBIpboxClient] streamurl " + streamingurl)
+		print("[Vision Client Mode Box] streamurl " + streamingurl)
 		for bouquet in bouquets:
 			pattern = r'"([A-Za-z0-9_\./\\-]*)"'
 			m = re.search(pattern, bouquet['reference'])
@@ -914,70 +914,70 @@ class GBIpboxDownloader:
 		db.reloadBouquets()
 
 	def downloadEPG(self, baseurl):
-		print("[GBIpboxClient] reading remote EPG location ...")
+		print("[Vision Client Mode Box] reading remote EPG location ...")
 		filename = self.getEPGLocation(baseurl)
 		if not filename:
-			print("[GBIpboxClient] error downloading remote EPG location. Skip EPG sync.")
+			print("[Vision Client Mode Box] error downloading remote EPG location. Skip EPG sync.")
 			return
 
-		print("[GBIpboxClient] remote EPG found at " + filename)
+		print("[Vision Client Mode Box] remote EPG found at " + filename)
 
-		print("[GBIpboxClient] dump remote EPG to epg.dat")
+		print("[Vision Client Mode Box] dump remote EPG to epg.dat")
 		httprequest = urllib2.urlopen(baseurl + '/web/saveepg')
 
 		httprequest = urllib2.urlopen(baseurl + '/file?action=download&file=' + urllib.quote(filename))
 		data = httprequest.read()
 		if not data:
-			print("[GBIpboxClient] cannot download remote EPG. Skip EPG sync.")
+			print("[Vision Client Mode Box] cannot download remote EPG. Skip EPG sync.")
 			return
 
 		try:
 			epgfile = open(config.misc.epgcache_filename.value, "w")
 		except Exception:
-			print("[GBIpboxClient] cannot save EPG. Skip EPG sync.")
+			print("[Vision Client Mode Box] cannot save EPG. Skip EPG sync.")
 			return
 
 		epgfile.write(data)
 		epgfile.close()
 
-		print("[GBIpboxClient] reload EPG")
+		print("[Vision Client Mode Box] reload EPG")
 		epgcache = eEPGCache.getInstance()
 		epgcache.load()
 
 	def downloadParentalControl(self, baseurl):
-		print("[GBIpboxClient] reading remote parental control status ...")
+		print("[Vision Client Mode Box] reading remote parental control status ...")
 
 		if self.getParentalControlEnabled(baseurl):
-			print("[GBIpboxClient] parental control enabled")
+			print("[Vision Client Mode Box] parental control enabled")
 			config.ParentalControl.servicepinactive.value = True
 			config.ParentalControl.servicepinactive.save()
-			print("[GBIpboxClient] reding pin status ...")
+			print("[Vision Client Mode Box] reding pin status ...")
 			pinstatus = self.getParentalControlPinState(baseurl)
 			pin = self.getParentalControlPin(baseurl)
-			print("[GBIpboxClient] pin status is setted to " + str(pinstatus))
+			print("[Vision Client Mode Box] pin status is setted to " + str(pinstatus))
 			config.ParentalControl.servicepinactive.value = pinstatus
 			config.ParentalControl.servicepinactive.save()
 			config.ParentalControl.servicepin[0].value = pin
 			config.ParentalControl.servicepin[0].save()
-			print("[GBIpboxClient] reading remote parental control type ...")
+			print("[Vision Client Mode Box] reading remote parental control type ...")
 			stype = self.getParentalControlType(baseurl)
-			print("[GBIpboxClient] parental control type is " + stype)
+			print("[Vision Client Mode Box] parental control type is " + stype)
 			config.ParentalControl.type.value = stype
 			config.ParentalControl.type.save()
-			print("[GBIpboxClient] download parental control services list")
+			print("[Vision Client Mode Box] download parental control services list")
 			services = self.downloadParentalControlBouquets(baseurl)
-			print("[GBIpboxClient] save parental control services list")
+			print("[Vision Client Mode Box] save parental control services list")
 			parentalfile = open("/etc/enigma2/" + stype, "w")
 			for service in services:
 				parentalfile.write(service['reference'] + "\n")
 			parentalfile.close()
-			print("[GBIpboxClient] reload parental control")
+			print("[Vision Client Mode Box] reload parental control")
 			from Components.ParentalControl import parentalControl
 			parentalControl.open()
 		else:
-			print("[GBIpboxClient] parental control disabled - do nothing")
+			print("[Vision Client Mode Box] parental control disabled - do nothing")
 
-class GBIpboxAbout(Screen):
+class ClientModeBoxAbout(Screen):
 	skin = """
 			<screen position="360,150" size="560,400">
 				<widget name="about"
@@ -990,11 +990,11 @@ class GBIpboxAbout(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 
-		self.setTitle(_('GBIpbox Client About'))
-		about = "GBIpbox Client 1.0""\n"
+		self.setTitle(_('Vision Client Mode Box'))
+		about = "Open Vision""\n"
 
-		about += "(c) 2014 Impex-Sat Gmbh & Co.KG\n\n"
-		about += "Written by Sandro Cavazzoni <sandro@skanetwork.com>"
+		about += "Vision Client Mode Box\n\n"
+		about += "If you want to leave Box Mode Client, use Restore Settings from Vision Backup Manager"
 
 		self['about'] = Label(about)
 		self["actions"] = ActionMap(["SetupActions"],
