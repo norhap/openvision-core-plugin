@@ -4,13 +4,29 @@ from __future__ import print_function
 from . import _
 from os import listdir, path
 from Plugins.Plugin import PluginDescriptor
-from Components.config import config, ConfigBoolean
+from Components.config import config, ConfigBoolean, getConfigListEntry, ConfigSubsection, ConfigInteger, ConfigYesNo, ConfigText, ConfigClock, ConfigSelection
 from BackupManager import BackupManagerautostart
 from ImageManager import ImageManagerautostart
 from SwapManager import SwapAutostart
 from SoftcamManager import SoftcamAutostart
 from ScriptRunner import ScriptRunnerAutostart
 from IPKInstaller import OpkgInstaller
+
+from GBIpboxWizard import GBIpboxWizard
+
+config.ipboxclient = ConfigSubsection()
+config.ipboxclient.host = ConfigText(default = "", fixed_size = False)
+config.ipboxclient.port = ConfigInteger(default = 80, limits = (1, 65535))
+config.ipboxclient.streamport = ConfigInteger(default = 8001, limits = (1, 65535))
+config.ipboxclient.auth = ConfigYesNo(default = False)
+config.ipboxclient.firstconf = ConfigYesNo(default = False)
+config.ipboxclient.username = ConfigText(default = "", fixed_size = False)
+config.ipboxclient.password = ConfigText(default = "", fixed_size = False)
+config.ipboxclient.schedule = ConfigYesNo(default = False)
+config.ipboxclient.scheduletime = ConfigClock(default = 0) # 1:00
+config.ipboxclient.repeattype = ConfigSelection(default = "daily", choices = [("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
+config.ipboxclient.mounthdd = ConfigYesNo(default = False)
+config.ipboxclient.remotetimers = ConfigYesNo(default = False)
 
 config.misc.restorewizardrun = ConfigBoolean(default=False)
 
@@ -53,7 +69,7 @@ def checkConfigBackup():
 						if file.endswith('.tar.gz') and "vision" in file.lower():
 							list.append((path.join(devpath, file)))
  		if len(list):
-			print('[Vision] Backup Image:', list[0])
+			print('[Vision] Backup image:', list[0])
 			backupfile = list[0]
 			if path.isfile(backupfile):
 				setLanguageFromBackup(backupfile)
@@ -61,7 +77,7 @@ def checkConfigBackup():
 		else:
 			return None
 	except IOError as e:
-		print("[Vision] unable to use device (%s)..." % str(e))
+		print("[Vision] Unable to use device (%s)..." % str(e))
 		return None
 
 if config.misc.firstrun.value and not config.misc.restorewizardrun.value:
@@ -140,6 +156,9 @@ def SwapManager(session):
 
 def SwapManagerMenu(session, **kwargs):
 	session.open(SwapManager)
+	
+def GBIpboxWizardMenu(session, **kwargs):
+	session.open(GBIpboxWizard)
 
 def filescan_open(list, session, **kwargs):
 	filelist = [x.path for x in list]
@@ -160,12 +179,12 @@ def filescan(**kwargs):
 
 def Plugins(**kwargs):
 	plist = [PluginDescriptor(where=PluginDescriptor.WHERE_MENU, needsRestart=False, fnc=startSetup),
-			 PluginDescriptor(name=(_("Vision Core")), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=UpgradeMain),
+			 PluginDescriptor(name=_("Vision Core"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=UpgradeMain),
 			 PluginDescriptor(where=PluginDescriptor.WHERE_MENU, fnc=SoftcamSetup)]
 	if config.softcammanager.showinextensions.value:
 		plist.append(PluginDescriptor(name=_("Softcam Vision"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=SoftcamMenu))
 	if config.scriptrunner.showinextensions.value:
-		plist.append(PluginDescriptor(name=_("Script runner"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=ScriptRunnerMenu))
+		plist.append(PluginDescriptor(name=_("Vision Script runner"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=ScriptRunnerMenu))
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_AUTOSTART, fnc=SoftcamAutostart))
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_AUTOSTART, fnc=SwapAutostart))
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=ImageManagerautostart))
@@ -178,4 +197,5 @@ def Plugins(**kwargs):
 	plist.append(PluginDescriptor(name=_("Vision Mount manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=MountManagerMenu))
 	plist.append(PluginDescriptor(name=_("Vision Script runner"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ScriptRunnerMenu))
 	plist.append(PluginDescriptor(name=_("Vision SWAP manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=SwapManagerMenu))
+	plist.append(PluginDescriptor(name=_("Vision BOX MODE"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=GBIpboxWizardMenu))
 	return plist
