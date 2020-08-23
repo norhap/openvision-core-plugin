@@ -45,8 +45,8 @@ self.close()
 		<step id="nodevices">
 			<text value="No se encontraron receptores.\nPresiona OK para cerrar este asistente." />
 			<list>
-				<listentry caption="Try to scan again" step="scan" />
-				<listentry caption="Abort this Wizard" step="abort" />
+				<listentry caption="Intenta Escanear de Nuevo" step="scan" />
+				<listentry caption="Terminar este Asistente" step="abort" />
 			</list>
 			<code>
 			</code>
