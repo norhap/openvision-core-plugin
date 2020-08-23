@@ -1207,5 +1207,8 @@ msgstr "Hora de inicio de la sincronización"
 msgid "Vision Client Mode Box"
 msgstr "Vision Receptor Modo Cliente"
 
-msgid "If you want to leave Box Mode Client, use Restore Settings from Vision Backup Manager"
-msgstr "Si desea salir de este Modo en el receptor, use Restaurar configuración desde Vision Backup Manager"
+msgid "If you want to exit Client Mode and have a backup with your original settings, you can restore from the blue button on Vision Backup Manager."
+msgstr "Si desea salir del modo cliente y tener una copia de seguridad con su configuración original, puede restaurar desde el botón azul en Vision Backup Manager."
+
+msgid "Choose your main device"
+msgstr "Elija su Receptor Servidor"

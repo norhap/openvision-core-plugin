@@ -1,60 +1,47 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-from Components.config import config
+
+#Downloader
 from enigma import eEPGCache, eDVBDB
 from xml.dom import minidom
 import urllib
 import urllib2
 import re
 import os
-#############################DOWNLOADER
+#IPScam
 from Components.Network import iNetwork
-from time import localtime, time, strftime, mktime
+from time import localtime, time, strftime, mktime, ctime
 import socket
 import threading
-import urllib
-import urllib2
-
-from xml.dom import minidom
-
 MAX_THREAD_COUNT = 40
-###########################IPSCAN
+#Mount
 from Components.Console import Console
-from Components.config import config
-
-import os
-
 mountstate = False
 mounthost = None
-#####################IPBOXMOUNT
+#Wizard
 from Screens.Wizard import Wizard
-from Components.ActionMap import ActionMap
 from Components.Pixmap import Pixmap
 from Components.Sources.Boolean import Boolean
-from Components.config import config
-
 from Tools import Directories
-
-from enigma import eTimer
-#############################MENU
+#Menu
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
-
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.ConfigList import ConfigListScreen
 from Components.config import config, getConfigListEntry, ConfigSubsection, ConfigInteger, ConfigYesNo, ConfigText
-from Components.Sources.Boolean import Boolean
 from Components.Sources.StaticText import StaticText
-
 from enigma import eTimer
-#############################ABOUT
+#About
 from Components.Label import Label
-
-mountstate = False
-mounthost = None
+#RemoteTimer
+from bisect import insort
+from Components.TimerSanityCheck import TimerSanityCheck
+from RecordTimer import RecordTimerEntry, AFTEREVENT
+from ServiceReference import ServiceReference
+from timer import TimerEntry
 
 def getValueFromNode(event, key):
 	tmp = event.getElementsByTagName(key)[0].firstChild
@@ -168,19 +155,14 @@ class ClientModeBoxWizard(Wizard):
 
 	def __init__(self, session):
 		self.xmlfile = Directories.resolveFilename(Directories.SCOPE_PLUGINS, "SystemPlugins/Vision/clientmodebox.xml")
-
 		Wizard.__init__(self, session)
-
 		self.setTitle(_('Vision Client Mode Box'))
-
 		self.skinName = ["StartWizard"]
-
 		self['myactions'] = ActionMap(["MenuActions"],
 									  {
 									  'menu': self.Menu,
 									  'exit': self.exit,
 									  }, -1)
-
 	def Menu(self, session=None, **kwargs):
 		self.session.openWithCallback(ClientModeBoxTimer, ClientModeBoxMenu, ClientModeBoxMount)
 
@@ -255,7 +237,7 @@ class ClientModeBoxWizard(Wizard):
 			self.currStep = self.getStepWithID('nodownload')
 		self.currStep += 1
 		self.updateValues()
-#############################IPSCAM
+
 class ScanHost(threading.Thread):
 	def __init__(self, ipaddress, port):
 		threading.Thread.__init__(self)
@@ -284,13 +266,13 @@ class ClientModeBoxScan:
 		self.session = session
 
 	def scan(self):
-		print("[Vision Client Mode Box] network scan started")
+		print("[ClientModeBox] network scan started")
 		devices = []
 		for key in iNetwork.ifaces:
 			if iNetwork.ifaces[key]['up']:
 				devices += self.scanNetwork(iNetwork.ifaces[key]['ip'], iNetwork.ifaces[key]['netmask'])
 
-		print("[Vision Client Mode Box] network scan completed. Found " + str(len(devices)) + " devices")
+		print("[ClientModeBox] network scan completed. Found " + str(len(devices)) + " devices")
 		return devices
 
 	def ipRange(self, start_ip, end_ip):
@@ -324,7 +306,7 @@ class ClientModeBoxScan:
 		return None
 
 	def scanNetwork(self, ipaddress, subnet):
-		print("[Vision Client Mode Box] scan interface with ip address", ipaddress, "and subnet", subnet)
+		print("[ClientModeBox] scan interface with ip address", ipaddress, "and subnet", subnet)
 		cidr = self.getNetSize(subnet)
 
 		startip = []
@@ -337,13 +319,13 @@ class ClientModeBoxScan:
 			endip[3 - i/8] = endip[3 - i/8] + (1 << (i % 8))
 
 		if startip[0] == 0:
-			print("[Vision Client Mode Box] your start ip address seem invalid. Skip interface scan.")
+			print("[ClientModeBox] your start ip address seem invalid. Skip interface scan.")
 			return []
 
 		startip[3] += 1
 		endip[3] -= 1
 
-		print("[Vision Client Mode Box] scan from ip", startip, "to", endip)
+		print("[ClientModeBox] scan from ip", startip, "to", endip)
 
 		threads = []
 		threads_completed = []
@@ -364,15 +346,15 @@ class ClientModeBoxScan:
 		devices = []
 		for scanhost in threads_completed:
 			if scanhost.isopen:
-				print("[Vision Client Mode Box] device with ip " + scanhost.ipaddress + " listen on port 80, check if it's enigma2")
+				print("[ClientModeBox] device with ip " + scanhost.ipaddress + " listen on port 80, check if it's enigma2")
 				boxname = self.getBoxName(scanhost.ipaddress)
 				if boxname:
-					print("[Vision Client Mode Box] found " + boxname + " on ip " + scanhost.ipaddress)
+					print("[ClientModeBox] found " + boxname + " on ip " + scanhost.ipaddress)
 					devices.append((str(boxname), scanhost.ipaddress))
 				else:
-					print("[Vision Client Mode Box] no enigma2 found. Skip host")
+					print("[ClientModeBox] no enigma2 found. Skip host")
 		return devices
-###################IPBOXMOUNT
+
 class ClientModeBoxMount:
 	def __init__(self, session):
 		self.session = session
@@ -423,7 +405,7 @@ class ClientModeBoxMount:
 		except Exception:
 			pass
 		return os.system('mount -t cifs -o rw,nolock,noatime,noserverino,iocharset=utf8,vers=2.0,username=guest,password= //' + ip + '/' + share + ' ' + path) == 0
-###############################################MENU
+
 class ClientModeBoxMenu(Screen, ConfigListScreen):
 	skin = """
 		<screen name="ClientModeBoxMenu" position="360,150" size="560,400">
@@ -681,11 +663,263 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 		self.timer.stop()
 		self.session.open(MessageBox, _("Cannot download data. Please check your configuration"), type = MessageBox.TYPE_ERROR)
 
+class ClientModeBoxDownloader:
+	def __init__(self, session):
+		self.session = session
+
+	def download(self):
+		baseurl = "http://"
+		if config.ipboxclient.auth.value:
+			baseurl += config.ipboxclient.username.value
+			baseurl += ":"
+			baseurl += config.ipboxclient.password.value
+			baseurl += "@"
+
+		baseurl += config.ipboxclient.host.value
+		baseurl += ":"
+
+		streamingurl = baseurl
+
+		baseurl += str(config.ipboxclient.port.value)
+		streamingurl += str(config.ipboxclient.streamport.value)
+
+		print("[ClientModeBox] web interface url: " + baseurl)
+		print("[ClientModeBox] streaming url: " + streamingurl)
+
+		for stype in [ "tv", "radio" ]:
+			print("[ClientModeBox] download " + stype + " bouquets from " + baseurl)
+			bouquets = self.downloadBouquets(baseurl, stype)
+			print("[ClientModeBox] save " + stype + " bouquets from " + streamingurl)
+			self.saveBouquets(bouquets, streamingurl, '/etc/enigma2/bouquets.' + stype)
+
+		print("[ClientModeBox] reload bouquets")
+		self.reloadBouquets()
+
+		print("[ClientModeBox] sync EPG")
+		self.downloadEPG(baseurl)
+
+		print("[ClientModeBox] sync parental control")
+		self.downloadParentalControl(baseurl)
+
+		print("[ClientModeBox] sync is done!")
+
+	def getSetting(self, baseurl, key):
+		httprequest = urllib2.urlopen(baseurl + '/web/settings')
+		xmldoc = minidom.parseString(httprequest.read())
+		settings = xmldoc.getElementsByTagName('e2setting')
+		for setting in settings:
+			if getValueFromNode(setting, 'e2settingname') == key:
+				return getValueFromNode(setting, 'e2settingvalue')
+
+		return None
+
+	def getEPGLocation(self, baseurl):
+		return self.getSetting(baseurl, 'config.misc.epgcache_filename')
+
+	def getParentalControlEnabled(self, baseurl):
+		return self.getSetting(baseurl, 'config.ParentalControl.servicepinactive') == 'true'
+
+	def getParentalControlType(self, baseurl):
+		value = self.getSetting(baseurl, 'config.ParentalControl.type')
+		if not value:
+			value = 'blacklist'
+		return value
+
+	def getParentalControlPinState(self, baseurl):
+		return self.getSetting(baseurl, 'config.ParentalControl.servicepinactive') == 'true'
+
+	def getParentalControlPin(self, baseurl):
+		value = self.getSetting(baseurl, 'config.ParentalControl.servicepin.0')
+		if not value:
+			value = "0000"
+		return int(value)
+
+	def downloadParentalControlBouquets(self, baseurl):
+		bouquets = []
+		httprequest = urllib2.urlopen(baseurl + '/web/parentcontrollist')
+		xmldoc = minidom.parseString(httprequest.read())
+		services = xmldoc.getElementsByTagName('e2service')
+		for service in services:
+			bouquet = {}
+			bouquet['reference'] = getValueFromNode(service, 'e2servicereference')
+			bouquet['name'] = getValueFromNode(service, 'e2servicename')
+
+			bouquets.append(bouquet)
+
+		return bouquets
+
+	def downloadBouquets(self, baseurl, stype):
+		bouquets = []
+		httprequest = urllib2.urlopen(baseurl + '/web/bouquets?stype=' + stype)
+		print("[ClientModeBox] download bouquets from " + baseurl + '/web/bouquets?stype=' + stype)
+		xmldoc = minidom.parseString(httprequest.read())
+		services = xmldoc.getElementsByTagName('e2service')
+		for service in services:
+			bouquet = {}
+			bouquet['reference'] = getValueFromNode(service, 'e2servicereference')
+			bouquet['name'] = getValueFromNode(service, 'e2servicename')
+			bouquet['services'] = [];
+
+			httprequest = urllib2.urlopen(baseurl + '/web/getservices?' + urllib.urlencode({'sRef': bouquet['reference']}) + '&hidden=1')
+			xmldoc2 = minidom.parseString(httprequest.read())
+			services2 = xmldoc2.getElementsByTagName('e2service')
+			for service2 in services2:
+				ref = ""
+				tmp = getValueFromNode(service2, 'e2servicereference')
+				cnt = 0
+				for x in tmp:
+					ref += x
+					if x == ':':
+						cnt += 1
+					if cnt == 10:
+						break
+
+				bouquet['services'].append({
+					'reference': ref,
+					'name': getValueFromNode(service2, 'e2servicename')
+				})
+
+			bouquets.append(bouquet)
+
+		return bouquets
+
+	def saveBouquets(self, bouquets, streamingurl, destinationfile):
+		bouquetsfile = open(destinationfile, "w")
+		bouquetsfile.write("#NAME Bouquets (TV)" + "\n")
+		print("[ClientModeBox] streamurl " + streamingurl)
+		for bouquet in bouquets:
+			pattern = r'"([A-Za-z0-9_\./\\-]*)"'
+			m = re.search(pattern, bouquet['reference'])
+			if not m:
+				continue
+
+			filename = m.group().strip("\"")
+			bouquetsfile.write("#SERVICE " + bouquet['reference'] + "\n")
+			outfile = open("/etc/enigma2/" + filename, "w")
+			outfile.write("#NAME " + bouquet['name'] + "\n")
+			for service in bouquet['services']:
+				tmp = service['reference'].split(':')
+				isDVB = False
+				isStreaming = False
+				url = ""
+
+				if len(tmp) > 1 and tmp[0] == '1' and tmp[1] == '0':
+					if len(tmp) > 10 and tmp[10].startswith('http%3a//'):
+						isStreaming = True
+					else:
+						isDVB = True
+						url = streamingurl + "/" + service['reference']
+
+				if isDVB:
+					outfile.write("#SERVICE " + service['reference'] + urllib.quote(url) + ":" + service['name'] + "\n")
+				elif isStreaming:
+					outfile.write("#SERVICE " + service['reference'] + "\n")
+				else:
+					outfile.write("#SERVICE " + service['reference'] + "\n")
+					outfile.write("#DESCRIPTION " + service['name'] + "\n")
+			outfile.close()
+		bouquetsfile.close()
+
+	def reloadBouquets(self):
+		db = eDVBDB.getInstance()
+		db.reloadServicelist()
+		db.reloadBouquets()
+
+	def downloadEPG(self, baseurl):
+		print("[ClientModeBox] reading remote EPG location ...")
+		filename = self.getEPGLocation(baseurl)
+		if not filename:
+			print("[ClientModeBox] error downloading remote EPG location. Skip EPG sync.")
+			return
+
+		print("[ClientModeBox] remote EPG found at " + filename)
+
+		print("[ClientModeBox] dump remote EPG to epg.dat")
+		httprequest = urllib2.urlopen(baseurl + '/web/saveepg')
+
+		httprequest = urllib2.urlopen(baseurl + '/file?action=download&file=' + urllib.quote(filename))
+		data = httprequest.read()
+		if not data:
+			print("[ClientModeBox] cannot download remote EPG. Skip EPG sync.")
+			return
+
+		try:
+			epgfile = open(config.misc.epgcache_filename.value, "w")
+		except Exception:
+			print("[ClientModeBox] cannot save EPG. Skip EPG sync.")
+			return
+
+		epgfile.write(data)
+		epgfile.close()
+
+		print("[ClientModeBox] reload EPG")
+		epgcache = eEPGCache.getInstance()
+		epgcache.load()
+
+	def downloadParentalControl(self, baseurl):
+		print("[ClientModeBox] reading remote parental control status ...")
+
+		if self.getParentalControlEnabled(baseurl):
+			print("[ClientModeBox] parental control enabled")
+			config.ParentalControl.servicepinactive.value = True
+			config.ParentalControl.servicepinactive.save()
+			print("[ClientModeBox] reding pin status ...")
+			pinstatus = self.getParentalControlPinState(baseurl)
+			pin = self.getParentalControlPin(baseurl)
+			print("[ClientModeBox] pin status is setted to " + str(pinstatus))
+			config.ParentalControl.servicepinactive.value = pinstatus
+			config.ParentalControl.servicepinactive.save()
+			config.ParentalControl.servicepin[0].value = pin
+			config.ParentalControl.servicepin[0].save()
+			print("[ClientModeBox] reading remote parental control type ...")
+			stype = self.getParentalControlType(baseurl)
+			print("[ClientModeBox] parental control type is " + stype)
+			config.ParentalControl.type.value = stype
+			config.ParentalControl.type.save()
+			print("[ClientModeBox] download parental control services list")
+			services = self.downloadParentalControlBouquets(baseurl)
+			print("[ClientModeBox] save parental control services list")
+			parentalfile = open("/etc/enigma2/" + stype, "w")
+			for service in services:
+				parentalfile.write(service['reference'] + "\n")
+			parentalfile.close()
+			print("[ClientModeBox] reload parental control")
+			from Components.ParentalControl import parentalControl
+			parentalControl.open()
+		else:
+			print("[ClientModeBox] parental control disabled - do nothing")
+
+class ClientModeBoxAbout(Screen):
+	skin = """
+			<screen position="360,150" size="560,400">
+				<widget name="about"
+						position="10,10"
+						size="540,340"
+						font="Regular;22"
+						zPosition="1" />
+			</screen>"""
+
+	def __init__(self, session):
+		Screen.__init__(self, session)
+
+		self.setTitle(_('Vision Client Mode Box'))
+		about = "Open Vision""\n"
+
+		about += "Vision Client Mode Box\n\n"
+		about += "If you want to exit Client Mode and have a backup with your original settings, you can restore from the blue button on Vision Backup Manager."
+
+		self['about'] = Label(about)
+		self["actions"] = ActionMap(["SetupActions"],
+		{
+			"cancel": self.keyCancel
+		})
+
+	def keyCancel(self):
+		self.close()
+
 class ClientModeBoxTimer:
 	def __init__(self, session):
 		self.session = session
-		self.skinName = "ClientModeBoxMenu"
-		self.keys = "ClientModeBoxMenu"
 		self.ipboxdownloadtimer = eTimer()
 		self.ipboxdownloadtimer.callback.append(self.onIpboxDownloadTimer)
 
@@ -751,11 +985,87 @@ class ClientModeBoxTimer:
 			self.scheduledtime = 0
 			self.ipboxpolltimer.stop()
 
-class ClientModeBoxDownloader:
-	def __init__(self, session):
-		self.session = session
+class ClientModeBoxRemoteTimer():
+	_timer_list = []
+	_processed_timers = []
 
-	def download(self):
+	on_state_change = []
+
+	last_update_ts = 0
+
+	def __init__(self):
+		pass
+
+	@property
+	def timer_list(self):
+		if self.last_update_ts + 30 < time():
+			self.getTimers()
+		return self._timer_list
+
+	@timer_list.setter
+	def timer_list(self, value):
+		self._timer_list = value
+
+	@timer_list.deleter
+	def timer_list(self):
+		del self._timer_list
+
+	@property
+	def processed_timers(self):
+		if self.last_update_ts + 30 < time():
+			self.getTimers()
+		return self._processed_timers
+
+	@processed_timers.setter
+	def processed_timers(self, value):
+		self._processed_timers = value
+
+	@processed_timers.deleter
+	def processed_timers(self):
+		del self._processed_timers
+
+	def getTimers(self):
+		self._timer_list = []
+		self._processed_timers = []
+
+		baseurl = self.getBaseUrl()
+
+		print("[ClientModeBoxRemoteTimer] get remote timer list")
+
+		try:
+			httprequest = urllib2.urlopen(baseurl + '/web/timerlist')
+			xmldoc = minidom.parseString(httprequest.read())
+			timers = xmldoc.getElementsByTagName('e2timer')
+			for timer in timers:
+				serviceref = ServiceReference(getValueFromNode(timer, 'e2servicereference'))
+				begin = int(getValueFromNode(timer, 'e2timebegin'))
+				end = int(getValueFromNode(timer, 'e2timeend'))
+				name = getValueFromNode(timer, 'e2name')
+				description = getValueFromNode(timer, 'e2description')
+				eit = int(getValueFromNode(timer, 'e2eit'))
+				disabled = int(getValueFromNode(timer, 'e2disabled'))
+				justplay = int(getValueFromNode(timer, 'e2justplay'))
+				afterevent = int(getValueFromNode(timer, 'e2afterevent'))
+				repeated = int(getValueFromNode(timer, 'e2repeated'))
+				location = getValueFromNode(timer, 'e2location')
+				tags = getValueFromNode(timer, 'e2tags').split(" ")
+
+				entry = RecordTimerEntry(serviceref, begin, end, name, description, eit, disabled, justplay, afterevent, dirname = location, tags = tags, descramble = 1, record_ecm = 0, isAutoTimer = 0, always_zap = 0)
+				entry.repeated = repeated
+
+				entry.orig = RecordTimerEntry(serviceref, begin, end, name, description, eit, disabled, justplay, afterevent, dirname = location, tags = tags, descramble = 1, record_ecm = 0, isAutoTimer = 0, always_zap = 0)
+				entry.orig.repeated = repeated
+
+				if entry.shouldSkip() or entry.state == TimerEntry.StateEnded or (entry.state == TimerEntry.StateWaiting and entry.disabled):
+					insort(self._processed_timers, entry)
+				else:
+					insort(self._timer_list, entry)
+		except Exception as e:
+			print("[ClientModeBoxRemoteTimer]", e)
+
+		self.last_update_ts = time()
+
+	def getBaseUrl(self):
 		baseurl = "http://"
 		if config.ipboxclient.auth.value:
 			baseurl += config.ipboxclient.username.value
@@ -765,242 +1075,217 @@ class ClientModeBoxDownloader:
 
 		baseurl += config.ipboxclient.host.value
 		baseurl += ":"
-
-		streamingurl = baseurl
-
 		baseurl += str(config.ipboxclient.port.value)
-		streamingurl += str(config.ipboxclient.streamport.value)
+		return baseurl
 
-		print("[Vision Client Mode Box] web interface url: " + baseurl)
-		print("[Vision Client Mode Box] streaming url: " + streamingurl)
+	def getNextRecordingTime(self):
+		return -1
 
-		for stype in [ "tv", "radio" ]:
-			print("[Vision Client Mode Box] download " + stype + " bouquets from " + baseurl)
-			bouquets = self.downloadBouquets(baseurl, stype)
-			print("[Vision Client Mode Box] save " + stype + " bouquets from " + streamingurl)
-			self.saveBouquets(bouquets, streamingurl, '/etc/enigma2/bouquets.' + stype)
+	def getNextZapTime(self):
+		return -1
 
-		print("[Vision Client Mode Box] reload bouquets")
-		self.reloadBouquets()
+	def isNextRecordAfterEventActionAuto(self):
+		return False
 
-		print("[Vision Client Mode Box] sync EPG")
-		self.downloadEPG(baseurl)
+	def isInTimer(self, eventid, begin, duration, service):
+		returnValue = None
+		type = 0
+		time_match = 0
+		isAutoTimer = False
+		bt = None
+		end = begin + duration
+		refstr = ":".join(str(service).split(":")[:10]) + ':'
+		for x in self._timer_list:
+			if x.isAutoTimer == 1:
+				isAutoTimer = True
+			else:
+				isAutoTimer = False
+			check = x.service_ref.ref.toString() == refstr
+			if check:
+				timer_end = x.end
+				type_offset = 0
+				if x.justplay:
+					type_offset = 5
+					if (timer_end - x.begin) <= 1:
+						timer_end += 60
+				if x.always_zap:
+					type_offset = 10
 
-		print("[Vision Client Mode Box] sync parental control")
-		self.downloadParentalControl(baseurl)
+				if x.repeated != 0:
+					if bt is None:
+						bt = localtime(begin)
+						et = localtime(end)
+						bday = bt.tm_wday;
+						begin2 = bday * 1440 + bt.tm_hour * 60 + bt.tm_min
+						end2   = et.tm_wday * 1440 + et.tm_hour * 60 + et.tm_min
+					if x.repeated & (1 << bday):
+						xbt = localtime(x.begin)
+						xet = localtime(timer_end)
+						xbegin = bday * 1440 + xbt.tm_hour * 60 + xbt.tm_min
+						xend   = bday * 1440 + xet.tm_hour * 60 + xet.tm_min
+						if xend < xbegin:
+							xend += 1440
+						if begin2 < xbegin <= end2:
+							if xend < end2: # recording within event
+								time_match = (xend - xbegin) * 60
+								type = type_offset + 3
+							else:           # recording last part of event
+								time_match = (end2 - xbegin) * 60
+								type = type_offset + 1
+						elif xbegin <= begin2 <= xend:
+							if xend < end2: # recording first part of event
+								time_match = (xend - begin2) * 60
+								type = type_offset + 4
+							else:           # recording whole event
+								time_match = (end2 - begin2) * 60
+								type = type_offset + 2
+				else:
+					if begin < x.begin <= end:
+						if timer_end < end: # recording within event
+							time_match = timer_end - x.begin
+							type = type_offset + 3
+						else:           # recording last part of event
+							time_match = end - x.begin
+							type = type_offset + 1
+					elif x.begin <= begin <= timer_end:
+						if timer_end < end: # recording first part of event
+							time_match = timer_end - begin
+							type = type_offset + 4
+						else:           # recording whole event
+							time_match = end - begin
+							type = type_offset + 2
+				if time_match:
+					if type in (2,7,12): # When full recording do not look further
+						returnValue = (time_match, [type], isAutoTimer)
+						break
+					elif returnValue:
+						if type not in returnValue[1]:
+							returnValue[1].append(type)
+					else:
+						returnValue = (time_match, [type])
 
-		print("[Vision Client Mode Box] sync is done!")
+		return returnValue
 
-	def getSetting(self, baseurl, key):
-		httprequest = urllib2.urlopen(baseurl + '/web/settings')
-		xmldoc = minidom.parseString(httprequest.read())
-		settings = xmldoc.getElementsByTagName('e2setting')
-		for setting in settings:
-			if getValueFromNode(setting, 'e2settingname') == key:
-				return getValueFromNode(setting, 'e2settingvalue')
+	def record(self, entry, ignoreTSC=False, dosave=True):
+		print("[ClientModeBoxRemoteTimer] record ", str(entry))
+
+		entry.service_ref = ServiceReference(":".join(str(entry.service_ref).split(":")[:10]))
+		args = urllib.urlencode({
+				'sRef': str(entry.service_ref),
+				'begin': str(entry.begin),
+				'end': str(entry.end),
+				'name': entry.name,
+				'disabled': str(1 if entry.disabled else 0),
+				'justplay': str(1 if entry.justplay else 0),
+				'afterevent': str(entry.afterEvent),
+				'dirname': str(entry.dirname),
+				'tags': " ".join(entry.tags),
+				'repeated': str(entry.repeated),
+				'description': entry.description
+			})
+
+		baseurl = self.getBaseUrl()
+
+		print("[ClientModeBoxRemoteTimer] web interface url: " + baseurl)
+
+		try:
+			httprequest = urllib2.urlopen(baseurl + '/web/timeradd?' + args)
+			xmldoc = minidom.parseString(httprequest.read())
+			status = xmldoc.getElementsByTagName('e2simplexmlresult')[0]
+			success = getValueFromNode(status, 'e2state') == "True"
+		except Exception as e:
+			print("[ClientModeBoxRemoteTimer]", e)
+			return None
+
+		self.getTimers()
+
+		if not success:
+			timersanitycheck = TimerSanityCheck(self._timer_list,entry)
+			if not timersanitycheck.check():
+				print("timer conflict detected!")
+				print(timersanitycheck.getSimulTimerList())
+				return timersanitycheck.getSimulTimerList()
 
 		return None
 
-	def getEPGLocation(self, baseurl):
-		return self.getSetting(baseurl, 'config.misc.epgcache_filename')
+	def timeChanged(self, entry):
+		print("[ClientModeBoxRemoteTimer] timer changed ", str(entry))
 
-	def getParentalControlEnabled(self, baseurl):
-		return self.getSetting(baseurl, 'config.ParentalControl.servicepinactive') == 'true'
-
-	def getParentalControlType(self, baseurl):
-		value = self.getSetting(baseurl, 'config.ParentalControl.type')
-		if not value:
-			value = 'blacklist'
-		return value
-
-	def getParentalControlPinState(self, baseurl):
-		return self.getSetting(baseurl, 'config.ParentalControl.servicepinactive') == 'true'
-
-	def getParentalControlPin(self, baseurl):
-		value = self.getSetting(baseurl, 'config.ParentalControl.servicepin.0')
-		if not value:
-			value = "0000"
-		return int(value)
-
-	def downloadParentalControlBouquets(self, baseurl):
-		bouquets = []
-		httprequest = urllib2.urlopen(baseurl + '/web/parentcontrollist')
-		xmldoc = minidom.parseString(httprequest.read())
-		services = xmldoc.getElementsByTagName('e2service')
-		for service in services:
-			bouquet = {}
-			bouquet['reference'] = getValueFromNode(service, 'e2servicereference')
-			bouquet['name'] = getValueFromNode(service, 'e2servicename')
-
-			bouquets.append(bouquet)
-
-		return bouquets
-
-	def downloadBouquets(self, baseurl, stype):
-		bouquets = []
-		httprequest = urllib2.urlopen(baseurl + '/web/bouquets?stype=' + stype)
-		print("[Vision Client Mode Box] download bouquets from " + baseurl + '/web/bouquets?stype=' + stype)
-		xmldoc = minidom.parseString(httprequest.read())
-		services = xmldoc.getElementsByTagName('e2service')
-		for service in services:
-			bouquet = {}
-			bouquet['reference'] = getValueFromNode(service, 'e2servicereference')
-			bouquet['name'] = getValueFromNode(service, 'e2servicename')
-			bouquet['services'] = [];
-
-			httprequest = urllib2.urlopen(baseurl + '/web/getservices?' + urllib.urlencode({'sRef': bouquet['reference']}) + '&hidden=1')
-			xmldoc2 = minidom.parseString(httprequest.read())
-			services2 = xmldoc2.getElementsByTagName('e2service')
-			for service2 in services2:
-				ref = ""
-				tmp = getValueFromNode(service2, 'e2servicereference')
-				cnt = 0
-				for x in tmp:
-					ref += x
-					if x == ':':
-						cnt += 1
-					if cnt == 10:
-						break
-
-				bouquet['services'].append({
-					'reference': ref,
-					'name': getValueFromNode(service2, 'e2servicename')
+		entry.service_ref = ServiceReference(":".join(str(entry.service_ref).split(":")[:10]))
+		try:
+			args = urllib.urlencode({
+					'sRef': str(entry.service_ref),
+					'begin': str(entry.begin),
+					'end': str(entry.end),
+					'channelOld': str(entry.orig.service_ref),
+					'beginOld': str(entry.orig.begin),
+					'endOld': str(entry.orig.end),
+					'name': entry.name,
+					'disabled': str(1 if entry.disabled else 0),
+					'justplay': str(1 if entry.justplay else 0),
+					'afterevent': str(entry.afterEvent),
+					'dirname': str(entry.dirname),
+					'tags': " ".join(entry.tags),
+					'repeated': str(entry.repeated),
+					'description': entry.description
 				})
 
-			bouquets.append(bouquet)
+			baseurl = self.getBaseUrl()
+			httprequest = urllib2.urlopen(baseurl + '/web/timerchange?' + args)
+			xmldoc = minidom.parseString(httprequest.read())
+			status = xmldoc.getElementsByTagName('e2simplexmlresult')[0]
+			success = getValueFromNode(status, 'e2state') == "True"
+		except Exception as e:
+			print("[ClientModeBoxRemoteTimer]", e)
+			return None
 
-		return bouquets
+		self.getTimers()
 
-	def saveBouquets(self, bouquets, streamingurl, destinationfile):
-		bouquetsfile = open(destinationfile, "w")
-		bouquetsfile.write("#NAME Bouquets (TV)" + "\n")
-		print("[Vision Client Mode Box] streamurl " + streamingurl)
-		for bouquet in bouquets:
-			pattern = r'"([A-Za-z0-9_\./\\-]*)"'
-			m = re.search(pattern, bouquet['reference'])
-			if not m:
-				continue
+		if not success:
+			timersanitycheck = TimerSanityCheck(self._timer_list,entry)
+			if not timersanitycheck.check():
+				print("timer conflict detected!")
+				print(timersanitycheck.getSimulTimerList())
+				return timersanitycheck.getSimulTimerList()
 
-			filename = m.group().strip("\"")
-			bouquetsfile.write("#SERVICE " + bouquet['reference'] + "\n")
-			outfile = open("/etc/enigma2/" + filename, "w")
-			outfile.write("#NAME " + bouquet['name'] + "\n")
-			for service in bouquet['services']:
-				tmp = service['reference'].split(':')
-				isDVB = False
-				isStreaming = False
-				url = ""
+		return None
 
-				if len(tmp) > 1 and tmp[0] == '1' and tmp[1] == '0':
-					if len(tmp) > 10 and tmp[10].startswith('http%3a//'):
-						isStreaming = True
-					else:
-						isDVB = True
-						url = streamingurl + "/" + service['reference']
+	def removeEntry(self, entry):
+		print("[ClientModeBoxRemoteTimer] timer remove ", str(entry))
 
-				if isDVB:
-					outfile.write("#SERVICE " + service['reference'] + urllib.quote(url) + ":" + service['name'] + "\n")
-				elif isStreaming:
-					outfile.write("#SERVICE " + service['reference'] + "\n")
-				else:
-					outfile.write("#SERVICE " + service['reference'] + "\n")
-					outfile.write("#DESCRIPTION " + service['name'] + "\n")
-			outfile.close()
-		bouquetsfile.close()
+		entry.service_ref = ServiceReference(":".join(str(entry.service_ref).split(":")[:10]))
+		args = urllib.urlencode({
+				'sRef': str(entry.service_ref),
+				'begin': str(entry.begin),
+				'end': str(entry.end)
+			})
 
-	def reloadBouquets(self):
-		db = eDVBDB.getInstance()
-		db.reloadServicelist()
-		db.reloadBouquets()
-
-	def downloadEPG(self, baseurl):
-		print("[Vision Client Mode Box] reading remote EPG location ...")
-		filename = self.getEPGLocation(baseurl)
-		if not filename:
-			print("[Vision Client Mode Box] error downloading remote EPG location. Skip EPG sync.")
-			return
-
-		print("[Vision Client Mode Box] remote EPG found at " + filename)
-
-		print("[Vision Client Mode Box] dump remote EPG to epg.dat")
-		httprequest = urllib2.urlopen(baseurl + '/web/saveepg')
-
-		httprequest = urllib2.urlopen(baseurl + '/file?action=download&file=' + urllib.quote(filename))
-		data = httprequest.read()
-		if not data:
-			print("[Vision Client Mode Box] cannot download remote EPG. Skip EPG sync.")
-			return
-
+		baseurl = self.getBaseUrl()
 		try:
-			epgfile = open(config.misc.epgcache_filename.value, "w")
-		except Exception:
-			print("[Vision Client Mode Box] cannot save EPG. Skip EPG sync.")
+			httprequest = urllib2.urlopen(baseurl + '/web/timerdelete?' + args)
+			httprequest.read()
+		except Exception as e:
+			print("[ClientModeBoxRemoteTimer]", e)
 			return
 
-		epgfile.write(data)
-		epgfile.close()
+		self.getTimers()
 
-		print("[Vision Client Mode Box] reload EPG")
-		epgcache = eEPGCache.getInstance()
-		epgcache.load()
+	def isRecording(self):
+		isRunning = False
+		for timer in self.timer_list:
+			if timer.isRunning() and not timer.justplay:
+				isRunning = True
+		return isRunning
 
-	def downloadParentalControl(self, baseurl):
-		print("[Vision Client Mode Box] reading remote parental control status ...")
+	def saveTimer(self):
+		pass
 
-		if self.getParentalControlEnabled(baseurl):
-			print("[Vision Client Mode Box] parental control enabled")
-			config.ParentalControl.servicepinactive.value = True
-			config.ParentalControl.servicepinactive.save()
-			print("[Vision Client Mode Box] reding pin status ...")
-			pinstatus = self.getParentalControlPinState(baseurl)
-			pin = self.getParentalControlPin(baseurl)
-			print("[Vision Client Mode Box] pin status is setted to " + str(pinstatus))
-			config.ParentalControl.servicepinactive.value = pinstatus
-			config.ParentalControl.servicepinactive.save()
-			config.ParentalControl.servicepin[0].value = pin
-			config.ParentalControl.servicepin[0].save()
-			print("[Vision Client Mode Box] reading remote parental control type ...")
-			stype = self.getParentalControlType(baseurl)
-			print("[Vision Client Mode Box] parental control type is " + stype)
-			config.ParentalControl.type.value = stype
-			config.ParentalControl.type.save()
-			print("[Vision Client Mode Box] download parental control services list")
-			services = self.downloadParentalControlBouquets(baseurl)
-			print("[Vision Client Mode Box] save parental control services list")
-			parentalfile = open("/etc/enigma2/" + stype, "w")
-			for service in services:
-				parentalfile.write(service['reference'] + "\n")
-			parentalfile.close()
-			print("[Vision Client Mode Box] reload parental control")
-			from Components.ParentalControl import parentalControl
-			parentalControl.open()
-		else:
-			print("[Vision Client Mode Box] parental control disabled - do nothing")
+	def shutdown(self):
+		pass
 
-class ClientModeBoxAbout(Screen):
-	skin = """
-			<screen position="360,150" size="560,400">
-				<widget name="about"
-						position="10,10"
-						size="540,340"
-						font="Regular;22"
-						zPosition="1" />
-			</screen>"""
+	def cleanup(self):
+		self.processed_timers = [entry for entry in self.processed_timers if entry.disabled]
 
-	def __init__(self, session):
-		Screen.__init__(self, session)
-
-		self.setTitle(_('Vision Client Mode Box'))
-		about = "Open Vision""\n"
-
-		about += "Vision Client Mode Box\n\n"
-		about += "If you want to leave Box Mode Client, use Restore Settings from Vision Backup Manager"
-
-		self['about'] = Label(about)
-		self["actions"] = ActionMap(["SetupActions"],
-		{
-			"cancel": self.keyCancel
-		})
-
-	def keyCancel(self):
-		self.close()
+	def cleanupDaily(self, days):
+		limit = time() - (days * 3600 * 24)
+		self.processed_timers = [entry for entry in self.processed_timers if (entry.disabled and entry.repeated) or (entry.end and (entry.end > limit))]
