@@ -1,6 +1,6 @@
 <wizard>
 		<step id="welcome">
-			<text value="Bienvenido.Para configurar pulse MENU\n\nEste asistente le ayudara a configurar su Receptor." />
+			<text value="Bienvenido. Para configurar pulse Menu.\n\nEste asistente le ayudara a configurar su Receptor." />
 			<list>
 				<listentry caption="Buscar un receptor servidor" step="scan" />
 				<listentry caption="Terminar este Asistente" step="abort" />
