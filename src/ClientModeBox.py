@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-
+PluginLanguageDomain = "StartWizard"
+from Components.Language import language
 #Downloader
 from enigma import eEPGCache, eDVBDB
 from xml.dom import minidom
@@ -179,7 +180,7 @@ class ClientModeBoxWizard(Wizard):
 									  'exit': self.exit,
 									  }, -1)
 	def Menu(self, session=None, **kwargs):
-		self.session.openWithCallback(ClientModeBoxTimer, ClientModeBoxMenu, ClientModeBoxMount)
+		self.session.open(ClientModeBoxMenu, PluginLanguageDomain)
 
 	def exit(self):
 		self.close(True)
@@ -672,7 +673,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 	def downloadCompleted(self):
 		self.timer.stop()
 		if self.remotetimer_old != config.ipboxclient.remotetimers.value:
-			self.session.openWithCallback(self.restart, MessageBox, _("To apply new settings, you need to reboot your STB. Do you want reboot it now?"), type = MessageBox.TYPE_YESNO)
+			self.session.openWithCallback(self.restart, MessageBox, _("To apply new settings, you need to restart GUI your STB. Do you want restart it now?"), type = MessageBox.TYPE_YESNO)
 		else:
 			self.session.openWithCallback(self.close, MessageBox, _("Download completed"), type = MessageBox.TYPE_INFO)
 
