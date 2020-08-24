@@ -379,7 +379,7 @@ class ClientModeBoxMount:
 		else:
 			self.mountpoint = '/media/hdd'
 		self.share = '/media/hdd'
-		
+
 
 	def automount(self):
 		global mountstate

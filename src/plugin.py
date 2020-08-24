@@ -4,7 +4,7 @@ from __future__ import print_function
 from . import _
 from os import listdir, path
 from Plugins.Plugin import PluginDescriptor
-from Components.config import config, ConfigBoolean, getConfigListEntry, ConfigSubsection, ConfigInteger, ConfigYesNo, ConfigText, ConfigClock, ConfigSelection
+from Components.config import config, ConfigBoolean
 from BackupManager import BackupManagerautostart
 from ImageManager import ImageManagerautostart
 from SwapManager import SwapAutostart
