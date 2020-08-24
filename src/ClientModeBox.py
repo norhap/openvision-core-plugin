@@ -523,7 +523,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 		self.setTitle(_('Vision Client Mode Box'))
 
 		self["VKeyIcon"] = Boolean(False)
-		self["text"] = StaticText(_('NOTE: the remote HDD feature require samba installed on server box.'))
+		self["text"] = StaticText()
 		self["key_red"] = Button(_('Cancel'))
 		self["key_green"] = Button(_('Save'))
 		self["key_yellow"] = Button(_('Scan'))
