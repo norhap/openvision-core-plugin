@@ -13,20 +13,6 @@ from ScriptRunner import ScriptRunnerAutostart
 from IPKInstaller import OpkgInstaller
 from ClientModeBox import ClientModeBoxWizard
 
-config.ipboxclient = ConfigSubsection()
-config.ipboxclient.host = ConfigText(default = "", fixed_size = False)
-config.ipboxclient.port = ConfigInteger(default = 80, limits = (1, 65535))
-config.ipboxclient.streamport = ConfigInteger(default = 8001, limits = (1, 65535))
-config.ipboxclient.auth = ConfigYesNo(default = False)
-config.ipboxclient.firstconf = ConfigYesNo(default = False)
-config.ipboxclient.username = ConfigText(default = "", fixed_size = False)
-config.ipboxclient.password = ConfigText(default = "", fixed_size = False)
-config.ipboxclient.schedule = ConfigYesNo(default = False)
-config.ipboxclient.scheduletime = ConfigClock(default = 0) # 1:00
-config.ipboxclient.repeattype = ConfigSelection(default = "daily", choices = [("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
-config.ipboxclient.mounthdd = ConfigYesNo(default = False)
-config.ipboxclient.remotetimers = ConfigYesNo(default = False)
-
 config.misc.restorewizardrun = ConfigBoolean(default=False)
 
 def setLanguageFromBackup(backupfile):

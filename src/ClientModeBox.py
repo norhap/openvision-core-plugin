@@ -24,6 +24,7 @@ from Screens.Wizard import Wizard
 from Components.Pixmap import Pixmap
 from Components.Sources.Boolean import Boolean
 from Tools import Directories
+from Tools.Directories import fileHas
 #Menu
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -31,7 +32,7 @@ from Screens.Standby import TryQuitMainloop
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.ConfigList import ConfigListScreen
-from Components.config import config, getConfigListEntry, ConfigSubsection, ConfigInteger, ConfigYesNo, ConfigText
+from Components.config import config, ConfigBoolean, getConfigListEntry, ConfigSubsection, ConfigInteger, ConfigYesNo, ConfigText, ConfigClock, ConfigSelection
 from Components.Sources.StaticText import StaticText
 from enigma import eTimer
 #About
@@ -42,6 +43,20 @@ from Components.TimerSanityCheck import TimerSanityCheck
 from RecordTimer import RecordTimerEntry, AFTEREVENT
 from ServiceReference import ServiceReference
 from timer import TimerEntry
+
+config.ipboxclient = ConfigSubsection()
+config.ipboxclient.host = ConfigText(default = "", fixed_size = False)
+config.ipboxclient.port = ConfigInteger(default = 80, limits = (1, 65535))
+config.ipboxclient.streamport = ConfigInteger(default = 8001, limits = (1, 65535))
+config.ipboxclient.auth = ConfigYesNo(default = False)
+config.ipboxclient.firstconf = ConfigYesNo(default = False)
+config.ipboxclient.username = ConfigText(default = "", fixed_size = False)
+config.ipboxclient.password = ConfigText(default = "", fixed_size = False)
+config.ipboxclient.schedule = ConfigYesNo(default = False)
+config.ipboxclient.scheduletime = ConfigClock(default = 0) # 1:00
+config.ipboxclient.repeattype = ConfigSelection(default = "daily", choices = [("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
+config.ipboxclient.mounthdd = ConfigYesNo(default = False)
+config.ipboxclient.remotetimers = ConfigYesNo(default = False)
 
 def getValueFromNode(event, key):
 	tmp = event.getElementsByTagName(key)[0].firstChild
@@ -360,10 +375,11 @@ class ClientModeBoxMount:
 		self.session = session
 		self.console = Console()
 		if os.path.exists('/media/hdd') or os.system('mount |grep -i /media/hdd') == 0:
-			self.mountpoint = '/media/net/IpBox'
+			self.mountpoint = '/media/net/hddboxserver'
 		else:
 			self.mountpoint = '/media/hdd'
-		self.share = 'Harddisk'
+		self.share = '/media/hdd'
+		
 
 	def automount(self):
 		global mountstate
@@ -373,7 +389,7 @@ class ClientModeBoxMount:
 		if config.ipboxclient.mounthdd.value:
 			if self.isMountPoint(self.mountpoint):
 				if not self.umount(self.mountpoint):
-					print('Cannot umount ' + self.mounpoint)
+					print('Cannot umount ')
 					return
 
 			if not self.mount(config.ipboxclient.host.value, self.share, self.mountpoint):
@@ -400,11 +416,12 @@ class ClientModeBoxMount:
 		return os.system('umount ' + path) == 0
 
 	def mount(self, ip, share, path):
+	    if not fileHas("/etc/fstab","/media/hdd nfs") and not fileHas("/etc/fstab","/media/net/hddboxserver nfs"):
 		try:
 			os.makedirs(path)
 		except Exception:
 			pass
-		return os.system('mount -t cifs -o rw,nolock,noatime,noserverino,iocharset=utf8,vers=2.0,username=guest,password= //' + ip + '/' + share + ' ' + path) == 0
+		return os.system('mount -t nfs' + ' ' + ip + ':' + '/' + share + ' ' + path + ' ' + '&&' + ' ' + 'echo -e' + ' ' + '"' + ip + ':' + share + ' ' + path + ' ' + 'nfs nolock,rsize=8192,wsize=8192' + ' ' + '\n"' + ' ' + '>>' + ' ' + '/etc/fstab') == 0
 
 class ClientModeBoxMenu(Screen, ConfigListScreen):
 	skin = """
