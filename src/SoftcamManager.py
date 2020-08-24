@@ -586,7 +586,7 @@ class SoftcamAutoPoller:
 		if config.softcammanager.softcams_autostart:
 			Components.Task.job_manager.AddJob(self.createCheckJob())
 
-		if config.softcammanager.softcamtimerenabled.value:
+		if config.softcammanager.softcamtimerenabled.value and path.exists('/tmp/cam.check.log'):
 			# 			print("[SoftcamManager] Timer check enabled")
 			now = datetime.now()
 			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Enabled\n")
