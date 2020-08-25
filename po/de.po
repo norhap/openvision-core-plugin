@@ -502,7 +502,7 @@ msgstr "Invertieren"
 
 #: ../src/IPKInstaller.py:86
 msgid "It seems you have not setup an extra location. Please set it up in the Backup manager setup menu."
-msgstr "Es sieht so aus asl wenn noch ein Extra Ort konfiguriert wurde. Bitte dem Ort in der Backup Verwaltung konfigurieren."
+msgstr "Es sieht so aus als wenn noch ein Extra Ort konfiguriert wurde. Bitte dem Ort in der Backup Verwaltung konfigurieren."
 
 #: ../src/BackupManager.py:1003
 msgid "Logs"
