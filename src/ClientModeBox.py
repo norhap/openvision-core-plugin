@@ -3,30 +3,22 @@
 from __future__ import print_function
 PluginLanguageDomain = "StartWizard"
 from Components.Language import language
-#Downloader
 from enigma import eEPGCache, eDVBDB
 from xml.dom import minidom
 import urllib
 import urllib2
 import re
 import os
-#IPScam
 from Components.Network import iNetwork
 from time import localtime, time, strftime, mktime, ctime
 import socket
 import threading
-MAX_THREAD_COUNT = 40
-#Mount
 from Components.Console import Console
-mountstate = False
-mounthost = None
-#Wizard
 from Screens.Wizard import Wizard
 from Components.Pixmap import Pixmap
 from Components.Sources.Boolean import Boolean
 from Tools import Directories
-from Tools.Directories import fileHas
-#Menu
+from Tools.Directories import fileHas, resolveFilename, SCOPE_PLUGINS
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
@@ -36,14 +28,18 @@ from Components.ConfigList import ConfigListScreen
 from Components.config import config, ConfigBoolean, getConfigListEntry, ConfigSubsection, ConfigInteger, ConfigYesNo, ConfigText, ConfigClock, ConfigSelection
 from Components.Sources.StaticText import StaticText
 from enigma import eTimer
-#About
 from Components.Label import Label
-#RemoteTimer
 from bisect import insort
 from Components.TimerSanityCheck import TimerSanityCheck
 from RecordTimer import RecordTimerEntry, AFTEREVENT
 from ServiceReference import ServiceReference
 from timer import TimerEntry
+import gettext
+
+mountstate = False
+mounthost = None
+MAX_THREAD_COUNT = 40
+timerinstance = None
 
 config.ipboxclient = ConfigSubsection()
 config.ipboxclient.host = ConfigText(default = "", fixed_size = False)
@@ -58,6 +54,18 @@ config.ipboxclient.scheduletime = ConfigClock(default = 0) # 1:00
 config.ipboxclient.repeattype = ConfigSelection(default = "daily", choices = [("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
 config.ipboxclient.mounthdd = ConfigYesNo(default = False)
 config.ipboxclient.remotetimers = ConfigYesNo(default = False)
+
+def localeInit():
+	lang = language.getLanguage()[:2]
+	os.environ["LANGUAGE"] = lang
+	gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
+
+def _(txt):
+	t = gettext.dgettext(PluginLanguageDomain, txt)
+	if t == txt:
+		t = gettext.gettext(txt)
+	return t
+
 
 def getValueFromNode(event, key):
 	tmp = event.getElementsByTagName(key)[0].firstChild
@@ -379,7 +387,7 @@ class ClientModeBoxMount:
 			self.mountpoint = '/media/net/hddboxserver'
 		else:
 			self.mountpoint = '/media/hdd'
-		self.share = '/media/hdd'
+		self.share = '/mnt/hdd'
 
 
 	def automount(self):
@@ -417,7 +425,7 @@ class ClientModeBoxMount:
 		return os.system('umount ' + path) == 0
 
 	def mount(self, ip, share, path):
-	    if not fileHas("/etc/fstab","/media/hdd nfs") and not fileHas("/etc/fstab","/media/net/hddboxserver nfs"):
+	    if not fileHas("/etc/fstab",":/mnt/hdd"):
 		try:
 			os.makedirs(path)
 		except Exception:
@@ -516,7 +524,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 	def __init__(self, session, timerinstance):
 		self.session = session
 		self.list = []
-		self.timerinstance = timerinstance
+		self.timerinstance = ClientModeBoxTimer(self.session)
 		self.remotetimer_old = config.ipboxclient.remotetimers.value
 		Screen.__init__(self, session)
 		ConfigListScreen.__init__(self, self.list)
@@ -524,7 +532,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 		self.setTitle(_('Vision Client Mode Box'))
 
 		self["VKeyIcon"] = Boolean(False)
-		self["text"] = StaticText()
+		self["text"] = StaticText(_('NOTE: For remote HDD feature require NFS service installed on server box.'))
 		self["key_red"] = Button(_('Cancel'))
 		self["key_green"] = Button(_('Save'))
 		self["key_yellow"] = Button(_('Scan'))
@@ -588,6 +596,8 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 			x[1].save()
 		config.ipboxclient.firstconf.value = True
 		config.ipboxclient.firstconf.save()
+		if self.timerinstance:
+			self.timerinstance.refreshScheduler()
 
 		mount = ClientModeBoxMount(self.session)
 		mount.remount()
