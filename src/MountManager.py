@@ -303,18 +303,18 @@ class VISIONDevicesPanel(Screen):
 		self.device = extra_args[0]
 		self.mountp = extra_args[1]
 		self.device_uuid = 'UUID=' + result.split('UUID=')[1].split(' ')[0].replace('"', '')
-		# print('[MountManager] add_fstab: device = %s, mountp=%s, UUID=%s' %(self.device, self.mountp, self.device_uuid))
 		if not path.exists(self.mountp):
 			mkdir(self.mountp, 0755)
-		open('/etc/fstab.tmp', 'w').writelines([l for l in open('/etc/fstab').readlines() if '/media/hdd' not in l])
+		file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if '/media/hdd' not in l])
 		rename('/etc/fstab.tmp', '/etc/fstab')
-		open('/etc/fstab.tmp', 'w').writelines([l for l in open('/etc/fstab').readlines() if self.device not in l])
+		file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device not in l])
 		rename('/etc/fstab.tmp', '/etc/fstab')
-		open('/etc/fstab.tmp', 'w').writelines([l for l in open('/etc/fstab').readlines() if self.device_uuid not in l])
+		file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device_uuid not in l])
 		rename('/etc/fstab.tmp', '/etc/fstab')
-		with open('/etc/fstab', 'a') as out:
-			line = self.device_uuid + '\t/media/hdd\tauto\tdefaults\t0 0\n'
-			out.write(line)
+		out = open('/etc/fstab', 'a')
+		line = self.device_uuid + '\t/media/hdd\tauto\tdefaults\t0 0\n'
+		out.write(line)
+		out.close()
 		self.Console.ePopen('mount -a', self.updateList)
 
 	def saveMypoints(self):
@@ -439,13 +439,14 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 
 			if not path.exists(self.mountp):
 				mkdir(self.mountp, 0755)
-			open('/etc/fstab.tmp', 'w').writelines([l for l in open('/etc/fstab').readlines() if self.device not in l])
+			file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device not in l])
 			rename('/etc/fstab.tmp', '/etc/fstab')
-			open('/etc/fstab.tmp', 'w').writelines([l for l in open('/etc/fstab').readlines() if self.device_uuid not in l])
+			file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device_uuid not in l])
 			rename('/etc/fstab.tmp', '/etc/fstab')
-			with open('/etc/fstab', 'a') as out:
-				line = self.device_uuid + '\t' + self.mountp + '\t' + self.device_type + '\tdefaults\t0 0\n'
-				out.write(line)
+			out = open('/etc/fstab', 'a')
+			line = self.device_uuid + '\t' + self.mountp + '\t' + self.device_type
+			out.write(line)
+			out.close()
 
 	def restartBox(self, answer):
 		if answer is True:
