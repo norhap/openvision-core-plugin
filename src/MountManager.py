@@ -305,11 +305,11 @@ class VISIONDevicesPanel(Screen):
 		self.device_uuid = 'UUID=' + result.split('UUID=')[1].split(' ')[0].replace('"', '')
 		if not path.exists(self.mountp):
 			mkdir(self.mountp, 0755)
-		file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if '/media/hdd' not in l])
+		open('/etc/fstab.tmp', 'w').writelines([l for l in open('/etc/fstab').readlines() if '/media/hdd' not in l])
 		rename('/etc/fstab.tmp', '/etc/fstab')
-		file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device not in l])
+		open('/etc/fstab.tmp', 'w').writelines([l for l in open('/etc/fstab').readlines() if self.device not in l])
 		rename('/etc/fstab.tmp', '/etc/fstab')
-		file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device_uuid not in l])
+		open('/etc/fstab.tmp', 'w').writelines([l for l in open('/etc/fstab').readlines() if self.device_uuid not in l])
 		rename('/etc/fstab.tmp', '/etc/fstab')
 		out = open('/etc/fstab', 'a')
 		line = self.device_uuid + '\t/media/hdd\tauto\tdefaults\t0 0\n'
@@ -439,9 +439,9 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 
 			if not path.exists(self.mountp):
 				mkdir(self.mountp, 0755)
-			file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device not in l])
+			open('/etc/fstab.tmp', 'w').writelines([l for l in open('/etc/fstab').readlines() if self.device not in l])
 			rename('/etc/fstab.tmp', '/etc/fstab')
-			file('/etc/fstab.tmp', 'w').writelines([l for l in file('/etc/fstab').readlines() if self.device_uuid not in l])
+			open('/etc/fstab.tmp', 'w').writelines([l for l in open('/etc/fstab').readlines() if self.device_uuid not in l])
 			rename('/etc/fstab.tmp', '/etc/fstab')
 			out = open('/etc/fstab', 'a')
 			line = self.device_uuid + '\t' + self.mountp + '\t' + self.device_type
