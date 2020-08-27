@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-PluginLanguageDomain = "StartWizard"
 from Components.Language import language
 from enigma import eEPGCache, eDVBDB
 from xml.dom import minidom
@@ -35,11 +34,29 @@ from RecordTimer import RecordTimerEntry, AFTEREVENT
 from ServiceReference import ServiceReference
 from timer import TimerEntry
 import gettext
+from . import _, PluginLanguageDomain
 
 mountstate = False
 mounthost = None
 MAX_THREAD_COUNT = 40
 timerinstance = None
+
+PluginLanguageDomain = "Vision"
+PluginLanguagePath = "SystemPlugins/Vision/locale"
+
+def localeInit():
+	lang = language.getLanguage()[:2]
+	os.environ["LANGUAGE"] = lang
+	gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
+
+def _(txt):
+	t = gettext.dgettext(PluginLanguageDomain, txt)
+	if t == txt:
+		t = gettext.gettext(txt)
+	return t
+
+localeInit()
+language.addCallback(localeInit)
 
 config.ipboxclient = ConfigSubsection()
 config.ipboxclient.host = ConfigText(default = "", fixed_size = False)
@@ -54,17 +71,6 @@ config.ipboxclient.scheduletime = ConfigClock(default = 0) # 1:00
 config.ipboxclient.repeattype = ConfigSelection(default = "daily", choices = [("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
 config.ipboxclient.mounthdd = ConfigYesNo(default = False)
 config.ipboxclient.remotetimers = ConfigYesNo(default = False)
-
-def localeInit():
-	lang = language.getLanguage()[:2]
-	os.environ["LANGUAGE"] = lang
-	gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
-
-def _(txt):
-	t = gettext.dgettext(PluginLanguageDomain, txt)
-	if t == txt:
-		t = gettext.gettext(txt)
-	return t
 
 
 def getValueFromNode(event, key):
@@ -532,7 +538,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 		self.setTitle(_('Vision Client Mode Box'))
 
 		self["VKeyIcon"] = Boolean(False)
-		self["text"] = StaticText(_('NOTE: For remote HDD feature require NFS service installed on server box.'))
+		self["text"] = StaticText(_('Important: For remote HDD feature require NFS service installed on server box.'))
 		self["key_red"] = Button(_('Cancel'))
 		self["key_green"] = Button(_('Save'))
 		self["key_yellow"] = Button(_('Scan'))
@@ -602,7 +608,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 		mount = ClientModeBoxMount(self.session)
 		mount.remount()
 
-		self.messagebox = self.session.open(MessageBox, _('Please wait while download is in progress.\nNOTE: If you have parental control enabled on remote box, the local settings will be overwritten.'), MessageBox.TYPE_INFO, enable_input = False)
+		self.messagebox = self.session.open(MessageBox, _('Please wait while download is in progress.\nNote: If you have parental control enabled on remote box, the local settings will be overwritten.'), MessageBox.TYPE_INFO, enable_input = False)
 		self.timer = eTimer()
 		self.timer.callback.append(self.download)
 		self.timer.start(100)
@@ -934,7 +940,7 @@ class ClientModeBoxAbout(Screen):
 		about = "Open Vision""\n"
 
 		about += "Vision Client Mode Box\n\n"
-		about += "If you want to exit Client Mode and have a backup with your original settings, you can restore from the blue button on Vision Backup Manager."
+		about += "If you want to exit Client Mode and have a backup with your original settings, you can restore from blue button on Vision Backup Manager."
 
 		self['about'] = Label(about)
 		self["actions"] = ActionMap(["SetupActions"],

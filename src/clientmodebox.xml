@@ -1,38 +1,38 @@
 <wizard>
 		<step id="welcome">
-			<text value="Bienvenido. Para configurar pulse Menu.\n\nEste asistente le ayudara a configurar su Receptor." />
+			<text value="Welcome. For Setup press Menu.\n\nThis Wizard will help you to configure your Box." />
 			<list>
-				<listentry caption="Buscar un receptor servidor o pulse Menu para configurar." step="scan" />
-				<listentry caption="Terminar este Asistente" step="abort" />
+				<listentry caption="Scan for a server. For Setup press Menu." step="scan" />
+				<listentry caption="Abort this Wizard" step="abort" />
 			</list>
 			<code>
 			</code>
 		</step>
 
 		<step id="scan" nextstep="choose">
-			<text value="Espere mientras el escaneo esta en progreso.\nEsta operacion puede tardar un poco." />
+			<text value="Please wait while scan is in progress.\nThis operation may take a while." />
 			<code>
 self.scan()
 			</code>
 		</step>
-		
+
 		<step id="choose">
-			<text value="Elija el receptor encontrado" />
+			<text value="Choose your main device. For Setup press Menu." />
 			<list type="dynamic" source="getScanList" evaluation="selectionMade" />
 			<code>
 			</code>
 		</step>
 
 		<step id="download" nextstep="end">
-			<text value="Espere mientras la descarga esta en curso.\nNOTA: Si tiene habilitado el control parental en el receptor servidor, la configuracion local se sobreescribira." />
+			<text value="Please wait while download is in progress.\nNOTE: If you have parental control enabled on remote box, the local settings will be overwritten." />
 			<code>
 self.download()
 			</code>
 		</step>
-		
+
 		<step id="abort">
-			<text value="Su Receptor no esta configurado.Presione OK para cerrar este asistente." />
-			<text value="Presione OK para cerrar este asistente." />
+			<text value="Your Box is not configured.Please press OK to close this Wizard." />
+			<text value="Please press OK to close this Wizard." />
 			<code>
 config.ipboxclient.firstconf.value = True
 config.ipboxclient.firstconf.save()
@@ -43,27 +43,27 @@ self.close()
 		</step>
 
 		<step id="nodevices">
-			<text value="No se encontraron receptores.\nPresiona OK para cerrar este asistente." />
+			<text value="No devices found! Sorry, we can't configure your Box right now.\nPlease press OK to close this Wizard." />
 			<list>
-				<listentry caption="Intenta Escanear de Nuevo" step="scan" />
-				<listentry caption="Terminar este Asistente" step="abort" />
+				<listentry caption="Try to scan again" step="scan" />
+				<listentry caption="Abort this Wizard" step="abort" />
 			</list>
 			<code>
 			</code>
 		</step>
-		
+
 		<step id="nodownload">
-			<text value="No se pueden descargar datos Lo sentimos, no podemos configurar su receptor en este momento.\nPor favor pulsa OK para salir de este asistente." />
+			<text value="Cannot download data! Sorry, we can't configure your Box right now.\nPlease press OK to close this Wizard." />
 			<list>
-				<listentry caption="Intenta Escanear de Nuevo" step="download" />
-				<listentry caption="Terminar este Asistente" step="abort" />
+				<listentry caption="Try to download again" step="download" />
+				<listentry caption="Abort this Wizard" step="abort" />
 			</list>
 			<code>
 			</code>
 		</step>
-		
+
 		<step id="end">
-			<text value="Gracias por utilizar el asistente. Su Receptor ahora esta configurado.\nPresiona OK para continuar." />
+			<text value="Thank you for using the wizard. Your Box is now configured.\nPlease press OK to continue." />
 			<code>
 			</code>
 		</step>
