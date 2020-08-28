@@ -10,21 +10,21 @@
 		</step>
 
 		<step id="scan" nextstep="choose">
-			<text value="Please wait while scan is in progress.\nThis operation may take a while." />
+			<text value="Please wait while scan is in progress..." />
 			<code>
 self.scan()
 			</code>
 		</step>
 
 		<step id="choose">
-			<text value="Choose your main device. For Setup press Menu." />
+			<text value="Choose your main device, remember remote HDD must be mounted /media/hdd, for Setup press Menu." />
 			<list type="dynamic" source="getScanList" evaluation="selectionMade" />
 			<code>
 			</code>
 		</step>
 
 		<step id="download" nextstep="end">
-			<text value="Please wait while download is in progress.\nNOTE: If you have parental control enabled on remote box, the local settings will be overwritten." />
+			<text value="Please wait..." />
 			<code>
 self.download()
 			</code>
@@ -43,7 +43,7 @@ self.close()
 		</step>
 
 		<step id="nodevices">
-			<text value="No devices found! Sorry, we can't configure your Box right now.\nPlease press OK to close this Wizard." />
+			<text value="No receivers found, we cannot configure your receiver, press OK to close this wizard."/>
 			<list>
 				<listentry caption="Try to scan again" step="scan" />
 				<listentry caption="Abort this Wizard" step="abort" />
@@ -53,7 +53,7 @@ self.close()
 		</step>
 
 		<step id="nodownload">
-			<text value="Cannot download data! Sorry, we can't configure your Box right now.\nPlease press OK to close this Wizard." />
+			<text value="Cannot download data, we can't configure your Box, please press OK to close this Wizard." />
 			<list>
 				<listentry caption="Try to download again" step="download" />
 				<listentry caption="Abort this Wizard" step="abort" />
@@ -63,7 +63,7 @@ self.close()
 		</step>
 
 		<step id="end">
-			<text value="Thank you for using the wizard. Your Box is now configured.\nPlease press OK to close this Wizard or Menu for Setup." />
+			<text value="Your Box is now configured, please press OK to close this Wizard or Menu for Setup." />
 			<code>
 			</code>
 		</step>
