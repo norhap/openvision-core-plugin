@@ -1321,3 +1321,6 @@ msgid ""
 msgstr ""
 "Gracias por utilizar el asistente. Su receptor está ahora configurado.\n"
 "Presione OK para salir."
+
+msgid "Download completed"
+msgstr "Descarga completada"
