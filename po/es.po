@@ -1211,7 +1211,7 @@ msgid "Password"
 msgstr "Contraseña"
 
 msgid "Use remote HDD"
-msgstr "Usar HDD remoto"
+msgstr "Usar HDD servidor"
 
 msgid "Use remote timers"
 msgstr "Usar temporizador remoto"
@@ -1248,13 +1248,13 @@ msgid "About"
 msgstr "Información"
 
 msgid "If you want to exit Client Mode and have a backup with your original settings, you can restore from blue button on Vision Backup Manager."
-msgstr "Si desea salir del modo cliente y tener una copia de seguridad con su configuración original, puede restaurar desde el botón azul en Vision Backup Manager."
+msgstr "Si desea salir del modo cliente y tiene una copia de seguridad con su configuración original, puede restaurar desde el botón azul en Vision Backup Manager."
 
 msgid "Scan for a server"
 msgstr "Buscar un Servidor"
 
 msgid "Choose your main device, remember remote HDD must be mounted /media/hdd, for Setup press Menu."
-msgstr "Elija su receptor servidor, recuerde HDD servidor debe estar montado como /media/hdd, para Configuración, presione Menú."
+msgstr "Elija su receptor servidor, recuerde HDD servidor debe estar montado como /media/hdd, para Configuración presione Menú."
 
 msgid "important, remote HDD must be mounted as /media/hdd"
 msgstr "importante, remoto HDD debe estar montado como /media/hdd"
@@ -1285,6 +1285,9 @@ msgstr "Intenta descargar de nuevo"
 
 msgid "Your Box is now configured, please press OK to close this Wizard or Menu for Setup."
 msgstr "Su receptor está configurado, presione OK para cerrar este Asistente o Menú para Configuración."
+
+msgid "Please wait..."
+msgstr "Espere por favor..."
 
 msgid "Download completed"
 msgstr "Descarga completada"
