@@ -53,7 +53,6 @@ config.ipboxclient.repeattype = ConfigSelection(default = "daily", choices = [("
 config.ipboxclient.mounthdd = ConfigYesNo(default = False)
 config.ipboxclient.remotetimers = ConfigYesNo(default = False)
 
-
 def getValueFromNode(event, key):
 	tmp = event.getElementsByTagName(key)[0].firstChild
 	if (tmp):
