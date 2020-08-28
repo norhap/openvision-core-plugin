@@ -1,6 +1,6 @@
 <wizard>
 		<step id="welcome">
-			<text value="\n\n" />
+			<text value="For Setup press Menu." />
 			<list>
 				<listentry caption="Scan for a server" step="scan" />
 				<listentry caption="Abort this Wizard" step="abort" />

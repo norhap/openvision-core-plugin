@@ -1308,3 +1308,6 @@ msgstr ""
 
 msgid "Download completed"
 msgstr "Descarga completada"
+
+msgid "For Setup press Menu."
+msgstr "Para Configurar pulse Menu."
