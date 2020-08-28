@@ -2,7 +2,7 @@
 		<step id="welcome">
 			<text value="Welcome. For Setup press Menu.\n\nThis Wizard will help you to configure your Box." />
 			<list>
-				<listentry caption="Scan for a server. For Setup press Menu." step="scan" />
+				<listentry caption="Scan for a server" step="scan" />
 				<listentry caption="Abort this Wizard" step="abort" />
 			</list>
 			<code>

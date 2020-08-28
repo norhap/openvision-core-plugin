@@ -171,8 +171,11 @@ msgstr "Copia de seguridad realizada"
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Copia de seguridad fallida - ej. destino de copia de seguridad incorrecto o no queda espacio en el dispositivo de copia de seguridad."
 
-msgid "Backup location"
-msgstr "Ubicación de las copias de seguridad"
+msgid "Backup Location"
+msgstr "Localización Copias Seguridad"
+
+msgid "Folder Prefix"
+msgstr "Prefijo Copia"
 
 msgid "Backup manager"
 msgstr "Administrador de copias configuración"
@@ -626,7 +629,7 @@ msgstr "Ejecutar scripts de shell."
 msgid "Save"
 msgstr "Guardar"
 
-msgid "Schedule backups"
+msgid "Schedule Backups"
 msgstr "Programar copias de seguridad"
 
 msgid "Script runner"
@@ -671,8 +674,8 @@ msgstr "Elige el intervalo en minutos."
 msgid "Set the repeat interval of backup schedule."
 msgstr "Elige el intervalo de las copias de seguridad."
 
-msgid "Set the time of backup to start."
-msgstr "Elige la hora de la copia de seguridad."
+msgid "Time of Backup to start in minutes"
+msgstr "Tiempo para realizar la copia en minutos"
 
 msgid "Setting up..."
 msgstr "Configurando..."
@@ -1189,8 +1192,23 @@ msgstr "Use Administrador de Montajes y pulse verde"
 msgid "Select what you want to do"
 msgstr "Selecciona lo que quieras hacer"
 
-msgid "NOTE: the remote HDD feature require samba installed on server box."
-msgstr "NOTA: la función de disco duro remoto requiere que samba esté instalado en el receptor servidor."
+msgid "Vision Client Mode Box"
+msgstr "Vision Receptor Modo Cliente"
+
+msgid "Important: For remote HDD feature require NFS service installed on server box."
+msgstr "Importante: La función disco duro del servidor requiere que el servicio NFS esté instalado en el receptor servidor."
+
+msgid "Streaming port"
+msgstr "Puerto Streaming"
+
+msgid "Authentication"
+msgstr "Autentificación"
+
+msgid "Default username (root)"
+msgstr "Nombre Usuario por defecto (root)"
+
+msgid "Password"
+msgstr "Contraseña"
 
 msgid "Use remote HDD"
 msgstr "Usar HDD remoto"
@@ -1204,14 +1222,43 @@ msgstr "Programar sincronización"
 msgid "Time of sync to start"
 msgstr "Hora de inicio de la sincronización"
 
-msgid "Vision Client Mode Box"
-msgstr "Vision Receptor Modo Cliente"
+msgid "Do you want to scan for a server?"
+msgstr "Quiere buscar un servidor?"
+
+msgid ""
+"Please wait while download is in progress.\n"
+"Note: If you have parental control enabled on remote box, the local settings will be overwritten."
+msgstr ""
+"Espere mientras la descarga está en curso.\n"
+"Nota: Si tiene habilitado el control parental en el receptor, se sobrescribirá la configuración local."
+
+msgid ""
+"Please wait while scan is in progress.\n"
+"This operation may take a while"
+msgstr ""
+"Espere mientras la búsqueda está en progreso.\n"
+"Esta operación puede tardar un poco"
+
+msgid "To apply new settings, you need to restart GUI your STB. Do you want restart it now?"
+msgstr "Para aplicar nuevas configuraciones, necesita reiniciar la GUI de su receptor. ¿Quieres reiniciarlo ahora?"
+
+msgid "Cannot download data. Please check your configuration"
+msgstr "No se pueden descargar datos. Por favor revise su configuración"
+
+msgid "Client Mode Box: If you want to exit Client Mode and have a backup with your original settings. You can restore from blue button on Vision Backup Manager."
+msgstr "Receptor Modo Cliente: Si desea salir del modo cliente y tener una copia de seguridad con su configuración original. Puede restaurar desde el botón azul en Vision Backup Manager."
+
+msgid "Scan"
+msgstr "Búsqueda"
+
+msgid "About"
+msgstr "Información"
 
 msgid "If you want to exit Client Mode and have a backup with your original settings, you can restore from blue button on Vision Backup Manager."
 msgstr "Si desea salir del modo cliente y tener una copia de seguridad con su configuración original, puede restaurar desde el botón azul en Vision Backup Manager."
 
-msgid "Choose your main device. For Setup press Menu."
-msgstr "Elija su Receptor Servidor. Para configurar pulse Menu."
+msgid "Scan for a server"
+msgstr "Buscar un Servidor"
 
 msgid ""
 "Welcome. For Setup press Menu.\n"
@@ -1221,3 +1268,56 @@ msgstr ""
 "Bienvenido. Para configurar pulse Menu.\n"
 "\n"
 "Este asistente le ayudará a configurar su receptor."
+
+msgid ""
+"Please wait while scan is in progress.\n"
+"This operation may take a while."
+msgstr ""
+"Espere mientras la búsqueda está en progreso.\n"
+"Esta operación puede tardar unos minutos."
+
+msgid "Choose your main device. For Setup press Menu."
+msgstr "Elija su receptor servidor. Para Configuración, presione Menú."
+
+msgid ""
+"Please wait while download is in progress.\n"
+"NOTE: If you have parental control enabled on remote box, the local settings will be overwritten."
+msgstr ""
+"Espere mientras la descarga está en curso.\n"
+"NOTA: Si tiene habilitado el control parental el receptor servidor, la configuración local se sobrescribirá."
+
+msgid "Your Box is not configured.Please press OK to close this Wizard."
+msgstr "Su Receptor no está configurado. Presione OK para cerrar este Asistente."
+
+msgid "Please press OK to close this Wizard."
+msgstr "Presione OK para cerrar este Asistente."
+
+msgid ""
+"No devices found! Sorry, we can't configure your Box right now.\n"
+"Please press OK to close this Wizard."
+msgstr ""
+"No se encontraron receptores servidores, no podemos configurar su receptor en este momento.\n"
+"Presione OK para cerrar este asistente."
+
+msgid "Try to scan again"
+msgstr "Intenta buscar de nuevo"
+
+msgid "Abort this Wizard"
+msgstr "Cerrar este Asistente"
+
+msgid ""
+"Cannot download data! Sorry, we can't configure your Box right now.\n"
+"Please press OK to close this Wizard."
+msgstr ""
+"No se pueden descargar datos! Lo sentimos, no podemos configurar su receptor en este momento.\n"
+"Presione OK para cerrar este asistente."
+
+msgid "Try to download again"
+msgstr "Intenta descargar de nuevo"
+
+msgid ""
+"Thank you for using the wizard. Your Box is now configured.\n"
+"Please press OK to continue."
+msgstr ""
+"Gracias por utilizar el asistente. Su receptor está ahora configurado.\n"
+"Presione OK para continuar."

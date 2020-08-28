@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-from Components.Language import language
+from Screens.WizardLanguage import WizardLanguage
 from enigma import eEPGCache, eDVBDB
 from xml.dom import minidom
 import urllib
@@ -13,7 +13,6 @@ from time import localtime, time, strftime, mktime, ctime
 import socket
 import threading
 from Components.Console import Console
-from Screens.Wizard import Wizard
 from Components.Pixmap import Pixmap
 from Components.Sources.Boolean import Boolean
 from Tools import Directories
@@ -33,30 +32,12 @@ from Components.TimerSanityCheck import TimerSanityCheck
 from RecordTimer import RecordTimerEntry, AFTEREVENT
 from ServiceReference import ServiceReference
 from timer import TimerEntry
-import gettext
 from . import _, PluginLanguageDomain
 
 mountstate = False
 mounthost = None
 MAX_THREAD_COUNT = 40
 timerinstance = None
-
-PluginLanguageDomain = "Vision"
-PluginLanguagePath = "SystemPlugins/Vision/locale"
-
-def localeInit():
-	lang = language.getLanguage()[:2]
-	os.environ["LANGUAGE"] = lang
-	gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
-
-def _(txt):
-	t = gettext.dgettext(PluginLanguageDomain, txt)
-	if t == txt:
-		t = gettext.gettext(txt)
-	return t
-
-localeInit()
-language.addCallback(localeInit)
 
 config.ipboxclient = ConfigSubsection()
 config.ipboxclient.host = ConfigText(default = "", fixed_size = False)
@@ -80,19 +61,20 @@ def getValueFromNode(event, key):
 
 	return ""
 
-class ClientModeBoxWizard(Wizard):
+class ClientModeBoxWizard(WizardLanguage):
 
 	skin = """
-		<screen position="0,0" size="720,576" flags="wfNoBorder" >
+		<screen name="ClientModeBoxWizard" position="center,center" size="720,576" title="ClientModeBoxWizard" >
 			<widget name="text"
-					position="153,40"
-					size="340,300"
-					font="Regular;22" />
+					position="65,40"
+					size="640,100"
+					font="Regular;24" />
 
 			<widget source="list"
 					render="Listbox"
-					position="53,340"
-					size="440,180"
+					position="65,160"
+					size="640,220"
+					font="Regular;24"
 					scrollbarMode="showOnDemand" >
 
 				<convert type="StringList" />
@@ -100,94 +82,45 @@ class ClientModeBoxWizard(Wizard):
 			</widget>
 
 			<widget name="config"
-					position="53,340"
+					position="65,160"
 					zPosition="1"
-					size="440,180"
+					size="440,220"
 					transparent="1"
+					font="Regular;24"
 					scrollbarMode="showOnDemand" />
+					
+			<widget name="step"
+					position="65,470"
+					zPosition="1"
+					size="440,40"
+					transparent="1" />
+					
+			<widget name="stepslider"
+					borderWidth="1"
+					position="65,468"
+					zPosition="1"
+					size="440,40"
+					transparent="1" />
 
 			<ePixmap pixmap="skin_default/buttons/button_red.png"
-					 position="40,225"
+					 position="35,523"
 					 zPosition="0"
 					 size="15,16"
 					 transparent="1"
-					 alphatest="on" />
+					 alphatest="blend" />
 
 			<widget name="languagetext"
-					position="55,225"
-					size="95,30"
+					position="65,520"
+					size="300,30"
 					font="Regular;18" />
-
-			<widget name="wizard"
-					pixmap="skin_default/wizard.png"
-					position="40,50"
-					zPosition="10"
-					size="110,174"
-					alphatest="on" />
-
-			<widget name="rc"
-					pixmaps="skin_default/rc0.png,skin_default/rc1.png,skin_default/rc2.png"
-					position="500,50"
-					zPosition="10"
-					size="154,500"
-					alphatest="on" />
-
-			<widget name="arrowdown"
-					pixmap="skin_default/arrowdown.png"
-					position="-100,-100"
-					zPosition="11"
-					size="37,70"
-					alphatest="on" />
-
-			<widget name="arrowdown2"
-					pixmap="skin_default/arrowdown.png"
-					position="-100,-100"
-					zPosition="11"
-					size="37,70"
-					alphatest="on" />
-
-			<widget name="arrowup"
-					pixmap="skin_default/arrowup.png"
-					position="-100,-100"
-					zPosition="11"
-					size="37,70"
-					alphatest="on" />
-
-			<widget name="arrowup2"
-					pixmap="skin_default/arrowup.png"
-					position="-100,-100"
-					zPosition="11"
-					size="37,70"
-					alphatest="on" />
-
-			<widget source="VKeyIcon"
-					render="Pixmap"
-					pixmap="skin_default/buttons/key_text.png"
-					position="40,260"
-					zPosition="0"
-					size="35,25"
-					transparent="1"
-					alphatest="on" >
-
-				<convert type="ConditionalShowHide" />
-
-			</widget>
-
-			<widget name="HelpWindow"
-					pixmap="skin_default/buttons/key_text.png"
-					position="310,435"
-					zPosition="1"
-					size="1,1"
-					transparent="1"
-					alphatest="on" />
 
 		</screen>"""
 
 	def __init__(self, session):
 		self.xmlfile = Directories.resolveFilename(Directories.SCOPE_PLUGINS, "SystemPlugins/Vision/clientmodebox.xml")
-		Wizard.__init__(self, session)
+		WizardLanguage.__init__(self, session)
 		self.setTitle(_('Vision Client Mode Box'))
-		self.skinName = ["StartWizard"]
+		self.skinName = ["ClientModeBoxWizard"]
 		self['myactions'] = ActionMap(["MenuActions"],
 									  {
 									  'menu': self.Menu,
@@ -577,7 +510,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 		self.list.append(getConfigListEntry(_("Streaming port"), config.ipboxclient.streamport))
 		self.list.append(getConfigListEntry(_("Authentication"), config.ipboxclient.auth))
 		if config.ipboxclient.auth.value:
-			self.list.append(getConfigListEntry(_("Username"), config.ipboxclient.username))
+			self.list.append(getConfigListEntry(_("Default username (root)"), config.ipboxclient.username))
 			self.list.append(getConfigListEntry(_("Password"), config.ipboxclient.password))
 		self.list.append(getConfigListEntry(_("Use remote HDD"), config.ipboxclient.mounthdd))
 		self.list.append(getConfigListEntry(_("Use remote timers"), config.ipboxclient.remotetimers))
@@ -937,12 +870,8 @@ class ClientModeBoxAbout(Screen):
 		Screen.__init__(self, session)
 
 		self.setTitle(_('Vision Client Mode Box'))
-		about = "Open Vision""\n"
 
-		about += "Vision Client Mode Box\n\n"
-		about += "If you want to exit Client Mode and have a backup with your original settings, you can restore from blue button on Vision Backup Manager."
-
-		self['about'] = Label(about)
+		self['about'] =Label(_("Client Mode Box: If you want to exit Client Mode and have a backup with your original settings. You can restore from blue button on Vision Backup Manager."))
 		self["actions"] = ActionMap(["SetupActions"],
 		{
 			"cancel": self.keyCancel
