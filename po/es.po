@@ -1232,13 +1232,6 @@ msgstr ""
 "Espere mientras la descarga está en curso.\n"
 "Nota: Si tiene habilitado el control parental en el receptor, se sobrescribirá la configuración local."
 
-msgid ""
-"Please wait while scan is in progress.\n"
-"This operation may take a while"
-msgstr ""
-"Espere mientras la búsqueda está en progreso.\n"
-"Esta operación puede tardar un poco"
-
 msgid "To apply new settings, you need to restart GUI your STB. Do you want restart it now?"
 msgstr "Para aplicar nuevas configuraciones, necesita reiniciar la GUI de su receptor. ¿Quieres reiniciarlo ahora?"
 
@@ -1259,22 +1252,6 @@ msgstr "Si desea salir del modo cliente y tener una copia de seguridad con su co
 
 msgid "Scan for a server"
 msgstr "Buscar un Servidor"
-
-msgid ""
-"Welcome. For Setup press Menu.\n"
-"\n"
-"This Wizard will help you to configure your Box."
-msgstr ""
-"Bienvenido. Para configurar pulse Menu.\n"
-"\n"
-"Este asistente le ayudará a configurar su receptor."
-
-msgid ""
-"Please wait while scan is in progress.\n"
-"This operation may take a while."
-msgstr ""
-"Espere mientras la búsqueda está en progreso.\n"
-"Esta operación puede tardar unos minutos."
 
 msgid "Choose your main device. For Setup press Menu."
 msgstr "Elija su receptor servidor. Para Configuración, presione Menú."
@@ -1306,6 +1283,13 @@ msgid "Abort this Wizard"
 msgstr "Cerrar este Asistente"
 
 msgid ""
+"Please wait while scan is in progress.\n"
+"This operation may take a while."
+msgstr ""
+"Espere mientras la búsqueda está en progreso.\n"
+"Esta operación puede tardar unos minutos."
+
+msgid ""
 "Cannot download data! Sorry, we can't configure your Box right now.\n"
 "Please press OK to close this Wizard."
 msgstr ""
@@ -1317,10 +1301,10 @@ msgstr "Intenta descargar de nuevo"
 
 msgid ""
 "Thank you for using the wizard. Your Box is now configured.\n"
-"Please press OK to continue."
+"Please press OK to close this Wizard or Menu for Setup."
 msgstr ""
 "Gracias por utilizar el asistente. Su receptor está ahora configurado.\n"
-"Presione OK para salir."
+"Presione OK para salir o Menu para configurar."
 
 msgid "Download completed"
 msgstr "Descarga completada"

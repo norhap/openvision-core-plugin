@@ -1,6 +1,6 @@
 <wizard>
 		<step id="welcome">
-			<text value="Welcome. For Setup press Menu.\n\nThis Wizard will help you to configure your Box." />
+			<text value="\n\n" />
 			<list>
 				<listentry caption="Scan for a server" step="scan" />
 				<listentry caption="Abort this Wizard" step="abort" />
@@ -63,7 +63,7 @@ self.close()
 		</step>
 
 		<step id="end">
-			<text value="Thank you for using the wizard. Your Box is now configured.\nPlease press OK to continue." />
+			<text value="Thank you for using the wizard. Your Box is now configured.\nPlease press OK to close this Wizard or Menu for Setup." />
 			<code>
 			</code>
 		</step>
