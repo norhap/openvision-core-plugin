@@ -435,15 +435,6 @@ msgstr "Administrar los puntos de montaje de sus dispositivos."
 msgid "Manage your backups of your settings."
 msgstr "Administrar sus copias de configuración."
 
-msgid "Cannot unmount from the previous device from /media/hdd.\n"
-msgstr "No se puede desmontar del dispositivo anterior desde /media/hdd.\n"
-
-msgid "A record in progress, timeshift or some external tools (like samba, nfsd,transmission and etc) may cause this problem.\n"
-msgstr "Una grabación en progreso, timehift o algunas herramientas externas (como samba, nfsd, transmisión, etc.) pueden causar este problema.\n"
-
-msgid "Please stop this actions/applications and try again!"
-msgstr "Por favor, finaliza estas acciones/aplicaciones y vuelve a intentarlo!"
-
 msgid "Create and flash complete images of your system."
 msgstr "Crea y flashea imágenes completas de su sistema."
 
@@ -789,9 +780,6 @@ msgstr "No hay imagen para borrar."
 msgid "There is no image to flash."
 msgstr "No hay imagen para flashear."
 
-msgid "This device is already mounted as HDD."
-msgstr "Este dispositivo ya está montado como HDD."
-
 msgid "Time of backup to start"
 msgstr "Hora de inicio de la copia de seguridad"
 
@@ -1047,7 +1035,7 @@ msgid "Warning, this device is used for more than one mount point!\n"
 msgstr "Atención, elija las opciones de montaje para este dispositivo!\n"
 
 msgid "Really use and mount %s as HDD ?"
-msgstr "Realmente usar y montar %s como HDD?"
+msgstr "Quiere montar %s como HDD?"
 
 msgid "This Device is already mounted as HDD."
 msgstr "Este dispositivo ya está montado como HDD."
@@ -1294,3 +1282,9 @@ msgstr "Descarga completada"
 
 msgid "For Setup press Menu."
 msgstr "Para Configurar pulse Menu."
+
+msgid "Setup your mounts in Setup mounts or restart your box if you only have one mount after executing this action.\n"
+msgstr "Configura tus mountajes en Configurar montajes o reinicia su receptor si solo tienes una montaje después de ejecutar esta acción."
+
+msgid "To use HDD from red button, mount point to change must be as /media/hdd"
+msgstr "Para usar HDD desde el botón rojo, el punto de montaje para cambiar debe ser /media/hdd"

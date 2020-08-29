@@ -297,7 +297,7 @@ class VISIONDevicesPanel(Screen):
 			moremount = sel[1]
 			adv_title = moremount != "" and _("Warning, this device is used for more than one mount point!\n") or ""
 			message = adv_title + _("Really use and mount %s as HDD ?") % device
-			self.session.open(MessageBox, _("This device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			self.session.open(MessageBox, _("This Device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 
 	def add_fstab(self, result=None, retval=None, extra_args=None):
 		self.device = extra_args[0]
