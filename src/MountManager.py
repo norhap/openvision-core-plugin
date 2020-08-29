@@ -202,7 +202,7 @@ class VISIONDevicesPanel(Screen):
 		self.list = []
 		self['list'] = List(self.list)
 		self["list"].onSelectionChanged.append(self.selectionChanged)
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions"], {'back': self.close, 'green': self.SetupMounts, 'red': self.saveMypoints, 'yellow': self.Unmount, 'blue': self.Mount, "menu": self.close})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions"], {'back': self.close, 'green': self.SetupMounts, 'red': self.saveMypointshdd, 'yellow': self.Unmount, 'blue': self.Mount, "menu": self.close})
 		self.Console = Console()
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.updateList2)
@@ -317,7 +317,7 @@ class VISIONDevicesPanel(Screen):
 		out.close()
 		self.Console.ePopen('mount -a', self.updateList)
 
-	def saveMypoints(self):
+	def saveMypointshdd(self):
 		if len(self['list'].list) < 1: return
 		sel = self['list'].getCurrent()
 		if sel:
@@ -326,7 +326,7 @@ class VISIONDevicesPanel(Screen):
 			parts = des.strip().split('\t')
 			device = parts[2].replace(_("Device: "), '')
 			moremount = sel[1]
-			adv_title = moremount != "" and _("Warning, this device is used for more than one mount point!\n") or ""
+			adv_title = moremount != "" and _("Setup your mounts in Setup mounts or restart your box if you only have one mount after executing this action.\n") or ""
 			message = adv_title + _("Really use and mount %s as HDD ?") % device
 			self.session.openWithCallback(self.saveMypointAnswer, MessageBox, message, MessageBox.TYPE_YESNO)
 
@@ -353,7 +353,7 @@ class VISIONDevicesPanel(Screen):
 				for line in f.readlines():
 					if '/media/hdd' in line:
 						f.close()
-						self.session.open(MessageBox, _("Cannot unmount from the previous device from /media/hdd.\nA record in progress, timeshift or some external tools (like samba, nfsd,transmission and etc) may cause this problem.\nPlease stop this actions/applications and try again!"), MessageBox.TYPE_ERROR)
+						self.session.open(MessageBox, _("To use HDD from red button, mount point to change must be as /media/hdd"), MessageBox.TYPE_ERROR)
 						return
 					else:
 						pass
@@ -444,7 +444,7 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 			open('/etc/fstab.tmp', 'w').writelines([l for l in open('/etc/fstab').readlines() if self.device_uuid not in l])
 			rename('/etc/fstab.tmp', '/etc/fstab')
 			out = open('/etc/fstab', 'a')
-			line = self.device_uuid + '\t' + self.mountp + '\t' + self.device_type
+			line = self.device_uuid + '\t' + self.mountp + '\tauto\tdefaults\t0  0\n'
 			out.write(line)
 			out.close()
 
