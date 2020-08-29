@@ -70,7 +70,7 @@ class MultiBoot(Screen):
 		currentimageslot = getCurrentImage()
 		for x in sorted(imagedict.keys()):
 			if imagedict[x]["imagename"] != _("Empty slot") and x != currentimageslot:
-				list.append(ChoiceEntryComponent('',((_("slot%s - %s ")) % (x, imagedict[x]['imagename']), x)))
+				list.append(ChoiceEntryComponent('',((_("slot%s  %s")) % (x, imagedict[x]['imagename']), x)))
 		self["config"].setList(list)
 
 	def erase(self):

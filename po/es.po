@@ -890,19 +890,22 @@ msgstr "Hay que crear un archivo de intercambio antes de activar autoinicio."
 
 #, python-format
 msgid ""
-"Your %s %s is about to run a backup of your settings and detect your plugins,\n"
+"Your receiver is about to run a backup of your settings and to detect your plugins."
+"\n"
 "Do you want to allow this?"
 msgstr ""
-"Su %s %s está a punto de ejecutar una copia de seguridad de su configuración y detectar sus complementos,\n"
+"Su receptor está a punto de ejecutar una copia de seguridad de su configuración y detectar sus complementos."
+"\n"
 "Quieres permitir esto?"
 
-#, python-format
 msgid ""
-"Your %s %s is about to create a full image backup, this can take about 6 minutes to complete.\n"
+"Your receiver is about to create a full image backup, this can take about 6 minutes to complete."
+"\n"
 "Do you want to allow this?"
 msgstr ""
-"Su %s %s está a punto de crear una copia de seguridad de la imagen completa, esto puede tardar unos 6 minutos en completarse.\n"
-"Quieres permitir esto?"
+"Su receptor está a punto de crear una copia de seguridad de imagen completa, esto puede tardar unos 6 minutos en completarse."
+"\n"
+"Quieres crear una copia ahaora?"
 
 #, python-format
 msgid ""
@@ -1138,11 +1141,11 @@ msgstr "Espere mientras se prepara el flash, después de que la imagen se muestr
 msgid "Select an image to download for %s:"
 msgstr "Seleccione una imagen para descargar para% s:"
 
+msgid "slot%s  %s current image"
+msgstr "slot%s  %s imagen actual"
+
 msgid "Note: slot list does not show current image or empty slots."
 msgstr "Nota: la lista de slots no muestra la imagen actual o los slots vacíos."
-
-msgid "slot%s - %s (current image)"
-msgstr "slot%s - %s (imagen actual)"
 
 msgid "Sorry the feeds are down for maintenance. Please try using Backup manager to restore plugins later."
 msgstr "Lo sentimos, los feeds no funcionan por alguna razón. Intente usar el Administrador de copia de seguridad para restaurar los complementos más adelante."
