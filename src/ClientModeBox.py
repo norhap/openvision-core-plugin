@@ -9,7 +9,7 @@ import urllib2
 import re
 import os
 from Components.Network import iNetwork
-from time import localtime, time, strftime, mktime, ctime
+from time import localtime, time, mktime
 import socket
 import threading
 from Components.Console import Console
@@ -23,7 +23,7 @@ from Screens.Standby import TryQuitMainloop
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.ConfigList import ConfigListScreen
-from Components.config import config, ConfigBoolean, getConfigListEntry, ConfigSubsection, ConfigInteger, ConfigYesNo, ConfigText, ConfigClock, ConfigSelection
+from Components.config import config, getConfigListEntry, ConfigSubsection, ConfigInteger, ConfigYesNo, ConfigText, ConfigClock, ConfigSelection
 from Components.Sources.StaticText import StaticText
 from enigma import eTimer
 from Components.Label import Label
@@ -49,7 +49,7 @@ config.ipboxclient.username = ConfigText(default = "", fixed_size = False)
 config.ipboxclient.password = ConfigText(default = "", fixed_size = False)
 config.ipboxclient.schedule = ConfigYesNo(default = False)
 config.ipboxclient.scheduletime = ConfigClock(default = 0) # 1:00
-config.ipboxclient.repeattype = ConfigSelection(default = "daily", choices = [("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
+config.ipboxclient.repeattype = ConfigSelection(default = "daily", choices = [("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("Monthly"))])
 config.ipboxclient.mounthdd = ConfigYesNo(default = False)
 config.ipboxclient.remotetimers = ConfigYesNo(default = False)
 
@@ -224,13 +224,13 @@ class ClientModeBoxScan:
 		self.session = session
 
 	def scan(self):
-		print("[ClientModeBox] network scan started")
+		print("[ClientModeBox] Network scan started")
 		devices = []
 		for key in iNetwork.ifaces:
 			if iNetwork.ifaces[key]['up']:
 				devices += self.scanNetwork(iNetwork.ifaces[key]['ip'], iNetwork.ifaces[key]['netmask'])
 
-		print("[ClientModeBox] network scan completed. Found " + str(len(devices)) + " devices")
+		print("[ClientModeBox] Network scan completed. Found " + str(len(devices)) + " devices")
 		return devices
 
 	def ipRange(self, start_ip, end_ip):
@@ -264,7 +264,7 @@ class ClientModeBoxScan:
 		return None
 
 	def scanNetwork(self, ipaddress, subnet):
-		print("[ClientModeBox] scan interface with ip address", ipaddress, "and subnet", subnet)
+		print("[ClientModeBox] Scan interface with IP address", ipaddress, "and subnet", subnet)
 		cidr = self.getNetSize(subnet)
 
 		startip = []
@@ -277,13 +277,13 @@ class ClientModeBoxScan:
 			endip[3 - i/8] = endip[3 - i/8] + (1 << (i % 8))
 
 		if startip[0] == 0:
-			print("[ClientModeBox] your start ip address seem invalid. Skip interface scan.")
+			print("[ClientModeBox] Your start IP address seems invalid. Skip interface scan.")
 			return []
 
 		startip[3] += 1
 		endip[3] -= 1
 
-		print("[ClientModeBox] scan from ip", startip, "to", endip)
+		print("[ClientModeBox] Scan from IP", startip, "to", endip)
 
 		threads = []
 		threads_completed = []
@@ -304,13 +304,13 @@ class ClientModeBoxScan:
 		devices = []
 		for scanhost in threads_completed:
 			if scanhost.isopen:
-				print("[ClientModeBox] device with ip " + scanhost.ipaddress + " listen on port 80, check if it's enigma2")
+				print("[ClientModeBox] Device with IP " + scanhost.ipaddress + " listen on port 80, check if it's enigma2")
 				boxname = self.getBoxName(scanhost.ipaddress)
 				if boxname:
-					print("[ClientModeBox] found " + boxname + " on ip " + scanhost.ipaddress)
+					print("[ClientModeBox] Found " + boxname + " on ip " + scanhost.ipaddress)
 					devices.append((str(boxname), scanhost.ipaddress))
 				else:
-					print("[ClientModeBox] no enigma2 found. Skip host")
+					print("[ClientModeBox] No enigma2 found. Skip host")
 		return devices
 
 class ClientModeBoxMount:
@@ -643,25 +643,25 @@ class ClientModeBoxDownloader:
 		baseurl += str(config.ipboxclient.port.value)
 		streamingurl += str(config.ipboxclient.streamport.value)
 
-		print("[ClientModeBox] web interface url: " + baseurl)
-		print("[ClientModeBox] streaming url: " + streamingurl)
+		print("[ClientModeBox] Web interface URL: " + baseurl)
+		print("[ClientModeBox] Streaming URL: " + streamingurl)
 
 		for stype in [ "tv", "radio" ]:
-			print("[ClientModeBox] download " + stype + " bouquets from " + baseurl)
+			print("[ClientModeBox] Download " + stype + " bouquets from " + baseurl)
 			bouquets = self.downloadBouquets(baseurl, stype)
-			print("[ClientModeBox] save " + stype + " bouquets from " + streamingurl)
+			print("[ClientModeBox] Save " + stype + " bouquets from " + streamingurl)
 			self.saveBouquets(bouquets, streamingurl, '/etc/enigma2/bouquets.' + stype)
 
-		print("[ClientModeBox] reload bouquets")
+		print("[ClientModeBox] Reload bouquets")
 		self.reloadBouquets()
 
-		print("[ClientModeBox] sync EPG")
+		print("[ClientModeBox] Sync EPG")
 		self.downloadEPG(baseurl)
 
-		print("[ClientModeBox] sync parental control")
+		print("[ClientModeBox] Sync parental control")
 		self.downloadParentalControl(baseurl)
 
-		print("[ClientModeBox] sync is done!")
+		print("[ClientModeBox] Sync is done!")
 
 	def getSetting(self, baseurl, key):
 		httprequest = urllib2.urlopen(baseurl + '/web/settings')
@@ -711,7 +711,7 @@ class ClientModeBoxDownloader:
 	def downloadBouquets(self, baseurl, stype):
 		bouquets = []
 		httprequest = urllib2.urlopen(baseurl + '/web/bouquets?stype=' + stype)
-		print("[ClientModeBox] download bouquets from " + baseurl + '/web/bouquets?stype=' + stype)
+		print("[ClientModeBox] Download bouquets from " + baseurl + '/web/bouquets?stype=' + stype)
 		xmldoc = minidom.parseString(httprequest.read())
 		services = xmldoc.getElementsByTagName('e2service')
 		for service in services:
@@ -746,7 +746,7 @@ class ClientModeBoxDownloader:
 	def saveBouquets(self, bouquets, streamingurl, destinationfile):
 		bouquetsfile = open(destinationfile, "w")
 		bouquetsfile.write("#NAME Bouquets (TV)" + "\n")
-		print("[ClientModeBox] streamurl " + streamingurl)
+		print("[ClientModeBox] Stream URL " + streamingurl)
 		for bouquet in bouquets:
 			pattern = r'"([A-Za-z0-9_\./\\-]*)"'
 			m = re.search(pattern, bouquet['reference'])
@@ -789,65 +789,65 @@ class ClientModeBoxDownloader:
 		print("[ClientModeBox] reading remote EPG location ...")
 		filename = self.getEPGLocation(baseurl)
 		if not filename:
-			print("[ClientModeBox] error downloading remote EPG location. Skip EPG sync.")
+			print("[ClientModeBox] Error downloading remote EPG location. Skip EPG sync.")
 			return
 
-		print("[ClientModeBox] remote EPG found at " + filename)
+		print("[ClientModeBox] Remote EPG found at " + filename)
 
-		print("[ClientModeBox] dump remote EPG to epg.dat")
+		print("[ClientModeBox] Dump remote EPG to epg.dat")
 		httprequest = urllib2.urlopen(baseurl + '/web/saveepg')
 
 		httprequest = urllib2.urlopen(baseurl + '/file?action=download&file=' + urllib.quote(filename))
 		data = httprequest.read()
 		if not data:
-			print("[ClientModeBox] cannot download remote EPG. Skip EPG sync.")
+			print("[ClientModeBox] Cannot download remote EPG. Skip EPG sync.")
 			return
 
 		try:
 			epgfile = open(config.misc.epgcache_filename.value, "w")
 		except Exception:
-			print("[ClientModeBox] cannot save EPG. Skip EPG sync.")
+			print("[ClientModeBox] Cannot save EPG. Skip EPG sync.")
 			return
 
 		epgfile.write(data)
 		epgfile.close()
 
-		print("[ClientModeBox] reload EPG")
+		print("[ClientModeBox] Reload EPG")
 		epgcache = eEPGCache.getInstance()
 		epgcache.load()
 
 	def downloadParentalControl(self, baseurl):
-		print("[ClientModeBox] reading remote parental control status ...")
+		print("[ClientModeBox] Reading remote parental control status ...")
 
 		if self.getParentalControlEnabled(baseurl):
-			print("[ClientModeBox] parental control enabled")
+			print("[ClientModeBox] Parental control enabled")
 			config.ParentalControl.servicepinactive.value = True
 			config.ParentalControl.servicepinactive.save()
-			print("[ClientModeBox] reding pin status ...")
+			print("[ClientModeBox] Reading pin status ...")
 			pinstatus = self.getParentalControlPinState(baseurl)
 			pin = self.getParentalControlPin(baseurl)
-			print("[ClientModeBox] pin status is setted to " + str(pinstatus))
+			print("[ClientModeBox] Pin status is setted to " + str(pinstatus))
 			config.ParentalControl.servicepinactive.value = pinstatus
 			config.ParentalControl.servicepinactive.save()
 			config.ParentalControl.servicepin[0].value = pin
 			config.ParentalControl.servicepin[0].save()
-			print("[ClientModeBox] reading remote parental control type ...")
+			print("[ClientModeBox] Reading remote parental control type ...")
 			stype = self.getParentalControlType(baseurl)
-			print("[ClientModeBox] parental control type is " + stype)
+			print("[ClientModeBox] Parental control type is " + stype)
 			config.ParentalControl.type.value = stype
 			config.ParentalControl.type.save()
-			print("[ClientModeBox] download parental control services list")
+			print("[ClientModeBox] Download parental control services list")
 			services = self.downloadParentalControlBouquets(baseurl)
-			print("[ClientModeBox] save parental control services list")
+			print("[ClientModeBox] Save parental control services list")
 			parentalfile = open("/etc/enigma2/" + stype, "w")
 			for service in services:
 				parentalfile.write(service['reference'] + "\n")
 			parentalfile.close()
-			print("[ClientModeBox] reload parental control")
+			print("[ClientModeBox] Reload parental control")
 			from Components.ParentalControl import parentalControl
 			parentalControl.open()
 		else:
-			print("[ClientModeBox] parental control disabled - do nothing")
+			print("[ClientModeBox] Parental control disabled - do nothing")
 
 class ClientModeBoxAbout(Screen):
 	skin = """
@@ -986,7 +986,7 @@ class ClientModeBoxRemoteTimer():
 
 		baseurl = self.getBaseUrl()
 
-		print("[ClientModeBoxRemoteTimer] get remote timer list")
+		print("[ClientModeBoxRemoteTimer] Get remote timer list")
 
 		try:
 			httprequest = urllib2.urlopen(baseurl + '/web/timerlist')
@@ -1123,7 +1123,7 @@ class ClientModeBoxRemoteTimer():
 		return returnValue
 
 	def record(self, entry, ignoreTSC=False, dosave=True):
-		print("[ClientModeBoxRemoteTimer] record ", str(entry))
+		print("[ClientModeBoxRemoteTimer] Record ", str(entry))
 
 		entry.service_ref = ServiceReference(":".join(str(entry.service_ref).split(":")[:10]))
 		args = urllib.urlencode({
@@ -1142,7 +1142,7 @@ class ClientModeBoxRemoteTimer():
 
 		baseurl = self.getBaseUrl()
 
-		print("[ClientModeBoxRemoteTimer] web interface url: " + baseurl)
+		print("[ClientModeBoxRemoteTimer] Web interface URL: " + baseurl)
 
 		try:
 			httprequest = urllib2.urlopen(baseurl + '/web/timeradd?' + args)
@@ -1158,14 +1158,14 @@ class ClientModeBoxRemoteTimer():
 		if not success:
 			timersanitycheck = TimerSanityCheck(self._timer_list,entry)
 			if not timersanitycheck.check():
-				print("timer conflict detected!")
+				print("Timer conflict detected!")
 				print(timersanitycheck.getSimulTimerList())
 				return timersanitycheck.getSimulTimerList()
 
 		return None
 
 	def timeChanged(self, entry):
-		print("[ClientModeBoxRemoteTimer] timer changed ", str(entry))
+		print("[ClientModeBoxRemoteTimer] Timer changed ", str(entry))
 
 		entry.service_ref = ServiceReference(":".join(str(entry.service_ref).split(":")[:10]))
 		try:
@@ -1200,14 +1200,14 @@ class ClientModeBoxRemoteTimer():
 		if not success:
 			timersanitycheck = TimerSanityCheck(self._timer_list,entry)
 			if not timersanitycheck.check():
-				print("timer conflict detected!")
+				print("Timer conflict detected!")
 				print(timersanitycheck.getSimulTimerList())
 				return timersanitycheck.getSimulTimerList()
 
 		return None
 
 	def removeEntry(self, entry):
-		print("[ClientModeBoxRemoteTimer] timer remove ", str(entry))
+		print("[ClientModeBoxRemoteTimer] Timer remove ", str(entry))
 
 		entry.service_ref = ServiceReference(":".join(str(entry.service_ref).split(":")[:10]))
 		args = urllib.urlencode({
