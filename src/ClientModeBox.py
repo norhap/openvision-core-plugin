@@ -75,10 +75,7 @@ class ClientModeBoxWizard(WizardLanguage):
 					size="640,220"
 					font="Regular;24"
 					scrollbarMode="showOnDemand" >
-
 				<convert type="StringList" />
-
-			</widget>
 
 			<widget name="config"
 					position="65,160"
@@ -87,13 +84,13 @@ class ClientModeBoxWizard(WizardLanguage):
 					transparent="1"
 					font="Regular;24"
 					scrollbarMode="showOnDemand" />
-					
+
 			<widget name="step"
 					position="65,470"
 					zPosition="1"
 					size="440,40"
 					transparent="1" />
-					
+
 			<widget name="stepslider"
 					borderWidth="1"
 					position="65,468"
@@ -112,7 +109,6 @@ class ClientModeBoxWizard(WizardLanguage):
 					position="65,520"
 					size="300,30"
 					font="Regular;18" />
-
 		</screen>"""
 
 	def __init__(self, session):
@@ -327,7 +323,6 @@ class ClientModeBoxMount:
 			self.mountpoint = '/media/hdd'
 		self.share = '/mnt/hdd'
 
-
 	def automount(self):
 		global mountstate
 		global mounthost
@@ -466,7 +461,6 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 		self.remotetimer_old = config.ipboxclient.remotetimers.value
 		Screen.__init__(self, session)
 		ConfigListScreen.__init__(self, self.list)
-
 		self.setTitle(_('Vision Client Mode Box'))
 
 		self["VKeyIcon"] = Boolean(False)

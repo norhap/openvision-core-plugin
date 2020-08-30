@@ -167,7 +167,7 @@ def Plugins(**kwargs):
 			 PluginDescriptor(name=_("Vision Core"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=UpgradeMain),
 			 PluginDescriptor(where=PluginDescriptor.WHERE_MENU, fnc=SoftcamSetup)]
 	if config.softcammanager.showinextensions.value:
-		plist.append(PluginDescriptor(name=_("Softcam Vision"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=SoftcamMenu))
+		plist.append(PluginDescriptor(name=_("Vision Softcam"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=SoftcamMenu))
 	if config.scriptrunner.showinextensions.value:
 		plist.append(PluginDescriptor(name=_("Vision Script runner"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=ScriptRunnerMenu))
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_AUTOSTART, fnc=SoftcamAutostart))
