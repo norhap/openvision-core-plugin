@@ -47,10 +47,11 @@ class VISIONMenu(Screen, ProtectedScreen):
 		if self.menu == 0:
 			self.list.append(("Backup Manager", _("Backup Manager"), _("Manage the backups of your settings."), None))
 			self.list.append(("Image Manager", _("Image Manager"), _("Create and flash complete images of your system."), None))
-			self.list.append(("Opkg Install", _("Install Local Extension"), _("Install IPK's from your tmp folder."), None))
+			self.list.append(("Opkg Install", _("Opkg Install"), _("Install IPK's from your tmp folder."), None))
 			self.list.append(("Mount Manager", _("Mount Manager"), _("Manage your devices mount points."), None))
 			self.list.append(("Script Runner", _("Script Runner"), _("Run your shell scripts."), None))
 			self.list.append(("Swap Manager", _("Swap Manager"), _("Create and Manage your SWAP files."), None))
+			self.list.append(("Client Mode Box", _("Client Mode Box"), _("Use this box as a client of a server."), None))
  			if SystemInfo["HasH9SD"]:
 				self.list.append(("H9 SDcard Manager", _("H9 SDcard Manager"), _("Move Nand root to SD card"), None))
 		self["menu"] = List(self.list)
@@ -130,6 +131,9 @@ class VISIONMenu(Screen, ProtectedScreen):
 				elif currentEntry == "Swap Manager":
 					from SwapManager import VISIONSwap
 					self.session.open(VISIONSwap)
+				elif currentEntry == "Client Mode Box":
+					from ClientModeBox import ClientModeBoxWizard
+					self.session.open(ClientModeBoxWizard)
 
 	def closeRecursive(self):
 		self.close(True)

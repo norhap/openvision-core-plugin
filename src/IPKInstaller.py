@@ -36,7 +36,7 @@ class VISIONIPKInstaller(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Opkg Install"))
+		self.setTitle(_("Vision Opkg Install"))
 
 		self['lab1'] = Label()
 		self.defaultDir = '/tmp'

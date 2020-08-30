@@ -1,0 +1,71 @@
+<wizard>
+		<step id="welcome">
+			<text value="For Setup press Menu." />
+			<list>
+				<listentry caption="Scan for a server" step="scan" />
+				<listentry caption="Abort this Wizard" step="abort" />
+			</list>
+			<code>
+			</code>
+		</step>
+
+		<step id="scan" nextstep="choose">
+			<text value="Please wait while scan is in progress..." />
+			<code>
+self.scan()
+			</code>
+		</step>
+
+		<step id="choose">
+			<text value="Choose your main device, remember remote HDD must be mounted /media/hdd, for Setup press Menu." />
+			<list type="dynamic" source="getScanList" evaluation="selectionMade" />
+			<code>
+			</code>
+		</step>
+
+		<step id="download" nextstep="end">
+			<text value="Please wait..." />
+			<code>
+self.download()
+			</code>
+		</step>
+
+		<step id="abort">
+			<text value="Your Box is not configured.Please press OK to close this Wizard." />
+			<text value="Please press OK to close this Wizard." />
+			<code>
+config.ipboxclient.firstconf.value = True
+config.ipboxclient.firstconf.save()
+			</code>
+			<code pos="after">
+self.close()
+			</code>
+		</step>
+
+		<step id="nodevices">
+			<text value="No receivers found, we cannot configure your receiver, press OK to close this wizard."/>
+			<list>
+				<listentry caption="Try to scan again" step="scan" />
+				<listentry caption="Abort this Wizard" step="abort" />
+			</list>
+			<code>
+			</code>
+		</step>
+
+		<step id="nodownload">
+			<text value="Cannot download data, we can't configure your Box, please press OK to close this Wizard." />
+			<list>
+				<listentry caption="Try to download again" step="download" />
+				<listentry caption="Abort this Wizard" step="abort" />
+			</list>
+			<code>
+			</code>
+		</step>
+
+		<step id="end">
+			<text value="Your Box is now configured, please press OK to close this Wizard or Menu for Setup." />
+			<code>
+			</code>
+		</step>
+</wizard>
+

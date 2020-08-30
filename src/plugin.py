@@ -11,6 +11,7 @@ from SwapManager import SwapAutostart
 from SoftcamManager import SoftcamAutostart
 from ScriptRunner import ScriptRunnerAutostart
 from IPKInstaller import OpkgInstaller
+from ClientModeBox import ClientModeBoxWizard
 
 config.misc.restorewizardrun = ConfigBoolean(default=False)
 
@@ -141,6 +142,9 @@ def SwapManager(session):
 def SwapManagerMenu(session, **kwargs):
 	session.open(SwapManager)
 
+def ClientModeBoxMenu(session, **kwargs):
+	session.open(ClientModeBox)
+
 def filescan_open(list, session, **kwargs):
 	filelist = [x.path for x in list]
 	session.open(OpkgInstaller, filelist)  # list
@@ -173,9 +177,10 @@ def Plugins(**kwargs):
 	if config.misc.firstrun.value and not config.misc.restorewizardrun.value and backupAvailable == 1:
 		plist.append(PluginDescriptor(name=_("Restore wizard"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=RestoreWizard))
 	plist.append(PluginDescriptor(name=_("Opkg"), where=PluginDescriptor.WHERE_FILESCAN, needsRestart=False, fnc=filescan))
-	plist.append(PluginDescriptor(name=_("Vision Backup manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=BackupManagerMenu))
-	plist.append(PluginDescriptor(name=_("Vision Image manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ImageMangerMenu))
-	plist.append(PluginDescriptor(name=_("Vision Mount manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=MountManagerMenu))
-	plist.append(PluginDescriptor(name=_("Vision Script runner"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ScriptRunnerMenu))
-	plist.append(PluginDescriptor(name=_("Vision SWAP manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=SwapManagerMenu))
+	plist.append(PluginDescriptor(name=_("Vision Backup Manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=BackupManagerMenu))
+	plist.append(PluginDescriptor(name=_("Vision Image Manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ImageMangerMenu))
+	plist.append(PluginDescriptor(name=_("Vision Mount Manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=MountManagerMenu))
+	plist.append(PluginDescriptor(name=_("Vision Script Runner"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ScriptRunnerMenu))
+	plist.append(PluginDescriptor(name=_("Vision SWAP Manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=SwapManagerMenu))
+	plist.append(PluginDescriptor(name=_("Vision Client Mode Box"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ClientModeBoxMenu))
 	return plist
