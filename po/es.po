@@ -1181,8 +1181,8 @@ msgstr "Selecciona lo que quieras hacer"
 msgid "Vision Client Mode Box"
 msgstr "Vision Receptor Modo Cliente"
 
-msgid "Important: For remote HDD feature require NFS service installed on server box."
-msgstr "Importante: La función disco duro del servidor requiere que el servicio NFS esté instalado en el receptor servidor."
+msgid "Important: Do not enable OpenWebif authentication on server, neither in this Setup."
+msgstr "Importante: No habilite la autenticación OpenWebif en el servidor, ni en esta configuración."
 
 msgid "Streaming port"
 msgstr "Puerto Streaming"

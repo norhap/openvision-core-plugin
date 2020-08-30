@@ -470,7 +470,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 		self.setTitle(_('Vision Client Mode Box'))
 
 		self["VKeyIcon"] = Boolean(False)
-		self["text"] = StaticText(_('Important: For remote HDD feature require NFS service installed on server box.'))
+		self["text"] = StaticText(_('Important: Do not enable OpenWebif authentication on server, neither in this Setup.'))
 		self["key_red"] = Button(_('Cancel'))
 		self["key_green"] = Button(_('Save'))
 		self["key_yellow"] = Button(_('Scan'))
