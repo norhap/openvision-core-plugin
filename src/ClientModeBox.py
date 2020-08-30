@@ -76,6 +76,7 @@ class ClientModeBoxWizard(WizardLanguage):
 					font="Regular;24"
 					scrollbarMode="showOnDemand" >
 				<convert type="StringList" />
+			</widget>
 
 			<widget name="config"
 					position="65,160"
@@ -367,14 +368,13 @@ class ClientModeBoxMount:
 
 class ClientModeBoxMenu(Screen, ConfigListScreen):
 	skin = """
-		<screen name="ClientModeBoxMenu" position="360,150" size="560,400">
+		<screen name="ClientModeBoxMenu" position="100,100" size="560,400">
 			<widget name="config"
 					position="10,10"
 					zPosition="3"
 					size="540,270"
 					scrollbarMode="showOnDemand"
-					transparent="1">
-			</widget>
+					transparent="1"/>
 
 			<widget source="text"
 					render="Label"
@@ -851,7 +851,7 @@ class ClientModeBoxDownloader:
 
 class ClientModeBoxAbout(Screen):
 	skin = """
-			<screen position="360,150" size="560,400">
+			<screen position="100,100" size="560,400">
 				<widget name="about"
 						position="10,10"
 						size="540,340"
