@@ -141,7 +141,7 @@ def SwapManager(session):
 
 def SwapManagerMenu(session, **kwargs):
 	session.open(SwapManager)
-	
+
 def ClientModeBoxMenu(session, **kwargs):
 	session.open(ClientModeBox)
 
