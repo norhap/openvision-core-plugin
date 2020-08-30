@@ -291,13 +291,6 @@ msgstr "Dispositivo: ninguno disponible"
 msgid "Disable startup"
 msgstr "Deshabilitar al iniciar"
 
-msgid ""
-"Do you want to create a full image backup?\n"
-"This can take about 6 minutes to complete."
-msgstr ""
-"Quieres crear una copia de seguridad de la imagen completa?\n"
-"Esto puede tardar unos 6 minutos en completarse."
-
 #, python-format
 msgid ""
 "Do you want to flash image\n"
@@ -1289,7 +1282,7 @@ msgid "For Setup press Menu."
 msgstr "Para Configurar pulse Menu."
 
 msgid "Setup your mounts in Setup mounts or restart your box if you only have one mount after executing this action.\n"
-msgstr "Configura tus mountajes en Configurar montajes o reinicia su receptor si solo tienes una montaje después de ejecutar esta acción."
+msgstr "Configura tus mountajes en Configurar montajes o reinicia su receptor si solo tienes una montaje después de ejecutar esta acción.\n"
 
 msgid "To use HDD from red button, mount point to change must be as /media/hdd"
 msgstr "Para usar HDD desde el botón rojo, el punto de montaje para cambiar debe ser /media/hdd"
