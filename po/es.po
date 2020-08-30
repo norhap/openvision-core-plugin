@@ -917,11 +917,13 @@ msgstr ""
 
 #, python-format
 msgid ""
-"Your %s %s is about to run a full image backup, this can take about 6 minutes to complete,\n"
-"do you want to allow this?"
+"Do you want to create a full image backup?"
+"\n"
+"This can take about 6 minutes to complete."
 msgstr ""
-"Su %s %s está a punto de ejecutar una copia de seguridad de la imagen completa, esto puede tardar unos 6 minutos en completarse,\n"
-"quieres permitir esto?"
+"¿Quieres crear una copia de seguridad de imagen completa?"
+"\n"
+"Puede tardar unos 6 minutos en completarse."
 
 #, python-format
 msgid "Your %s %s is not connected to the internet, Please try using Backup Manager to restore plugins later."
