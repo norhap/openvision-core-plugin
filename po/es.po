@@ -1225,7 +1225,7 @@ msgid "Cannot download data. Please check your configuration"
 msgstr "No se pueden descargar datos. Por favor revise su configuración"
 
 msgid "Client Mode Box: If you want to exit Client Mode and have a backup with your original settings. You can restore from blue button on Vision Backup Manager."
-msgstr "Receptor Modo Cliente: Si desea salir del modo cliente y tener una copia de seguridad con su configuración original. Puede restaurar desde el botón azul en Vision Backup Manager."
+msgstr "Receptor Modo Cliente: Si desea salir del modo cliente y dispone de una copia de seguridad con su configuración original. Puede restaurar desde el botón azul en Vision Backup Manager."
 
 msgid "Scan"
 msgstr "Búsqueda"
