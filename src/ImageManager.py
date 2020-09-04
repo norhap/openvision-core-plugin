@@ -4,7 +4,7 @@ from __future__ import print_function
 from urllib2 import urlopen, HTTPError
 import json
 
-from boxbranding import getImageDistro, getImageVersion, getImageDevBuild, getImageFolder, getImageFileSystem, getMachineBuild, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
+from boxbranding import getImageType, getImageDistro, getImageVersion, getImageDevBuild, getImageFolder, getImageFileSystem, getMachineBuild, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
 from enigma import eTimer, fbClass, getBoxType, getBoxBrand
 from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, statvfs, chmod, walk
 from shutil import rmtree, move, copy, copyfile
@@ -37,7 +37,9 @@ platform = getMachineBuild()
 kernelfile = getMachineKernelFile()
 mtdkernel = getMachineMtdKernel()
 mtdrootfs = getMachineMtdRoot()
-imagetype = getImageVersion()
+imagetype = getImageType()
+imageversion = getImageVersion()
+imagebuild = "backupimage"
 imagedistro = getImageDistro()
 imagedir = getImageFolder()
 imagefs = getImageFileSystem()
