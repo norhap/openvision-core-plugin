@@ -230,7 +230,7 @@ class VISIONSoftcamManager(Screen):
 						self.session.open(MessageBox, _("No config files found, please setup Wicardd first\nin /etc/tuxbox/config/wicardd"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
 						self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-				elif self.currentactivecam.find(selcam) < 0:
+				elif CCcam and not selcam.lower().startswith('mgcamd'):
 					if not path.exists('/etc/CCcam.cfg'):
 						self.session.open(MessageBox, _("No config files found, please setup CCcam.cfg first\nin /etc/CCcam.cfg"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
@@ -238,6 +238,9 @@ class VISIONSoftcamManager(Screen):
 				elif selcam.lower().startswith('mgcamd'):
 					if not path.exists('/usr/keys/mg_cfg'):
 						self.session.open(MessageBox, _("No config files found, please setup MGcamd first\nin /usr/keys"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+					else:
+						self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
+						self.Console.ePopen('/usr/bin/env LD_PRELOAD=/usr/local/lib/libcrypto.so.1.0.0 /usr/softcams/' + startselectedcam)
 			else:
 				self.session.openWithCallback(self.showActivecam, VISIONStopCam, self.sel[0])
 
@@ -275,10 +278,11 @@ class VISIONSoftcamManager(Screen):
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
 			elif selectedcam.lower().startswith('wicardd') and path.exists('/etc/tuxbox/config/wicardd/wicardd.conf') == True:
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-			elif CCcam:
+			elif CCcam and not selectedcam.lower().startswith('mgcamd'):
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0]), self.Console.ePopen('/usr/softcams/' + CCcam)
 			elif selectedcam.lower().startswith('mgcamd') and path.exists('/usr/keys/mg_cfg') == True:
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
+				self.Console.ePopen('/usr/bin/env LD_PRELOAD=/usr/local/lib/libcrypto.so.1.0.0 /usr/softcams/' + selectedcam)
 			elif selectedcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam/oscam.conf') == False:
 				if not path.exists('/etc/tuxbox/config/oscam'):
 					makedirs('/etc/tuxbox/config/oscam')
@@ -682,6 +686,7 @@ class SoftcamAutoPoller:
 	def JobStart(self):
 		self.autostartcams = config.softcammanager.softcams_autostart.value
 		self.Console = Console()
+		CCcam = "CCcam"
 		if SystemInfo["OScamInstalled"] and not path.exists("/usr/softcams/oscam"):
 			self.Console.ePopen('ln -s /usr/bin/*oscam* /usr/softcams/')
 		if SystemInfo["NCamInstalled"] and not path.exists("/usr/softcams/ncam"):
@@ -823,7 +828,7 @@ class SoftcamAutoPoller:
 							remove('/tmp/softcamRuningCheck.tmp')
 						if softcamcheck.lower().startswith('wicardd'):
 						    self.Console.ePopen('/usr/softcams/' + softcamcheck + " -c" + " /etc/tuxbox/config/wicardd/wicardd.conf")
-						if softcamcheck.lower().startswith('CCcam'):
+						if CCcam and not softcamcheck.lower().startswith('mgcamd'):
 						    self.Console.ePopen('/usr/softcams/' + softcamcheck)
 						if getImageArch() == "armv7vehf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "cortexa15hf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "armv7ahf-neon" and softcamcheck.lower().startswith('mgcamd'):
-						   self.Console.ePopen('/usr/bin/env LD_PRELOAD=/usr/local/lib/libcrypto.so.1.0.0 /usr/softcams/' + softcamcheck)
+						    self.Console.ePopen('/usr/bin/env LD_PRELOAD=/usr/local/lib/libcrypto.so.1.0.0 /usr/softcams/' + softcamcheck)
