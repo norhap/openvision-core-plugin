@@ -697,6 +697,20 @@ class SoftcamAutoPoller:
 		    self.Console.ePopen('ln -s /usr/bin/*mgcamd* /usr/softcams/')
 		if path.exists("/usr/bin/CCcam") and not path.exists("/usr/softcams/CCcam"):
 		    self.Console.ePopen('ln -s /usr/bin/CCcam /usr/softcams/')
+		if not path.exists("/usr/bin/CCcam") and path.islink("/usr/softcams/CCcam"):
+		    self.Console.ePopen('rm -f /usr/softcams/CCcam ')
+		if not path.exists("/usr/bin/mgcamd_1.38") and path.islink("/usr/softcams/mgcamd_1.38"):
+		    self.Console.ePopen('rm -f /usr/softcams/mgcamd_1.38 ')
+		if not path.exists("/usr/bin/mgcamd_1.35a") and path.islink("/usr/softcams/mgcamd_1.35a"):
+		    self.Console.ePopen('rm -f /usr/softcams/mgcamd_1.35a ')
+		if not path.exists("/usr/bin/wicardd") and path.islink("/usr/softcams/wicardd"):
+		    self.Console.ePopen('rm -f /usr/softcams/wicardd ')
+		if not path.exists("/usr/bin/oscam") and path.islink("/usr/softcams/oscam"):
+		    self.Console.ePopen('rm -f /usr/softcams/oscam ')
+		if not path.exists("/usr/bin/ncam") and path.islink("/usr/softcams/ncam"):
+		    self.Console.ePopen('rm -f /usr/softcams/ncam ')
+		if not path.exists("/usr/bin/oscam-emu") and path.islink("/usr/softcams/oscam-emu"):
+		    self.Console.ePopen('rm -f /usr/softcams/oscam-emu ')
 		if path.exists('/tmp/cam.check.log'):
 			if path.getsize('/tmp/cam.check.log') > 40000:
 				fh = open('/tmp/cam.check.log', 'rb+')
