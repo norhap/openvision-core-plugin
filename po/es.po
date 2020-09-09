@@ -1023,8 +1023,8 @@ msgstr "Administrador Multiboot"
 msgid "Move Nand root to SD card"
 msgstr "Mover la raíz Nand a la tarjeta SD"
 
-msgid "Sorry, but the file is not compatible with this image version."
-msgstr "Lo sentimos, pero el backup no es compatible con OpenViX."
+msgid "Sorry, but the file is not compatible with this kernel version."
+msgstr "Lo sentimos, pero el backup no es compatible con esta versión de kernel."
 
 msgid "Can't unmount partiton, make sure it is not being used for swap or record/timeshift paths!"
 msgstr "No se puede desmontar la partición, asegúrese de que no se esté utilizando para swap o grabar/timeshift en rutas!"
