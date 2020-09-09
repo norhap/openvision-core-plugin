@@ -465,7 +465,7 @@ class VISIONBackupManager(Screen):
 	def Stage1(self, answer=None):
 		print('[BackupManager] Restoring Stage 1:')
 		if answer is True:
-			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /", self.Stage1SettingsComplete)
+			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /tmp", self.Stage1SettingsComplete)
 		elif answer is False:
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion  tmp/3rdPartyPlugins -C /", self.Stage1PluginsComplete)
 
@@ -708,7 +708,7 @@ class VISIONBackupManager(Screen):
 		self.Stage5Completed = True
 		if self.didPluginsRestore or self.didSettingsRestore:
 			print('[BackupManager] Restoring Completed rebooting')
-			quitMainloop(2)
+			self.Console.ePopen("/sbin/init 4" + "&&" + "sleep 5" + "&&" + "tar -xzvf" + self.BackupDirectory + self.sel + " -C /" + "&&" + "/sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring Completed, Receiver Rebooting..."), MessageBox.TYPE_INFO))
 		else:
 			print('[BackupManager] Restoring failed or canceled')
 			self.close()
