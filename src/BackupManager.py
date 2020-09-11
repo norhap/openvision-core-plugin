@@ -440,7 +440,7 @@ class VISIONBackupManager(Screen):
 	def Stage1(self, answer=None):
 		print('[BackupManager] Restoring stage 1:')
 		if answer is True:
-			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /tmp", self.Stage1SettingsComplete)
+			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -O > /dev/null", self.Stage1SettingsComplete)
 		elif answer is False:
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion  tmp/3rdPartyPlugins -C /", self.Stage1PluginsComplete)
 
