@@ -1172,8 +1172,8 @@ msgstr "Softcam Vision Configuración"
 msgid "Restoring settings, receiver rebooting..."
 msgstr "Restaurando configuración, reiniciando receptor..."
 
-msgid "Restoring Completed, Receiver Rebooting..."
-msgstr "Restauración completada, Reiniciando Receptor..."
+msgid "Restoring Plugins: Please Wait..."
+msgstr "Restauración de plugins: Espere por favor..."
 
 msgid "Use Mount manager and press green setup mounts"
 msgstr "Use Administrador de Montajes y pulse verde"
