@@ -376,7 +376,6 @@ class VISIONBackupManager(Screen):
 		self.Stage2Completed = False
 		self.Stage3Completed = False
 		self.Stage4Completed = False
-		self.Stage5Completed = False
 		job = Components.Task.Job(_("Backup manager"))
 
 		task = Components.Task.PythonTask(job, _("Restoring backup..."))
@@ -417,10 +416,6 @@ class VISIONBackupManager(Screen):
 
 		task = Components.Task.PythonTask(job, _("Restoring plugins, this can take a long time..."))
 		task.work = self.Stage5
-		task.weighting = 1
-
-		task = Components.Task.ConditionTask(job, _("Restoring plugins, this can take a long time..."), timeoutCount=1200)
-		task.check = lambda: self.Stage5Completed
 		task.weighting = 1
 
 		task = Components.Task.PythonTask(job, _("Rebooting..."))
@@ -686,9 +681,9 @@ class VISIONBackupManager(Screen):
 		self.Stage3Completed = True
 		self.Stage4Completed = True
 		self.Stage5Completed = True
-		if self.didPluginsRestore or self.didSettingsRestore:
+		if self.Stage5:
 			print('[BackupManager] Restoring completed rebooting')
-			self.Console.ePopen("/sbin/init 4" + "&&" + "sleep 5" + "&&" + "tar -xzvf" + self.BackupDirectory + self.sel + " -C /" + "&&" + "/sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring Completed, Receiver Rebooting..."), MessageBox.TYPE_INFO))
+			self.Console.ePopen("sleep 80" + " &&" + " /sbin/init 4" + " &&" + " sleep 5" + " &&" + " tar -xzvf" + self.BackupDirectory + self.sel + " -C /" + " &&" + " rm /tmp/ExtraInstalledPlugins /tmp/backupimageversion /tmp/backupkernelversion" + " &&" + " /sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring Plugins: Please Wait..."), MessageBox.TYPE_INFO))
 		else:
 			print('[BackupManager] Restoring failed or canceled')
 			self.close()
