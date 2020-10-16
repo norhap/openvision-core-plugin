@@ -27,7 +27,7 @@
         <item level="2" text="ImageLib_User" description="Http url for User Images">config.imagemanager.imagefeed_User</item>
         <item level="2" text="ImageLib_Vision" description="Http url for OpenVision Images">config.imagemanager.imagefeed_Vision</item>
         <item level="2" text="ImageLib_ATV" description="Http url for OpenATV Images">config.imagemanager.imagefeed_ATV</item>
-        <item level="2" text="ImageLib_Pli" description="Http url for OpenPli Images">config.imagemanager.imagefeed_Pli</item>
+        <item level="2" text="ImageLib_PLi" description="Http url for OpenPLi Images">config.imagemanager.imagefeed_PLi</item>
     </setup>
     <setup key="visionscriptrunner" title="Script runner settings" titleshort="Settings">
         <item level="2" text="Close window on success" description="Allows you to close the window automatically.">config.scriptrunner.close</item>
