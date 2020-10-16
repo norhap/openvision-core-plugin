@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-from urllib2 import urlopen, HTTPError
+from urllib2 import urlopen, HTTPError, URLError
 import json
 
 from boxbranding import getImageDistro, getVisionVersion, getImageVersion, getVisionRevision, getImageDevBuild, getImageFolder, getImageFileSystem, getMachineBuild, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
@@ -70,7 +70,7 @@ config.imagemanager.number_to_keep = ConfigNumber(default=0)
 config.imagemanager.imagefeed_User = ConfigText(default="http://192.168.0.171/openvision-builds/", fixed_size=False)
 config.imagemanager.imagefeed_ViX = ConfigText(default="http://www.openvix.co.uk/openvix-builds/", fixed_size=False)
 config.imagemanager.imagefeed_ATV = ConfigText(default="http://images.mynonpublic.com/openatv/json", fixed_size=False)
-config.imagemanager.imagefeed_Pli = ConfigText(default="http://downloads.openpli.org/json", fixed_size=False)
+config.imagemanager.imagefeed_PLi = ConfigText(default="http://downloads.openpli.org/json", fixed_size=False)
 config.imagemanager.imagefeed_Dev = ConfigText(default="ftp://login@176.31.181.161/***Dev_Images_5.2***", fixed_size=False)
 config.imagemanager.imagefeed_DevL = ConfigText(default="login:pswd", fixed_size=False)
 
@@ -339,8 +339,8 @@ class VISIONImageManager(Screen):
 		self.session.openWithCallback(self.setupDone, VISIONImageManagerMenu)
 
 	def doDownload(self):
-		self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPli",3)]
-		self.urlchoices = [config.imagemanager.imagefeed_ViX.value, config.imagemanager.imagefeed_ATV.value, config.imagemanager.imagefeed_Pli.value]
+		self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPLi",3)]
+		self.urlchoices = [config.imagemanager.imagefeed_ViX.value, config.imagemanager.imagefeed_ATV.value, config.imagemanager.imagefeed_PLi.value]
 		self.message = _("Do you want to change download url")
 		self.session.openWithCallback(self.doDownload2, MessageBox, self.message, list=self.choices, default=1, simple=True)
 
@@ -1403,7 +1403,7 @@ class ImageManagerDownload(Screen):
 	def __init__(self, session, BackupDirectory, urlDistro):
 		Screen.__init__(self, session)
 		self.setTitle(_("Downloads"))
-		self.Pli = False
+		self.PLi = False
 		self.urlDistro = urlDistro
 		self.BackupDirectory = BackupDirectory
 		self["lab1"] = Label(_("Select an image to download:"))
@@ -1414,9 +1414,9 @@ class ImageManagerDownload(Screen):
 		self.setIndex = 0
 		self.expanded = []
 		if "pli" in self.urlDistro:
-			self.Pli = True
+			self.PLi = True
 		if "atv" in self.urlDistro:
-			self.Pli = True
+			self.PLi = True
 		self["list"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("No images found for selected download server...if password check validity")), "Waiter"))])
 		self.getImageDistro()
 
@@ -1443,38 +1443,40 @@ class ImageManagerDownload(Screen):
 		self.imagesList = {}
 		self.jsonlist = {}
 		list = []
-		imagecat = [6.4]
-		self.urlBox = path.join(self.urlDistro, model, "")
 
-		if "www.openvix" in self.urlDistro:
-			imagecat = [5.3, 5.4]
+		if not self.PLi and not self.imagesList:
+			versions = [4.2, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5]
 
-		if not self.Pli and not self.imagesList:
-			for version in reversed(sorted(imagecat)):
-				newversion = _("Image version %s") % version
-				countimage = []
+			subfolders = ('', 'Archives') # i.e. check root folder and "Archives" folder. Images will appear in the UI in this order.
+			for subfolder in subfolders:
+				tmp_image_list = []
+				fullUrl = subfolder and path.join(self.urlDistro, model, subfolder, "") or path.join(self.urlDistro, model, "")
+				html = None
 				try:
-					conn = urlopen(self.urlBox)
+					conn = urlopen(fullUrl)
 					html = conn.read()
-				except:
-					print("[ImageManager] HTTP download error: %s" % e.code)
-					continue
-				soup = BeautifulSoup(html)
-				links = soup.find_all("a")
+				except (HTTPError, URLError) as e:
+					print("[ImageManager] HTTPError: %s %s" % (getattr(e, "code", ""), getattr(e, "reason", "")))
 
-				for tag in links:
-					link = tag.get("href", None)
-					if link is not None and link.endswith("zip") and link.find(model) != -1 and link.find("recovery") == -1:
-						countimage.append(str(link))
-				if len(countimage) >= 1:
-					self.imagesList[newversion] = {}
-					for image in countimage:
+				if html:
+					soup = BeautifulSoup(html, 'lxml')
+					links = soup.find_all("a")
+					for tag in links:
+						link = tag.get("href", None)
+						if link is not None and link.endswith("zip") and link.find(getMachineMake()) != -1 and link.find("recovery") == -1:
+							tmp_image_list.append(str(link))
+				
+				for version in sorted(versions, reverse=True):
+					newversion = _("Image Version %s%s") % (version, " (%s)" % subfolder if subfolder else "")
+					for image in tmp_image_list:
 						if "%s" % version in image:
+							if newversion not in self.imagesList:
+								self.imagesList[newversion] = {}
 							self.imagesList[newversion][image] = {}
 							self.imagesList[newversion][image]["name"] = image
-							self.imagesList[newversion][image]["link"] = "%s/%s/%s" % (self.urlDistro, model, image)
+							self.imagesList[newversion][image]["link"] = "%s%s" % (fullUrl, image)
 
-		if self.Pli and not self.imagesList:
+		if self.PLi and not self.imagesList:
 			if not self.jsonlist:
 				try:
 					urljson = path.join(self.urlDistro, model)
@@ -1483,13 +1485,13 @@ class ImageManagerDownload(Screen):
 					print("[ImageManager] No model: %s in downloads" % model)
 					return
 			self.imagesList = self.jsonlist
-		if self.Pli and not self.jsonlist and not self.imagesList:
+		if self.PLi and not self.jsonlist and not self.imagesList:
 			return
 
-		for categorie in reversed(sorted(self.imagesList.keys())):
+		for categorie in sorted(self.imagesList.keys(), reverse=True):
 			if categorie in self.expanded:
 				list.append(ChoiceEntryComponent("expanded", ((str(categorie)), "Expander")))
-				for image in reversed(sorted(self.imagesList[categorie].keys())):
+				for image in sorted(self.imagesList[categorie].keys(), reverse=True):
 					list.append(ChoiceEntryComponent("verticalline", ((str(self.imagesList[categorie][image]["name"])), str(self.imagesList[categorie][image]["link"]))))
 			else:
 				for image in self.imagesList[categorie].keys():

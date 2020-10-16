@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-30 16:18+0430\n"
+"POT-Creation-Date: 2020-10-16 14:51+0330\n"
 "PO-Revision-Date: 2014-06-26 04:32+0100\n"
 "Last-Translator: Rob van der Does <robvddoes@gmail.com>\n"
 "Language-Team: Andyblac/LaZx1989\n"
@@ -53,7 +53,7 @@ msgstr "8 Mb"
 msgid "96 Mb"
 msgstr "96 Mb"
 
-#: ../src/RestoreWizard.py:270 ../src/BackupManager.py:497
+#: ../src/RestoreWizard.py:270 ../src/BackupManager.py:492
 #, fuzzy
 msgid "A background update check is in progress, please try again."
 msgstr "Incepe verificarea in fundal a unui update.Va rugam asteptati pentru a incerca din nou."
@@ -96,7 +96,7 @@ msgid ""
 " "
 msgstr "Sunteti sigur ca vreti sa stergeti aceasta copie de rezerva?"
 
-#: ../src/ImageManager.py:1549
+#: ../src/ImageManager.py:1551
 msgid ""
 "Are you sure you want to download this image:\n"
 " "
@@ -136,8 +136,8 @@ msgstr ""
 msgid "Backing up eMMC partitions for USB flash..."
 msgstr ""
 
-#: ../src/BackupManager.py:1184 ../src/BackupManager.py:1188
-#: ../src/BackupManager.py:1200 ../src/BackupManager.py:1204
+#: ../src/BackupManager.py:1179 ../src/BackupManager.py:1183
+#: ../src/BackupManager.py:1195 ../src/BackupManager.py:1199
 msgid "Backing up files..."
 msgstr "Se face copia de rezerva a fisierelor."
 
@@ -152,7 +152,6 @@ msgid "Backing up root file system..."
 msgstr "Se face copia de rezerva a fisierelor Root-ului."
 
 #: ../src/ui.py:48
-#, fuzzy
 msgid "Backup Manager"
 msgstr "Manager-ul copiei de rezerva."
 
@@ -161,7 +160,7 @@ msgstr "Manager-ul copiei de rezerva."
 msgid "Backup complete."
 msgstr "Copia de rezerva efectuata."
 
-#: ../src/BackupManager.py:1208
+#: ../src/BackupManager.py:1203
 #, fuzzy
 msgid "Backup complete..."
 msgstr "Copia de rezerva efectuata."
@@ -171,12 +170,12 @@ msgstr "Copia de rezerva efectuata."
 msgid "Backup confirmation"
 msgstr "Copie de rezerva Confirmata."
 
-#: ../src/BackupManager.py:1003
+#: ../src/BackupManager.py:998
 #, fuzzy
 msgid "Backup created"
 msgstr "Copie de rezerva creata."
 
-#: ../src/BackupManager.py:1356
+#: ../src/BackupManager.py:1351
 #, fuzzy
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Copia de rezerva a esuat - d.e destinatia copiei de rezerva este gresita sau nu a mai ramas spatiu pe dispozitiv."
@@ -188,15 +187,15 @@ msgid ""
 "Please wait for it to finish, before trying again."
 msgstr "Crearea copiei de rezerva in curs.Va rugam asteptati sa termine inainte sa incercati din nou."
 
-#: ../src/ImageManager.py:143 ../src/BackupManager.py:939
+#: ../src/ImageManager.py:143 ../src/BackupManager.py:934
 #, fuzzy
 msgid "Backup location"
-msgstr "Copie de rezerva Confirmata."
+msgstr "Locatia copiei de rezerva."
 
 #: ../src/ImageManager.py:433 ../src/BackupManager.py:164
 #: ../src/BackupManager.py:299 ../src/BackupManager.py:314
-#: ../src/BackupManager.py:362 ../src/BackupManager.py:380
-#: ../src/BackupManager.py:1166
+#: ../src/BackupManager.py:362 ../src/BackupManager.py:379
+#: ../src/BackupManager.py:1161
 #, fuzzy
 msgid "Backup manager"
 msgstr "Manager-ul copiei de rezerva."
@@ -206,11 +205,11 @@ msgstr "Manager-ul copiei de rezerva."
 msgid "Can't unmount the partition; make sure it is not being used for swap or record/timeshift paths."
 msgstr "Nu pot demonta partitia,asigura-te ca nu este utilizata pentru Swap sau ca nu este setata pentru inregistrari/timeshift."
 
-#: ../src/SoftcamManager.py:319 ../src/ClientModeBox.py:154
-#: ../src/ClientModeBox.py:468 ../src/ClientModeBox.py:569
-#: ../src/MountManager.py:385 ../src/Multibootmgr.py:36
-#: ../src/ImageManager.py:128 ../src/BackupManager.py:712
-#: ../src/BackupManager.py:801 ../src/BackupManager.py:905
+#: ../src/Multibootmgr.py:36 ../src/ImageManager.py:128
+#: ../src/ClientModeBox.py:155 ../src/ClientModeBox.py:468
+#: ../src/ClientModeBox.py:569 ../src/BackupManager.py:707
+#: ../src/BackupManager.py:796 ../src/BackupManager.py:900
+#: ../src/MountManager.py:385 ../src/SoftcamManager.py:319
 msgid "Cancel"
 msgstr "Anuleaza"
 
@@ -236,12 +235,12 @@ msgstr "Verific Ram-ul liber."
 msgid "Checking softcams..."
 msgstr "Verific Softcam-urile."
 
-#: ../src/BackupManager.py:907
+#: ../src/BackupManager.py:902
 #, fuzzy
 msgid "Choose files"
 msgstr "Alege filele."
 
-#: ../src/BackupManager.py:908
+#: ../src/BackupManager.py:903
 #, fuzzy
 msgid "Choose local IPK's folder"
 msgstr "Alege folderul local al ipk-ului."
@@ -262,17 +261,17 @@ msgstr ""
 msgid "Client Mode Box: If you want to exit Client Mode and have a backup with your original settings. You can restore from blue button on Vision Backup Manager."
 msgstr ""
 
-#: ../src/SoftcamManager.py:106 ../src/SwapManager.py:125 ../src/ui.py:58
-#: ../src/IPKInstaller.py:54 ../src/IPKInstaller.py:176
-#: ../src/ImageManager.py:1410
+#: ../src/ImageManager.py:1410 ../src/IPKInstaller.py:54
+#: ../src/IPKInstaller.py:176 ../src/ui.py:58 ../src/SoftcamManager.py:106
+#: ../src/SwapManager.py:125
 msgid "Close"
 msgstr "Inchide"
 
-#: ../src/BackupManager.py:402 ../src/BackupManager.py:406
+#: ../src/BackupManager.py:401 ../src/BackupManager.py:405
 msgid "Comparing against backup..."
 msgstr "Compar cu copia de rezerva.."
 
-#: ../src/ImageManager.py:1517
+#: ../src/ImageManager.py:1519
 msgid "Compress"
 msgstr ""
 
@@ -297,15 +296,15 @@ msgstr "Creeaza si reia imaginea completa a sistemului."
 msgid "Create:"
 msgstr "Creeaza"
 
-#: ../src/BackupManager.py:394 ../src/BackupManager.py:398
-#: ../src/BackupManager.py:1176 ../src/BackupManager.py:1180
+#: ../src/BackupManager.py:393 ../src/BackupManager.py:397
+#: ../src/BackupManager.py:1171 ../src/BackupManager.py:1175
 msgid "Creating list of installed plugins..."
 msgstr "Creez o lista cu pluginurile instalate."
 
 #: ../src/ImageManager.py:833
 #, fuzzy
 msgid "Creating swap.."
-msgstr "Creez zip..."
+msgstr "Creez Swap..."
 
 #: ../src/ImageManager.py:877 ../src/ImageManager.py:881
 msgid "Creating zip..."
@@ -317,7 +316,7 @@ msgstr "Creez zip..."
 msgid "Current status:"
 msgstr "Starea curenta."
 
-#: ../src/ClientModeBox.py:52 ../src/ImageManager.py:62
+#: ../src/ImageManager.py:62 ../src/ClientModeBox.py:52
 #: ../src/BackupManager.py:54
 msgid "Daily"
 msgstr "Zi"
@@ -330,21 +329,21 @@ msgstr "Dezactiveaza"
 msgid "Default username (root)"
 msgstr ""
 
-#: ../src/SwapManager.py:199 ../src/SwapManager.py:210
 #: ../src/ImageManager.py:220 ../src/BackupManager.py:122
+#: ../src/SwapManager.py:199 ../src/SwapManager.py:210
 msgid "Delete"
 msgstr "Sterge"
 
-#: ../src/BackupManager.py:746
+#: ../src/BackupManager.py:741
 msgid "Deselect"
 msgstr "Deselecteaz"
 
-#: ../src/MountManager.py:143 ../src/MountManager.py:262
-#: ../src/MountManager.py:277 ../src/MountManager.py:296
-#: ../src/MountManager.py:327 ../src/MountManager.py:341
 #: ../src/ImageManager.py:326 ../src/ImageManager.py:336
 #: ../src/BackupManager.py:215 ../src/BackupManager.py:218
-#: ../src/BackupManager.py:238
+#: ../src/BackupManager.py:238 ../src/MountManager.py:143
+#: ../src/MountManager.py:262 ../src/MountManager.py:277
+#: ../src/MountManager.py:296 ../src/MountManager.py:327
+#: ../src/MountManager.py:341
 msgid "Device: "
 msgstr "Dispozitiv"
 
@@ -387,11 +386,11 @@ msgstr "Sunteti sigur ca vreti sa descarcati aceasta imagine"
 msgid "Do you want to restart GUI now ?"
 msgstr "Doriti sa restartati IGU acum?"
 
-#: ../src/BackupManager.py:644
+#: ../src/BackupManager.py:639
 msgid "Do you want to restore your Enigma2 plugins ?"
 msgstr "Doriti sa restaurati pluginurile dvs Enigma2?"
 
-#: ../src/BackupManager.py:434
+#: ../src/BackupManager.py:429
 #, fuzzy
 msgid "Do you want to restore your enigma2 settings ?"
 msgstr "Doriti sa restaurati setarile dvs Enigma2?"
@@ -401,7 +400,7 @@ msgstr "Doriti sa restaurati setarile dvs Enigma2?"
 msgid "Do you want to scan for a server?"
 msgstr "Doriti sa restartati IGU acum?"
 
-#: ../src/ImageManager.py:1519
+#: ../src/ImageManager.py:1521
 #, fuzzy
 msgid "DownLoad"
 msgstr "Descarca"
@@ -415,12 +414,12 @@ msgstr "Descarca"
 msgid "Download completed"
 msgstr "Confirmarea descarcarii."
 
-#: ../src/ImageManager.py:1551
+#: ../src/ImageManager.py:1553
 #, fuzzy
 msgid "Download confirmation"
 msgstr "Confirmarea descarcarii."
 
-#: ../src/ImageManager.py:1564
+#: ../src/ImageManager.py:1566
 #, fuzzy
 msgid "Downloading"
 msgstr "Descarca"
@@ -445,8 +444,9 @@ msgid "Empty slot"
 msgstr ""
 
 #: ../src/SoftcamManager.py:325
+#, fuzzy
 msgid "Enable auto timer check"
-msgstr ""
+msgstr "Activeaza verificarea de inghet."
 
 #: ../src/SoftcamManager.py:143
 #, fuzzy
@@ -458,7 +458,7 @@ msgstr "Activeaza Start-up"
 msgid "Enable swap at startup"
 msgstr "Activeaza Swap-ul la pornire"
 
-#: ../src/ImageManager.py:705 ../src/BackupManager.py:1130
+#: ../src/ImageManager.py:705 ../src/BackupManager.py:1125
 #, fuzzy
 msgid "Enough retries, delaying till next schedule."
 msgstr "Suficiente incercari,aman pana la urmatorul program."
@@ -471,7 +471,7 @@ msgstr ""
 msgid "Exit the restore wizard"
 msgstr "Iesi din fereastra de restaurat"
 
-#: ../src/ImageManager.py:1517
+#: ../src/ImageManager.py:1519
 msgid "Expand"
 msgstr ""
 
@@ -493,7 +493,7 @@ msgid "Flash image unzip successful."
 msgstr ""
 
 #: ../src/ImageManager.py:144 ../src/ImageManager.py:163
-#: ../src/BackupManager.py:940 ../src/BackupManager.py:959
+#: ../src/BackupManager.py:935 ../src/BackupManager.py:954
 msgid "Folder prefix"
 msgstr ""
 
@@ -533,20 +533,19 @@ msgid "IPK installer"
 msgstr "IPK Installer"
 
 #: ../src/ui.py:49
-#, fuzzy
 msgid "Image Manager"
 msgstr "Manager Imagine."
+
+#: ../src/ImageManager.py:1470
+#, python-format
+msgid "Image Version %s%s"
+msgstr ""
 
 #: ../src/ImageManager.py:262 ../src/ImageManager.py:402
 #: ../src/ImageManager.py:423 ../src/ImageManager.py:823
 #, fuzzy
 msgid "Image manager"
 msgstr "Manager Imagine."
-
-#: ../src/ImageManager.py:1454
-#, python-format
-msgid "Image version %s"
-msgstr ""
 
 #: ../src/ClientModeBox.py:467
 msgid "Important: Do not enable OpenWebif authentication on server, neither in this Setup."
@@ -602,7 +601,7 @@ msgstr "Inverseaza"
 msgid "It seems you have not setup an extra location. Please set it up in the Backup manager setup menu."
 msgstr "Se pare ca nu ati configurat o extra locatie,va rugam configurati in meniul Managerului Copiei de rezerva."
 
-#: ../src/MountManager.py:132 ../src/ImageManager.py:326
+#: ../src/ImageManager.py:326 ../src/MountManager.py:132
 msgid "MB"
 msgstr "MB"
 
@@ -616,7 +615,7 @@ msgstr "Manageriati copia de rezerva a setarilor dvs."
 msgid "Manage your devices mount points."
 msgstr "Manageriati punctele de montare a dispozitivului dvs."
 
-#: ../src/ClientModeBox.py:52 ../src/ImageManager.py:62
+#: ../src/ImageManager.py:62 ../src/ClientModeBox.py:52
 #: ../src/BackupManager.py:54
 msgid "Monthly"
 msgstr ""
@@ -626,7 +625,6 @@ msgid "Mount"
 msgstr "Montat"
 
 #: ../src/ui.py:51
-#, fuzzy
 msgid "Mount Manager"
 msgstr "Manager Montat"
 
@@ -770,12 +768,12 @@ msgstr "Nici unul"
 msgid "Note: slot list does not show current image or empty slots."
 msgstr ""
 
-#: ../src/BackupManager.py:661
+#: ../src/BackupManager.py:656
 msgid "Now skipping restore process"
 msgstr "Acum trec peste procesul de restaurare."
 
 #: ../src/RestoreWizard.py:111 ../src/ImageManager.py:129
-#: ../src/BackupManager.py:906
+#: ../src/BackupManager.py:901
 msgid "OK"
 msgstr "Ok"
 
@@ -796,7 +794,7 @@ msgstr "Instaleaza"
 msgid "Password"
 msgstr ""
 
-#: ../src/BackupManager.py:857
+#: ../src/BackupManager.py:852
 msgid "Please enter a folder that contains some packages."
 msgstr "Va rugam introduceti un folder care contine ceva pachete."
 
@@ -829,7 +827,7 @@ msgstr "Va rugam asteptati in timp ce scanez dupa device-uri."
 #: ../src/MountManager.py:394
 #, fuzzy
 msgid "Please wait while scanning your receiver devices..."
-msgstr "Va rugam asteptati in timp ce scanez dupa device-uri."
+msgstr "Va rugam asteptati in timp ce scanez %s %s device-urilor..."
 
 #: ../src/RestoreWizard.py:198
 msgid "Please wait while settings restore completes..."
@@ -857,12 +855,12 @@ msgstr "Va rugam asteptati in timp ce se strang informatii..."
 msgid "Please wait."
 msgstr "Va rugam asteptati."
 
-#: ../src/BackupManager.py:1299
+#: ../src/BackupManager.py:1294
 #, fuzzy
 msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Listarea pluginurilor a esuat - d.e destinatie gresita a copiei de rezerva ori dispozitivul nu mai este spatiu pe dispozitiv."
 
-#: ../src/BackupManager.py:1192 ../src/BackupManager.py:1196
+#: ../src/BackupManager.py:1187 ../src/BackupManager.py:1191
 msgid "Preparing extra plugins..."
 msgstr "Pregatesc pluginurile extra.."
 
@@ -874,7 +872,7 @@ msgstr "Apasati OK pentru a declansa selectia."
 msgid "Press appropiate Init to move Nand root to SDcard."
 msgstr ""
 
-#: ../src/ImageManager.py:191 ../src/BackupManager.py:987
+#: ../src/ImageManager.py:191 ../src/BackupManager.py:982
 msgid "Really close without saving settings?"
 msgstr ""
 
@@ -888,7 +886,7 @@ msgstr ""
 msgid "Reboot"
 msgstr "Restart.."
 
-#: ../src/BackupManager.py:426
+#: ../src/BackupManager.py:421
 msgid "Rebooting..."
 msgstr "Restart.."
 
@@ -901,9 +899,9 @@ msgid ""
 msgstr ""
 
 #: ../src/Multibootmgr.py:81
-#, fuzzy, python-format
+#, python-format
 msgid "Removal of this slot will not show in %s GUI.  Are you sure you want to delete image slot?"
-msgstr "Sunteti sigur ca vreti sa stergeti aceasta copie de rezerva?"
+msgstr ""
 
 #: ../src/Multibootmgr.py:83 ../src/Multibootmgr.py:87
 #: ../src/ImageManager.py:384 ../src/BackupManager.py:285
@@ -915,10 +913,10 @@ msgstr "Sterge confirmatia."
 msgid "Removing temp mounts..."
 msgstr "Sterge montarile temporare.."
 
-#: ../src/ClientModeBox.py:513 ../src/ImageManager.py:148
-#: ../src/BackupManager.py:944
+#: ../src/ImageManager.py:148 ../src/ClientModeBox.py:513
+#: ../src/BackupManager.py:939
 msgid "Repeat how often"
-msgstr ""
+msgstr "Repeta cat de des."
 
 #: ../src/SoftcamManager.py:138
 msgid "Restart"
@@ -948,31 +946,36 @@ msgstr "Confirmarea restaurarii."
 msgid "Restore settings"
 msgstr "Da,pentru restaurarea setarilor."
 
-#: ../src/plugin.py:178 ../src/RestoreWizard.py:132 ../src/RestoreWizard.py:137
+#: ../src/RestoreWizard.py:132 ../src/RestoreWizard.py:137
 #: ../src/RestoreWizard.py:144 ../src/RestoreWizard.py:150
 #: ../src/RestoreWizard.py:156 ../src/RestoreWizard.py:160
 #: ../src/RestoreWizard.py:186 ../src/RestoreWizard.py:190
 #: ../src/RestoreWizard.py:199 ../src/RestoreWizard.py:255
 #: ../src/RestoreWizard.py:259 ../src/RestoreWizard.py:263
-#: ../src/RestoreWizard.py:267 ../src/RestoreWizard.py:271
+#: ../src/RestoreWizard.py:267 ../src/RestoreWizard.py:271 ../src/plugin.py:178
 #, fuzzy
 msgid "Restore wizard"
 msgstr "Fereastra restaurarii."
 
-#: ../src/BackupManager.py:382 ../src/BackupManager.py:386
-#: ../src/BackupManager.py:390
+#: ../src/BackupManager.py:686
+#, fuzzy
+msgid "Restoring Plugins: Please Wait..."
+msgstr "Restaurez pluginurile..."
+
+#: ../src/BackupManager.py:381 ../src/BackupManager.py:385
+#: ../src/BackupManager.py:389
 msgid "Restoring backup..."
 msgstr "Restaurez copia de rezerva..."
 
-#: ../src/BackupManager.py:418 ../src/BackupManager.py:422
+#: ../src/BackupManager.py:417
 msgid "Restoring plugins, this can take a long time..."
 msgstr "Restaurez pluginurile,asta poate dura ceva timp."
 
-#: ../src/BackupManager.py:410 ../src/BackupManager.py:414
+#: ../src/BackupManager.py:409 ../src/BackupManager.py:413
 msgid "Restoring plugins..."
 msgstr "Restaurez pluginurile..."
 
-#: ../src/BackupManager.py:450
+#: ../src/BackupManager.py:445
 msgid "Restoring settings, receiver rebooting..."
 msgstr ""
 
@@ -992,9 +995,9 @@ msgstr "Rulati scripturile dvs shell."
 msgid "SDCARD: "
 msgstr ""
 
-#: ../src/SoftcamManager.py:320 ../src/ClientModeBox.py:469
-#: ../src/MountManager.py:384 ../src/BackupManager.py:713
-#: ../src/BackupManager.py:802
+#: ../src/ClientModeBox.py:469 ../src/BackupManager.py:708
+#: ../src/BackupManager.py:797 ../src/MountManager.py:384
+#: ../src/SoftcamManager.py:320
 msgid "Save"
 msgstr "Salveaza"
 
@@ -1003,21 +1006,21 @@ msgid "Scan"
 msgstr ""
 
 #: ../src/ImageManager.py:145 ../src/ImageManager.py:153
-#: ../src/BackupManager.py:941 ../src/BackupManager.py:949
+#: ../src/BackupManager.py:936 ../src/BackupManager.py:944
 #, fuzzy
 msgid "Schedule backups"
-msgstr "Copie de siguranta noua."
+msgstr "Copii de rezerva programate."
 
 #: ../src/ClientModeBox.py:510
+#, fuzzy
 msgid "Schedule sync"
-msgstr ""
+msgstr "Copii de rezerva programate."
 
 #: ../src/ui.py:52
-#, fuzzy
 msgid "Script Runner"
 msgstr "Rularea scripturilor."
 
-#: ../src/BackupManager.py:748
+#: ../src/BackupManager.py:743
 msgid "Select"
 msgstr "Selecteaza."
 
@@ -1036,15 +1039,15 @@ msgstr "Selectati un pachet pentru instalare."
 msgid "Select an image to download:"
 msgstr "Selectati o imagine pentru descarcare."
 
-#: ../src/BackupManager.py:799
+#: ../src/BackupManager.py:794
 msgid "Select extra packages folder"
 msgstr "Selectati foldere extra pentru pachete."
 
-#: ../src/BackupManager.py:710
+#: ../src/BackupManager.py:705
 msgid "Select files/folders to backup"
 msgstr "Selectati file/foldere pentru copia de rezerva"
 
-#: ../src/BackupManager.py:831
+#: ../src/BackupManager.py:826
 msgid "Select folder that contains plugins"
 msgstr "Selectati foldere care contin pluginuri."
 
@@ -1100,7 +1103,7 @@ msgstr "Verificare Softcam"
 msgid "Sorry but that location does not exist or is not setup. Please set it up in the Backup manager setup menu."
 msgstr "Ne pare rau,dar locatia nu exista ori nu este configurata.Va rugam configurati-o in meniul Managerului Copiei de rezerva"
 
-#: ../src/BackupManager.py:543
+#: ../src/BackupManager.py:538
 #, fuzzy
 msgid "Sorry the feeds are down for maintenance. Please try again later."
 msgstr "Ne pare rau , feed-urile sunt oprite pentru intretinere.Va rugam incercati mai tarziu."
@@ -1124,7 +1127,7 @@ msgstr "Ne pare rau,dar fila nu este compatibila cu versiunea imaginii."
 msgid "Sorry, but the file is not compatible with this kernel version."
 msgstr "Ne pare rau,dar fila nu este compatibila cu versiunea imaginii."
 
-#: ../src/BackupManager.py:470
+#: ../src/BackupManager.py:465
 msgid "Sorry, but the restore failed."
 msgstr "Ne pare rau,dar restaurarea a esuat."
 
@@ -1142,7 +1145,7 @@ msgstr "Ne pare rau , nu a fost gasit suficient ram liber,si nici un device fizi
 msgid "Start"
 msgstr "Porneste"
 
-#: ../src/BackupManager.py:1168 ../src/BackupManager.py:1172
+#: ../src/BackupManager.py:1163 ../src/BackupManager.py:1167
 msgid "Starting..."
 msgstr "Pornire..."
 
@@ -1159,7 +1162,6 @@ msgid "Streaming port"
 msgstr ""
 
 #: ../src/ui.py:53
-#, fuzzy
 msgid "Swap Manager"
 msgstr "Manager Swap"
 
@@ -1176,7 +1178,7 @@ msgstr "Loc Swap:"
 #: ../src/SwapManager.py:120
 #, fuzzy
 msgid "Swap size:"
-msgstr "Marime:"
+msgstr "Spatiu Swap:"
 
 #: ../src/MountManager.py:128
 msgid "TB"
@@ -1187,7 +1189,7 @@ msgstr "TB"
 msgid "Temp folder"
 msgstr "Folder Temporar."
 
-#: ../src/BackupManager.py:1263
+#: ../src/BackupManager.py:1258
 #, fuzzy
 msgid "The backup location does not have enough free space."
 msgstr "Locatia copiei de rezerva nu are suficient spatiu liber."
@@ -1237,7 +1239,6 @@ msgid "There is no image to flash."
 msgstr "Nu aveti nici o imagine de descarcat."
 
 #: ../src/MountManager.py:345
-#, fuzzy
 msgid "This Device is already mounted as HDD."
 msgstr "Acest device este montat deja ca HDD."
 
@@ -1246,13 +1247,15 @@ msgstr "Acest device este montat deja ca HDD."
 msgid "This device is already mounted as HDD."
 msgstr "Acest device este montat deja ca HDD."
 
-#: ../src/ImageManager.py:147 ../src/BackupManager.py:943
+#: ../src/ImageManager.py:147 ../src/BackupManager.py:938
+#, fuzzy
 msgid "Time of backup to start in minutes"
-msgstr ""
+msgstr "Timpul de start al copiei de rezerva."
 
 #: ../src/ClientModeBox.py:512
+#, fuzzy
 msgid "Time of sync to start"
-msgstr ""
+msgstr "Timpul de start al copiei de rezerva."
 
 #: ../src/ClientModeBox.py:618
 msgid "To apply new settings, you need to restart GUI your STB. Do you want restart it now?"
@@ -1271,7 +1274,6 @@ msgid "USB: "
 msgstr "USB:"
 
 #: ../src/MountManager.py:198
-#, fuzzy
 msgid "Unmount"
 msgstr "Demonteaza"
 
@@ -1324,56 +1326,54 @@ msgstr ""
 msgid "View progress"
 msgstr "Vezi Progresul."
 
-#: ../src/plugin.py:180 ../src/BackupManager.py:116
+#: ../src/BackupManager.py:116 ../src/plugin.py:180
 #, fuzzy
 msgid "Vision Backup Manager"
-msgstr "Managerul copiei de rezerva al Vision"
+msgstr "Managerul copiei de rezerva al ViX"
 
-#: ../src/BackupManager.py:892
+#: ../src/BackupManager.py:887
 #, fuzzy
 msgid "Vision Backup Manager Setup"
-msgstr "Managerul copiei de rezerva al Vision"
+msgstr "Configurarea Managerului copiei de rezerva"
 
-#: ../src/BackupManager.py:1000
+#: ../src/BackupManager.py:995
 #, fuzzy
 msgid "Vision Backup manager logs"
-msgstr "Managerul copiei de rezerva al Vision"
+msgstr "Inregistrarile Managerului copiei de rezerva."
 
-#: ../src/ClientModeBox.py:117 ../src/ClientModeBox.py:464
+#: ../src/ClientModeBox.py:118 ../src/ClientModeBox.py:464
 #: ../src/ClientModeBox.py:865 ../src/plugin.py:185
-#, fuzzy
 msgid "Vision Client Mode Box"
-msgstr "Vision"
+msgstr ""
 
-#: ../src/plugin.py:85 ../src/plugin.py:167 ../src/ui.py:44
-#, fuzzy
+#: ../src/ui.py:44 ../src/plugin.py:85 ../src/plugin.py:167
 msgid "Vision Core"
-msgstr "Vision"
+msgstr ""
 
 #: ../src/H9SDmanager.py:31
 #, fuzzy
 msgid "Vision H9 SDcard Manager"
-msgstr "Manager Softcam."
+msgstr "Managerul Swap al ViX"
 
-#: ../src/plugin.py:181 ../src/ImageManager.py:216
+#: ../src/ImageManager.py:216 ../src/plugin.py:181
 #, fuzzy
 msgid "Vision Image Manager"
-msgstr "Managerul imaginii al Vision"
+msgstr "Managerul imaginii al ViX"
 
 #: ../src/ImageManager.py:111
 #, fuzzy
 msgid "Vision Image Manager Setup"
-msgstr "Managerul imaginii al Vision"
+msgstr "Configueaza managerul imaginii"
 
-#: ../src/plugin.py:182 ../src/MountManager.py:194
+#: ../src/MountManager.py:194 ../src/plugin.py:182
 #, fuzzy
 msgid "Vision Mount Manager"
-msgstr "Managerul monturilor al Vision"
+msgstr "Managerul monturilor al ViX"
 
 #: ../src/Multibootmgr.py:35
 #, fuzzy
 msgid "Vision Multiboot Image Manager"
-msgstr "Managerul imaginii al Vision"
+msgstr "Managerul imaginii al ViX"
 
 #: ../src/IPKInstaller.py:39
 msgid "Vision Opkg Install"
@@ -1382,35 +1382,35 @@ msgstr ""
 #: ../src/plugin.py:184
 #, fuzzy
 msgid "Vision SWAP Manager"
-msgstr "Managerul Swap al Vision"
+msgstr "Managerul Swap al ViX"
 
-#: ../src/plugin.py:183 ../src/ScriptRunner.py:45
+#: ../src/ScriptRunner.py:45 ../src/plugin.py:183
 #, fuzzy
 msgid "Vision Script Runner"
-msgstr "Rularea scripturilor al Vision"
+msgstr "Rularea scripturilor al ViX"
 
 #: ../src/plugin.py:172
 #, fuzzy
 msgid "Vision Script runner"
-msgstr "Rularea scripturilor al Vision"
+msgstr "Rularea scripturilor al ViX"
 
 #: ../src/SoftcamManager.py:81 ../src/plugin.py:100 ../src/plugin.py:170
-#, fuzzy
 msgid "Vision Softcam"
-msgstr "Vision"
+msgstr ""
 
 #: ../src/SoftcamManager.py:530
 msgid "Vision Softcam logs"
 msgstr ""
 
 #: ../src/SoftcamManager.py:306
+#, fuzzy
 msgid "Vision Softcam setup"
-msgstr ""
+msgstr "Configurati Softcam-ul."
 
 #: ../src/SwapManager.py:113
 #, fuzzy
 msgid "Vision Swap Manager"
-msgstr "Managerul copiei de rezerva al Vision"
+msgstr "Managerul Swap al ViX"
 
 #: ../src/SwapManager.py:325
 #, fuzzy
@@ -1433,7 +1433,7 @@ msgstr "Va rugam asteptati in timp ce scanez.."
 msgid "Warning, this device is used for more than one mount point!\n"
 msgstr ""
 
-#: ../src/ClientModeBox.py:52 ../src/ImageManager.py:62
+#: ../src/ImageManager.py:62 ../src/ClientModeBox.py:52
 #: ../src/BackupManager.py:54
 msgid "Weekly"
 msgstr "Saptamanal."
@@ -1479,7 +1479,7 @@ msgstr ""
 "%s %s dumneavoastra este pe cale sa ruleze o copie de rezerva full a imaginii,asta poate dura in jur de 6 minute pentru completare.\n"
 "Permiteti?"
 
-#: ../src/BackupManager.py:1105
+#: ../src/BackupManager.py:1100
 #, fuzzy
 msgid ""
 "Your receiver is about to run a backup of your settings and to detect your plugins.\n"
@@ -1488,7 +1488,7 @@ msgstr ""
 "%s %s dvs este pe cale sa ruleze copia de rezerva a setarilor dvs si detectarea pluginurilor.\n"
 "Permiteti ?"
 
-#: ../src/BackupManager.py:534
+#: ../src/BackupManager.py:529
 #, fuzzy
 msgid "Your receiver is not connected to a network. Please check your network settings and try again."
 msgstr "%s %s dvs nu este conectat la internet,va rugam verificati setarile retelei si incercati din nou."
@@ -1498,7 +1498,7 @@ msgstr "%s %s dvs nu este conectat la internet,va rugam verificati setarile rete
 msgid "Your receiver is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."
 msgstr "%s %s dvs nu este conectat la internet.Incercati sa utilizati Managerul Copiei de rezerva pentru restaurarea pluginurilor mai tarziu."
 
-#: ../src/BackupManager.py:552
+#: ../src/BackupManager.py:547
 #, fuzzy
 msgid "Your receiver is not connected to the Internet. Please check your network settings and try again."
 msgstr "%s %s dvs nu este conectat la internet,va rugam verificati setarile retelei si incercati din nou."
