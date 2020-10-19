@@ -21,6 +21,7 @@ from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
+from re import search
 
 blacklistedDisks = [
 	1,  	# RAM disk (/dev/ram0=0, /dev/initrd=250 [250=Initial RAM disk for old systems, new systems use 0])
@@ -40,6 +41,8 @@ def getProcPartitions(List):
 			if not parts:
 				continue
 			(devmajor, devminor, blocks, device) = parts
+			device = parts[3]
+			mmc = False
 			# print('[MountManager] device = %s devmajor = %s devminor = %s' %(device, devmajor, devminor))
 			if devmajor == "major":
 				continue
@@ -57,6 +60,10 @@ def getProcPartitions(List):
 						continue
 				if SystemInfo["HasSDnomount"][0] and not re.search('mmcblk1p[0-3]', device):			# h9combo(+dups) uses mmcblk1p[0-3] include
 					continue
+			if device and search('mmcblk[0-9]p[1-9]', device):
+				mmc = True
+			if not mmc and not search('sd[a-z][1-9]',device):
+				continue
 			if devMajor == 8:
 				if not re.search('sd[a-z][1-9]', device):							# if storage use partitions only
 					continue
