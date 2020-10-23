@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vix-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-16 14:51+0330\n"
+"POT-Creation-Date: 2020-10-23 13:01+0330\n"
 "PO-Revision-Date: 2019-07-04 23:44+0200\n"
 "Last-Translator: Kojo\n"
 "Language-Team: Samzan/Kojo\n"
@@ -196,7 +196,7 @@ msgstr "Varmuuskopion sijainti"
 msgid "Backup manager"
 msgstr "Varmuuskopioiden hallinnointi"
 
-#: ../src/MountManager.py:284
+#: ../src/MountManager.py:291
 #, fuzzy
 msgid "Can't unmount the partition; make sure it is not being used for swap or record/timeshift paths."
 msgstr "Liitos epäonnistui. Varmista ettei polku ole sivutus, ajastus tai ajansiirto käytössä"
@@ -205,7 +205,7 @@ msgstr "Liitos epäonnistui. Varmista ettei polku ole sivutus, ajastus tai ajans
 #: ../src/ClientModeBox.py:155 ../src/ClientModeBox.py:468
 #: ../src/ClientModeBox.py:569 ../src/BackupManager.py:707
 #: ../src/BackupManager.py:796 ../src/BackupManager.py:900
-#: ../src/MountManager.py:385 ../src/SoftcamManager.py:319
+#: ../src/MountManager.py:392 ../src/SoftcamManager.py:319
 msgid "Cancel"
 msgstr "Keskeytä"
 
@@ -238,7 +238,7 @@ msgstr "Valitse tiedostot"
 msgid "Choose local IPK's folder"
 msgstr "Paikallinen IPK-kansio"
 
-#: ../src/MountManager.py:382
+#: ../src/MountManager.py:389
 msgid "Choose where to mount your devices to:"
 msgstr "Valitse minne laitteet liitetään:"
 
@@ -328,10 +328,10 @@ msgstr "Poista valinta"
 
 #: ../src/ImageManager.py:326 ../src/ImageManager.py:336
 #: ../src/BackupManager.py:215 ../src/BackupManager.py:218
-#: ../src/BackupManager.py:238 ../src/MountManager.py:143
-#: ../src/MountManager.py:262 ../src/MountManager.py:277
-#: ../src/MountManager.py:296 ../src/MountManager.py:327
-#: ../src/MountManager.py:341
+#: ../src/BackupManager.py:238 ../src/MountManager.py:150
+#: ../src/MountManager.py:269 ../src/MountManager.py:284
+#: ../src/MountManager.py:303 ../src/MountManager.py:334
+#: ../src/MountManager.py:348
 msgid "Device: "
 msgstr "Laite: "
 
@@ -488,7 +488,7 @@ msgstr "Löytyi epästandardi softcam. Yritetään käynnistystä, mutta tämä 
 msgid "Free space:"
 msgstr "Vapaa tila:"
 
-#: ../src/MountManager.py:130
+#: ../src/MountManager.py:137
 msgid "GB"
 msgstr "GB"
 
@@ -501,7 +501,7 @@ msgstr "H9SD-kortin hallinnointi"
 msgid "HTTP port"
 msgstr ""
 
-#: ../src/MountManager.py:83
+#: ../src/MountManager.py:90
 msgid "Hard disk: "
 msgstr ""
 
@@ -580,7 +580,7 @@ msgstr "Käänteinen"
 msgid "It seems you have not setup an extra location. Please set it up in the Backup manager setup menu."
 msgstr "Et ole asettanut ylimääräistä sijaintia. Aseta se Varmuuskopioiden hallintatyökalulla."
 
-#: ../src/ImageManager.py:326 ../src/MountManager.py:132
+#: ../src/ImageManager.py:326 ../src/MountManager.py:139
 msgid "MB"
 msgstr "MB"
 
@@ -597,7 +597,7 @@ msgstr "Muokkaa laitteen liitoksia."
 msgid "Monthly"
 msgstr ""
 
-#: ../src/MountManager.py:199
+#: ../src/MountManager.py:206
 msgid "Mount"
 msgstr "Liitä"
 
@@ -605,13 +605,13 @@ msgstr "Liitä"
 msgid "Mount Manager"
 msgstr "Liitosten hallinta"
 
-#: ../src/MountManager.py:267
+#: ../src/MountManager.py:274
 msgid "Mount failed."
 msgstr "Liitos epäonnistui."
 
-#: ../src/MountManager.py:143 ../src/MountManager.py:219
-#: ../src/MountManager.py:261 ../src/MountManager.py:276
-#: ../src/MountManager.py:340
+#: ../src/MountManager.py:150 ../src/MountManager.py:226
+#: ../src/MountManager.py:268 ../src/MountManager.py:283
+#: ../src/MountManager.py:347
 msgid "Mount: "
 msgstr "Liitos: "
 
@@ -734,8 +734,8 @@ msgstr "EI, älä palauta lisäosia"
 msgid "No, do not restore settings"
 msgstr "EI, älä palauta asetuksia"
 
-#: ../src/MountManager.py:108 ../src/MountManager.py:110
-#: ../src/MountManager.py:121 ../src/MountManager.py:362
+#: ../src/MountManager.py:115 ../src/MountManager.py:117
+#: ../src/MountManager.py:128 ../src/MountManager.py:369
 msgid "None"
 msgstr "Ei mitään"
 
@@ -793,11 +793,11 @@ msgid ""
 "This operation may take a while"
 msgstr ""
 
-#: ../src/MountManager.py:240
+#: ../src/MountManager.py:247
 msgid "Please wait while scanning for devices..."
 msgstr "Odota. Etsitään laitteita..."
 
-#: ../src/MountManager.py:394
+#: ../src/MountManager.py:401
 #, fuzzy
 msgid "Please wait while scanning your receiver devices..."
 msgstr "Odota. Etsitään laitteita..."
@@ -822,7 +822,7 @@ msgstr "Odota kun asennusta valmistellaan."
 msgid "Please wait while the system gathers information..."
 msgstr "Ole hyvä ja odota, järjestelmä kerää tietoja..."
 
-#: ../src/MountManager.py:418
+#: ../src/MountManager.py:425
 msgid "Please wait."
 msgstr "Odota."
 
@@ -846,7 +846,7 @@ msgstr "Paina sopivaa alustusta siirtääksesi Nand root SD-kortille."
 msgid "Really close without saving settings?"
 msgstr ""
 
-#: ../src/MountManager.py:299 ../src/MountManager.py:330
+#: ../src/MountManager.py:306 ../src/MountManager.py:337
 #, python-format
 msgid "Really use and mount %s as HDD ?"
 msgstr ""
@@ -897,7 +897,7 @@ msgstr "Käynnistä uudelleen"
 msgid "Restart GUI."
 msgstr "Käynnistä käyttöliittymä uudelleen."
 
-#: ../src/MountManager.py:423
+#: ../src/MountManager.py:430
 #, fuzzy
 msgid "Restart receiver"
 msgstr "Käynnistä uudelleen"
@@ -959,12 +959,12 @@ msgstr "Suorita"
 msgid "Run your shell scripts."
 msgstr "Suorita komentorivin käskyjonoja (scripts)."
 
-#: ../src/MountManager.py:101
+#: ../src/MountManager.py:108
 msgid "SDCARD: "
 msgstr "SD-Kortti: "
 
 #: ../src/ClientModeBox.py:469 ../src/BackupManager.py:708
-#: ../src/BackupManager.py:797 ../src/MountManager.py:384
+#: ../src/BackupManager.py:797 ../src/MountManager.py:391
 #: ../src/SoftcamManager.py:320
 msgid "Save"
 msgstr "Tallenna"
@@ -1033,17 +1033,17 @@ msgstr "Valitse:"
 msgid "Setting up..."
 msgstr "Asennus käynnissä..."
 
-#: ../src/MountManager.py:197
+#: ../src/MountManager.py:204
 msgid "Setup mounts"
 msgstr "Aseta liitokset"
 
-#: ../src/MountManager.py:329
+#: ../src/MountManager.py:336
 msgid "Setup your mounts in Setup mounts or restart your box if you only have one mount after executing this action.\n"
 msgstr ""
 
-#: ../src/MountManager.py:122 ../src/MountManager.py:128
-#: ../src/MountManager.py:130 ../src/MountManager.py:132
-#: ../src/MountManager.py:134
+#: ../src/MountManager.py:129 ../src/MountManager.py:135
+#: ../src/MountManager.py:137 ../src/MountManager.py:139
+#: ../src/MountManager.py:141
 msgid "Size: "
 msgstr "Koko: "
 
@@ -1133,7 +1133,7 @@ msgstr "Sivutustiedoston sijainti:"
 msgid "Swap size:"
 msgstr "Sivutustiedoston koko:"
 
-#: ../src/MountManager.py:128
+#: ../src/MountManager.py:135
 msgid "TB"
 msgstr "TB"
 
@@ -1149,7 +1149,7 @@ msgstr "Varmuuskopioiden tallennuskohteessa ei ole riittävästi tilaa."
 msgid "The backup location does not have enough free space.\n"
 msgstr "Varmuuskopioiden tallennuskohteessa ei ole riittävästi tilaa.\n"
 
-#: ../src/MountManager.py:421
+#: ../src/MountManager.py:428
 #, fuzzy
 msgid ""
 "The changes need a system restart to take effect.\n"
@@ -1183,11 +1183,11 @@ msgstr "Ei ole imagea mitä poistaa."
 msgid "There is no image to flash."
 msgstr "Ei ole imagea mitä päivittää."
 
-#: ../src/MountManager.py:345
+#: ../src/MountManager.py:352
 msgid "This Device is already mounted as HDD."
 msgstr "Tämä laite on jo liitetty HDD:nä."
 
-#: ../src/MountManager.py:300
+#: ../src/MountManager.py:307
 msgid "This device is already mounted as HDD."
 msgstr "Tämä laite on jo liitetty kovalevyksi."
 
@@ -1205,19 +1205,19 @@ msgstr "Aika jolloin varmuuskopiointi alkaa"
 msgid "To apply new settings, you need to restart GUI your STB. Do you want restart it now?"
 msgstr ""
 
-#: ../src/MountManager.py:356
+#: ../src/MountManager.py:363
 msgid "To use HDD from red button, mount point to change must be as /media/hdd"
 msgstr ""
 
-#: ../src/MountManager.py:143
+#: ../src/MountManager.py:150
 msgid "Type: "
 msgstr "Tyyppi: "
 
-#: ../src/MountManager.py:95
+#: ../src/MountManager.py:102
 msgid "USB: "
 msgstr "USB: "
 
-#: ../src/MountManager.py:198
+#: ../src/MountManager.py:205
 msgid "Unmount"
 msgstr "Poista liitos"
 
@@ -1230,7 +1230,7 @@ msgstr ""
 "Unzip-virhe (lähetetty debug-lokiin):\n"
 "%s"
 
-#: ../src/MountManager.py:416
+#: ../src/MountManager.py:423
 msgid "Updating mount locations..."
 msgstr "Päivitetään liitos-paikkoja..."
 
@@ -1243,7 +1243,7 @@ msgstr "Liitosten hallinta"
 msgid "Use Mount Manager and press green setup mounts"
 msgstr ""
 
-#: ../src/MountManager.py:221
+#: ../src/MountManager.py:228
 msgid "Use as HDD"
 msgstr "Käytä HDD:nä"
 
@@ -1309,7 +1309,7 @@ msgstr "ViX Image-varmuuskopionti"
 msgid "Vision Image Manager Setup"
 msgstr "Image-varmuuskopioiden asetukset"
 
-#: ../src/MountManager.py:194 ../src/plugin.py:182
+#: ../src/MountManager.py:201 ../src/plugin.py:182
 #, fuzzy
 msgid "Vision Mount Manager"
 msgstr "ViX Liitosten hallinta"
@@ -1374,7 +1374,7 @@ msgstr ""
 msgid "Wait please while scanning..."
 msgstr "Odota, tietoja haetaan..."
 
-#: ../src/MountManager.py:298
+#: ../src/MountManager.py:305
 msgid "Warning, this device is used for more than one mount point!\n"
 msgstr ""
 
@@ -1485,7 +1485,7 @@ msgstr "paikka%s - %s "
 msgid "slot%s - %s (current image)"
 msgstr "paikka%s - %s (nykyinen image)"
 
-#: ../src/MountManager.py:109 ../src/MountManager.py:122
-#: ../src/MountManager.py:134
+#: ../src/MountManager.py:116 ../src/MountManager.py:129
+#: ../src/MountManager.py:141
 msgid "unavailable"
 msgstr "ei saatavilla"

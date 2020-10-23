@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vix-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-16 14:51+0330\n"
+"POT-Creation-Date: 2020-10-23 13:01+0330\n"
 "PO-Revision-Date: 2016-07-17 14:24+0200\n"
 "Last-Translator: MCelliot_g <mcelliot_g@hotmail.com>\n"
 "Language-Team: none\n"
@@ -211,7 +211,7 @@ msgstr "Θέση αντιγράφων ασφαλείας"
 msgid "Backup manager"
 msgstr "Διαχείριση Αντιγράφων Ασφαλείας"
 
-#: ../src/MountManager.py:284
+#: ../src/MountManager.py:291
 #, fuzzy
 msgid "Can't unmount the partition; make sure it is not being used for swap or record/timeshift paths."
 msgstr "Partition aushängen nicht möglich. Bitte sicher stellen das sie nicht für Swap/Aufnahme/TimeShift benutzt wird."
@@ -220,7 +220,7 @@ msgstr "Partition aushängen nicht möglich. Bitte sicher stellen das sie nicht 
 #: ../src/ClientModeBox.py:155 ../src/ClientModeBox.py:468
 #: ../src/ClientModeBox.py:569 ../src/BackupManager.py:707
 #: ../src/BackupManager.py:796 ../src/BackupManager.py:900
-#: ../src/MountManager.py:385 ../src/SoftcamManager.py:319
+#: ../src/MountManager.py:392 ../src/SoftcamManager.py:319
 msgid "Cancel"
 msgstr "Ακύρωση"
 
@@ -256,7 +256,7 @@ msgstr "Επιλογή αρχείων"
 msgid "Choose local IPK's folder"
 msgstr "Επιλογή φακέλου τοπικών ipk's"
 
-#: ../src/MountManager.py:382
+#: ../src/MountManager.py:389
 msgid "Choose where to mount your devices to:"
 msgstr "Επιλέξτε το σημείο προσάρτησης των συσκευών σας: "
 
@@ -351,10 +351,10 @@ msgstr "Αποεπιλογή"
 
 #: ../src/ImageManager.py:326 ../src/ImageManager.py:336
 #: ../src/BackupManager.py:215 ../src/BackupManager.py:218
-#: ../src/BackupManager.py:238 ../src/MountManager.py:143
-#: ../src/MountManager.py:262 ../src/MountManager.py:277
-#: ../src/MountManager.py:296 ../src/MountManager.py:327
-#: ../src/MountManager.py:341
+#: ../src/BackupManager.py:238 ../src/MountManager.py:150
+#: ../src/MountManager.py:269 ../src/MountManager.py:284
+#: ../src/MountManager.py:303 ../src/MountManager.py:334
+#: ../src/MountManager.py:348
 msgid "Device: "
 msgstr "Συσκευή: "
 
@@ -519,7 +519,7 @@ msgstr "Βρέθηκε ένα μη στάνταρ softcam, προσπάθεια 
 msgid "Free space:"
 msgstr "Ελεύθερος χώρος:"
 
-#: ../src/MountManager.py:130
+#: ../src/MountManager.py:137
 msgid "GB"
 msgstr "GB"
 
@@ -532,7 +532,7 @@ msgstr "Διαχείριση Swap"
 msgid "HTTP port"
 msgstr ""
 
-#: ../src/MountManager.py:83
+#: ../src/MountManager.py:90
 msgid "Hard disk: "
 msgstr ""
 
@@ -614,7 +614,7 @@ msgstr "Αντιστροφή"
 msgid "It seems you have not setup an extra location. Please set it up in the Backup manager setup menu."
 msgstr "Φαίνεται ότι δεν έχει ρυθμιστεί επιπρόσθετη τοποθεσία, παρακαλώ ρυθμίστε την στο μενού ρυθμίσεων της Διαχείρισης Εφεδρείας"
 
-#: ../src/ImageManager.py:326 ../src/MountManager.py:132
+#: ../src/ImageManager.py:326 ../src/MountManager.py:139
 msgid "MB"
 msgstr "MB"
 
@@ -631,7 +631,7 @@ msgstr "Διαχείριση των σημείων προσάρτησης των
 msgid "Monthly"
 msgstr ""
 
-#: ../src/MountManager.py:199
+#: ../src/MountManager.py:206
 msgid "Mount"
 msgstr "Προσάρτηση"
 
@@ -639,14 +639,14 @@ msgstr "Προσάρτηση"
 msgid "Mount Manager"
 msgstr "Διαχείριση Προσαρτήσεων"
 
-#: ../src/MountManager.py:267
+#: ../src/MountManager.py:274
 #, fuzzy
 msgid "Mount failed."
 msgstr "Αποτυχία προσάρτησης"
 
-#: ../src/MountManager.py:143 ../src/MountManager.py:219
-#: ../src/MountManager.py:261 ../src/MountManager.py:276
-#: ../src/MountManager.py:340
+#: ../src/MountManager.py:150 ../src/MountManager.py:226
+#: ../src/MountManager.py:268 ../src/MountManager.py:283
+#: ../src/MountManager.py:347
 msgid "Mount: "
 msgstr "Προσάρτηση: "
 
@@ -770,8 +770,8 @@ msgstr "ΟΧΙ, να μη γίνει επαναφορά των προσθέτω�
 msgid "No, do not restore settings"
 msgstr "ΟΧΙ, να μη γίνει επαναφορά των ρυθμίσεων"
 
-#: ../src/MountManager.py:108 ../src/MountManager.py:110
-#: ../src/MountManager.py:121 ../src/MountManager.py:362
+#: ../src/MountManager.py:115 ../src/MountManager.py:117
+#: ../src/MountManager.py:128 ../src/MountManager.py:369
 msgid "None"
 msgstr "Κανένα"
 
@@ -830,11 +830,11 @@ msgid ""
 "This operation may take a while"
 msgstr ""
 
-#: ../src/MountManager.py:240
+#: ../src/MountManager.py:247
 msgid "Please wait while scanning for devices..."
 msgstr "Παρακαλώ περιμένετε καθώς γίνεται ανίχνευση για συσκευές..."
 
-#: ../src/MountManager.py:394
+#: ../src/MountManager.py:401
 #, fuzzy
 msgid "Please wait while scanning your receiver devices..."
 msgstr "Παρακαλώ περιμένετε καθώς γίνεται ανίχνευση για συσκευές..."
@@ -860,7 +860,7 @@ msgstr "Παρακαλώ περιμένετε καθώς ετοιμάζεται 
 msgid "Please wait while the system gathers information..."
 msgstr "Παρακαλώ περιμένετε καθώς το σύστημα συλλέγει πληροφορίες..."
 
-#: ../src/MountManager.py:418
+#: ../src/MountManager.py:425
 msgid "Please wait."
 msgstr "Παρακαλώ περιμένετε."
 
@@ -885,7 +885,7 @@ msgstr ""
 msgid "Really close without saving settings?"
 msgstr ""
 
-#: ../src/MountManager.py:299 ../src/MountManager.py:330
+#: ../src/MountManager.py:306 ../src/MountManager.py:337
 #, python-format
 msgid "Really use and mount %s as HDD ?"
 msgstr ""
@@ -936,7 +936,7 @@ msgstr "Επανεκκίνηση"
 msgid "Restart GUI."
 msgstr "Επανεκκίνηση"
 
-#: ../src/MountManager.py:423
+#: ../src/MountManager.py:430
 #, fuzzy
 msgid "Restart receiver"
 msgstr "Επανεκκίνηση"
@@ -1000,12 +1000,12 @@ msgstr "Εκτέλεση"
 msgid "Run your shell scripts."
 msgstr "Εκτέλεση script κελύφους."
 
-#: ../src/MountManager.py:101
+#: ../src/MountManager.py:108
 msgid "SDCARD: "
 msgstr ""
 
 #: ../src/ClientModeBox.py:469 ../src/BackupManager.py:708
-#: ../src/BackupManager.py:797 ../src/MountManager.py:384
+#: ../src/BackupManager.py:797 ../src/MountManager.py:391
 #: ../src/SoftcamManager.py:320
 msgid "Save"
 msgstr "Αποθήκευση"
@@ -1078,18 +1078,18 @@ msgstr "Επιλογή:"
 msgid "Setting up..."
 msgstr "Ρύθμιση..."
 
-#: ../src/MountManager.py:197
+#: ../src/MountManager.py:204
 #, fuzzy
 msgid "Setup mounts"
 msgstr "Ρυθμίσεις Προσαρτήσεων"
 
-#: ../src/MountManager.py:329
+#: ../src/MountManager.py:336
 msgid "Setup your mounts in Setup mounts or restart your box if you only have one mount after executing this action.\n"
 msgstr ""
 
-#: ../src/MountManager.py:122 ../src/MountManager.py:128
-#: ../src/MountManager.py:130 ../src/MountManager.py:132
-#: ../src/MountManager.py:134
+#: ../src/MountManager.py:129 ../src/MountManager.py:135
+#: ../src/MountManager.py:137 ../src/MountManager.py:139
+#: ../src/MountManager.py:141
 msgid "Size: "
 msgstr "Μέγεθος: "
 
@@ -1189,7 +1189,7 @@ msgstr "Τοποθεσία Swap: "
 msgid "Swap size:"
 msgstr "Μέγεθος Swap:"
 
-#: ../src/MountManager.py:128
+#: ../src/MountManager.py:135
 msgid "TB"
 msgstr "TB"
 
@@ -1206,7 +1206,7 @@ msgstr "Η τοποθεσία της εφεδρείας δεν διαθέτει 
 msgid "The backup location does not have enough free space.\n"
 msgstr "Η τοποθεσία της εφεδρείας δεν διαθέτει αρκετό ελεύθερο χώρο.\n"
 
-#: ../src/MountManager.py:421
+#: ../src/MountManager.py:428
 #, fuzzy
 msgid ""
 "The changes need a system restart to take effect.\n"
@@ -1245,11 +1245,11 @@ msgstr "Δεν υπάρχει image για διαγραφή."
 msgid "There is no image to flash."
 msgstr "Δεν υπάρχει image για λήψη."
 
-#: ../src/MountManager.py:345
+#: ../src/MountManager.py:352
 msgid "This Device is already mounted as HDD."
 msgstr "Αυτή η Συσκευή έχει ήδη προσαρτηθεί ως HDD."
 
-#: ../src/MountManager.py:300
+#: ../src/MountManager.py:307
 #, fuzzy
 msgid "This device is already mounted as HDD."
 msgstr "Αυτή η Συσκευή έχει ήδη προσαρτηθεί ως HDD."
@@ -1268,19 +1268,19 @@ msgstr "Ώρα έναρξης Εφεδρείας"
 msgid "To apply new settings, you need to restart GUI your STB. Do you want restart it now?"
 msgstr ""
 
-#: ../src/MountManager.py:356
+#: ../src/MountManager.py:363
 msgid "To use HDD from red button, mount point to change must be as /media/hdd"
 msgstr ""
 
-#: ../src/MountManager.py:143
+#: ../src/MountManager.py:150
 msgid "Type: "
 msgstr "Τύπος: "
 
-#: ../src/MountManager.py:95
+#: ../src/MountManager.py:102
 msgid "USB: "
 msgstr "USB: "
 
-#: ../src/MountManager.py:198
+#: ../src/MountManager.py:205
 msgid "Unmount"
 msgstr "Αποπροσάρτηση"
 
@@ -1291,7 +1291,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../src/MountManager.py:416
+#: ../src/MountManager.py:423
 #, fuzzy
 msgid "Updating mount locations..."
 msgstr "Ενημέρωση τοποθεσιών προσάρτησης."
@@ -1305,7 +1305,7 @@ msgstr "Διαχείριση Προσαρτήσεων"
 msgid "Use Mount Manager and press green setup mounts"
 msgstr ""
 
-#: ../src/MountManager.py:221
+#: ../src/MountManager.py:228
 msgid "Use as HDD"
 msgstr "Χρήση ως HDD"
 
@@ -1372,7 +1372,7 @@ msgstr "ViX Διαχείριση Image"
 msgid "Vision Image Manager Setup"
 msgstr "ViX Διαχείριση Image"
 
-#: ../src/MountManager.py:194 ../src/plugin.py:182
+#: ../src/MountManager.py:201 ../src/plugin.py:182
 #, fuzzy
 msgid "Vision Mount Manager"
 msgstr "ViX Διαχείριση Προσαρτήσεων"
@@ -1435,7 +1435,7 @@ msgstr ""
 msgid "Wait please while scanning..."
 msgstr "Παρακαλώ περιμένετε καθώς γίνεται ανίχνευση..."
 
-#: ../src/MountManager.py:298
+#: ../src/MountManager.py:305
 msgid "Warning, this device is used for more than one mount point!\n"
 msgstr ""
 
@@ -1541,7 +1541,7 @@ msgstr ""
 msgid "slot%s - %s (current image)"
 msgstr ""
 
-#: ../src/MountManager.py:109 ../src/MountManager.py:122
-#: ../src/MountManager.py:134
+#: ../src/MountManager.py:116 ../src/MountManager.py:129
+#: ../src/MountManager.py:141
 msgid "unavailable"
 msgstr "μη διαθέσιμο"
