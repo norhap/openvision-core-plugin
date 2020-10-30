@@ -575,13 +575,13 @@ class VISIONBackupManager(Screen):
 			if config.backupmanager.xtraplugindir.value:
 				self.thirdpartyPluginsLocation = config.backupmanager.xtraplugindir.value
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
-				self.plugfiles = self.thirdpartyPluginsLocation.split('/',3)
+				self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
 			elif path.exists('/tmp/3rdPartyPluginsLocation'):
 				self.thirdpartyPluginsLocation = open('/tmp/3rdPartyPluginsLocation', 'r').readlines()
 				self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n', '')
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
-				self.plugfiles = self.thirdpartyPluginsLocation.split('/',3)
+				self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
 			tmppluginslist2 = open('/tmp/3rdPartyPlugins', 'r').readlines()
 			available = None
 			for line in tmppluginslist2:
@@ -908,10 +908,10 @@ class VISIONBackupManagerMenu(Screen, ConfigListScreen):
 		self.createSetup()
 
 	def chooseFiles(self):
-		self.session.openWithCallback(self.backupfiles_choosen,BackupSelection)
+		self.session.openWithCallback(self.backupfiles_choosen, BackupSelection)
 
 	def chooseXtraPluginDir(self):
-		self.session.openWithCallback(self.backupfiles_choosen,XtraPluginsSelection)
+		self.session.openWithCallback(self.backupfiles_choosen, XtraPluginsSelection)
 
 	def backupfiles_choosen(self, ret):
 		self.backupdirs = ' '.join(config.backupmanager.backupdirs.value)

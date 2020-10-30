@@ -359,7 +359,7 @@ class ClientModeBoxMount:
 		return os.system('umount ' + path) == 0
 
 	def mount(self, ip, share, path):
-	    if not fileHas("/etc/fstab",":/mnt/hdd"):
+	    if not fileHas("/etc/fstab", ":/mnt/hdd"):
 		try:
 			os.makedirs(path)
 		except Exception:
@@ -1111,7 +1111,7 @@ class ClientModeBoxRemoteTimer():
 							time_match = end - begin
 							type = type_offset + 2
 				if time_match:
-					if type in (2,7,12): # When full recording do not look further
+					if type in (2, 7, 12): # When full recording do not look further
 						returnValue = (time_match, [type], isAutoTimer)
 						break
 					elif returnValue:
@@ -1156,7 +1156,7 @@ class ClientModeBoxRemoteTimer():
 		self.getTimers()
 
 		if not success:
-			timersanitycheck = TimerSanityCheck(self._timer_list,entry)
+			timersanitycheck = TimerSanityCheck(self._timer_list, entry)
 			if not timersanitycheck.check():
 				print("Timer conflict detected!")
 				print(timersanitycheck.getSimulTimerList())
@@ -1198,7 +1198,7 @@ class ClientModeBoxRemoteTimer():
 		self.getTimers()
 
 		if not success:
-			timersanitycheck = TimerSanityCheck(self._timer_list,entry)
+			timersanitycheck = TimerSanityCheck(self._timer_list, entry)
 			if not timersanitycheck.check():
 				print("Timer conflict detected!")
 				print(timersanitycheck.getSimulTimerList())

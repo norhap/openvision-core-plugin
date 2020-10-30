@@ -62,7 +62,7 @@ def getProcPartitions(List):
 					continue
 			if device and search('mmcblk[0-9]p[1-9]', device):
 				mmc = True
-			if not mmc and not search('sd[a-z][1-9]',device):
+			if not mmc and not search('sd[a-z][1-9]', device):
 				continue
 			if devMajor == 8:
 				if not re.search('sd[a-z][1-9]', device):							# if storage use partitions only
