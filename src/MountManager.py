@@ -57,6 +57,10 @@ def getProcPartitions(List):
 						continue
 				if SystemInfo["HasSDnomount"][0] and not re.search('mmcblk1p[0-3]', device):			# h9combo(+dups) uses mmcblk1p[0-3] include
 					continue
+			if device and search('mmcblk[0-9]p[1-9]', device):
+				mmc = True
+			if not mmc and not search('sd[a-z][1-9]', device):
+				continue
 			if devMajor == 8:
 				if not re.search('sd[a-z][1-9]', device):							# if storage use partitions only
 					continue

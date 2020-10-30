@@ -63,7 +63,7 @@ for arg in sys.argv[1:]:
 	attrlist.sort(key=lambda a: a[0])
 
 	for (k, c) in attrlist:
-		print
+		print()
 		print('#: ' + arg)
 # We need to escape all "s that we have in the string.
 # This replace() *must* come before anything that adds "s!! (such as the
