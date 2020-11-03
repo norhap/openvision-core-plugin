@@ -1417,6 +1417,8 @@ class ImageManagerDownload(Screen):
 			self.PLi = True
 		if "atv" in self.urlDistro:
 			self.PLi = True
+		if "vix" in self.urlDistro:
+			self.PLi = True
 		self["list"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("No images found for selected download server...if password check validity")), "Waiter"))])
 		self.getImageDistro()
 
@@ -1465,7 +1467,7 @@ class ImageManagerDownload(Screen):
 						link = tag.get("href", None)
 						if link is not None and link.endswith("zip") and link.find(getMachineMake()) != -1 and link.find("recovery") == -1:
 							tmp_image_list.append(str(link))
-				
+
 				for version in sorted(versions, reverse=True):
 					newversion = _("Image Version %s%s") % (version, " (%s)" % subfolder if subfolder else "")
 					for image in tmp_image_list:
