@@ -52,13 +52,13 @@ class VISIONMenu(Screen, ProtectedScreen):
 		self["lab5"] = StaticText(_("Sources are available at:"))
 		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 		if self.menu == 0:
-			self.list.append(("Backup Manager", _("Backup Manager"), _("Manage the backups of your settings."), None))
-			self.list.append(("Image Manager", _("Image Manager"), _("Create and flash complete images of your system."), None))
-			self.list.append(("Opkg Install", _("Opkg Install"), _("Install IPK's from your tmp folder."), None))
-			self.list.append(("Mount Manager", _("Mount Manager"), _("Manage your devices mount points."), None))
-			self.list.append(("Script Runner", _("Script Runner"), _("Run your shell scripts."), None))
-			self.list.append(("Swap Manager", _("Swap Manager"), _("Create and Manage your SWAP files."), None))
-			self.list.append(("Client Mode Box", _("Client Mode Box"), _("Use this box as a client of a server."), None))
+			self.list.append(("Administrador Copias de Configuración", _("Backup manager"), _("Manage the backups of your settings."), None))
+			self.list.append(("Administrador de Imagen", _("Image manager"), _("Create and flash complete images of your system."), None))
+			self.list.append(("Instalar IPKG", _("Install local extension"), _("Install IPK's from your tmp folder."), None))
+			self.list.append(("Administrador de Montajes", _("Mount manager"), _("Manage your devices mount points."), None))
+			self.list.append(("Ejecutar Scripts", _("Script runner"), _("Run your shell scripts."), None))
+			self.list.append(("Administrador SWAP", _("SWAP manager"), _("Create and Manage your SWAP files."), None))
+			self.list.append(("Receptor En Modo Cliente", _("Poner Receptor en Modo Cliente"), _("Poner el Receptor en Modo Cliente"), None))
 
  			if SystemInfo["HasH9SD"]:
 				self.list.append(("H9SDcard manager", _("H9SDcard Manager"), _("Move Nand root to SD card"), None))
