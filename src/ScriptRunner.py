@@ -7,6 +7,7 @@ from Screens.Screen import Screen
 from Screens.Console import Console
 from Screens.Setup import Setup
 from Components.ActionMap import ActionMap
+from Components.Label import Label
 from Components.Sources.StaticText import StaticText
 from Components.config import config, ConfigSubsection, ConfigYesNo
 from IPKInstaller import OpkgInstaller
@@ -43,6 +44,12 @@ class VISIONScriptRunner(OpkgInstaller):
 					list.append(pkg)
 		OpkgInstaller.__init__(self, session, list)
 		self.setTitle(_("Vision Script Runner"))
+		self["lab1"] = StaticText(_("OpenVision"))
+		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
+		self["lab3"] = StaticText(_("Report problems to:"))
+		self["lab4"] = StaticText(_("https://openvision.tech"))
+		self["lab5"] = StaticText(_("Sources are available at:"))
+		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 
 		self["key_green"] = StaticText(_("Run"))
 

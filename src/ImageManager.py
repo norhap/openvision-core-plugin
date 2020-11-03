@@ -17,6 +17,7 @@ from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
 from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock, getConfigListEntry
 from Components.Console import Console
 from Components.Harddisk import harddiskmanager, getProcMounts
+from Components.Sources.StaticText import StaticText
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.SystemInfo import SystemInfo
@@ -109,6 +110,12 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 		self.skin = VISIONImageManagerMenu.skin
 		self.skinName = "VISIONImageManagerMenu"
 		Screen.setTitle(self, _("Vision Image Manager Setup"))
+		self["lab1"] = StaticText(_("OpenVision"))
+		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
+		self["lab3"] = StaticText(_("Report problems to:"))
+		self["lab4"] = StaticText(_("https://openvision.tech"))
+		self["lab5"] = StaticText(_("Sources are available at:"))
+		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 
 		self.onChangedEntry = [ ]
 		self.list = []
@@ -203,7 +210,7 @@ class VISIONImageManager(Screen):
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
 		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
 		<ePixmap pixmap="buttons/key_menu.png" position="0,40" size="35,25" alphatest="blend" transparent="1" zPosition="3"/>
-		<widget name="lab1" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
+		<widget name="lab7" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
 		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand"/>
 		<widget name="backupstatus" position="10,370" size="400,30" font="Regular;20" zPosition="5"/>
 		<applet type="onLayoutFinish">
@@ -215,12 +222,18 @@ class VISIONImageManager(Screen):
 		Screen.__init__(self, session)
 		self.setTitle(_("Vision Image Manager"))
 
-		self["lab1"] = Label()
+		self["lab7"] = Label()
 		self["backupstatus"] = Label()
 		self["key_red"] = Button(_("Delete"))
 		self["key_green"] = Button("New backup")
 		self["key_yellow"] = Button(_("Downloads"))
 		self["key_blue"] = Button(_("Flash"))
+		self["lab1"] = StaticText(_("OpenVision"))
+		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
+		self["lab3"] = StaticText(_("Report problems to:"))
+		self["lab4"] = StaticText(_("https://openvision.tech"))
+		self["lab5"] = StaticText(_("Sources are available at:"))
+		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 
 		self.BackupRunning = False
 		self.BackupDirectory = " "
@@ -304,7 +317,7 @@ class VISIONImageManager(Screen):
 				"cancel": self.close,
 				"menu": self.createSetup,
 			}, -1)
-			self["lab1"].setText(_("Device: Un-mount") + "\n" + _("Use Mount Manager and press green setup mounts"))
+			self["lab7"].setText(_("Device: Un-mount") + "\n" + _("Use Mount Manager and press green setup mounts"))
 		else:
 			self["myactions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "HelpActions"], {
 				"cancel": self.close,
@@ -323,7 +336,7 @@ class VISIONImageManager(Screen):
 				config.imagemanager.backuplocation.save()
 				s = statvfs(config.imagemanager.backuplocation.value)
 				free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
-				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _("MB") + "\n" + _("Select what you want to do"))
+				self["lab7"].setText(_("Device: ") + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _("MB") + "\n" + _("Select what you want to do"))
 
 			try:
 				if not path.exists(self.BackupDirectory):
@@ -333,13 +346,13 @@ class VISIONImageManager(Screen):
 					remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
 				self.refreshList()
 			except Exception:
-				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
+				self["lab7"].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, VISIONImageManagerMenu)
 
 	def doDownload(self):
-		self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPLi", 3)]
+		self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPLi",3)]
 		self.urlchoices = [config.imagemanager.imagefeed_ViX.value, config.imagemanager.imagefeed_ATV.value, config.imagemanager.imagefeed_PLi.value]
 		self.message = _("Do you want to change download url")
 		self.session.openWithCallback(self.doDownload2, MessageBox, self.message, list=self.choices, default=1, simple=True)
@@ -452,7 +465,7 @@ class VISIONImageManager(Screen):
 			self.message = _("Recording(s) are in progress or coming up in few seconds!\nDo you still want to flash image\n%s?") % self.sel
 		else:
 			self.message = _("Do you want to flash image\n%s") % self.sel
-		if "emmc" in imagefs or imagefs.replace(" ", "") == "tar.bz2":
+		if "emmc" in imagefs or imagefs.replace(" ","") == "tar.bz2":
 			message = _("You are about to flash an eMMC flash; we cannot take any responsibility for any errors or damage to your box during this process.\nProceed with CAUTION!:\nAre you sure you want to flash this image:\n ") + self.sel
 		else:
 			message = _("Are you sure you want to flash this image:\n ") + self.sel
@@ -733,7 +746,7 @@ class ImageBackup(Screen):
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
 		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
-		<widget name="lab1" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
+		<widget name="lab7" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
 		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand"/>
 		<applet type="onLayoutFinish">
 			self["list"].instance.setItemHeight(25)
@@ -1019,7 +1032,7 @@ class ImageBackup(Screen):
 				output.write("vol_flags=autoresize\n")
 
 			self.commands.append("mount --bind / %s/root" % self.TMPDIR)
-			if model in ("h9", "i55plus"):
+			if model in ("h9","i55plus"):
 				with open("/proc/cmdline", "r") as z:
 					if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z.read():
 						self.ROOTFSTYPE = "tar.bz2"
@@ -1257,7 +1270,7 @@ class ImageBackup(Screen):
 		else:
 			move("%s/vmlinux.gz" % self.WORKDIR, "%s/%s" % (self.MAINDEST, self.KERNELFILE))
 
-		if model in ("h9", "i55plus"):
+		if model in ("h9","i55plus"):
 			system("mv %s/fastboot.bin %s/fastboot.bin" % (self.WORKDIR, self.MAINDEST))
 			system("mv %s/bootargs.bin %s/bootargs.bin" % (self.WORKDIR, self.MAINDEST))
 			system("mv %s/pq_param.bin %s/pq_param.bin" % (self.WORKDIR, self.MAINDEST))
@@ -1294,8 +1307,8 @@ class ImageBackup(Screen):
 					line = "This file forces a reboot after the update."
 					fileout.write(line)
 					fileout.close()
-		elif brand in ("xtrend", "gigablue", "octagon", "odin", "xp", "ini"):
-			if brand in ("xtrend", "octagon", "odin", "ini"):
+		elif brand in ("xtrend","gigablue","octagon","odin","xp","ini"):
+			if brand in ("xtrend","octagon","odin","ini"):
 				with open(self.MAINDEST + "/noforce", "w") as fileout:
 					line = "rename this file to 'force' to force an update without confirmation"
 					fileout.write(line)
@@ -1325,7 +1338,7 @@ class ImageBackup(Screen):
 			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
-		if (path.exists(self.MAINDEST + "/" + self.ROOTFSFILE) and path.exists(self.MAINDEST + "/" + self.KERNELFILE)) or (model in ("h9", "i55plus") and "root=/dev/mmcblk0p1" in z):
+		if (path.exists(self.MAINDEST + "/" + self.ROOTFSFILE) and path.exists(self.MAINDEST + "/" + self.KERNELFILE)) or (model in ("h9","i55plus") and "root=/dev/mmcblk0p1" in z):
 			for root, dirs, files in walk(self.MAINDEST):
 				for momo in dirs:
 					chmod(path.join(root, momo), 0644)
@@ -1393,7 +1406,7 @@ class ImageManagerDownload(Screen):
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
 		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1" />
-		<widget name="lab1" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
+		<widget name="lab7" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
 		<widget name="list" position="10,105" size="980,480" scrollbarMode="showOnDemand" />
 		<applet type="onLayoutFinish">
 			self["list"].instance.setItemHeight(50)
@@ -1406,9 +1419,15 @@ class ImageManagerDownload(Screen):
 		self.PLi = False
 		self.urlDistro = urlDistro
 		self.BackupDirectory = BackupDirectory
-		self["lab1"] = Label(_("Select an image to download:"))
+		self["lab7"] = Label(_("Select an image to download:"))
 		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button(_("Download"))
+		self["lab1"] = StaticText(_("OpenVision"))
+		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
+		self["lab3"] = StaticText(_("Report problems to:"))
+		self["lab4"] = StaticText(_("https://openvision.tech"))
+		self["lab5"] = StaticText(_("Sources are available at:"))
+		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 		self.Downlist = []
 		self.imagesList = {}
 		self.setIndex = 0
@@ -1563,7 +1582,7 @@ class ImageManagerDownload(Screen):
 			selectedimage = currentSelected[0][0]
 			fileurl = currentSelected[0][1]
 			fileloc = self.BackupDirectory + selectedimage
-			Tools.CopyFiles.downloadFile(fileurl, fileloc, selectedimage.replace("_usb", ""))
+			Tools.CopyFiles.downloadFile(fileurl, fileloc, selectedimage.replace("_usb",""))
 			for job in Components.Task.job_manager.getPendingJobs():
 				if job.name.startswith(_("Downloading")):
 					break

@@ -103,7 +103,7 @@ class VISIONBackupManager(Screen):
 		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
 		<ePixmap pixmap="buttons/key_menu.png" position="0,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
 		<ePixmap pixmap="buttons/key_info.png" position="40,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
-		<widget name="lab1" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center" />
+		<widget name="lab7" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center" />
 		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand" />
 		<widget name="backupstatus" position="10,370" size="400,30" font="Regular;20" zPosition="5" />
 		<applet type="onLayoutFinish">
@@ -114,8 +114,14 @@ class VISIONBackupManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Vision Backup Manager"))
+		self["lab1"] = StaticText(_("OpenVision"))
+		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
+		self["lab3"] = StaticText(_("Report problems to:"))
+		self["lab4"] = StaticText(_("https://openvision.tech"))
+		self["lab5"] = StaticText(_("Sources are available at:"))
+		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 
-		self['lab1'] = Label()
+		self['lab7'] = Label()
 		self["backupstatus"] = Label()
 		self["key_green"] = Button()
 		self["key_yellow"] = Button(_("Restore"))
@@ -191,7 +197,7 @@ class VISIONBackupManager(Screen):
 				"cancel": self.close,
 				"menu": self.createSetup,
 			}, -1)
-			self["lab1"].setText(_("Device: None available") + "\n" + _("Use Mount Manager Please"))
+			self["lab7"].setText(_("Device: None available") + "\n" + _("Use Mount Manager Please"))
 		else:
 			self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions", "TimerEditActions"],
 										  {
@@ -208,14 +214,14 @@ class VISIONBackupManager(Screen):
 			if mount not in config.backupmanager.backuplocation.choices.choices:
 					self.BackupDirectory = config.backupmanager.backuplocation.value + '/backup/'
 					config.backupmanager.backuplocation.save()
-					self['lab1'].setText(_("The chosen location does not exist, using.") + "\n" + _("Select a backup to restore:"))
+					self['lab7'].setText(_("The chosen location does not exist, using.") + "\n" + _("Select a backup to restore:"))
 			if mount not in config.backupmanager.backuplocation.choices.choices and hdd not in config.backupmanager.backuplocation.choices.choices:
 					self.BackupDirectory = config.backupmanager.backuplocation.value + '/backup/'
 					config.backupmanager.backuplocation.save()
-					self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("Select a backup to restore:"))
+					self['lab7'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("Select a backup to restore:"))
 			else:
 				self.BackupDirectory = config.backupmanager.backuplocation.value + '/backup/'
-				self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("Select a backup to restore:"))
+				self['lab7'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("Select a backup to restore:"))
 			try:
 				if not path.exists(self.BackupDirectory):
 					mkdir(self.BackupDirectory, 0755)
@@ -235,7 +241,7 @@ class VISIONBackupManager(Screen):
 				self["list"].setList(self.emlist)
 				self["list"].show()
 			except:
-				self['lab1'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
+				self['lab7'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, VISIONBackupManagerMenu)
@@ -792,6 +798,12 @@ class XtraPluginsSelection(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Select extra packages folder"))
+		self["lab1"] = StaticText(_("OpenVision"))
+		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
+		self["lab3"] = StaticText(_("Report problems to:"))
+		self["lab4"] = StaticText(_("https://openvision.tech"))
+		self["lab5"] = StaticText(_("Sources are available at:"))
+		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
@@ -885,6 +897,12 @@ class VISIONBackupManagerMenu(Screen, ConfigListScreen):
 		Screen.__init__(self, session)
 		self.skinName = "VISIONBackupManagerMenu"
 		Screen.setTitle(self, _("Vision Backup Manager Setup"))
+		self["lab1"] = StaticText(_("OpenVision"))
+		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
+		self["lab3"] = StaticText(_("Report problems to:"))
+		self["lab4"] = StaticText(_("https://openvision.tech"))
+		self["lab5"] = StaticText(_("Sources are available at:"))
+		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 		self["actions"] = ActionMap(['SetupActions', 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
 		{
 			"ok": self.keySave,

@@ -27,7 +27,7 @@ class VISIONIPKInstaller(Screen):
 		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="lab1" position="0,50" size="560,50" font="Regular; 20" zPosition="2" transparent="0" halign="center"/>
+		<widget name="lab7" position="0,50" size="560,50" font="Regular; 20" zPosition="2" transparent="0" halign="center"/>
 		<widget name="list" position="10,105" size="540,300" scrollbarMode="showOnDemand"/>
 		<applet type="onLayoutFinish">
 			self["list"].instance.setItemHeight(25)
@@ -37,8 +37,14 @@ class VISIONIPKInstaller(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Vision Opkg Install"))
+		self["lab1"] = StaticText(_("OpenVision"))
+		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
+		self["lab3"] = StaticText(_("Report problems to:"))
+		self["lab4"] = StaticText(_("https://openvision.tech"))
+		self["lab5"] = StaticText(_("Sources are available at:"))
+		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 
-		self['lab1'] = Label()
+		self['lab7'] = Label()
 		self.defaultDir = '/tmp'
 		self.onChangedEntry = []
 		self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions', "MenuActions"],
@@ -103,7 +109,7 @@ class VISIONIPKInstaller(Screen):
 		else:
 			self["key_yellow"].setText(_("Temp folder"))
 
-		self['lab1'].setText(_("Select a package to install:"))
+		self['lab7'].setText(_("Select a package to install:"))
 
 		del self.list[:]
 		f = listdir(self.defaultDir)

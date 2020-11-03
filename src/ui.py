@@ -5,6 +5,7 @@ from . import _
 from Screens.Screen import Screen
 from Components.ActionMap import NumberActionMap
 from Components.Sources.StaticText import StaticText
+from Components.Label import Label
 from Components.Sources.List import List
 from Screens.ParentalControlSetup import ProtectedScreen
 from Components.config import config
@@ -44,6 +45,12 @@ class VISIONMenu(Screen, ProtectedScreen):
 		self.setTitle(_("Vision Core"))
 		self.menu = args
 		self.list = []
+		self["lab1"] = StaticText(_("OpenVision"))
+		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
+		self["lab3"] = StaticText(_("Report problems to:"))
+		self["lab4"] = StaticText(_("https://openvision.tech"))
+		self["lab5"] = StaticText(_("Sources are available at:"))
+		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 		if self.menu == 0:
 			self.list.append(("Backup Manager", _("Backup Manager"), _("Manage the backups of your settings."), None))
 			self.list.append(("Image Manager", _("Image Manager"), _("Create and flash complete images of your system."), None))
@@ -52,6 +59,7 @@ class VISIONMenu(Screen, ProtectedScreen):
 			self.list.append(("Script Runner", _("Script Runner"), _("Run your shell scripts."), None))
 			self.list.append(("Swap Manager", _("Swap Manager"), _("Create and Manage your SWAP files."), None))
 			self.list.append(("Client Mode Box", _("Client Mode Box"), _("Use this box as a client of a server."), None))
+
  			if SystemInfo["HasH9SD"]:
 				self.list.append(("H9 SDcard Manager", _("H9 SDcard Manager"), _("Move Nand root to SD card"), None))
 		self["menu"] = List(self.list)
