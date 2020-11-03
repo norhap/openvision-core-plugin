@@ -190,18 +190,24 @@ class VISIONDevicesPanel(Screen):
 				}
 			</convert>
 		</widget>
-		<widget name="lab1" zPosition="2" position="50,90" size="600,40" font="Regular;22" halign="center" transparent="1"/>
+		<widget name="lab7" zPosition="2" position="50,90" size="600,40" font="Regular;22" halign="center" transparent="1"/>
 	</screen>"""
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Vision Mount Manager"))
+		self["lab1"] = StaticText(_("OpenVision"))
+		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
+		self["lab3"] = StaticText(_("Report problems to:"))
+		self["lab4"] = StaticText(_("https://openvision.tech"))
+		self["lab5"] = StaticText(_("Sources are available at:"))
+		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 
 		self['key_red'] = Label(" ")
 		self['key_green'] = Label(_("Setup mounts"))
 		self['key_yellow'] = Label(_("Unmount"))
 		self['key_blue'] = Label(_("Mount"))
-		self['lab1'] = Label()
+		self['lab7'] = Label()
 		self.onChangedEntry = []
 		self.list = []
 		self['list'] = List(self.list)
@@ -242,7 +248,7 @@ class VISIONDevicesPanel(Screen):
 
 	def updateList(self, result=None, retval=None, extra_args=None):
 		scanning = _("Please wait while scanning for devices...")
-		self['lab1'].setText(scanning)
+		self['lab7'].setText(scanning)
 		self.activityTimer.start(10)
 
 	def updateList2(self):
@@ -251,7 +257,7 @@ class VISIONDevicesPanel(Screen):
 		SystemInfo["MountManager"] = True
 		getProcPartitions(self.list)
 		self['list'].list = self.list
-		self['lab1'].hide()
+		self['lab7'].hide()
 
 	def SetupMounts(self):
 		self.session.openWithCallback(self.updateList, VISIONDevicePanelConf)
@@ -384,6 +390,12 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		self.list = []
 		ConfigListScreen.__init__(self, self.list)
 		self.setTitle(_("Choose where to mount your devices to:"))
+		self["lab1"] = StaticText(_("OpenVision"))
+		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
+		self["lab3"] = StaticText(_("Report problems to:"))
+		self["lab4"] = StaticText(_("https://openvision.tech"))
+		self["lab5"] = StaticText(_("Sources are available at:"))
+		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 
 		self['key_green'] = Label(_("Save"))
 		self['key_red'] = Label(_("Cancel"))

@@ -98,10 +98,10 @@ class VISIONSwap(Screen):
 		<widget name="key_blue" position="460,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 		<widget name="autostart_off" position="10,50" zPosition="1" pixmap="icons/lock_off.png" size="32,32" alphatest="on"/>
 		<widget name="autostart_on" position="10,50" zPosition="2" pixmap="icons/lock_on.png" size="32,32" alphatest="on"/>
-		<widget name="lab1" position="50,50" size="360,30" font="Regular;20" valign="center" transparent="1"/>
-		<widget name="lab2" position="10,100" size="150,30" font="Regular;20" valign="center" transparent="1"/>
-		<widget name="lab3" position="10,150" size="150,30" font="Regular;20" valign="center" transparent="1"/>
-		<widget name="lab4" position="10,200" size="150,30" font="Regular;20" valign="center" transparent="1" />
+		<widget name="lab7" position="50,50" size="360,30" font="Regular;20" valign="center" transparent="1"/>
+		<widget name="lab8" position="10,100" size="150,30" font="Regular;20" valign="center" transparent="1"/>
+		<widget name="lab9" position="10,150" size="150,30" font="Regular;20" valign="center" transparent="1"/>
+		<widget name="lab10" position="10,200" size="150,30" font="Regular;20" valign="center" transparent="1" />
 		<widget name="labplace" position="160,100" size="220,30" font="Regular;20" valign="center" backgroundColor="#4D5375"/>
 		<widget name="labsize" position="160,150" size="220,30" font="Regular;20" valign="center" backgroundColor="#4D5375"/>
 		<widget name="inactive" position="160,200" size="100,30" font="Regular;20" valign="center" halign="center" backgroundColor="red"/>
@@ -110,16 +110,22 @@ class VISIONSwap(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Vision SWAP manager"))
+		self.setTitle(_("Vision Swap Manager"))
+		self["lab1"] = StaticText(_("OpenVision"))
+		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
+		self["lab3"] = StaticText(_("Report problems to:"))
+		self["lab4"] = StaticText(_("https://openvision.tech"))
+		self["lab5"] = StaticText(_("Sources are available at:"))
+		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 
-		self['lab1'] = Label()
+		self['lab7'] = Label()
 		self['autostart_on'] = Pixmap()
 		self['autostart_off'] = Pixmap()
-		self['lab2'] = Label(_("SWAP place:"))
+		self['lab8'] = Label(_("Swap place:"))
 		self['labplace'] = Label()
-		self['lab3'] = Label(_("SWAP size:"))
+		self['lab9'] = Label(_("Swap size:"))
 		self['labsize'] = Label()
-		self['lab4'] = Label(_("Status:"))
+		self['lab10'] = Label(_("Status:"))
 		self['inactive'] = Label(_("Inactive"))
 		self['active'] = Label(_("Active"))
 		self['key_red'] = Label(_("Close"))
@@ -150,7 +156,7 @@ class VISIONSwap(Screen):
 		self['labsize'].hide()
 		self['swapactive_summary'].setText(_("Current status:"))
 		scanning = _("Wait please while scanning...")
-		self['lab1'].setText(scanning)
+		self['lab7'].setText(scanning)
 		self.activityTimer.start(10)
 
 	def getSwapDevice(self):
@@ -260,9 +266,9 @@ class VISIONSwap(Screen):
 			self['key_green'].setText(_("Activate"))
 			self['swapactive_summary'].setText(_("Current status:") + ' ' + _("Inactive"))
 
-		scanning = _("Enable SWAP at startup")
-		self['lab1'].setText(scanning)
-		self['lab1'].show()
+		scanning = _("Enable swap at startup")
+		self['lab7'].setText(scanning)
+		self['lab7'].show()
 		self["actions"].setEnabled(True)
 
 		name = self['labplace'].text
@@ -322,9 +328,9 @@ class VISIONSwap(Screen):
 	def doCSsize(self, swapsize):
 		if swapsize:
 			self["actions"].setEnabled(False)
-			scanning = _("Wait please while creating SWAP file...")
-			self['lab1'].setText(scanning)
-			self['lab1'].show()
+			scanning = _("Wait please while creating swap file...")
+			self['lab7'].setText(scanning)
+			self['lab7'].show()
 			swapsize = swapsize[1]
 			myfile = self.new_place + '/swapfile'
 			self.commands = []
