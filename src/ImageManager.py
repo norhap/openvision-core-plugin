@@ -352,7 +352,7 @@ class VISIONImageManager(Screen):
 		self.session.openWithCallback(self.setupDone, VISIONImageManagerMenu)
 
 	def doDownload(self):
-		self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPLi",3)]
+		self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPLi", 3)]
 		self.urlchoices = [config.imagemanager.imagefeed_ViX.value, config.imagemanager.imagefeed_ATV.value, config.imagemanager.imagefeed_PLi.value]
 		self.message = _("Do you want to change download url")
 		self.session.openWithCallback(self.doDownload2, MessageBox, self.message, list=self.choices, default=1, simple=True)
@@ -465,7 +465,7 @@ class VISIONImageManager(Screen):
 			self.message = _("Recording(s) are in progress or coming up in few seconds!\nDo you still want to flash image\n%s?") % self.sel
 		else:
 			self.message = _("Do you want to flash image\n%s") % self.sel
-		if "emmc" in imagefs or imagefs.replace(" ","") == "tar.bz2":
+		if "emmc" in imagefs or imagefs.replace(" ", "") == "tar.bz2":
 			message = _("You are about to flash an eMMC flash; we cannot take any responsibility for any errors or damage to your box during this process.\nProceed with CAUTION!:\nAre you sure you want to flash this image:\n ") + self.sel
 		else:
 			message = _("Are you sure you want to flash this image:\n ") + self.sel
@@ -1032,7 +1032,7 @@ class ImageBackup(Screen):
 				output.write("vol_flags=autoresize\n")
 
 			self.commands.append("mount --bind / %s/root" % self.TMPDIR)
-			if model in ("h9","i55plus"):
+			if model in ("h9", "i55plus"):
 				with open("/proc/cmdline", "r") as z:
 					if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z.read():
 						self.ROOTFSTYPE = "tar.bz2"
@@ -1270,7 +1270,7 @@ class ImageBackup(Screen):
 		else:
 			move("%s/vmlinux.gz" % self.WORKDIR, "%s/%s" % (self.MAINDEST, self.KERNELFILE))
 
-		if model in ("h9","i55plus"):
+		if model in ("h9", "i55plus"):
 			system("mv %s/fastboot.bin %s/fastboot.bin" % (self.WORKDIR, self.MAINDEST))
 			system("mv %s/bootargs.bin %s/bootargs.bin" % (self.WORKDIR, self.MAINDEST))
 			system("mv %s/pq_param.bin %s/pq_param.bin" % (self.WORKDIR, self.MAINDEST))
@@ -1307,8 +1307,8 @@ class ImageBackup(Screen):
 					line = "This file forces a reboot after the update."
 					fileout.write(line)
 					fileout.close()
-		elif brand in ("xtrend","gigablue","octagon","odin","xp","ini"):
-			if brand in ("xtrend","octagon","odin","ini"):
+		elif brand in ("xtrend", "gigablue", "octagon", "odin", "xp", "ini"):
+			if brand in ("xtrend", "octagon", "odin", "ini"):
 				with open(self.MAINDEST + "/noforce", "w") as fileout:
 					line = "rename this file to 'force' to force an update without confirmation"
 					fileout.write(line)
@@ -1338,7 +1338,7 @@ class ImageBackup(Screen):
 			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
-		if (path.exists(self.MAINDEST + "/" + self.ROOTFSFILE) and path.exists(self.MAINDEST + "/" + self.KERNELFILE)) or (model in ("h9","i55plus") and "root=/dev/mmcblk0p1" in z):
+		if (path.exists(self.MAINDEST + "/" + self.ROOTFSFILE) and path.exists(self.MAINDEST + "/" + self.KERNELFILE)) or (model in ("h9", "i55plus") and "root=/dev/mmcblk0p1" in z):
 			for root, dirs, files in walk(self.MAINDEST):
 				for momo in dirs:
 					chmod(path.join(root, momo), 0644)
@@ -1582,7 +1582,7 @@ class ImageManagerDownload(Screen):
 			selectedimage = currentSelected[0][0]
 			fileurl = currentSelected[0][1]
 			fileloc = self.BackupDirectory + selectedimage
-			Tools.CopyFiles.downloadFile(fileurl, fileloc, selectedimage.replace("_usb",""))
+			Tools.CopyFiles.downloadFile(fileurl, fileloc, selectedimage.replace("_usb", ""))
 			for job in Components.Task.job_manager.getPendingJobs():
 				if job.name.startswith(_("Downloading")):
 					break
