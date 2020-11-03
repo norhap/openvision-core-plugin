@@ -1415,7 +1415,9 @@ class ImageManagerDownload(Screen):
 		if "pli" in self.urlDistro:
 			self.Pli = True
 		if "atv" in self.urlDistro:
-			self.Pli = True
+			self.PLi = True
+		if "vix" in self.urlDistro:
+			self.PLi = True
 		self["list"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("No images found for selected download server...if password check validity")), "Waiter"))])
 		self.getImageDistro()
 
