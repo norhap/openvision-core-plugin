@@ -60,8 +60,8 @@ class VISIONMenu(Screen, ProtectedScreen):
 			self.list.append(("Administrador SWAP", _("SWAP manager"), _("Create and Manage your SWAP files."), None))
 			self.list.append(("Receptor En Modo Cliente", _("Poner Receptor en Modo Cliente"), _("Poner el Receptor en Modo Cliente"), None))
 
- 			if SystemInfo["HasH9SD"]:
-				self.list.append(("H9SDcard manager", _("H9SDcard Manager"), _("Move Nand root to SD card"), None))
+			if SystemInfo["HasH9SD"]:
+				self.list.append(("H9 SDcard Manager", _("H9 SDcard Manager"), _("Move Nand root to SD card"), None))
 		self["menu"] = List(self.list)
 		self["key_red"] = StaticText(_("Close"))
 
