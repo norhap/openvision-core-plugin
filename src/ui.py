@@ -60,7 +60,7 @@ class VISIONMenu(Screen, ProtectedScreen):
 			self.list.append(("Swap Manager", _("Swap Manager"), _("Create and Manage your SWAP files."), None))
 			self.list.append(("Client Mode Box", _("Client Mode Box"), _("Use this box as a client of a server."), None))
 
- 			if SystemInfo["HasH9SD"]:
+			if SystemInfo["HasH9SD"]:
 				self.list.append(("H9 SDcard Manager", _("H9 SDcard Manager"), _("Move Nand root to SD card"), None))
 		self["menu"] = List(self.list)
 		self["key_red"] = StaticText(_("Close"))
