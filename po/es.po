@@ -1289,3 +1289,12 @@ msgstr "Configura tus mountajes en Configurar montajes o reinicia su receptor si
 
 msgid "To use HDD from red button, mount point to change must be as /media/hdd"
 msgstr "Para usar HDD desde el botón rojo, el punto de montaje para cambiar debe ser /media/hdd"
+
+msgid "Lets define enigma2 once more"
+msgstr "Definamos enigma2 una vez más"
+
+msgid "Report problems to:"
+msgstr "Reportar problemas a:"
+
+msgid "Sources are available at:"
+msgstr "Fuentes disponibles en:"
