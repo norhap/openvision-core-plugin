@@ -324,7 +324,7 @@ msgid "Enable SWAP at startup"
 msgstr "Habilitar SWAP al iniciar sistema"
 
 msgid "Enable frozen check"
-msgstr "Activar comprobar softcam"
+msgstr "Activar comprobación de parada"
 
 msgid "Enough retries, delaying till next schedule."
 msgstr "Suficientes reintentos, retrasando hasta el próximo horario."
@@ -347,8 +347,8 @@ msgstr "Descomprimida imagen Flash con éxito."
 msgid "Free space:"
 msgstr "Espacio libre:"
 
-msgid "Frozen check interval"
-msgstr "Intervalo de control de congelado"
+msgid "Check interval on minutes"
+msgstr "Verifique el intervalo en minutos"
 
 msgid "GB"
 msgstr "GB"

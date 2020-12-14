@@ -363,9 +363,9 @@ class VISIONSoftcamMenu(ConfigListScreen, Screen):
 	def createSetup(self):
 		self.editListEntry = None
 		self.list = []
-		self.list.append(getConfigListEntry(_("Enable Auto Timer Check"), config.softcammanager.softcamtimerenabled))
+		self.list.append(getConfigListEntry(_("Enable frozen check"), config.softcammanager.softcamtimerenabled))
 		if config.softcammanager.softcamtimerenabled.value:
-			self.list.append(getConfigListEntry(_("Check every minutes"), config.softcammanager.softcamtimer))
+			self.list.append(getConfigListEntry(_("Check interval on minutes"), config.softcammanager.softcamtimer))
 		self["config"].list = self.list
 		self["config"].setList(self.list)
 
