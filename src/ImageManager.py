@@ -14,7 +14,7 @@ from . import _, PluginLanguageDomain
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
-from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock, getConfigListEntry
+from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock, getConfigListEntry, configfile
 from Components.Console import Console
 from Components.Harddisk import harddiskmanager, getProcMounts
 from Components.Sources.StaticText import StaticText
@@ -29,6 +29,7 @@ from Screens.Standby import TryQuitMainloop
 from Screens.TaskView import JobView
 from Tools.Directories import fileExists, pathExists, fileHas
 import Tools.CopyFiles
+from Tools.HardwareInfo import HardwareInfo
 from Tools.Multiboot import GetImagelist, getCurrentImage
 from Tools.Notifications import AddPopupWithCallback
 
@@ -69,11 +70,12 @@ config.imagemanager.query = ConfigYesNo(default=True)
 config.imagemanager.lastbackup = ConfigNumber(default=0)
 config.imagemanager.number_to_keep = ConfigNumber(default=0)
 config.imagemanager.imagefeed_User = ConfigText(default="http://192.168.0.171/openvision-builds/", fixed_size=False)
-config.imagemanager.imagefeed_ViX = ConfigText(default="http://www.openvix.co.uk/openvix-builds/", fixed_size=False)
+config.imagemanager.imagefeed_ViX = ConfigText(default="https://www.openvix.co.uk/json", fixed_size=False)
 config.imagemanager.imagefeed_ATV = ConfigText(default="http://images.mynonpublic.com/openatv/json", fixed_size=False)
 config.imagemanager.imagefeed_PLi = ConfigText(default="http://downloads.openpli.org/json", fixed_size=False)
-config.imagemanager.imagefeed_Dev = ConfigText(default="ftp://login@176.31.181.161/***Dev_Images_5.2***", fixed_size=False)
-config.imagemanager.imagefeed_DevL = ConfigText(default="login:pswd", fixed_size=False)
+config.imagemanager.login_as_Vision_developer = ConfigYesNo(default=False)
+config.imagemanager.developer_username = ConfigText(default="username", fixed_size=False)
+config.imagemanager.developer_password = ConfigText(default="password", fixed_size=False)
 
 autoImageManagerTimer = None
 
@@ -150,9 +152,13 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 		self.list.append(getConfigListEntry(_("Backup Location"), config.imagemanager.backuplocation))
 		self.list.append(getConfigListEntry(_("Folder Prefix"), config.imagemanager.folderprefix))
 		self.list.append(getConfigListEntry(_("Schedule Backups"), config.imagemanager.schedule))
+		self.list.append(getConfigListEntry(_("Login as an OpenVision developer"), config.imagemanager.login_as_Vision_developer))
 		if config.imagemanager.schedule.value:
 			self.list.append(getConfigListEntry(_("Time of Backup to start in minutes"), config.imagemanager.scheduletime))
 			self.list.append(getConfigListEntry(_("Repeat how often"), config.imagemanager.repeattype))
+		if config.imagemanager.login_as_Vision_developer.value:
+		    self.list.append(getConfigListEntry(_("Developer username"), config.imagemanager.developer_username))
+		    self.list.append(getConfigListEntry(_("Developer password"), config.imagemanager.developer_password))
 		self["config"].list = self.list
 		self["config"].setList(self.list)
 
@@ -176,14 +182,27 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 			self["config"].getCurrent()[1].setValue(callback)
 			self["config"].invalidate(self["config"].getCurrent())
 
-	def saveAll(self):
+	def keySave(self):
+		if config.imagemanager.folderprefix.value == "":
+			config.imagemanager.folderprefix.value = defaultprefix
+		for configElement in (config.imagemanager.developer_username, config.imagemanager.developer_password):
+			if not configElement.value:
+				configElement.value = configElement.default
+		if not configElement.value:
+			config.imagemanager.imagefeed_DevL.value = config.imagemanager.imagefeed_DevL.default
+		for configElement in (config.imagemanager.imagefeed_ViX, config.imagemanager.imagefeed_ATV, config.imagemanager.imagefeed_PLi):
+			self.check_URL_format(configElement)
 		for x in self["config"].list:
 			x[1].save()
-		config.save()
-
-	def keySave(self):
-		self.saveAll()
+		configfile.save()
 		self.close()
+
+	def check_URL_format(self, configElement):
+		if configElement.value:
+			configElement.value = "%s%s" % (not (configElement.value.startswith("http://") or configElement.value.startswith("https://") or configElement.value.startswith("ftp://")) and "http://" or "", configElement.value)
+			configElement.value = configElement.value.strip("/") # remove any trailing slash
+		else:
+			configElement.value = configElement.default
 
 	def cancelConfirm(self, result):
 		if not result:
@@ -198,6 +217,32 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"))
 		else:
 			self.close()
+
+def handleBasicHttpAuthentication(url, destination):
+	import base64
+	try:
+		from urlparse import urlparse
+	except:
+		from urllib.parse import urlparse
+	parsed = urlparse(url)
+	scheme = parsed.scheme
+	username = parsed.username if parsed.username else ""
+	password = parsed.password if parsed.password else ""
+	hostname = parsed.hostname
+	path  = parsed.path
+
+	try:
+		request = Request(scheme + "://" + hostname + path)
+		base64string = base64.b64encode('%s:%s' % (username, password))
+		request.add_header("Authorization", "Basic %s" % base64string)
+		response = urlopen(request)
+		with open(destination, 'wb') as f:
+			f.write(response.read())
+			f.close()
+	except Exception as err:
+		print("[ImageManager] Unable to download %s\n%s: '%s'!" % (url, type(err).__name__, err))
+		import traceback
+		traceback.print_exc()
 
 class VISIONImageManager(Screen):
 	skin = """<screen name="VISIONImageManager" position="center,center" size="560,400">
@@ -352,21 +397,15 @@ class VISIONImageManager(Screen):
 		self.session.openWithCallback(self.setupDone, VISIONImageManagerMenu)
 
 	def doDownload(self):
-		self.choices = [("OpenViX", 1), ("OpenATV", 2), ("OpenPLi", 3)]
-		self.urlchoices = [config.imagemanager.imagefeed_ViX.value, config.imagemanager.imagefeed_ATV.value, config.imagemanager.imagefeed_PLi.value]
-		self.message = _("Do you want to change download url")
-		self.session.openWithCallback(self.doDownload2, MessageBox, self.message, list=self.choices, default=1, simple=True)
+		choices = [("OpenViX", config.imagemanager.imagefeed_ViX), ("OpenATV", config.imagemanager.imagefeed_ATV), ("OpenPLi", config.imagemanager.imagefeed_PLi)]
+		message = _("Do you want to change download url")
+		self.session.openWithCallback(self.doDownloadCallback, MessageBox, message, list=choices, default=1, simple=True)
 
-	def doDownload2(self, retval):
+	def doDownloadCallback(self, retval): # retval will be the config element (or False, in the case of aborting the MessageBox).
 		if retval:
-			retval -= 1
-			self.urlDistro = self.urlchoices[retval]
-			self.session.openWithCallback(self.refreshList, ImageManagerDownload, self.BackupDirectory, self.urlDistro)
+			self.session.openWithCallback(self.refreshList, ImageManagerDownload, self.BackupDirectory, retval)
 
-	def setupDone(self, test=None):
-		if config.imagemanager.folderprefix.value == "":
-			config.imagemanager.folderprefix.value = defaultprefix
-			config.imagemanager.folderprefix.save()
+	def setupDone(self, retval=None):
 		self.populate_List()
 		self.doneConfiguring()
 
@@ -1413,11 +1452,11 @@ class ImageManagerDownload(Screen):
 		</applet>
 	</screen>"""
 
-	def __init__(self, session, BackupDirectory, urlDistro):
+	def __init__(self, session, BackupDirectory, ConfigObj):
 		Screen.__init__(self, session)
-		self.setTitle(_("Downloads"))
-		self.parseJsonFormat = False
-		self.urlDistro = urlDistro
+		self.setTitle(_("%s downloads") % {config.imagemanager.imagefeed_ATV: "OpenATV", config.imagemanager.imagefeed_PLi: "OpenPLi", config.imagemanager.imagefeed_ViX: "OpenViX"}.get(ConfigObj, ''))
+		self.ConfigObj = ConfigObj
+		self.BackupDirectory = BackupDirectory
 		self.BackupDirectory = BackupDirectory
 		self["lab7"] = Label(_("Select an image to download:"))
 		self["key_red"] = Button(_("Close"))
@@ -1432,13 +1471,7 @@ class ImageManagerDownload(Screen):
 		self.imagesList = {}
 		self.setIndex = 0
 		self.expanded = []
-		if "pli" in self.urlDistro:
-			self.parseJsonFormat = True
-		if "atv" in self.urlDistro:
-			self.parseJsonFormat = True
-		if "vix" in self.urlDistro:
-			self.parseJsonFormat = True
-		self["list"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("No images found for selected download server...if password check validity")), "Waiter"))])
+		self["list"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("No images found on the selected download server...if password check validity")), "Waiter"))])
 		self.getImageDistro()
 
 	def getImageDistro(self):
@@ -1460,66 +1493,45 @@ class ImageManagerDownload(Screen):
 
 		if not path.exists(self.BackupDirectory):
 			mkdir(self.BackupDirectory, 0755)
-		from bs4 import BeautifulSoup
-		self.imagesList = {}
-		self.jsonlist = {}
-		list = []
+		self.boxtype = model
+		if self.ConfigObj == config.imagemanager.imagefeed_PLi:
+			self.boxtype = HardwareInfo().get_device_name()
+			if self.boxtype:
+				self.boxtype = model
+		if not self.imagesList:
+			boxtype = self.boxtype
+			if self.ConfigObj == config.imagemanager.imagefeed_ViX \
+				and self.ConfigObj.value.startswith("https") \
+				and config.imagemanager.login_as_Vision_developer.value \
+				and config.imagemanager.developer_username.value \
+				and config.imagemanager.developer_username.value != config.imagemanager.developer_username.default \
+				and config.imagemanager.developer_password.value \
+				and config.imagemanager.developer_password.value != config.imagemanager.developer_password.default:
+				boxtype = path.join(boxtype, config.imagemanager.developer_username.value, config.imagemanager.developer_password.value)
+			try:
+				urljson = path.join(self.ConfigObj.value, boxtype)
+				self.imagesList = dict(json.load(urlopen("%s" % urljson)))
+			except Exception:
+				print("[ImageManager] no images available for: the '%s' at '%s'" % (self.boxtype, ConfigObj.value))
+				return
 
-		if not self.parseJsonFormat and not self.imagesList:
-			versions = [4.2, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5]
-
-			subfolders = ('', 'Archives') # i.e. check root folder and "Archives" folder. Images will appear in the UI in this order.
-			for subfolder in subfolders:
-				tmp_image_list = []
-				fullUrl = subfolder and path.join(self.urlDistro, model, subfolder, "") or path.join(self.urlDistro, model, "")
-				html = None
-				try:
-					conn = urlopen(fullUrl)
-					html = conn.read()
-				except (HTTPError, URLError) as e:
-					print("[ImageManager] HTTPError: %s %s" % (getattr(e, "code", ""), getattr(e, "reason", "")))
-
-				if html:
-					soup = BeautifulSoup(html, 'lxml')
-					links = soup.find_all("a")
-					for tag in links:
-						link = tag.get("href", None)
-						if link is not None and link.endswith("zip") and link.find(getMachineMake()) != -1 and link.find("recovery") == -1:
-							tmp_image_list.append(str(link))
-
-				for version in sorted(versions, reverse=True):
-					newversion = _("Image Version %s%s") % (version, " (%s)" % subfolder if subfolder else "")
-					for image in tmp_image_list:
-						if "%s" % version in image:
-							if newversion not in self.imagesList:
-								self.imagesList[newversion] = {}
-							self.imagesList[newversion][image] = {}
-							self.imagesList[newversion][image]["name"] = image
-							self.imagesList[newversion][image]["link"] = "%s%s" % (fullUrl, image)
-
-		if self.parseJsonFormat and not self.imagesList:
-			if not self.jsonlist:
-				try:
-					urljson = path.join(self.urlDistro, model)
-					self.jsonlist = dict(json.load(urlopen("%s" % urljson)))
-				except Exception:
-					print("[ImageManager] No model: %s in downloads" % model)
-					return
-			self.imagesList = self.jsonlist
-		if self.parseJsonFormat and not self.jsonlist and not self.imagesList:
+		if not self.imagesList: # Nothing has been found on that server so we might as well give up.
 			return
 
+		imglist = [] # this is reset on every "ok" key press of an expandable item so it reflects the current state of expandability of that item
 		for categorie in sorted(self.imagesList.keys(), reverse=True):
 			if categorie in self.expanded:
-				list.append(ChoiceEntryComponent("expanded", ((str(categorie)), "Expander")))
+				imglist.append(ChoiceEntryComponent("expanded", ((str(categorie)), "Expander")))
 				for image in sorted(self.imagesList[categorie].keys(), reverse=True):
-					list.append(ChoiceEntryComponent("verticalline", ((str(self.imagesList[categorie][image]["name"])), str(self.imagesList[categorie][image]["link"]))))
+					imglist.append(ChoiceEntryComponent("verticalline", ((str(self.imagesList[categorie][image]["name"])), str(self.imagesList[categorie][image]["link"]))))
 			else:
-				for image in self.imagesList[categorie].keys():
-					list.append(ChoiceEntryComponent("expandable", ((str(categorie)), "Expander")))
+				# print("[ImageManager] [GetImageDistro] keys: %s" % list(self.imagesList[categorie].keys()))
+				for image in list(self.imagesList[categorie].keys()):
+					imglist.append(ChoiceEntryComponent("expandable", ((str(categorie)), "Expander")))
 					break
-		if list:
-			self["list"].setList(list)
+		if imglist:
+			# print("[ImageManager] [GetImageDistro] imglist: %s" % imglist)
+			self["list"].setList(imglist)
 			if self.setIndex:
 				self["list"].moveToIndex(self.setIndex if self.setIndex < len(list) else len(list) - 1)
 				if self["list"].l.getCurrentSelection()[0][1] == "Expander":
@@ -1582,11 +1594,16 @@ class ImageManagerDownload(Screen):
 			selectedimage = currentSelected[0][0]
 			fileurl = currentSelected[0][1]
 			fileloc = self.BackupDirectory + selectedimage
-			Tools.CopyFiles.downloadFile(fileurl, fileloc, selectedimage.replace("_usb", ""))
-			for job in Components.Task.job_manager.getPendingJobs():
-				if job.name.startswith(_("Downloading")):
-					break
-			self.showJobView(job)
+			if "@" in fileurl:
+				handleBasicHttpAuthentication(fileurl, fileloc) # spinner, no progress bar
+			else:
+				url_encode = "utf-8"
+				b_url = fileurl.encode(url_encode)
+				Tools.CopyFiles.downloadFile(b_url, fileloc, selectedimage.replace("_usb", ""))
+				for job in Components.Task.job_manager.getPendingJobs():
+					if job.name.startswith(_("Downloading")):
+						break
+				self.showJobView(job)
 			self.close()
 
 	def showJobView(self, job):
