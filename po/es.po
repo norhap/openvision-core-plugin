@@ -1298,3 +1298,12 @@ msgstr "Reportar problemas a:"
 
 msgid "Sources are available at:"
 msgstr "Fuentes disponibles en:"
+
+msgid "Login as an OpenVision developer"
+msgstr "Inicie sesión como desarrollador de OpenVision"
+
+msgid "Developer username"
+msgstr "Usuario Desarrollador"
+
+msgid "Developer password"
+msgstr "Contraseña Desarrollador"
