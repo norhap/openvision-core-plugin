@@ -139,6 +139,7 @@ class VISIONBackupManager(Screen):
 		self.activityTimer.start(10)
 		self.Console = Console()
 		global BackupTime
+		BackupTime = 0
 		if BackupTime > 0:
 			t = localtime(BackupTime)
 			backuptext = _("Next backup: ") + strftime(_("%a %e %b  %-H:%M"), t)
