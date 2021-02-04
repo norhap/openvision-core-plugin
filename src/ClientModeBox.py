@@ -40,18 +40,18 @@ MAX_THREAD_COUNT = 40
 timerinstance = None
 
 config.ipboxclient = ConfigSubsection()
-config.ipboxclient.host = ConfigText(default = "", fixed_size = False)
-config.ipboxclient.port = ConfigInteger(default = 80, limits = (1, 65535))
-config.ipboxclient.streamport = ConfigInteger(default = 8001, limits = (1, 65535))
-config.ipboxclient.auth = ConfigYesNo(default = False)
-config.ipboxclient.firstconf = ConfigYesNo(default = False)
-config.ipboxclient.username = ConfigText(default = "", fixed_size = False)
-config.ipboxclient.password = ConfigText(default = "", fixed_size = False)
-config.ipboxclient.schedule = ConfigYesNo(default = False)
-config.ipboxclient.scheduletime = ConfigClock(default = 0) # 1:00
-config.ipboxclient.repeattype = ConfigSelection(default = "daily", choices = [("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
-config.ipboxclient.mounthdd = ConfigYesNo(default = False)
-config.ipboxclient.remotetimers = ConfigYesNo(default = False)
+config.ipboxclient.host = ConfigText(default="", fixed_size=False)
+config.ipboxclient.port = ConfigInteger(default=80, limits=(1, 65535))
+config.ipboxclient.streamport = ConfigInteger(default=8001, limits=(1, 65535))
+config.ipboxclient.auth = ConfigYesNo(default=False)
+config.ipboxclient.firstconf = ConfigYesNo(default=False)
+config.ipboxclient.username = ConfigText(default="", fixed_size=False)
+config.ipboxclient.password = ConfigText(default="", fixed_size=False)
+config.ipboxclient.schedule = ConfigYesNo(default=False)
+config.ipboxclient.scheduletime = ConfigClock(default=0) # 1:00
+config.ipboxclient.repeattype = ConfigSelection(default="daily", choices=[("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
+config.ipboxclient.mounthdd = ConfigYesNo(default=False)
+config.ipboxclient.remotetimers = ConfigYesNo(default=False)
 
 def getValueFromNode(event, key):
 	tmp = event.getElementsByTagName(key)[0].firstChild
@@ -263,7 +263,7 @@ class ClientModeBoxScan:
 
 	def getBoxName(self, ipaddress):
 		try:
-			httprequest = urllib2.urlopen('http://' + ipaddress + '/web/about', timeout = 5)
+			httprequest = urllib2.urlopen('http://' + ipaddress + '/web/about', timeout=5)
 			xmldoc = minidom.parseString(httprequest.read())
 			return xmldoc.getElementsByTagName('e2model')[0].firstChild.nodeValue
 		except Exception:
@@ -361,7 +361,7 @@ class ClientModeBoxMount:
 	def isMountPoint(self, path):
 		return os.system('mountpoint ' + path) == 0
 
-	def umount(self, path = None):
+	def umount(self, path=None):
 		return os.system('umount ' + path) == 0
 
 	def mount(self, ip, share, path):
@@ -546,7 +546,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 		mount = ClientModeBoxMount(self.session)
 		mount.remount()
 
-		self.messagebox = self.session.open(MessageBox, _('Please wait while download is in progress.\nNote: If you have parental control enabled on remote box, the local settings will be overwritten.'), MessageBox.TYPE_INFO, enable_input = False)
+		self.messagebox = self.session.open(MessageBox, _('Please wait while download is in progress.\nNote: If you have parental control enabled on remote box, the local settings will be overwritten.'), MessageBox.TYPE_INFO, enable_input=False)
 		self.timer = eTimer()
 		self.timer.callback.append(self.download)
 		self.timer.start(100)
@@ -558,7 +558,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 		self.session.open(ClientModeBoxAbout)
 
 	def keyScan(self):
-		self.messagebox = self.session.open(MessageBox, _('Please wait while scan is in progress.\nThis operation may take a while'), MessageBox.TYPE_INFO, enable_input = False)
+		self.messagebox = self.session.open(MessageBox, _('Please wait while scan is in progress.\nThis operation may take a while'), MessageBox.TYPE_INFO, enable_input=False)
 		self.timer = eTimer()
 		self.timer.callback.append(self.scan)
 		self.timer.start(100)
@@ -582,7 +582,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 			message = _("Choose your main device")
 			self.session.openWithCallback(self.scanCallback, MessageBox, message, list=menulist)
 		else:
-			self.session.open(MessageBox, _("No devices found"), type = MessageBox.TYPE_ERROR)
+			self.session.open(MessageBox, _("No devices found"), type=MessageBox.TYPE_ERROR)
 
 	def scanCallback(self, result):
 		if (result):
@@ -627,13 +627,13 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 	def downloadCompleted(self):
 		self.timer.stop()
 		if self.remotetimer_old != config.ipboxclient.remotetimers.value:
-			self.session.openWithCallback(self.restart, MessageBox, _("To apply new settings, you need to restart GUI your STB. Do you want restart it now?"), type = MessageBox.TYPE_YESNO)
+			self.session.openWithCallback(self.restart, MessageBox, _("To apply new settings, you need to restart GUI your STB. Do you want restart it now?"), type=MessageBox.TYPE_YESNO)
 		else:
-			self.session.openWithCallback(self.close, MessageBox, _("Download completed"), type = MessageBox.TYPE_INFO)
+			self.session.openWithCallback(self.close, MessageBox, _("Download completed"), type=MessageBox.TYPE_INFO)
 
 	def downloadError(self):
 		self.timer.stop()
-		self.session.open(MessageBox, _("Cannot download data. Please check your configuration"), type = MessageBox.TYPE_ERROR)
+		self.session.open(MessageBox, _("Cannot download data. Please check your configuration"), type=MessageBox.TYPE_ERROR)
 
 class ClientModeBoxDownloader:
 	def __init__(self, session):
@@ -1024,10 +1024,10 @@ class ClientModeBoxRemoteTimer():
 				location = getValueFromNode(timer, 'e2location')
 				tags = getValueFromNode(timer, 'e2tags').split(" ")
 
-				entry = RecordTimerEntry(serviceref, begin, end, name, description, eit, disabled, justplay, afterevent, dirname = location, tags = tags, descramble = 1, record_ecm = 0, isAutoTimer = 0, always_zap = 0)
+				entry = RecordTimerEntry(serviceref, begin, end, name, description, eit, disabled, justplay, afterevent, dirname=location, tags=tags, descramble=1, record_ecm=0, isAutoTimer=0, always_zap=0)
 				entry.repeated = repeated
 
-				entry.orig = RecordTimerEntry(serviceref, begin, end, name, description, eit, disabled, justplay, afterevent, dirname = location, tags = tags, descramble = 1, record_ecm = 0, isAutoTimer = 0, always_zap = 0)
+				entry.orig = RecordTimerEntry(serviceref, begin, end, name, description, eit, disabled, justplay, afterevent, dirname=location, tags=tags, descramble=1, record_ecm=0, isAutoTimer=0, always_zap=0)
 				entry.orig.repeated = repeated
 
 				if entry.shouldSkip() or entry.state == TimerEntry.StateEnded or (entry.state == TimerEntry.StateWaiting and entry.disabled):

@@ -58,7 +58,7 @@ class H9SDmanager(Screen):
 			cmdlist.append("umount /tmp/mmc")
 			cmdlist.append("rmdir /tmp/root")
 			cmdlist.append("rmdir /tmp/mmc")
-			self.session.open(Console, title = self.TITLE, cmdlist = cmdlist, closeOnSuccess = True)
+			self.session.open(Console, title=self.TITLE, cmdlist=cmdlist, closeOnSuccess=True)
 		else:
 			self.close()
 
@@ -82,4 +82,4 @@ class H9SDmanager(Screen):
 			cmdlist.append("umount /tmp/mmc")
 			cmdlist.append("rmdir /tmp/root")
 			cmdlist.append("rmdir /tmp/mmc")
-			self.session.open(Console, title = self.TITLE, cmdlist = cmdlist, closeOnSuccess = True)
+			self.session.open(Console, title=self.TITLE, cmdlist=cmdlist, closeOnSuccess=True)

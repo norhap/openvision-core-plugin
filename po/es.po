@@ -798,9 +798,6 @@ msgstr "Vision Ejecutar Scripts"
 msgid "Vision SWAP Manager"
 msgstr "Vision Administrador SWAP"
 
-msgid "Vision Client Mode Box"
-msgstr "Vision Receptor Modo Cliente"
-
 msgid "View progress"
 msgstr "Ver progreso"
 
