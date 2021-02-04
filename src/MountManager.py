@@ -4,7 +4,7 @@ from __future__ import print_function
 from os import mkdir, path, remove, rename, statvfs, system
 import re
 
-from enigma import eTimer
+from enigma import eTimer, getBoxType
 
 from . import _
 
@@ -15,7 +15,7 @@ from Components.config import config, getConfigListEntry, ConfigSelection, NoSav
 from Components.Console import Console
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, getBoxBrand
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
@@ -435,7 +435,7 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		ybox.setTitle(_("Please wait."))
 
 	def delay(self, val):
-		message = _("The changes need a system restart to take effect.\nRestart your receiver now?")
+		message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (getBoxBrand(), getBoxType())
 		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
 		ybox.setTitle(_("Restart receiver"))
 

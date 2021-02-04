@@ -214,14 +214,6 @@ msgstr "Cancelar"
 msgid "Change location"
 msgstr "Cambiar ubicación"
 
-#, python-format
-msgid ""
-"Changes need a system restart to take effect.\n"
-"Restart your %s %s now?"
-msgstr ""
-"Los cambios necesitan que se reinicie el sistema para que tenga efecto.\n"
-"¿Reiniciar su %s %s ahora?"
-
 msgid "Checking free RAM.."
 msgstr "Comprobando RAM libre.."
 
