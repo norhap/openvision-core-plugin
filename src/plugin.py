@@ -182,5 +182,5 @@ def Plugins(**kwargs):
 	plist.append(PluginDescriptor(name=_("Vision Mount Manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=MountManagerMenu))
 	plist.append(PluginDescriptor(name=_("Vision Script Runner"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ScriptRunnerMenu))
 	plist.append(PluginDescriptor(name=_("Vision SWAP Manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=SwapManagerMenu))
-	plist.append(PluginDescriptor(name=_("Receptor En Modo Cliente"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ClientModeBoxMenu))
+	plist.append(PluginDescriptor(name=_("Vision Client Mode Box"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ClientModeBoxMenu))
 	return plist

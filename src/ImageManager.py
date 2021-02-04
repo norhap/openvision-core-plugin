@@ -71,8 +71,11 @@ config.imagemanager.lastbackup = ConfigNumber(default=0)
 config.imagemanager.number_to_keep = ConfigNumber(default=0)
 config.imagemanager.imagefeed_User = ConfigText(default="http://192.168.0.171/openvision-builds/", fixed_size=False)
 config.imagemanager.imagefeed_ViX = ConfigText(default="https://www.openvix.co.uk/json", fixed_size=False)
+config.imagemanager.imagefeed_ViX.value = config.imagemanager.imagefeed_ViX.default # this is no longer a user setup option
 config.imagemanager.imagefeed_ATV = ConfigText(default="http://images.mynonpublic.com/openatv/json", fixed_size=False)
+config.imagemanager.imagefeed_ATV.value = config.imagemanager.imagefeed_ATV.default # this is no longer a user setup option
 config.imagemanager.imagefeed_PLi = ConfigText(default="http://downloads.openpli.org/json", fixed_size=False)
+config.imagemanager.imagefeed_PLi.value = config.imagemanager.imagefeed_PLi.default # this is no longer a user setup option
 config.imagemanager.login_as_Vision_developer = ConfigYesNo(default=False)
 config.imagemanager.developer_username = ConfigText(default="username", fixed_size=False)
 config.imagemanager.developer_password = ConfigText(default="password", fixed_size=False)
@@ -217,32 +220,6 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"))
 		else:
 			self.close()
-
-def handleBasicHttpAuthentication(url, destination):
-	import base64
-	try:
-		from urlparse import urlparse
-	except:
-		from urllib.parse import urlparse
-	parsed = urlparse(url)
-	scheme = parsed.scheme
-	username = parsed.username if parsed.username else ""
-	password = parsed.password if parsed.password else ""
-	hostname = parsed.hostname
-	path  = parsed.path
-
-	try:
-		request = Request(scheme + "://" + hostname + path)
-		base64string = base64.b64encode('%s:%s' % (username, password))
-		request.add_header("Authorization", "Basic %s" % base64string)
-		response = urlopen(request)
-		with open(destination, 'wb') as f:
-			f.write(response.read())
-			f.close()
-	except Exception as err:
-		print("[ImageManager] Unable to download %s\n%s: '%s'!" % (url, type(err).__name__, err))
-		import traceback
-		traceback.print_exc()
 
 class VISIONImageManager(Screen):
 	skin = """<screen name="VISIONImageManager" position="center,center" size="560,400">
@@ -1496,13 +1473,13 @@ class ImageManagerDownload(Screen):
 		if not path.exists(self.BackupDirectory):
 			mkdir(self.BackupDirectory, 0755)
 		self.boxtype = model
-		if self.ConfigObj == config.imagemanager.imagefeed_PLi:
+		if self.ConfigObj is config.imagemanager.imagefeed_PLi:
 			self.boxtype = HardwareInfo().get_device_name()
 			if self.boxtype:
 				self.boxtype = model
 		if not self.imagesList:
 			boxtype = self.boxtype
-			if self.ConfigObj == config.imagemanager.imagefeed_ViX \
+			if self.ConfigObj is config.imagemanager.imagefeed_ViX \
 				and self.ConfigObj.value.startswith("https") \
 				and config.imagemanager.login_as_Vision_developer.value \
 				and config.imagemanager.developer_username.value \
@@ -1514,7 +1491,7 @@ class ImageManagerDownload(Screen):
 				urljson = path.join(self.ConfigObj.value, boxtype)
 				self.imagesList = dict(json.load(urlopen("%s" % urljson)))
 			except Exception:
-				print("[ImageManager] no images available for: the '%s' at '%s'" % (self.boxtype, ConfigObj.value))
+				print("[ImageManager] no images available for: the '%s' at '%s'" % (self.boxtype, self.ConfigObj.value))
 				return
 
 		if not self.imagesList: # Nothing has been found on that server so we might as well give up.
@@ -1594,18 +1571,15 @@ class ImageManagerDownload(Screen):
 			selectedimage = self["list"].getCurrent()
 			currentSelected = self["list"].l.getCurrentSelection()
 			selectedimage = currentSelected[0][0]
-			fileurl = currentSelected[0][1]
+			headers, fileurl = self.processAuthLogin(currentSelected[0][1])
 			fileloc = self.BackupDirectory + selectedimage
-			if "@" in fileurl:
-				handleBasicHttpAuthentication(fileurl, fileloc) # spinner, no progress bar
-			else:
-				url_encode = "utf-8"
-				b_url = fileurl.encode(url_encode)
-				Tools.CopyFiles.downloadFile(b_url, fileloc, selectedimage.replace("_usb", ""))
-				for job in Components.Task.job_manager.getPendingJobs():
-					if job.name.startswith(_("Downloading")):
-						break
-				self.showJobView(job)
+			url_encode = "utf-8"
+			b_url = fileurl.encode(url_encode)
+			Tools.CopyFiles.downloadFile(b_url, fileloc, selectedimage.replace("_usb", ""), headers=headers)
+			for job in Components.Task.job_manager.getPendingJobs():
+				if job.name.startswith(_("Downloading")):
+					break
+			self.showJobView(job)
 			self.close()
 
 	def showJobView(self, job):
@@ -1614,3 +1588,21 @@ class ImageManagerDownload(Screen):
 
 	def JobViewCB(self, in_background):
 		Components.Task.job_manager.in_background = in_background
+
+	def processAuthLogin(self, url):
+		try:
+			from urlparse import urlparse
+		except:
+			from urllib.parse import urlparse
+		headers = None
+		parsed = urlparse(url)
+		scheme = parsed.scheme
+		username = parsed.username if parsed.username else ""
+		password = parsed.password if parsed.password else ""
+		hostname = parsed.hostname
+		path  = parsed.path
+		if username or password:
+			import base64
+			base64string = base64.b64encode('%s:%s' % (username, password))
+			headers = {"Authorization": "Basic %s" % base64string}
+		return headers, scheme + "://" + hostname + path

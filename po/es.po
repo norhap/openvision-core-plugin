@@ -783,23 +783,23 @@ msgstr "Actualizando destinos de montaje."
 msgid "Use as HDD"
 msgstr "Usar como HDD"
 
-msgid "ViX"
-msgstr "ViX"
+msgid "Vision Backup Manager"
+msgstr "Vision Administrador Copias Configuración"
 
-msgid "ViX Backup manager"
-msgstr "ViX Administrador-copias-configuración"
+msgid "Vision Image Manager"
+msgstr "Vision Administrador Imagen"
 
-msgid "ViX Image manager"
-msgstr "ViX Administrador-imagen"
+msgid "Vision Mount Manager"
+msgstr "Vision Administrador Montajes"
 
-msgid "ViX Mount manager"
-msgstr "ViX Administrador-montajes"
+msgid "Vision Script Runner"
+msgstr "Vision Ejecutar Scripts"
 
-msgid "ViX Script runner"
-msgstr "ViX Ejecutar-scripts"
+msgid "Vision SWAP Manager"
+msgstr "Vision Administrador SWAP"
 
-msgid "ViX Swap Manager"
-msgstr "ViX Administrador-swap"
+msgid "Vision Client Mode Box"
+msgstr "Vision Receptor Modo Cliente"
 
 msgid "View progress"
 msgstr "Ver progreso"

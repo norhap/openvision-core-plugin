@@ -260,6 +260,10 @@ class VISIONBackupManager(Screen):
 				for fil in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]: # sort by mtime
 					self.emlist.append(fil)
 				self["list"].setList(self.emlist)
+				if len(self.emlist):
+					self["key_red"].show()
+				else:
+					self["key_red"].hide()
 				self["list"].show()
 			except:
 				self['lab7'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
@@ -305,13 +309,11 @@ class VISIONBackupManager(Screen):
 		self["backupstatus"].setText(str(backuptext))
 
 	def keyDelete(self):
-		self.sel = self['list'].getCurrent()
-		if self.sel:
-			message = _("Are you sure you want to delete this backup:\n ") + self.sel
-			ybox = self.session.openWithCallback(self.doDelete, MessageBox, message, MessageBox.TYPE_YESNO, default=False)
-			ybox.setTitle(_("Remove confirmation"))
-		else:
-			self.session.open(MessageBox, _("There is no backup to delete."), MessageBox.TYPE_INFO, timeout=10)
+		self.sel = self["list"].getCurrent()
+		if self.sel is not None:
+			self["list"].instance.moveSelectionTo(0)
+			remove(self.BackupDirectory + self.sel)
+			self.populate_List()
 
 	def doDelete(self, answer):
 		if answer is True:
