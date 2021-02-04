@@ -384,8 +384,8 @@ msgstr "Instalando..."
 msgid "Invert"
 msgstr "Seleccionar Todo"
 
-msgid "Ipkg"
-msgstr "Ipkg"
+msgid "Opkg"
+msgstr "Ipk"
 
 msgid "It seems you have not setup an extra location. Please set it up in the Backup manager setup menu."
 msgstr "Parece que no has configurado una ubicación extra. Configúralo en Administrador-copias-configuración ...menu/botón azul 'Elegir carpeta local IPK'."
@@ -786,11 +786,20 @@ msgstr "Usar como HDD"
 msgid "Vision Backup Manager"
 msgstr "Vision Administrador Copias Configuración"
 
+msgid "Vision Backup Manager Setup"
+msgstr "Vision Administrador Configurar Copias de Configuración"
+
 msgid "Vision Image Manager"
 msgstr "Vision Administrador Imagen"
 
+msgid "Vision Image Manager Setup"
+msgstr "Vision Configuración Administrador Imagen"
+
 msgid "Vision Mount Manager"
 msgstr "Vision Administrador Montajes"
+
+msgid "Vision Opkg Install"
+msgstr "Vision Instalar IPK"
 
 msgid "Vision Script Runner"
 msgstr "Vision Ejecutar Scripts"

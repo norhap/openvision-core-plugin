@@ -242,7 +242,7 @@ class VISIONImageManager(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Vision Image manager"))
+		self.setTitle(_("Vision Image Manager"))
 
 		self["lab7"] = Label()
 		self["backupstatus"] = Label()
