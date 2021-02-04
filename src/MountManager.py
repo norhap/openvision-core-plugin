@@ -355,7 +355,7 @@ class VISIONDevicesPanel(Screen):
 				if self.mountp.find('/media/hdd') < 0:
 					pass
 				else:
-					self.session.open(MessageBox, _("This Device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout = 6, close_on_any_key = True)
+					self.session.open(MessageBox, _("This Device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=6, close_on_any_key=True)
 					return
 				system('[ -e /media/hdd/swapfile ] && swapoff /media/hdd/swapfile')
 				system('umount /media/hdd')
