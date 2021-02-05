@@ -369,6 +369,11 @@ class VISIONImageManager(Screen):
 					system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
 					remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
 				self.refreshList()
+				if len(self.emlist):
+					self["key_red"].show()
+				else:
+					self["key_red"].hide()
+				self["list"].show()
 			except Exception:
 				self["lab7"].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
