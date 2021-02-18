@@ -730,7 +730,7 @@ class ClientModeBoxDownloader:
 			bouquet = {}
 			bouquet['reference'] = getValueFromNode(service, 'e2servicereference')
 			bouquet['name'] = getValueFromNode(service, 'e2servicename')
-			bouquet['services'] = [];
+			bouquet['services'] = []
 
 			httprequest = urllib2.urlopen(baseurl + '/web/getservices?' + urllib.urlencode({'sRef': bouquet['reference']}) + '&hidden=1')
 			xmldoc2 = minidom.parseString(httprequest.read())
@@ -1089,7 +1089,7 @@ class ClientModeBoxRemoteTimer():
 					if bt is None:
 						bt = localtime(begin)
 						et = localtime(end)
-						bday = bt.tm_wday;
+						bday = bt.tm_wday
 						begin2 = bday * 1440 + bt.tm_hour * 60 + bt.tm_min
 						end2   = et.tm_wday * 1440 + et.tm_hour * 60 + et.tm_min
 					if x.repeated & (1 << bday):

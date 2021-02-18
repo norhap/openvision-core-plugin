@@ -300,7 +300,8 @@ class VISIONDevicesPanel(Screen):
 			self.updateList()
 
 	def saveMypoints(self):
-		if len(self['list'].list) < 1: return
+		if len(self['list'].list) < 1:
+			return
 		sel = self['list'].getCurrent()
 		if sel:
 			des = sel[1]
@@ -331,7 +332,8 @@ class VISIONDevicesPanel(Screen):
 		self.Console.ePopen('mount -a', self.updateList)
 
 	def saveMypointshdd(self):
-		if len(self['list'].list) < 1: return
+		if len(self['list'].list) < 1:
+			return
 		sel = self['list'].getCurrent()
 		if sel:
 			des = sel[1]
