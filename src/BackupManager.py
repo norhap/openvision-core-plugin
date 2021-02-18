@@ -6,7 +6,8 @@ from boxbranding import getVisionVersion, getImageDistro, getImageVersion, getVi
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod
 from time import localtime, time, strftime, mktime
 from datetime import date, datetime
-import tarfile, glob
+import tarfile
+import glob
 from enigma import eTimer, eEnv, eDVBDB, quitMainloop, getBoxType
 from . import _, PluginLanguageDomain
 from Components.ActionMap import ActionMap
