@@ -151,7 +151,7 @@ def buildDeviceList(device, List):
 			png = LoadPixmap(mypixmap)
 			res = (name, description, png)
 		else:
-			Gmedia=[('/media/' + device, '/media/' + device),
+			Gmedia = [('/media/' + device, '/media/' + device),
 					   ('/media/hdd', '/media/hdd'),
 					   ('/media/hdd2', '/media/hdd2'),
 					   ('/media/hdd3', '/media/hdd3'),

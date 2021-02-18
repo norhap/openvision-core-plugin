@@ -82,7 +82,7 @@ class MultiBoot(Screen):
 					ybox = self.session.openWithCallback(self.doErase, MessageBox, message, MessageBox.TYPE_YESNO, default=True)
 					ybox.setTitle(_("Remove confirmation"))
 				else:
-					message = _("Are you sure you want to delete image slot %s ?" %self.currentSelected[0][1])
+					message = _("Are you sure you want to delete image slot %s ?" % self.currentSelected[0][1])
 					ybox = self.session.openWithCallback(self.doErase, MessageBox, message, MessageBox.TYPE_YESNO, default=True)
 					ybox.setTitle(_("Remove confirmation"))
 

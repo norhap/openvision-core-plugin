@@ -211,7 +211,7 @@ class ScanHost(threading.Thread):
 		self.isopen = False
 
 	def run(self):
-		serverip  = socket.gethostbyname(self.ipaddress)
+		serverip = socket.gethostbyname(self.ipaddress)
 
 		try:
 			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -250,7 +250,7 @@ class ClientModeBoxScan:
 			for i in (3, 2, 1):
 				if temp[i] == 256:
 					temp[i] = 0
-					temp[i-1] += 1
+					temp[i - 1] += 1
 			ip_range.append(".".join(map(str, temp)))
 
 		return ip_range
@@ -281,7 +281,7 @@ class ClientModeBoxScan:
 		endip = list(startip)
 		brange = 32 - cidr
 		for i in range(brange):
-			endip[3 - i/8] = endip[3 - i/8] + (1 << (i % 8))
+			endip[3 - i / 8] = endip[3 - i / 8] + (1 << (i % 8))
 
 		if startip[0] == 0:
 			print("[ClientModeBox] Your start IP address seems invalid. Skip interface scan.")
@@ -882,7 +882,7 @@ class ClientModeBoxAbout(Screen):
 
 		self.setTitle(_('Vision Client Mode Box'))
 
-		self['about'] =Label(_("Client Mode Box: If you want to exit Client Mode and have a backup with your original settings. You can restore from blue button on Vision Backup Manager."))
+		self['about'] = Label(_("Client Mode Box: If you want to exit Client Mode and have a backup with your original settings. You can restore from blue button on Vision Backup Manager."))
 		self["actions"] = ActionMap(["SetupActions"],
 		{
 			"cancel": self.keyCancel
@@ -918,17 +918,17 @@ class ClientModeBoxTimer:
 		if scheduled_time > 0:
 			if scheduled_time < now:
 				if config.ipboxclient.repeattype.value == "daily":
-					scheduled_time += 24*3600
-					while (int(scheduled_time)-30) < now:
-						scheduled_time += 24*3600
+					scheduled_time += 24 * 3600
+					while (int(scheduled_time) - 30) < now:
+						scheduled_time += 24 * 3600
 				elif config.ipboxclient.repeattype.value == "weekly":
-					scheduled_time += 7*24*3600
-					while (int(scheduled_time)-30) < now:
-						scheduled_time += 7*24*3600
+					scheduled_time += 7 * 24 * 3600
+					while (int(scheduled_time) - 30) < now:
+						scheduled_time += 7 * 24 * 3600
 				elif config.ipboxclient.repeattype.value == "monthly":
-					scheduled_time += 30*24*3600
-					while (int(scheduled_time)-30) < now:
-						scheduled_time += 30*24*3600
+					scheduled_time += 30 * 24 * 3600
+					while (int(scheduled_time) - 30) < now:
+						scheduled_time += 30 * 24 * 3600
 			next = scheduled_time - now
 			self.ipboxdownloadtimer.startLongTimer(next)
 		else:
@@ -1091,12 +1091,12 @@ class ClientModeBoxRemoteTimer():
 						et = localtime(end)
 						bday = bt.tm_wday
 						begin2 = bday * 1440 + bt.tm_hour * 60 + bt.tm_min
-						end2   = et.tm_wday * 1440 + et.tm_hour * 60 + et.tm_min
+						end2 = et.tm_wday * 1440 + et.tm_hour * 60 + et.tm_min
 					if x.repeated & (1 << bday):
 						xbt = localtime(x.begin)
 						xet = localtime(timer_end)
 						xbegin = bday * 1440 + xbt.tm_hour * 60 + xbt.tm_min
-						xend   = bday * 1440 + xet.tm_hour * 60 + xet.tm_min
+						xend = bday * 1440 + xet.tm_hour * 60 + xet.tm_min
 						if xend < xbegin:
 							xend += 1440
 						if begin2 < xbegin <= end2:
