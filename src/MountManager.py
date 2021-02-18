@@ -33,6 +33,7 @@ blacklistedDisks = [
 	259  	# MMC block devices (/dev/mmcblk0=0, /dev/mmcblk0p1=1, /dev/mmcblk1=8)
 ]
 
+
 def getProcPartitions(List):
 	list2 = []
 	with open('/proc/partitions', 'r') as f:
@@ -74,6 +75,7 @@ def getProcPartitions(List):
 			buildDeviceList(device, List)
 			list2.append(device)
 			# print('[MountManager] list2 = %s' %list2)
+
 
 def buildDeviceList(device, List):
 	if re.search('mmcblk[0-1]p[0-3]', device):
@@ -379,6 +381,7 @@ class VISIONDevicesPanel(Screen):
 					system('umount ' + self.device)
 					self.Console.ePopen("/sbin/blkid | grep " + self.device, self.add_fstab, [self.device, self.mountp])
 
+
 class VISIONDevicePanelConf(Screen, ConfigListScreen):
 	skin = """
 	<screen position="center,center" size="640,460">
@@ -474,6 +477,7 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 			self.session.open(TryQuitMainloop, 2)
 		else:
 			self.close()
+
 
 class VISIONDevicesPanelSummary(Screen):
 	def __init__(self, session, parent):

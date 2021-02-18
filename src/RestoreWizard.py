@@ -15,6 +15,7 @@ from boxbranding import getKernelVersion
 currentkernelversion = getKernelVersion()
 currentimageversion = about.getVersionString()
 
+
 class RestoreWizard(WizardLanguage, Rc):
 	def __init__(self, session):
 		self.xmlfile = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/Vision/restorewizard.xml")

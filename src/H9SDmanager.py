@@ -9,6 +9,7 @@ from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
 from Tools.BoundFunction import boundFunction
 
+
 class H9SDmanager(Screen):
 
 	skin = """

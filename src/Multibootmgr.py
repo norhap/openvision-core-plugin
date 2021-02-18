@@ -11,6 +11,7 @@ from Screens.Screen import Screen
 from Tools.BoundFunction import boundFunction
 from Tools.Multiboot import GetImagelist, getCurrentImage, getCurrentImageMode, EmptySlot
 
+
 class MultiBoot(Screen):
 
 	skin = """

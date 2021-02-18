@@ -39,6 +39,8 @@ softcamautopoller = None
 def updateExtensions(configElement):
 	plugins.clearPluginList()
 	plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
+
+
 config.softcammanager.showinextensions.addNotifier(updateExtensions, initial_call=False)
 
 
@@ -56,6 +58,7 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 		if softcamautopoller is not None:
 			softcamautopoller.stop()
 			softcamautopoller = None
+
 
 class VISIONSoftcamManager(Screen):
 	skin = """
@@ -296,6 +299,7 @@ class VISIONSoftcamManager(Screen):
 	def myclose(self):
 		self.close()
 
+
 class VISIONSoftcamMenu(ConfigListScreen, Screen):
 	skin = """
 		<screen name="VISIONSoftcamMenu" position="center,center" size="500,285" title="Softcam Menu">
@@ -374,6 +378,7 @@ class VISIONSoftcamMenu(ConfigListScreen, Screen):
 		for x in self["config"].list:
 			x[1].cancel()
 		self.close()
+
 
 class VISIONStartCam(Screen):
 	skin = """
@@ -456,6 +461,7 @@ class VISIONStartCam(Screen):
 
 	def delTimer(self):
 		del self.activityTimer
+
 
 class VISIONStopCam(Screen):
 	skin = """
@@ -543,6 +549,7 @@ class VISIONStopCam(Screen):
 	def delTimer(self):
 		del self.activityTimer
 
+
 class VISIONSoftcamLog(Screen):
 	skin = """
 <screen name="VISIONSoftcamLog" position="center,center" size="560,400">
@@ -575,6 +582,7 @@ class VISIONSoftcamLog(Screen):
 
 	def cancel(self):
 		self.close()
+
 
 class SoftcamAutoPoller:
 	"""Automatically Poll SoftCam"""

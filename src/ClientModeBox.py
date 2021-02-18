@@ -53,12 +53,14 @@ config.ipboxclient.repeattype = ConfigSelection(default="daily", choices=[("dail
 config.ipboxclient.mounthdd = ConfigYesNo(default=False)
 config.ipboxclient.remotetimers = ConfigYesNo(default=False)
 
+
 def getValueFromNode(event, key):
 	tmp = event.getElementsByTagName(key)[0].firstChild
 	if (tmp):
 		return str(tmp.nodeValue)
 
 	return ""
+
 
 class ClientModeBoxWizard(WizardLanguage):
 
@@ -128,6 +130,7 @@ class ClientModeBoxWizard(WizardLanguage):
 									  'menu': self.Menu,
 									  'exit': self.exit,
 									  }, -1)
+
 	def Menu(self, session=None, **kwargs):
 		self.session.open(ClientModeBoxMenu, PluginLanguageDomain)
 
@@ -203,6 +206,7 @@ class ClientModeBoxWizard(WizardLanguage):
 		self.currStep += 1
 		self.updateValues()
 
+
 class ScanHost(threading.Thread):
 	def __init__(self, ipaddress, port):
 		threading.Thread.__init__(self)
@@ -225,6 +229,7 @@ class ScanHost(threading.Thread):
 
 		except socket.error:
 			self.isopen = False
+
 
 class ClientModeBoxScan:
 	def __init__(self, session):
@@ -320,6 +325,7 @@ class ClientModeBoxScan:
 					print("[ClientModeBox] No enigma2 found. Skip host")
 		return devices
 
+
 class ClientModeBoxMount:
 	def __init__(self, session):
 		self.session = session
@@ -371,6 +377,7 @@ class ClientModeBoxMount:
 		except Exception:
 			pass
 		return os.system('mount -t nfs' + ' ' + ip + ':' + '/' + share + ' ' + path + ' ' + '&&' + ' ' + 'echo -e' + ' ' + '"' + ip + ':' + share + ' ' + path + ' ' + 'nfs nolock,rsize=8192,wsize=8192' + ' ' + '\n"' + ' ' + '>>' + ' ' + '/etc/fstab') == 0
+
 
 class ClientModeBoxMenu(Screen, ConfigListScreen):
 	skin = """
@@ -460,6 +467,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 					 transparent="1"
 					 alphatest="on" />
 		</screen>"""
+
 	def __init__(self, session, timerinstance):
 		self.session = session
 		self.list = []
@@ -634,6 +642,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 	def downloadError(self):
 		self.timer.stop()
 		self.session.open(MessageBox, _("Cannot download data. Please check your configuration"), type=MessageBox.TYPE_ERROR)
+
 
 class ClientModeBoxDownloader:
 	def __init__(self, session):
@@ -861,6 +870,7 @@ class ClientModeBoxDownloader:
 		else:
 			print("[ClientModeBox] Parental control disabled - do nothing")
 
+
 class ClientModeBoxAbout(Screen):
 	skin = """
 			<screen position="100,100" size="560,400">
@@ -890,6 +900,7 @@ class ClientModeBoxAbout(Screen):
 
 	def keyCancel(self):
 		self.close()
+
 
 class ClientModeBoxTimer:
 	def __init__(self, session):
@@ -958,6 +969,7 @@ class ClientModeBoxTimer:
 		else:
 			self.scheduledtime = 0
 			self.ipboxpolltimer.stop()
+
 
 class ClientModeBoxRemoteTimer():
 	_timer_list = []

@@ -77,6 +77,7 @@ config.imagemanager.imagefeed_DevL = ConfigText(default="login:pswd", fixed_size
 
 autoImageManagerTimer = None
 
+
 def ImageManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
 	global autoImageManagerTimer
@@ -92,6 +93,7 @@ def ImageManagerautostart(reason, session=None, **kwargs):
 		if autoImageManagerTimer is not None:
 			print("[ImageManager] Stop")
 			autoImageManagerTimer.stop()
+
 
 class VISIONImageManagerMenu(ConfigListScreen, Screen):
 	skin = """
@@ -198,6 +200,7 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"))
 		else:
 			self.close()
+
 
 class VISIONImageManager(Screen):
 	skin = """<screen name="VISIONImageManager" position="center,center" size="560,400">
@@ -449,7 +452,6 @@ class VISIONImageManager(Screen):
 				break
 		self.session.openWithCallback(self.keyRestore3, JobView, job, cancelable=False, backgroundable=False, afterEventChangeable=False)
 
-
 	def keyRestore(self):
 		self.sel = self["list"].getCurrent()
 		if not self.sel:
@@ -617,6 +619,7 @@ class VISIONImageManager(Screen):
 			else:
 				return False
 
+
 class AutoImageManagerTimer:
 	def __init__(self, session):
 		self.session = session
@@ -736,6 +739,7 @@ class AutoImageManagerTimer:
 			config.imagemanager.lastbackup.value = sched_t
 			config.imagemanager.lastbackup.save()
 		# self.close()
+
 
 class ImageBackup(Screen):
 	skin = """
@@ -1396,6 +1400,7 @@ class ImageBackup(Screen):
 			autoImageManagerTimer.backupupdate(atLeast)
 		else:
 			autoImageManagerTimer.backupstop()
+
 
 class ImageManagerDownload(Screen):
 	skin = """

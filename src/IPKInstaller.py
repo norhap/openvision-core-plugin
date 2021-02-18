@@ -18,6 +18,7 @@ from Screens.Opkg import Opkg
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
 
+
 class VISIONIPKInstaller(Screen):
 	skin = """
 	<screen name="VISIONIPKInstaller" position="center,center" size="560,400">
@@ -153,6 +154,7 @@ class VISIONIPKInstaller(Screen):
 
 	def myclose(self):
 		self.close()
+
 
 class OpkgInstaller(Screen):
 	skin = """

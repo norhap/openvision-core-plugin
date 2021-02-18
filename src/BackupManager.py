@@ -75,6 +75,7 @@ config.backupmanager.backupdirs = ConfigLocations(
 config.backupmanager.xtraplugindir = ConfigDirectory(default='')
 config.backupmanager.lastlog = ConfigText(default=' ', fixed_size=False)
 
+
 def BackupManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
 	global autoBackupManagerTimer
@@ -696,6 +697,7 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring failed or canceled')
 			self.close()
 
+
 class BackupSelection(Screen):
 	skin = """
 		<screen name="BackupSelection" position="center,center" size="560,400">
@@ -875,6 +877,7 @@ class XtraPluginsSelection(Screen):
 	def closeRecursive(self):
 		self.close(True)
 
+
 class VISIONBackupManagerMenu(Screen, ConfigListScreen):
 	skin = """
 	<screen name="VISIONBackupManagerMenu" position="center,center" size="560,550">
@@ -1003,6 +1006,7 @@ class VISIONBackupManagerMenu(Screen, ConfigListScreen):
 		else:
 			self.close()
 
+
 class VISIONBackupManagerLogView(Screen):
 	skin = """
 <screen name="VISIONBackupManagerLogView" position="center,center" size="560,400">
@@ -1045,6 +1049,7 @@ class VISIONBackupManagerLogView(Screen):
 
 	def closeRecursive(self):
 		self.close(True)
+
 
 class AutoBackupManagerTimer:
 	def __init__(self, session):
@@ -1166,6 +1171,7 @@ class AutoBackupManagerTimer:
 			sched_t = int(mktime((sched.tm_year, sched.tm_mon, sched.tm_mday, 12, 0, 0, sched.tm_wday, sched.tm_yday, sched.tm_isdst)))
 			config.backupmanager.lastbackup.value = sched_t
 			config.backupmanager.lastbackup.save()
+
 
 class BackupFiles(Screen):
 	def __init__(self, session, updatebackup=False, imagebackup=False):
@@ -1341,6 +1347,7 @@ class BackupFiles(Screen):
 
 # Filename for backup list
 	tar_flist = "/tmp/_backup-files.list"
+
 	def Stage5(self):
 		tmplist = config.backupmanager.backupdirs.value
 		tmplist.append('/tmp/ExtraInstalledPlugins')
