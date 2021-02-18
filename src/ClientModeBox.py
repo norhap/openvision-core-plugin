@@ -658,7 +658,7 @@ class ClientModeBoxDownloader:
 		print("[ClientModeBox] Web interface URL: " + baseurl)
 		print("[ClientModeBox] Streaming URL: " + streamingurl)
 
-		for stype in [ "tv", "radio" ]:
+		for stype in ["tv", "radio"]:
 			print("[ClientModeBox] Download " + stype + " bouquets from " + baseurl)
 			bouquets = self.downloadBouquets(baseurl, stype)
 			print("[ClientModeBox] Save " + stype + " bouquets from " + streamingurl)

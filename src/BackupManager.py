@@ -922,7 +922,7 @@ class VISIONBackupManagerMenu(Screen, ConfigListScreen):
 		self["key_yellow"] = Button(_("Choose files"))
 		self["key_blue"] = Button(_("Choose local IPK's folder"))
 
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
 		self.createSetup()
