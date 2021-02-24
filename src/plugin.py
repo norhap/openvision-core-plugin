@@ -12,6 +12,7 @@ from SoftcamManager import SoftcamAutostart
 from ScriptRunner import ScriptRunnerAutostart
 from IPKInstaller import OpkgInstaller
 from ClientModeBox import ClientModeBoxWizard
+from Components.SystemInfo import SystemInfo
 
 config.misc.restorewizardrun = ConfigBoolean(default=False)
 
@@ -130,13 +131,14 @@ def ImageMangerMenu(session, **kwargs):
 	session.open(ImageManager)
 
 
-def H9SDmanager(session):
-	from H9SDmanager import H9SDmanager
-	return H9SDmanager(session)
+if SystemInfo["HasH9SD"]:
+	def H9SDmanager(session):
+		from H9SDmanager import H9SDmanager
+		return H9SDmanager(session)
 
 
-def H9SDmanagerMenu(session, **kwargs):
-	session.open(H9SDmanager)
+	def H9SDmanagerMenu(session, **kwargs):
+		session.open(H9SDmanager)
 
 
 def MountManager(session):

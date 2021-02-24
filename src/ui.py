@@ -125,7 +125,7 @@ class VISIONMenu(Screen, ProtectedScreen):
 				elif currentEntry == "Image Manager":
 					from ImageManager import VISIONImageManager
 					self.session.open(VISIONImageManager)
-				elif currentEntry == "H9 SDcard Manager":
+				elif currentEntry == "H9 SDcard Manager" and SystemInfo["HasH9SD"]:
 					from H9SDmanager import H9SDmanager
 					self.session.open(H9SDmanager)
 				elif currentEntry == "Opkg Install":
