@@ -37,6 +37,7 @@ PLUGINRESTOREQUESTIONID = 'RestorePluginsNotification'
 NOPLUGINS = 'NoPluginsNotification'
 
 hddchoices = []
+defaultprefix = getImageDistro()[4:]
 for p in harddiskmanager.getMountedPartitions():
 	if path.exists(p.mountpoint):
 		d = path.normpath(p.mountpoint)
@@ -45,35 +46,31 @@ for p in harddiskmanager.getMountedPartitions():
 				continue
 		if p.mountpoint != '/':
 			hddchoices.append((p.mountpoint, d))
+	print("[BackupManager]hddchoices = %s" % hddchoices)
 
 config.backupmanager = ConfigSubsection()
-defaultprefix = getImageDistro()[4:]
-config.backupmanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)
-config.backupmanager.backuplocation = ConfigSelection(choices=hddchoices)
-config.backupmanager.schedule = ConfigYesNo(default=False)
-config.backupmanager.scheduletime = ConfigClock(default=0)  # 1:00
-config.backupmanager.repeattype = ConfigSelection(default="daily", choices=[("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("Monthly"))])
-
-# Querying is enabled by default - asthat is what used to happen always
-#
-config.backupmanager.query = ConfigYesNo(default=True)
-
-# If we do not yet have a record of a backup, assume it has never happened.
-#
-config.backupmanager.lastbackup = ConfigNumber(default=0)
-
-# Max no. of backups to keep.  0 == keep them all
-#
-config.backupmanager.number_to_keep = ConfigNumber(default=0)
-
-config.backupmanager.backupretry = ConfigNumber(default=30)
-config.backupmanager.backupretrycount = NoSave(ConfigNumber(default=0))
-config.backupmanager.nextscheduletime = NoSave(ConfigNumber(default=0))
 config.backupmanager.backupdirs = ConfigLocations(
 	default=[eEnv.resolve('${sysconfdir}/enigma2/'), eEnv.resolve('${sysconfdir}/fstab'), eEnv.resolve('${sysconfdir}/hostname'), eEnv.resolve('${sysconfdir}/network/interfaces'), eEnv.resolve('${sysconfdir}/passwd'), eEnv.resolve('${sysconfdir}/shadow'), eEnv.resolve('${sysconfdir}/etc/shadow'),
 			 eEnv.resolve('${sysconfdir}/resolv.conf'), eEnv.resolve('${sysconfdir}/ushare.conf'), eEnv.resolve('${sysconfdir}/inadyn.conf'), eEnv.resolve('${sysconfdir}/tuxbox/config/'), eEnv.resolve('${sysconfdir}/wpa_supplicant.conf')])
-config.backupmanager.xtraplugindir = ConfigDirectory(default='')
+config.backupmanager.backuplocation = ConfigSelection(choices=hddchoices)
+config.backupmanager.backupretry = ConfigNumber(default=30)
+config.backupmanager.backupretrycount = NoSave(ConfigNumber(default=0))
+config.backupmanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)
 config.backupmanager.lastlog = ConfigText(default=' ', fixed_size=False)
+config.backupmanager.nextscheduletime = NoSave(ConfigNumber(default=0))
+config.backupmanager.repeattype = ConfigSelection(default="daily", choices=[("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("Monthly"))])
+config.backupmanager.schedule = ConfigYesNo(default=False)
+config.backupmanager.scheduletime = ConfigClock(default=0)  # 1:00
+config.backupmanager.xtraplugindir = ConfigDirectory(default='')
+# Querying is enabled by default - asthat is what used to happen always
+#
+config.backupmanager.query = ConfigYesNo(default=True)
+# If we do not yet have a record of a backup, assume it has never happened.
+#
+config.backupmanager.lastbackup = ConfigNumber(default=0)
+# Max no. of backups to keep.  0 == keep them all
+#
+config.backupmanager.number_to_keep = ConfigNumber(default=0)
 
 
 def BackupManagerautostart(reason, session=None, **kwargs):
@@ -109,7 +106,7 @@ class VISIONBackupManager(Screen):
 		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand" />
 		<widget name="backupstatus" position="10,370" size="400,30" font="Regular;20" zPosition="5" />
 		<applet type="onLayoutFinish">
-		self["list"].instance.setItemHeight(25)
+			self["list"].instance.setItemHeight(25)
 		</applet>
 	</screen>"""
 
@@ -125,9 +122,11 @@ class VISIONBackupManager(Screen):
 
 		self['lab7'] = Label()
 		self["backupstatus"] = Label()
-		self["key_green"] = Button()
+		self["key_green"] = Button(_("New backup"))
 		self["key_yellow"] = Button(_("Restore"))
 		self["key_red"] = Button(_("Delete"))
+		self["key_menu"] = StaticText(_("MENU"))
+		self["key_info"] = StaticText(_("INFO"))
 		self["key_blue"] = Button(_("Restore settings"))
 
 		self.BackupRunning = False
@@ -167,7 +166,6 @@ class VISIONBackupManager(Screen):
 			cb(name, desc)
 
 	def backupRunning(self):
-		self.populate_List()
 		self.BackupRunning = False
 		for job in Components.Task.job_manager.getPendingJobs():
 			if job.name.startswith(_("Backup manager")):
@@ -177,6 +175,7 @@ class VISIONBackupManager(Screen):
 		else:
 			self["key_green"].setText(_("New backup"))
 		self.activityTimer.startLongTimer(5)
+		self.populate_List()
 
 	def getJobName(self, job):
 		return "%s: %s (%d%%)" % (job.getStatustext(), job.name, int(100 * job.progress / float(job.end)))
@@ -227,12 +226,12 @@ class VISIONBackupManager(Screen):
 				self['lab7'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("Select a backup to restore:"))
 			try:
 				if not path.exists(self.BackupDirectory):
-					mkdir(self.BackupDirectory, 0755)
+					mkdir(self.BackupDirectory, 0o755)
 				images = listdir(self.BackupDirectory)
 				del self.emlist[:]
 				mtimes = []
 				for fil in images:
-					if fil.endswith('.tar.gz'): # prefix should only be used for naming files, not browsing them...
+					if fil.endswith(".tar.gz") and "vision" in fil.lower() or fil.startswith("%s" % defaultprefix):
 						if fil.startswith(defaultprefix):   # Ensure the current image backup are sorted to the top
 							prefix = "B"
 						else:
@@ -243,6 +242,12 @@ class VISIONBackupManager(Screen):
 					self.emlist.append(fil)
 				self["list"].setList(self.emlist)
 				self["list"].show()
+				if len(self.emlist):
+					self["key_red"].show()
+					self["key_yellow"].show()
+				else:
+					self["key_red"].hide()
+					self["key_yellow"].hide()
 			except:
 				self['lab7'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
@@ -287,20 +292,11 @@ class VISIONBackupManager(Screen):
 		self["backupstatus"].setText(str(backuptext))
 
 	def keyDelete(self):
-		self.sel = self['list'].getCurrent()
-		if self.sel:
-			message = _("Are you sure you want to delete this backup:\n ") + self.sel
-			ybox = self.session.openWithCallback(self.doDelete, MessageBox, message, MessageBox.TYPE_YESNO, default=False)
-			ybox.setTitle(_("Remove confirmation"))
-		else:
-			self.session.open(MessageBox, _("There is no backup to delete."), MessageBox.TYPE_INFO, timeout=10)
-
-	def doDelete(self, answer):
-		if answer is True:
-			self.sel = self['list'].getCurrent()
+		self.sel = self["list"].getCurrent()
+		if self.sel is not None:
 			self["list"].instance.moveSelectionTo(0)
 			remove(self.BackupDirectory + self.sel)
-		self.populate_List()
+			self.populate_List()
 
 	def GreenPressed(self):
 		self.BackupRunning = False
@@ -345,7 +341,8 @@ class VISIONBackupManager(Screen):
 
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
 		if path.exists('/tmp/backupkernelversion'):
-			kernelversion = open('/tmp/backupkernelversion').read()
+			with open("/tmp/backupkernelversion", "r") as fd:
+				kernelversion = fd.read()
 			print('[BackupManager] Backup kernel:', kernelversion)
 			print('[BackupManager] Current kernel:', currentkernelversion)
 			if kernelversion == currentkernelversion:
@@ -486,17 +483,18 @@ class VISIONBackupManager(Screen):
 		self.Console.ePopen('opkg update', self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
-		print('[BackupManager] Restoring stage 2: Result ', result)
-		if result.find('wget returned 4') != -1: # probably no network adaptor connected
+		result2 = result.decode("utf8")
+		print('[BackupManager] Restoring stage 2: Result ', result2)
+		if result2.find('wget returned 4') != -1: # probably no network adaptor connected
 			self.feeds = 'NONETWORK'
 			self.Stage2Completed = True
-		if result.find('wget returned 8') != -1 or result.find('wget returned 1') != -1 or result.find('wget returned 255') != -1 or result.find('404 Not Found') != -1: # Server issued an error response, or there was a wget generic error code.
+		if result2.find('wget returned 8') != -1 or result2.find('wget returned 1') != -1 or result2.find('wget returned 255') != -1 or result2.find('404 Not Found') != -1: # Server issued an error response, or there was a wget generic error code.
 			self.feeds = 'DOWN'
 			self.Stage2Completed = True
-		elif result.find('bad address') != -1: # probably DNS lookup failed
+		elif result2.find('bad address') != -1: # probably DNS lookup failed
 			self.feeds = 'BAD'
 			self.Stage2Completed = True
-		elif result.find('Collected errors') != -1: # none of the above errors. What condition requires this to loop? Maybe double key press.
+		elif result2.find('Collected errors') != -1: # none of the above errors. What condition requires this to loop? Maybe double key press.
 			AddPopupWithCallback(self.Stage2,
 								 _("A background update check is in progress, please try again."),
 								 MessageBox.TYPE_INFO,
@@ -513,8 +511,10 @@ class VISIONBackupManager(Screen):
 		if self.feeds == 'OK':
 			print('[BackupManager] Restoring stage 3: Feeds are OK')
 			if path.exists('/tmp/backupkernelversion') and path.exists('/tmp/backupimageversion'):
-				kernelversion = open('/tmp/backupkernelversion').read()
-				imageversion = open('/tmp/backupimageversion').read()
+				with open("/tmp/backupimageversion", "r") as fd:
+					imageversion = fd.read()
+				with open("/tmp/backupkernelversion", "r") as fd:
+					kernelversion = fd.read()
 				print('[BackupManager] Backup image:', imageversion)
 				print('[BackupManager] Current image:', currentimageversion)
 				print('[BackupManager] Backup kernel:', kernelversion)
@@ -566,11 +566,12 @@ class VISIONBackupManager(Screen):
 		plugins = []
 		if path.exists('/tmp/ExtraInstalledPlugins') and self.kernelcheck:
 			self.pluginslist = []
-			for line in result.split('\n'):
+			for line in result.decode("utf8").split("\n"):
 				if line:
 					parts = line.strip().split()
 					plugins.append(parts[0])
-			tmppluginslist = open('/tmp/ExtraInstalledPlugins', 'r').readlines()
+			with open("/tmp/ExtraInstalledPlugins", "r") as fd:
+				tmppluginslist = fd.readlines()
 			for line in tmppluginslist:
 				if line:
 					parts = line.strip().split()
@@ -586,12 +587,15 @@ class VISIONBackupManager(Screen):
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 				self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
 			elif path.exists('/tmp/3rdPartyPluginsLocation'):
-				self.thirdpartyPluginsLocation = open('/tmp/3rdPartyPluginsLocation', 'r').readlines()
+				with open("/tmp/3rdPartyPluginsLocation", "r") as fd:
+					self.thirdpartyPluginsLocation = fd.readlines()
 				self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n', '')
 				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
 				self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
-			tmppluginslist2 = open('/tmp/3rdPartyPlugins', 'r').readlines()
+			print("[BackupManager] thirdpartyPluginsLocation split = %s" % self.plugfiles)
+			with open("/tmp/3rdPartyPlugins", "r") as fd:
+				tmppluginslist2 = fd.readlines()
 			available = None
 			for line in tmppluginslist2:
 				if line:
@@ -609,6 +613,7 @@ class VISIONBackupManager(Screen):
 									devmounts.append(dir)
 							if len(devmounts):
 								for x in devmounts:
+									print("[BackupManager] search dir = %s" % devmounts)
 									if path.exists(x):
 										self.thirdpartyPluginsLocation = x
 										try:
@@ -628,6 +633,7 @@ class VISIONBackupManager(Screen):
 										if path.exists(ipk):
 											# 											print('IPK', ipk)
 											self.pluginslist2.append(ipk)
+						print("[BackupManager] pluginslist = %s" % self.pluginslist2)
 
 		print('[BackupManager] Restoring stage 3: Complete')
 		self.Stage3Completed = True
@@ -1279,7 +1285,7 @@ class BackupFiles(Screen):
 
 		try:
 			if not path.exists(self.BackupDirectory):
-				mkdir(self.BackupDirectory, 0755)
+				mkdir(self.BackupDirectory, 0o755)
 		except Exception as e:
 			print(str(e))
 			print("[BackupManager] Device: " + config.backupmanager.backuplocation.value + ", i don't seem to have write access to this device.")
@@ -1305,6 +1311,7 @@ class BackupFiles(Screen):
 		if result:
 			plugins_out = []
 			opkg_status_list = result.split('\n\n')
+			# print("[BackupManager] result=%s, retval=%s" % (opkg_status_list, retval))
 			for opkg_status in opkg_status_list:
 				plugin = ''
 				opkg_status_split = opkg_status.split('\n')
@@ -1336,13 +1343,14 @@ class BackupFiles(Screen):
 
 	def Stage4(self):
 		if config.backupmanager.xtraplugindir.value and path.exists(config.backupmanager.xtraplugindir.value):
-			output = open('/tmp/3rdPartyPlugins', 'w')
-			for file in listdir(config.backupmanager.xtraplugindir.value):
-				if file.endswith('.ipk'):
-					parts = file.strip().split('_')
-					output.write(parts[0] + '\n')
-					output.close()
-			open('/tmp/3rdPartyPluginsLocation', 'w').write(config.backupmanager.xtraplugindir.value)
+			with open("/tmp/3rdPartyPlugins", "w") as output:
+				for file in listdir(config.backupmanager.xtraplugindir.value):
+					if file.endswith(".ipk"):
+						parts = file.strip().split("_")
+						output.write(parts[0] + "\n")
+			with open("/tmp/3rdPartyPluginsLocation", "w") as output:
+				output.write(config.backupmanager.xtraplugindir.value)
+				output.close()
 		self.Stage4Completed = True
 
 # Filename for backup list
@@ -1350,15 +1358,18 @@ class BackupFiles(Screen):
 
 	def Stage5(self):
 		tmplist = config.backupmanager.backupdirs.value
-		tmplist.append('/tmp/ExtraInstalledPlugins')
-		tmplist.append('/tmp/backupkernelversion')
-		tmplist.append('/tmp/backupimageversion')
-		if path.exists('/tmp/3rdPartyPlugins'):
-			tmplist.append('/tmp/3rdPartyPlugins')
-		if path.exists('/tmp/3rdPartyPluginsLocation'):
-			tmplist.append('/tmp/3rdPartyPluginsLocation')
-		self.backupdirs = ' '.join(tmplist)
-		print('[BackupManager] Backup running')
+		tmplist.append("/tmp/ExtraInstalledPlugins")
+		tmplist.append("/tmp/backupkernelversion")
+		tmplist.append("/tmp/backupimageversion")
+		if path.exists("/tmp/3rdPartyPlugins"):
+			tmplist.append("/tmp/3rdPartyPlugins")
+		if path.exists("/tmp/3rdPartyPluginsLocation"):
+			tmplist.append("/tmp/3rdPartyPluginsLocation")
+		self.backupdirs = " ".join(tmplist)
+		config.misc.restorewizardrun.setValue(True)
+		config.misc.restorewizardrun.save()
+		configfile.save()
+		print("[BackupManager] Backup running")
 		backupdate = datetime.now()
 		backupType = "-"
 		if self.updatebackup:
@@ -1376,7 +1387,7 @@ class BackupFiles(Screen):
 
 	def Stage4Complete(self, result, retval, extra_args):
 		if path.exists(self.Backupfile):
-			chmod(self.Backupfile, 0644)
+			chmod(self.Backupfile, 0o644)
 			print('[BackupManager] Complete.')
 			remove('/tmp/ExtraInstalledPlugins')
 			self.Stage5Completed = True

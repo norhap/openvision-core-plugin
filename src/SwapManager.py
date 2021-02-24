@@ -1,9 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+from __future__ import print_function, division
 # for localized messages
 from os import system, stat as mystat, path, remove, rename
 from glob import glob
+import sys
 import stat
 
 from enigma import eTimer
@@ -44,15 +45,17 @@ class StartSwap:
 
 	def startSwap2(self, result=None, retval=None, extra_args=None):
 		swap_place = ""
-		if result and result.find('sd') != -1:
-			for line in result.split('\n'):
-				if line.find('sd') != -1:
+		if sys.version_info >= (3, 0):
+			result = result.decode('utf-8')
+		if result and result.find("sd") != -1:
+			for line in result.split("\n"):
+				if line.find("sd") != -1:
 					parts = line.strip().split()
 					swap_place = parts[0]
-					tmpfile = open('/etc/fstab.tmp', 'w')
-					fstabfile = open('/etc/fstab')
+					tmpfile = open("/etc/fstab.tmp", "w")
+					fstabfile = open("/etc/fstab")
 					tmpfile.writelines([l for l in fstabfile.readlines() if swap_place not in l])
-					rename('/etc/fstab.tmp', '/etc/fstab')
+					rename("/etc/fstab.tmp", "/etc/fstab")
 					tmpfile.close()
 					fstabfile.close()
 					print("[SwapManager] Found a swap partition:", swap_place)
@@ -60,28 +63,22 @@ class StartSwap:
 			devicelist = []
 			for p in harddiskmanager.getMountedPartitions():
 				d = path.normpath(p.mountpoint)
-				if path.exists("/media/"):
+				if (path.exists(p.mountpoint) and p.mountpoint != "/"
+					 and not p.mountpoint.startswith("/media/net/")
+					 and not p.mountpoint.startswith("/media/autofs/")):
 					devicelist.append((p.description, d))
 			if len(devicelist):
 				for device in devicelist:
-					for filename in glob(device[1] + '/swap*'):
-						if path.exists(filename):
-							swap_place = filename
-							print("[SwapManager] Found a swap file on ", swap_place)
-				if path.exists('/swapfile'):
-					devicelist.append((p.description, d))
-			if len(devicelist):
-				for device in devicelist:
-					for filename in glob(device[1] + 'swapfile'):
+					for filename in glob(device[1] + "/swap*"):
 						if path.exists(filename):
 							swap_place = filename
 							print("[SwapManager] Found a swap file on ", swap_place)
 
-		f = open('/proc/swaps')
+		f = open("/proc/swaps")
 		swapfile = f.read()
 		if swapfile.find(swap_place) == -1:
 			print("[SwapManager] Starting swap file on ", swap_place)
-			system('swapon ' + swap_place)
+			system("swapon " + swap_place)
 		else:
 			print("[SwapManager] Swap file is already active on ", swap_place)
 		f.close()
@@ -173,108 +170,99 @@ class VISIONSwap(Screen):
 
 	def updateSwap2(self, result=None, retval=None, extra_args=None):
 		self.swapsize = 0
-		self.swap_place = ''
+		self.swap_place = ""
 		self.swap_active = False
 		self.device = False
-		if result.find('sd') > 0:
-			self['key_blue'].setText("")
-			for line in result.split('\n'):
-				if line.find('sd') > 0:
+		if sys.version_info >= (3, 0):
+			result = result.decode('utf-8')
+		if result.find("sd") > 0:
+			self["key_blue"].setText("")
+			for line in result.split("\n"):
+				if line.find("sd") > 0:
 					parts = line.strip().split()
 					self.swap_place = parts[0]
-					if self.swap_place == 'sfdisk:':
-						self.swap_place = ''
+					if self.swap_place == "sfdisk:":
+						self.swap_place = ""
 					self.device = True
-				f = open('/proc/swaps', 'r')
+				f = open("/proc/swaps", "r")
 				for line2 in f.readlines():
 					parts = line.strip().split()
-					if line2.find('partition') != -1:
+					if line2.find("partition") != -1:
 						self.swap_active = True
 						self.swapsize = parts[2]
 						continue
 				f.close()
 		else:
-			self['key_blue'].setText(_("Create"))
+			self["key_blue"].setText(_("Create"))
 			devicelist = []
 			for p in harddiskmanager.getMountedPartitions():
 				d = path.normpath(p.mountpoint)
-				if path.exists("/media/"):
+				if path.exists(p.mountpoint) and p.mountpoint != "/" and not p.mountpoint.startswith("/media/net"):
 					devicelist.append((p.description, d))
 			if len(devicelist):
 				for device in devicelist:
-					for filename in glob(device[1] + '/swap*'):
+					for filename in glob(device[1] + "/swap*"):
 						self.swap_place = filename
-						self['key_blue'].setText(_("Delete"))
-						info = mystat(self.swap_place)
-						self.swapsize = info[stat.ST_SIZE]
-						continue
-
-				if not path.exists("/media/") and p.mountpoint == "/":
-					devicelist.append((p.description, d))
-			if len(devicelist):
-				for device in devicelist:
-					for filename in glob(device[1] + 'swapfile'):
-						self.swap_place = filename
-						self['key_blue'].setText(_("Delete"))
+						self["key_blue"].setText(_("Delete"))
 						info = mystat(self.swap_place)
 						self.swapsize = info[stat.ST_SIZE]
 						continue
 
 		if config.visionsettings.swapautostart.value and self.swap_place:
-			self['autostart_off'].hide()
-			self['autostart_on'].show()
+			self["autostart_off"].hide()
+			self["autostart_on"].show()
 		else:
 			config.visionsettings.swapautostart.setValue(False)
 			config.visionsettings.swapautostart.save()
 			configfile.save()
-			self['autostart_on'].hide()
-			self['autostart_off'].show()
-		self['labplace'].setText(self.swap_place)
-		self['labplace'].show()
+			self["autostart_on"].hide()
+			self["autostart_off"].show()
+		self["labplace"].setText(self.swap_place)
+		self["labplace"].show()
 
-		f = open('/proc/swaps', 'r')
+		f = open("/proc/swaps", "r")
 		for line in f.readlines():
 			parts = line.strip().split()
-			if line.find('partition') != -1:
+			if line.find("partition") != -1:
 				self.swap_active = True
 				continue
-			elif line.find('file') != -1:
+			elif line.find("file") != -1:
 				self.swap_active = True
 				continue
 		f.close()
 
 		if self.swapsize > 0:
 			if self.swapsize >= 1024:
-				self.swapsize = int(self.swapsize) / 1024
+				self.swapsize = int(self.swapsize) // 1024
 				if self.swapsize >= 1024:
-					self.swapsize = int(self.swapsize) / 1024
-				self.swapsize = str(self.swapsize) + ' ' + 'MB'
+					self.swapsize = int(self.swapsize) // 1024
+				self.swapsize = str(self.swapsize) + " " + "MB"
 			else:
-				self.swapsize = str(self.swapsize) + ' ' + 'KB'
+				self.swapsize = str(self.swapsize) + " " + "KB"
 		else:
-			self.swapsize = ''
+			self.swapsize = ""
 
-		self['labsize'].setText(self.swapsize)
-		self['labsize'].show()
+		self["labsize"].setText(self.swapsize)
+		self["labsize"].show()
 
 		if self.swap_active:
-			self['inactive'].hide()
-			self['active'].show()
-			self['key_green'].setText(_("Deactivate"))
-			self['swapactive_summary'].setText(_("Current status:") + ' ' + _("Active"))
+			self["inactive"].hide()
+			self["active"].show()
+			self["key_green"].setText(_("Deactivate"))
+			self["swapactive_summary"].setText(_("Current status:") + " " + _("Active"))
 		else:
-			self['inactive'].show()
-			self['active'].hide()
-			self['key_green'].setText(_("Activate"))
-			self['swapactive_summary'].setText(_("Current status:") + ' ' + _("Inactive"))
+			self["inactive"].show()
+			self["active"].hide()
+			self["key_green"].setText(_("Activate"))
+			self["swapactive_summary"].setText(_("Current status:") + " " + _("Inactive"))
 
 		scanning = _("Enable swap at startup")
-		self['lab7'].setText(scanning)
-		self['lab7'].show()
+		self["lab1"].setText(scanning)
+		self["lab1"].show()
 		self["actions"].setEnabled(True)
 
-		name = self['labplace'].text
-		self['swapname_summary'].setText(name)
+		name = self["labplace"].text
+		self["swapname_summary"].setText(name)
 
 	def actDeact(self):
 		if self.swap_active:

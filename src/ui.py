@@ -53,8 +53,8 @@ class VISIONMenu(Screen, ProtectedScreen):
 		self["lab5"] = StaticText(_("Sources are available at:"))
 		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 		if self.menu == 0:
-			self.list.append(("Backup Manager", _("Backup Manager"), _("Manage the backups of your settings."), None))
-			self.list.append(("Image Manager", _("Image Manager"), _("Create and flash complete images of your system."), None))
+			self.list.append(("Backup Manager", _("Backup Manager"), _("Manage settings backup."), None))
+			self.list.append(("Image Manager", _("Image Manager"), _("Backup/Flash/ReBoot system image."), None))
 			self.list.append(("Opkg Install", _("Opkg Install"), _("Install IPK's from your tmp folder."), None))
 			self.list.append(("Mount Manager", _("Mount Manager"), _("Manage your devices mount points."), None))
 			self.list.append(("Script Runner", _("Script Runner"), _("Run your shell scripts."), None))
