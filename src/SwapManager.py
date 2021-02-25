@@ -257,8 +257,8 @@ class VISIONSwap(Screen):
 			self["swapactive_summary"].setText(_("Current status:") + " " + _("Inactive"))
 
 		scanning = _("Enable swap at startup")
-		self["lab1"].setText(scanning)
-		self["lab1"].show()
+		self["lab7"].setText(scanning)
+		self["lab7"].show()
 		self["actions"].setEnabled(True)
 
 		name = self["labplace"].text
