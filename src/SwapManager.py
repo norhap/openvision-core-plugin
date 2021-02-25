@@ -272,7 +272,7 @@ class VISIONSwap(Screen):
 				if self.swap_place != '':
 					self.Console.ePopen('swapon ' + self.swap_place, self.updateSwap)
 				else:
-					mybox = self.session.open(MessageBox, _("SWAP file not found. You have to create the file before you try to activate it."), MessageBox.TYPE_INFO)
+					mybox = self.session.open(MessageBox, _("Swapfile not found. You have to create the file before you try to activate it."), MessageBox.TYPE_INFO)
 					mybox.setTitle(_("Info"))
 			else:
 				self.Console.ePopen('swapon ' + self.swap_place, self.updateSwap)
@@ -305,15 +305,15 @@ class VISIONSwap(Screen):
 			if partition.filesystem(mounts) in supported_filesystems:
 				candidates.append((partition.description, partition.mountpoint))
 		if len(candidates):
-			self.session.openWithCallback(self.doCSplace, ChoiceBox, title=_("Please select device to use as SWAP file location."), list=candidates)
+			self.session.openWithCallback(self.doCSplace, ChoiceBox, title=_("Please select device to use as swapfile location."), list=candidates)
 		else:
-			self.session.open(MessageBox, _("Sorry, no physical devices that supports SWAP attached. Can't create SWAP file on network or fat32 file-systems."), MessageBox.TYPE_INFO, timeout=10)
+			self.session.open(MessageBox, _("Sorry, no physical devices that supports swapfile attached. Can't create swapfile on network or fat32 file-systems."), MessageBox.TYPE_INFO, timeout=10)
 
 	def doCSplace(self, name):
 		if name:
 			self.new_place = name[1]
 			myoptions = [[_("8 Mb"), '8192'], [_("16 Mb"), '16384'], [_("32 Mb"), '32768'], [_("64 Mb"), '65536'], [_("96 Mb"), '98304'], [_("128 Mb"), '131072'], [_("256 Mb"), '262144']]
-			self.session.openWithCallback(self.doCSsize, ChoiceBox, title=_("Select the SWAP file size:"), list=myoptions)
+			self.session.openWithCallback(self.doCSsize, ChoiceBox, title=_("Select the swapfile size:"), list=myoptions)
 
 	def doCSsize(self, swapsize):
 		if swapsize:
@@ -338,6 +338,6 @@ class VISIONSwap(Screen):
 				config.swapautostart.save()
 			configfile.save()
 		else:
-			mybox = self.session.open(MessageBox, _("You have to create a SWAP file before trying to activate the autostart."), MessageBox.TYPE_INFO)
+			mybox = self.session.open(MessageBox, _("You have to create a swapfile before trying to activate the autostart."), MessageBox.TYPE_INFO)
 			mybox.setTitle(_("Info"))
 		self.updateSwap()
