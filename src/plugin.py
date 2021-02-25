@@ -12,8 +12,10 @@ from SoftcamManager import SoftcamAutostart
 from ScriptRunner import ScriptRunnerAutostart
 from IPKInstaller import OpkgInstaller
 from ClientModeBox import ClientModeBoxWizard
+from Components.SystemInfo import SystemInfo
 
 config.misc.restorewizardrun = ConfigBoolean(default=False)
+
 
 def setLanguageFromBackup(backupfile):
 	try:
@@ -24,7 +26,9 @@ def setLanguageFromBackup(backupfile):
 			if member.name == 'etc/enigma2/settings':
 				for line in tar.extractfile(member):
 					if line.startswith('config.osd.language'):
+						print(line)
 						languageToSelect = line.strip().split('=')[1]
+						print(languageToSelect)
 						if languageToSelect:
 							from Components.Language import language
 							language.activateLanguage(languageToSelect)
@@ -32,6 +36,7 @@ def setLanguageFromBackup(backupfile):
 		tar.close()
 	except:
 		pass
+
 
 def checkConfigBackup():
 	try:
@@ -65,6 +70,7 @@ def checkConfigBackup():
 		print("[Vision] Unable to use device (%s)..." % str(e))
 		return None
 
+
 if config.misc.firstrun.value and not config.misc.restorewizardrun.value:
 	if checkConfigBackup() is None:
 		backupAvailable = 0
@@ -76,78 +82,100 @@ def VISIONMenu(session):
 	import ui
 	return ui.VISIONMenu(session)
 
+
 def UpgradeMain(session, **kwargs):
 	session.open(VISIONMenu)
+
 
 def startSetup(menuid):
 	if menuid != "mainmenu":
 		return []
 	return [(_("Vision Core"), UpgradeMain, "vision_menu", 1)]
 
+
 def RestoreWizard(*args, **kwargs):
 	from RestoreWizard import RestoreWizard
 	return RestoreWizard(*args, **kwargs)
+
 
 def SoftcamManager(session):
 	from SoftcamManager import VISIONSoftcamManager
 	return VISIONSoftcamManager(session)
 
+
 def SoftcamMenu(session, **kwargs):
 	session.open(SoftcamManager)
+
 
 def SoftcamSetup(menuid):
 	if menuid == "cam":
 		return [(_("Softcam Vision"), SoftcamMenu, "softcamsetup", 1005)]
 	return []
 
+
 def BackupManager(session):
 	from BackupManager import VISIONBackupManager
 	return VISIONBackupManager(session)
 
+
 def BackupManagerMenu(session, **kwargs):
 	session.open(BackupManager)
+
 
 def ImageManager(session):
 	from ImageManager import VISIONImageManager
 	return VISIONImageManager(session)
 
+
 def ImageMangerMenu(session, **kwargs):
 	session.open(ImageManager)
 
-def H9SDmanager(session):
-	from H9SDmanager import H9SDmanager
-	return H9SDmanager(session)
 
-def H9SDmanagerMenu(session, **kwargs):
-	session.open(H9SDmanager)
+if SystemInfo["HasH9SD"]:
+	def H9SDmanager(session):
+		from H9SDmanager import H9SDmanager
+		return H9SDmanager(session)
+
+
+	def H9SDmanagerMenu(session, **kwargs):
+		session.open(H9SDmanager)
+
 
 def MountManager(session):
 	from MountManager import VISIONDevicesPanel
 	return VISIONDevicesPanel(session)
 
+
 def MountManagerMenu(session, **kwargs):
 	session.open(MountManager)
+
 
 def ScriptRunner(session):
 	from ScriptRunner import VISIONScriptRunner
 	return VISIONScriptRunner(session)
 
+
 def ScriptRunnerMenu(session, **kwargs):
 	session.open(ScriptRunner)
+
 
 def SwapManager(session):
 	from SwapManager import VISIONSwap
 	return VISIONSwap(session)
 
+
 def SwapManagerMenu(session, **kwargs):
 	session.open(SwapManager)
+
 
 def ClientModeBoxMenu(session, **kwargs):
 	session.open(ClientModeBox)
 
+
 def filescan_open(list, session, **kwargs):
 	filelist = [x.path for x in list]
 	session.open(OpkgInstaller, filelist)  # list
+
 
 def filescan(**kwargs):
 	from Components.Scanner import Scanner, ScanPath

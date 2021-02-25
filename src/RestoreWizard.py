@@ -3,6 +3,7 @@
 from __future__ import print_function
 from . import _
 from os import listdir, path, stat
+from boxbranding import getImageDistro
 from Components.About import about
 from Components.Console import Console
 from Components.Pixmap import Pixmap
@@ -11,6 +12,7 @@ from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
 from BackupManager import isRestorableSettings, isRestorablePlugins, isRestorableKernel
+
 
 class RestoreWizard(WizardLanguage, Rc):
 	def __init__(self, session):
@@ -39,6 +41,7 @@ class RestoreWizard(WizardLanguage, Rc):
 		list = []
 		files = []
 		mtimes = []
+		defaultprefix = getImageDistro()[4:]
 
 		for dir in ["/media/%s/backup" % media for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
 			devmounts.append(dir)
@@ -53,7 +56,7 @@ class RestoreWizard(WizardLanguage, Rc):
 					files = []
 				if len(files):
 					for file in files:
-						if file.endswith('.tar.gz'):
+						if file.endswith(".tar.gz") and "vision" in file.lower() or file.startswith("%s" % defaultprefix):
 							mtimes.append((path.join(devpath, file), stat(path.join(devpath, file)).st_mtime)) # (filname, mtime)
 		for file in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]: # sort by mtime
 			list.append((file, file))
@@ -245,24 +248,25 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.Console.ePopen('opkg update', self.doRestorePluginsTestComplete)
 
 	def doRestorePluginsTestComplete(self, result=None, retval=None, extra_args=None):
-		print('[RestoreWizard] Stage 4: Feeds Test Result', result)
-		if result.find('wget returned 4') != -1:
+		result2 = result.decode("utf8")
+		print('[RestoreWizard] Stage 4: Feeds test result', result2)
+		if result2.find('wget returned 4') != -1:
 			self.NextStep = 'reboot'
 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
-		elif result.find('wget returned 8') != -1:
+		elif result2.find('wget returned 8') != -1:
 			self.NextStep = 'reboot'
 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
-		elif result.find('bad address') != -1:
+		elif result2.find('bad address') != -1:
 			self.NextStep = 'reboot'
 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver is not connected to the Internet. Please try using the Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
-		elif result.find('wget returned 1') != -1 or result.find('wget returned 255') != -1 or result.find('404 Not Found') != -1:
+		elif result2.find('wget returned 1') != -1 or result2.find('wget returned 255') != -1 or result2.find('404 Not Found') != -1:
 			self.NextStep = 'reboot'
 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Sorry the feeds are down for maintenance. Please try using the Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
-		elif result.find('Collected errors') != -1:
+		elif result2.find('Collected errors') != -1:
 			print('[RestoreWizard] Stage 4: Update is in progress, delaying')
 			self.delaymess = self.session.openWithCallback(self.doRestorePluginsTest, MessageBox, _("A background update check is in progress, please try again."), type=MessageBox.TYPE_INFO, timeout=10, wizard=True)
 			self.delaymess.setTitle(_("Restore wizard"))
@@ -282,7 +286,7 @@ class RestoreWizard(WizardLanguage, Rc):
 		plugins = []
 		if path.exists('/tmp/ExtraInstalledPlugins'):
 			self.pluginslist = []
-			for line in result.split('\n'):
+			for line in result.decode("utf8").split("\n"):
 				if line:
 					parts = line.strip().split()
 					plugins.append(parts[0])
@@ -317,12 +321,12 @@ class RestoreWizard(WizardLanguage, Rc):
 							devmounts = []
 							files = []
 							self.plugfile = self.plugfiles[3]
-							for dir in ["/media/%s/%s" %(media, self.plugfile)  for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
+							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
 								if media != "autofs" or "net":
 									devmounts.append(dir)
 							if len(devmounts):
 								for x in devmounts:
-									print("[BackupManager] search dir = %s" %devmounts)
+									print("[BackupManager] Search dir = %s" % devmounts)
 									if path.exists(x):
 										self.thirdpartyPluginsLocation = x
 										try:

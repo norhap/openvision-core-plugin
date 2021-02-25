@@ -49,9 +49,10 @@ config.ipboxclient.username = ConfigText(default="", fixed_size=False)
 config.ipboxclient.password = ConfigText(default="", fixed_size=False)
 config.ipboxclient.schedule = ConfigYesNo(default=False)
 config.ipboxclient.scheduletime = ConfigClock(default=0) # 1:00
-config.ipboxclient.repeattype = ConfigSelection(default="daily", choices=[("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("30 Days"))])
+config.ipboxclient.repeattype = ConfigSelection(default="daily", choices=[("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("Monthly"))])
 config.ipboxclient.mounthdd = ConfigYesNo(default=False)
 config.ipboxclient.remotetimers = ConfigYesNo(default=False)
+
 
 def getValueFromNode(event, key):
 	tmp = event.getElementsByTagName(key)[0].firstChild
@@ -59,6 +60,7 @@ def getValueFromNode(event, key):
 		return str(tmp.nodeValue)
 
 	return ""
+
 
 class ClientModeBoxWizard(WizardLanguage):
 
@@ -128,6 +130,7 @@ class ClientModeBoxWizard(WizardLanguage):
 									  'menu': self.Menu,
 									  'exit': self.exit,
 									  }, -1)
+
 	def Menu(self, session=None, **kwargs):
 		self.session.open(ClientModeBoxMenu, PluginLanguageDomain)
 
@@ -203,6 +206,7 @@ class ClientModeBoxWizard(WizardLanguage):
 		self.currStep += 1
 		self.updateValues()
 
+
 class ScanHost(threading.Thread):
 	def __init__(self, ipaddress, port):
 		threading.Thread.__init__(self)
@@ -211,7 +215,7 @@ class ScanHost(threading.Thread):
 		self.isopen = False
 
 	def run(self):
-		serverip  = socket.gethostbyname(self.ipaddress)
+		serverip = socket.gethostbyname(self.ipaddress)
 
 		try:
 			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -225,6 +229,7 @@ class ScanHost(threading.Thread):
 
 		except socket.error:
 			self.isopen = False
+
 
 class ClientModeBoxScan:
 	def __init__(self, session):
@@ -250,7 +255,7 @@ class ClientModeBoxScan:
 			for i in (3, 2, 1):
 				if temp[i] == 256:
 					temp[i] = 0
-					temp[i-1] += 1
+					temp[i - 1] += 1
 			ip_range.append(".".join(map(str, temp)))
 
 		return ip_range
@@ -281,7 +286,7 @@ class ClientModeBoxScan:
 		endip = list(startip)
 		brange = 32 - cidr
 		for i in range(brange):
-			endip[3 - i/8] = endip[3 - i/8] + (1 << (i % 8))
+			endip[3 - i / 8] = endip[3 - i / 8] + (1 << (i % 8))
 
 		if startip[0] == 0:
 			print("[ClientModeBox] your start ip address seem invalid. Skip interface scan.")
@@ -319,6 +324,7 @@ class ClientModeBoxScan:
 				else:
 					print("[ClientModeBox] no enigma2 found. Skip host")
 		return devices
+
 
 class ClientModeBoxMount:
 	def __init__(self, session):
@@ -371,6 +377,7 @@ class ClientModeBoxMount:
 		except Exception:
 			pass
 		return os.system('mount -t nfs' + ' ' + ip + ':' + '/' + share + ' ' + path + ' ' + '&&' + ' ' + 'echo -e' + ' ' + '"' + ip + ':' + share + ' ' + path + ' ' + 'nfs nolock,rsize=8192,wsize=8192' + ' ' + '\n"' + ' ' + '>>' + ' ' + '/etc/fstab') == 0
+
 
 class ClientModeBoxMenu(Screen, ConfigListScreen):
 	skin = """
@@ -460,6 +467,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 					 transparent="1"
 					 alphatest="on" />
 		</screen>"""
+
 	def __init__(self, session, timerinstance):
 		self.session = session
 		self.list = []
@@ -635,6 +643,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 		self.timer.stop()
 		self.session.open(MessageBox, _("Cannot download data. Please check your configuration"), type=MessageBox.TYPE_ERROR)
 
+
 class ClientModeBoxDownloader:
 	def __init__(self, session):
 		self.session = session
@@ -658,8 +667,8 @@ class ClientModeBoxDownloader:
 		print("[ClientModeBox] web interface url: " + baseurl)
 		print("[ClientModeBox] streaming url: " + streamingurl)
 
-		for stype in [ "tv", "radio" ]:
-			print("[ClientModeBox] download " + stype + " bouquets from " + baseurl)
+		for stype in ["tv", "radio"]:
+			print("[ClientModeBox] Download " + stype + " bouquets from " + baseurl)
 			bouquets = self.downloadBouquets(baseurl, stype)
 			print("[ClientModeBox] save " + stype + " bouquets from " + streamingurl)
 			self.saveBouquets(bouquets, streamingurl, '/etc/enigma2/bouquets.' + stype)
@@ -730,7 +739,7 @@ class ClientModeBoxDownloader:
 			bouquet = {}
 			bouquet['reference'] = getValueFromNode(service, 'e2servicereference')
 			bouquet['name'] = getValueFromNode(service, 'e2servicename')
-			bouquet['services'] = [];
+			bouquet['services'] = []
 
 			httprequest = urllib2.urlopen(baseurl + '/web/getservices?' + urllib.urlencode({'sRef': bouquet['reference']}) + '&hidden=1')
 			xmldoc2 = minidom.parseString(httprequest.read())
@@ -861,6 +870,7 @@ class ClientModeBoxDownloader:
 		else:
 			print("[ClientModeBox] parental control disabled - do nothing")
 
+
 class ClientModeBoxAbout(Screen):
 	skin = """
 			<screen position="100,100" size="560,400">
@@ -882,7 +892,7 @@ class ClientModeBoxAbout(Screen):
 
 		self.setTitle(_('Vision Client Mode Box'))
 
-		self['about'] =Label(_("Client Mode Box: If you want to exit Client Mode and have a backup with your original settings. You can restore from blue button on Vision Backup Manager."))
+		self['about'] = Label(_("Client Mode Box: If you want to exit Client Mode and have a backup with your original settings. You can restore from blue button on Vision Backup Manager."))
 		self["actions"] = ActionMap(["SetupActions"],
 		{
 			"cancel": self.keyCancel
@@ -890,6 +900,7 @@ class ClientModeBoxAbout(Screen):
 
 	def keyCancel(self):
 		self.close()
+
 
 class ClientModeBoxTimer:
 	def __init__(self, session):
@@ -918,17 +929,17 @@ class ClientModeBoxTimer:
 		if scheduled_time > 0:
 			if scheduled_time < now:
 				if config.ipboxclient.repeattype.value == "daily":
-					scheduled_time += 24*3600
-					while (int(scheduled_time)-30) < now:
-						scheduled_time += 24*3600
+					scheduled_time += 24 * 3600
+					while (int(scheduled_time) - 30) < now:
+						scheduled_time += 24 * 3600
 				elif config.ipboxclient.repeattype.value == "weekly":
-					scheduled_time += 7*24*3600
-					while (int(scheduled_time)-30) < now:
-						scheduled_time += 7*24*3600
+					scheduled_time += 7 * 24 * 3600
+					while (int(scheduled_time) - 30) < now:
+						scheduled_time += 7 * 24 * 3600
 				elif config.ipboxclient.repeattype.value == "monthly":
-					scheduled_time += 30*24*3600
-					while (int(scheduled_time)-30) < now:
-						scheduled_time += 30*24*3600
+					scheduled_time += 30 * 24 * 3600
+					while (int(scheduled_time) - 30) < now:
+						scheduled_time += 30 * 24 * 3600
 			next = scheduled_time - now
 			self.ipboxdownloadtimer.startLongTimer(next)
 		else:
@@ -958,6 +969,7 @@ class ClientModeBoxTimer:
 		else:
 			self.scheduledtime = 0
 			self.ipboxpolltimer.stop()
+
 
 class ClientModeBoxRemoteTimer():
 	_timer_list = []
@@ -1089,14 +1101,14 @@ class ClientModeBoxRemoteTimer():
 					if bt is None:
 						bt = localtime(begin)
 						et = localtime(end)
-						bday = bt.tm_wday;
+						bday = bt.tm_wday
 						begin2 = bday * 1440 + bt.tm_hour * 60 + bt.tm_min
-						end2   = et.tm_wday * 1440 + et.tm_hour * 60 + et.tm_min
+						end2 = et.tm_wday * 1440 + et.tm_hour * 60 + et.tm_min
 					if x.repeated & (1 << bday):
 						xbt = localtime(x.begin)
 						xet = localtime(timer_end)
 						xbegin = bday * 1440 + xbt.tm_hour * 60 + xbt.tm_min
-						xend   = bday * 1440 + xet.tm_hour * 60 + xet.tm_min
+						xend = bday * 1440 + xet.tm_hour * 60 + xet.tm_min
 						if xend < xbegin:
 							xend += 1440
 						if begin2 < xbegin <= end2:

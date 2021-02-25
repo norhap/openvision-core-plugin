@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-# for localized messages
+import six
+
 import re
 from os import path, makedirs, remove, rename, symlink, mkdir, listdir
 from datetime import datetime
@@ -39,6 +40,8 @@ softcamautopoller = None
 def updateExtensions(configElement):
 	plugins.clearPluginList()
 	plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
+
+
 config.softcammanager.showinextensions.addNotifier(updateExtensions, initial_call=False)
 
 
@@ -56,6 +59,7 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 		if softcamautopoller is not None:
 			softcamautopoller.stop()
 			softcamautopoller = None
+
 
 class VISIONSoftcamManager(Screen):
 	skin = """
@@ -114,6 +118,9 @@ class VISIONSoftcamManager(Screen):
 		self["key_green"] = Button("")
 		self["key_yellow"] = Button("")
 		self["key_blue"] = Button(_("Autostart"))
+
+		self["key_menu"] = StaticText(_("MENU"))
+		self["key_info"] = StaticText(_("INFO"))
 
 		self.currentactivecam = ""
 		self.activityTimer = eTimer()
@@ -187,20 +194,23 @@ class VISIONSoftcamManager(Screen):
 
 	def showActivecam2(self, result, retval, extra_args):
 		if retval == 0:
-			self.currentactivecamtemp = result
-			self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
-			self.currentactivecam = self.currentactivecam.replace('\n', ', ')
-			print('[SoftcamManager] Active: ' + self.currentactivecam.replace("\n", ", "))
-			if path.exists('/tmp/SoftcamsScriptsRunning') or path.exists('/tmp/SoftcamsScriptsRunning'):
-				file = open('/tmp/SoftcamsScriptsRunning')
+			if six.PY3:
+				self.currentactivecamtemp = result.decode
+			else:
+				self.currentactivecamtemp = result
+				self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
+			self.currentactivecam = self.currentactivecam.replace("\n", ", ")
+			print("[SoftcamManager] Active:%s " % self.currentactivecam)
+			if path.exists("/tmp/SoftcamsScriptsRunning"):
+				file = open("/tmp/SoftcamsScriptsRunning")
 				SoftcamsScriptsRunning = file.read()
 				file.close()
-				SoftcamsScriptsRunning = SoftcamsScriptsRunning.replace('\n', ', ')
+				SoftcamsScriptsRunning = SoftcamsScriptsRunning.replace("\n", ", ")
 				self.currentactivecam += SoftcamsScriptsRunning
-			self['activecam'].setText(self.currentactivecam)
-			self['activecam'].show()
+			self["activecam"].setText(self.currentactivecam)
+			self["activecam"].show()
 		else:
-			print('[SoftcamManager] RESULT FAILED: ' + str(result))
+			print("[SoftcamManager] Result failed: " + str(result))
 		self.selectionChanged()
 
 	def keyStart(self):
@@ -324,6 +334,7 @@ class VISIONSoftcamManager(Screen):
 	def myclose(self):
 		self.close()
 
+
 class VISIONSoftcamMenu(ConfigListScreen, Screen):
 	skin = """
 		<screen name="VISIONSoftcamMenu" position="center,center" size="500,285" title="Softcam Menu">
@@ -346,7 +357,7 @@ class VISIONSoftcamMenu(ConfigListScreen, Screen):
 		self["lab5"] = StaticText(_("Sources are available at:"))
 		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
 		self.createSetup()
@@ -402,6 +413,7 @@ class VISIONSoftcamMenu(ConfigListScreen, Screen):
 		for x in self["config"].list:
 			x[1].cancel()
 		self.close()
+
 
 class VISIONStartCam(Screen):
 	skin = """
@@ -510,6 +522,7 @@ class VISIONStartCam(Screen):
 	def delTimer(self):
 		del self.activityTimer
 
+
 class VISIONStopCam(Screen):
 	skin = """
 	<screen name="VISIONStopCam" position="center,center" size="484, 150">
@@ -614,6 +627,7 @@ class VISIONStopCam(Screen):
 	def delTimer(self):
 		del self.activityTimer
 
+
 class VISIONSoftcamLog(Screen):
 	skin = """
 <screen name="VISIONSoftcamLog" position="center,center" size="560,400">
@@ -649,21 +663,22 @@ class VISIONSoftcamLog(Screen):
 	def cancel(self):
 		self.close()
 
+
 class SoftcamAutoPoller:
 	"""Automatically Poll SoftCam"""
 
 	def __init__(self):
 		# Init Timer
 		if not path.exists('/usr/softcams'):
-			mkdir('/usr/softcams', 0755)
+			mkdir('/usr/softcams', 0o755)
 		if not path.exists('/etc/scce'):
-			mkdir('/etc/scce', 0755)
+			mkdir('/etc/scce', 0o755)
 		if not path.exists('/etc/tuxbox/config'):
-			mkdir('/etc/tuxbox/config', 0755)
+			mkdir('/etc/tuxbox/config', 0o755)
 		if not path.islink('/var/tuxbox'):
 			symlink('/etc/tuxbox', '/var/tuxbox')
 		if not path.exists('/usr/keys'):
-			mkdir('/usr/keys', 0755)
+			mkdir('/usr/keys', 0o755)
 		if not path.islink('/var/keys'):
 			symlink('/usr/keys', '/var/keys')
 		if not path.islink('/etc/keys'):

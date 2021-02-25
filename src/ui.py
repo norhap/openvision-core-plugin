@@ -11,6 +11,7 @@ from Screens.ParentalControlSetup import ProtectedScreen
 from Components.config import config
 from Components.SystemInfo import SystemInfo
 
+
 class VISIONMenu(Screen, ProtectedScreen):
 	skin = """
 		<screen name="VISIONMenu" position="center,center" size="610,410">
@@ -124,7 +125,7 @@ class VISIONMenu(Screen, ProtectedScreen):
 				elif currentEntry == "Administrador de Imagen":
 					from ImageManager import VISIONImageManager
 					self.session.open(VISIONImageManager)
-				elif currentEntry == "H9SDcard manager":
+				elif currentEntry == "H9 SDcard Manager" and SystemInfo["HasH9SD"]:
 					from H9SDmanager import H9SDmanager
 					self.session.open(H9SDmanager)
 				elif currentEntry == "Instalar IPKG":
