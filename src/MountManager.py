@@ -357,7 +357,7 @@ class VISIONDevicesPanel(Screen):
 			parts = des.strip().split('\t')
 			device = parts[2].replace(_("Device: "), '')
 			moremount = sel[1]
-			adv_title = moremount != "" and _("Your %s %s will restart depending on the mount type old written in fstab.\n") % (getBoxBrand(), getBoxType()) or ""
+			adv_title = moremount != "" and _("Your %s %s may need to restart.\n") % (getBoxBrand(), getBoxType()) or ""
 			message = adv_title + _("Mount %s as HDD ?") % device
 			self.session.openWithCallback(self.saveMypointAnswer, MessageBox, message, MessageBox.TYPE_YESNO)
 

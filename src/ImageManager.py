@@ -1372,7 +1372,7 @@ class ImageBackup(Screen):
 				with open(self.MAINDEST + "/SDAbackup", "w") as fileout:
 					line = "SF8008 indicate type of backup %s" % self.KERN
 					fileout.write(line)
-				self.session.open(MessageBox, _("Multiboot only able to restore this backup to mmc slot1"), MessageBox.TYPE_INFO, timeout=20)
+				self.session.open(MessageBox, _("Multiboot only able to restore this backup to MMC slot1"), MessageBox.TYPE_INFO, timeout=20)
 			if path.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat"):
 				copy("/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat", self.MAINDESTROOT + "/burn.bat")
 		elif SystemInfo["HasRootSubdir"]:
