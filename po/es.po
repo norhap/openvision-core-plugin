@@ -1260,7 +1260,7 @@ msgid "Developer password"
 msgstr "Contraseña Desarrollador"
 
 msgid "Partition: %s  Mount: %s unmounted successfully; if all partitions now unmounted you can remove device."
-msgstr "Partición: %s  Montaje: %s desmontado correctamente; si ahora se han desmontado todas las particiones, puede eliminar el dispositivo."
+msgstr "Partición: %s  Montaje: %s desmontado correctamente; si ahora se han desmontado todas las particiones, puede extraer el dispositivo."
 
 msgid "Cannot unmount partition '%s'.  Make sure this partition is not in use.  (SWAP, record/timeshift, etc.)"
 msgstr "No se puede desmontar la partición '%s'.  Asegúrese de que esta partición no esté en uso. (SWAP, grabación, timeshift, etc.)"
