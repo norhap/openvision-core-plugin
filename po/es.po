@@ -141,7 +141,7 @@ msgstr "Copia de seguridad realizada"
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device."
 msgstr "Copia de seguridad fallida - ej. destino de copia de seguridad incorrecto o no queda espacio en el dispositivo de copia de seguridad."
 
-msgid "Backup Location"
+msgid "Backup location"
 msgstr "Localización Copias Seguridad"
 
 msgid "Folder Prefix"
@@ -309,7 +309,7 @@ msgid "Free space:"
 msgstr "Espacio libre:"
 
 msgid "Check interval on minutes"
-msgstr "Verifique el intervalo en minutos"
+msgstr "Comprobación en minutos"
 
 msgid "GB"
 msgstr "GB"
@@ -487,7 +487,7 @@ msgid "Please enter a folder that contains some packages."
 msgstr "Por favor introduce una carpeta que contenga paquetes."
 
 msgid "Please select device to use as swapfile location."
-msgstr "Por favor, selecciona un dispositivo para archivo swapfile"
+msgstr "Por favor, selecciona un dispositivo para archivo swapfile."
 
 msgid "Please select the file to restore."
 msgstr "Selecciona la copia para restaurar."
@@ -573,7 +573,7 @@ msgstr "Ejecutar scripts de shell."
 msgid "Save"
 msgstr "Guardar"
 
-msgid "Schedule Backups"
+msgid "Schedule backups"
 msgstr "Programar copias de seguridad"
 
 msgid "Script runner"
@@ -1274,3 +1274,21 @@ msgstr "Montaje falló para '%s', código error = '%s'."
 
 msgid "Restart receiver."
 msgstr "Reiniciar receptor."
+
+msgid "Login as a ViX developer"
+msgstr "Inicia sesión como desarrollador de ViX"
+
+msgid "Enter your ViX developer username."
+msgstr "Ingrese su nombre de usuario de desarrollador de ViX."
+
+msgid "Enter your ViX developer password."
+msgstr "Ingrese su contraseña de desarrollador de ViX."
+
+msgid "If you are a ViX developer you can enter your login details to have direct access to ViX developer images for your receiver. This feature is only available via 'https' connections."
+msgstr "Si es un desarrollador de ViX, puede ingresar sus datos de inicio de sesión para tener acceso directo a las imágenes de desarrollador de ViX para su receptor. Esta función solo está disponible a través de conexiones 'https'."
+
+msgid "Image manager settings"
+msgstr "Ajustes Administrador de Imagen"
+
+msgid "Vision Softcam setup"
+msgstr "Ajustes Vision Softcam"

@@ -82,9 +82,9 @@ config.imagemanager.imagefeed_ViX = ConfigText(default="https://www.openvix.co.u
 config.imagemanager.imagefeed_ViX.value = config.imagemanager.imagefeed_ViX.default # this is no longer a user setup option
 config.imagemanager.imagefeed_ATV = ConfigText(default="http://images.mynonpublic.com/openatv/json", fixed_size=False)
 config.imagemanager.imagefeed_ATV.value = config.imagemanager.imagefeed_ATV.default # this is no longer a user setup option
-config.imagemanager.imagefeed_Pli = ConfigText(default="http://downloads.openpli.org/json", fixed_size=False)
-config.imagemanager.imagefeed_Pli.value = config.imagemanager.imagefeed_Pli.default # this is no longer a user setup option
-config.imagemanager.login_as_Vision_developer = ConfigYesNo(default=False)
+config.imagemanager.imagefeed_PLi = ConfigText(default="http://downloads.openpli.org/json", fixed_size=False)
+config.imagemanager.imagefeed_PLi.value = config.imagemanager.imagefeed_PLi.default # this is no longer a user setup option
+config.imagemanager.login_as_ViX_developer = ConfigYesNo(default=False)
 config.imagemanager.developer_username = ConfigText(default="username", fixed_size=False)
 config.imagemanager.developer_password = ConfigText(default="password", fixed_size=False)
 
@@ -172,11 +172,11 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 		self.list.append(getConfigListEntry(_("Backup Location"), config.imagemanager.backuplocation))
 		self.list.append(getConfigListEntry(_("Folder Prefix"), config.imagemanager.folderprefix))
 		self.list.append(getConfigListEntry(_("Schedule Backups"), config.imagemanager.schedule))
-		self.list.append(getConfigListEntry(_("Login as an OpenVision developer"), config.imagemanager.login_as_Vision_developer))
+		self.list.append(getConfigListEntry(_("Login as an OpenVision developer"), config.imagemanager.login_as_ViX_developer))
 		if config.imagemanager.schedule.value:
 			self.list.append(getConfigListEntry(_("Time of Backup to start in minutes"), config.imagemanager.scheduletime))
 			self.list.append(getConfigListEntry(_("Repeat how often"), config.imagemanager.repeattype))
-		if config.imagemanager.login_as_Vision_developer.value:
+		if config.imagemanager.login_as_ViX_developer.value:
 		    self.list.append(getConfigListEntry(_("Developer username"), config.imagemanager.developer_username))
 		    self.list.append(getConfigListEntry(_("Developer password"), config.imagemanager.developer_password))
 		self["config"].list = self.list
@@ -210,7 +210,7 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 				configElement.value = configElement.default
 		if not configElement.value:
 			config.imagemanager.imagefeed_DevL.value = config.imagemanager.imagefeed_DevL.default
-		for configElement in (config.imagemanager.imagefeed_ViX, config.imagemanager.imagefeed_ATV, config.imagemanager.imagefeed_Pli):
+		for configElement in (config.imagemanager.imagefeed_ViX, config.imagemanager.imagefeed_ATV, config.imagemanager.imagefeed_PLi):
 			self.check_URL_format(configElement)
 		for x in self["config"].list:
 			x[1].save()
@@ -406,7 +406,7 @@ class VISIONImageManager(Screen):
 		self.session.openWithCallback(self.setupDone, ImageManagerSetup)
 
 	def doDownload(self):
-		choices = [("OpenViX", config.imagemanager.imagefeed_ViX), ("OpenATV", config.imagemanager.imagefeed_ATV), ("OpenPLi", config.imagemanager.imagefeed_Pli)]
+		choices = [("OpenViX", config.imagemanager.imagefeed_ViX), ("OpenATV", config.imagemanager.imagefeed_ATV), ("OpenPLi", config.imagemanager.imagefeed_PLi)]
 		message = _("From which image library do you want to download?")
 		self.session.openWithCallback(self.doDownloadCallback, MessageBox, message, list=choices, default=1, simple=True)
 
@@ -1469,7 +1469,7 @@ class ImageManagerDownload(Screen):
 
 	def __init__(self, session, BackupDirectory, ConfigObj):
 		Screen.__init__(self, session)
-		self.setTitle(_("%s downloads") % {config.imagemanager.imagefeed_ATV: "OpenATV", config.imagemanager.imagefeed_Pli: "OpenPLi", config.imagemanager.imagefeed_ViX: "OpenViX"}.get(ConfigObj, ''))
+		self.setTitle(_("%s downloads") % {config.imagemanager.imagefeed_ATV: "OpenATV", config.imagemanager.imagefeed_PLi: "OpenPLi", config.imagemanager.imagefeed_ViX: "OpenViX"}.get(ConfigObj, ''))
 		self.ConfigObj = ConfigObj
 		self.BackupDirectory = BackupDirectory
 		self["lab1"] = StaticText(_("OpenVision"))
@@ -1512,7 +1512,7 @@ class ImageManagerDownload(Screen):
 			boxtype = self.boxtype
 			if self.ConfigObj is config.imagemanager.imagefeed_ViX \
 				and self.ConfigObj.value.startswith("https") \
-				and config.imagemanager.login_as_Vision_developer.value \
+				and config.imagemanager.login_as_ViX_developer.value \
 				and config.imagemanager.developer_username.value \
 				and config.imagemanager.developer_username.value != config.imagemanager.developer_username.default \
 				and config.imagemanager.developer_password.value \
@@ -1651,7 +1651,7 @@ class ImageManagerSetup(Setup):
 				configElement.value = configElement.default
 		if not configElement.value:
 			config.imagemanager.imagefeed_DevL.value = config.imagemanager.imagefeed_DevL.default
-		for configElement in (config.imagemanager.imagefeed_ViX, config.imagemanager.imagefeed_ATV, config.imagemanager.imagefeed_Pli):
+		for configElement in (config.imagemanager.imagefeed_ViX, config.imagemanager.imagefeed_ATV, config.imagemanager.imagefeed_PLi):
 			self.check_URL_format(configElement)
 		for x in self["config"].list:
 			x[1].save()
