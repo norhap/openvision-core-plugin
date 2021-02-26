@@ -983,9 +983,9 @@ class VISIONBackupManagerMenu(Screen, ConfigListScreen):
 		config.backupmanager.backuplocation.setChoices(imparts)
 		self.editListEntry = None
 		self.list = []
-		self.list.append(getConfigListEntry(_("Backup Location"), config.backupmanager.backuplocation))
+		self.list.append(getConfigListEntry(_("Backup location"), config.backupmanager.backuplocation))
 		self.list.append(getConfigListEntry(_("Folder Prefix"), config.backupmanager.folderprefix))
-		self.list.append(getConfigListEntry(_("Schedule Backups"), config.backupmanager.schedule))
+		self.list.append(getConfigListEntry(_("Schedule backups"), config.backupmanager.schedule))
 		if config.backupmanager.schedule.value:
 			self.list.append(getConfigListEntry(_("Time of Backup to start in minutes"), config.backupmanager.scheduletime))
 			self.list.append(getConfigListEntry(_("Repeat how often"), config.backupmanager.repeattype))

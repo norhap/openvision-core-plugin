@@ -1294,3 +1294,6 @@ msgstr "Ajustes Administrador de Imagen"
 
 msgid "Vision Softcam setup"
 msgstr "Ajustes Vision Softcam"
+
+msgid "Really close without saving settings?"
+msgstr "Cerrar sin guardar la configuración?"
