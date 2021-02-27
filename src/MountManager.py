@@ -7,7 +7,7 @@ import errno
 from os import mkdir, path, remove, rename, statvfs, system
 import re
 
-from enigma import eTimer, getBoxBrand, getBoxType
+from enigma import eTimer
 
 from . import _
 
@@ -317,7 +317,8 @@ class VISIONDevicesPanel(Screen):
 			self.setTimer()
 
 	def saveMounts(self):
-		if len(self["list"].list) < 1: return
+		if len(self["list"].list) < 1:
+			return
 		sel = self["list"].getCurrent()
 		if sel:
 			des = sel[1]
@@ -349,7 +350,8 @@ class VISIONDevicesPanel(Screen):
 		self.Console.ePopen("mount -a", self.setTimer)
 
 	def saveMounthdd(self):
-		if len(self["list"].list) < 1: return
+		if len(self["list"].list) < 1:
+			return
 		sel = self["list"].getCurrent()
 		if sel:
 			des = sel[1]
@@ -398,7 +400,7 @@ class VISIONDevicesPanel(Screen):
 					return
 				for line in f.readlines():
 					if "/media/hdd" in line:
-					     message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (getBoxBrand(), getBoxType())
+					     message = _("The changes need a system restart to take effect.\nRestart your receiver now?")
 					     ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
 					     ybox.setTitle(_("Restart receiver."))
 
@@ -407,6 +409,7 @@ class VISIONDevicesPanel(Screen):
 			self.session.open(TryQuitMainloop, QUIT_REBOOT)
 		else:
 			self.close()
+
 
 class VISIONDevicePanelConf(Screen, ConfigListScreen):
 	skin = """
@@ -470,7 +473,7 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		ybox.setTitle(_("Please wait."))
 
 	def delay(self, val):
-		message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (getBoxBrand(), getBoxType())
+		message = _("The changes need a system restart to take effect.\nRestart your receiver now?")
 		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
 		ybox.setTitle(_("Restart receiver."))
 
