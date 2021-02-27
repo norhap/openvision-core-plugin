@@ -357,8 +357,7 @@ class VISIONDevicesPanel(Screen):
 			parts = des.strip().split('\t')
 			device = parts[2].replace(_("Device: "), '')
 			moremount = sel[1]
-			adv_title = moremount != "" and _("Your %s %s may need to restart.\n") % (getBoxBrand(), getBoxType()) or ""
-			message = adv_title + _("Mount %s as HDD ?") % device
+			message = _("Mounting ends when the red button is pressed a second time.\nUse %s as HDD ?") % device
 			self.session.openWithCallback(self.saveMypointAnswer, MessageBox, message, MessageBox.TYPE_YESNO)
 
 	def saveMypointAnswer(self, answer):
@@ -375,8 +374,8 @@ class VISIONDevicesPanel(Screen):
 				else:
 					self.session.open(MessageBox, _("This Device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=6, close_on_any_key=True)
 					return
-				system('[ -e /media/hdd/swapfile ] && swapoff /media/hdd/swapfile')
-				system('umount /media/hdd')
+				self.Console.ePopen('[ -e /media/hdd/swapfile ] && swapoff /media/hdd/swapfile')
+				self.Console.ePopen('umount /media/hdd')
 				try:
 					f = open('/proc/mounts', 'r')
 				except IOError:
@@ -391,8 +390,8 @@ class VISIONDevicesPanel(Screen):
 				f.close()
 				if self.mountp.find('/media/hdd') < 0 and self.mountp != _("/media/hdd"):
 					if self.mountp != _("None"):
-						system('umount ' + self.mountp)
-					system('umount ' + self.device)
+						self.Console.ePopen('umount ' + self.mountp)
+					self.Console.ePopen('umount ' + self.device)
 					self.Console.ePopen("/sbin/blkid | grep " + self.device, self.addFstab, [self.device, self.mountp])
 				try:
 					f = open('/etc/fstab', 'r')
@@ -400,8 +399,15 @@ class VISIONDevicesPanel(Screen):
 					return
 				for line in f.readlines():
 					if '/media/hdd' in line:
-					     print("mount /media/hdd is [OK]")
-					     self.session.open(TryQuitMainloop, QUIT_REBOOT)
+					     message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (getBoxBrand(), getBoxType())
+					     ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
+					     ybox.setTitle(_("Restart receiver."))
+
+	def restartBox(self, answer):
+		if answer is True:
+			self.session.open(TryQuitMainloop, QUIT_REBOOT)
+		else:
+			self.close()
 
 class VISIONDevicePanelConf(Screen, ConfigListScreen):
 	skin = """
