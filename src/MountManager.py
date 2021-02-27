@@ -317,7 +317,8 @@ class VISIONDevicesPanel(Screen):
 			self.setTimer()
 
 	def saveMounts(self):
-		if len(self["list"].list) < 1: return
+		if len(self["list"].list) < 1:
+		    return
 		sel = self["list"].getCurrent()
 		if sel:
 			des = sel[1]
@@ -349,7 +350,8 @@ class VISIONDevicesPanel(Screen):
 		self.Console.ePopen("mount -a", self.setTimer)
 
 	def saveMounthdd(self):
-		if len(self["list"].list) < 1: return
+		if len(self["list"].list) < 1:
+			return
 		sel = self["list"].getCurrent()
 		if sel:
 			des = sel[1]
@@ -407,6 +409,7 @@ class VISIONDevicesPanel(Screen):
 			self.session.open(TryQuitMainloop, QUIT_REBOOT)
 		else:
 			self.close()
+
 
 class VISIONDevicePanelConf(Screen, ConfigListScreen):
 	skin = """
