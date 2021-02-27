@@ -7,7 +7,7 @@ import errno
 from os import mkdir, path, remove, rename, statvfs, system
 import re
 
-from enigma import eTimer
+from enigma import eTimer, getBoxBrand, getBoxType
 
 from . import _
 
@@ -222,19 +222,19 @@ class VISIONDevicesPanel(Screen):
 		self["lab5"] = StaticText(_("Sources are available at:"))
 		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 
-		self['key_red'] = Label(" ")
-		self['key_green'] = Label(_("Setup mounts"))
-		self['key_yellow'] = Label(_("Unmount"))
-		self['key_blue'] = Label(_("Mount"))
-		self['lab7'] = Label(_("Please wait while scanning for devices..."))
+		self["key_red"] = Label(" ")
+		self["key_green"] = Label(_("Setup mounts"))
+		self["key_yellow"] = Label(_("Unmount"))
+		self["key_blue"] = Label(_("Mount"))
+		self["lab7"] = Label(_("Please wait while scanning for devices..."))
 		self.onChangedEntry = []
 		self.list = []
-		self['list'] = List(self.list)
+		self["list"] = List(self.list)
 		self["list"].onSelectionChanged.append(self.selectionChanged)
 		self["actions"] = ActionMap(["WizardActions", "ColorActions", "MenuActions"], {
 			"back": self.close,
 			"green": self.setupMounts,
-			"red": self.saveMounts,
+			"red": self.saveMounthdd,
 			"yellow": self.unmount,
 			"blue": self.mount,
 			"menu": self.close
@@ -247,13 +247,13 @@ class VISIONDevicesPanel(Screen):
 	def selectionChanged(self):
 		if len(self.list) == 0:
 			return
-		sel = self['list'].getCurrent()
+		sel = self["list"].getCurrent()
 		seldev = sel
 		for line in sel:
 			try:
 				line = line.strip()
-				if _('Mount: ') in line:
-					if line.find('/media/hdd') < 0:
+				if _("Mount: ") in line:
+					if line.find("/media/hdd") < 0:
 					    self["key_red"].setText(_("Use as HDD"))
 				else:
 					self["key_red"].setText(" ")
@@ -278,10 +278,10 @@ class VISIONDevicesPanel(Screen):
 
 	def findPartitions(self):
 		self.activityTimer.stop()
-		self.bplist = []
+		self.list = []
 		SystemInfo["MountManager"] = True
-		getProcPartitions(self.bplist)
-		self["list"].list = self.bplist
+		getProcPartitions(self.list)
+		self["list"].list = self.list
 		self["lab7"].hide()
 
 	def setupMounts(self):
@@ -317,18 +317,17 @@ class VISIONDevicesPanel(Screen):
 			self.setTimer()
 
 	def saveMounts(self):
+		if len(self["list"].list) < 1: return
 		sel = self["list"].getCurrent()
 		if sel:
-			parts = sel[1].split()
-			self.device = parts[5]
-			self.mountp = parts[3]
-			# print "[MountManager1]saveMounts: device = %s, mountp = %s" %(self.device, self.mountp)
-			self.Console.ePopen("umount " + self.device)
-			if self.mountp.find("/media/hdd") < 0:
-				self.Console.ePopen("umount /media/hdd")
-				self.Console.ePopen("/sbin/blkid | grep " + self.device, self.addFstab, [self.device, self.mountp])
-			else:
-				self.session.open(MessageBox, _("This device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+			des = sel[1]
+			des = des.replace('\n', '\t')
+			parts = des.strip().split('\t')
+			device = parts[2].replace(_("Device: "), '')
+			moremount = sel[1]
+			adv_title = moremount != "" and _("Warning, this device is used for more than one mount point!\n") or ""
+			message = adv_title + _("Really use and mount %s as HDD ?") % device
+			self.session.open(MessageBox, _("This Device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 
 	def addFstab(self, result=None, retval=None, extra_args=None):
 		self.device = extra_args[0]
@@ -346,8 +345,68 @@ class VISIONDevicesPanel(Screen):
 		with open("/etc/fstab", "a") as fd:
 			line = self.device_uuid + "\t/media/hdd\tauto\tdefaults\t0 0\n"
 			fd.write(line)
+		fd.close()
 		self.Console.ePopen("mount -a", self.setTimer)
 
+	def saveMounthdd(self):
+		if len(self["list"].list) < 1: return
+		sel = self["list"].getCurrent()
+		if sel:
+			des = sel[1]
+			des = des.replace('\n', '\t')
+			parts = des.strip().split('\t')
+			device = parts[2].replace(_("Device: "), '')
+			moremount = sel[1]
+			message = _("Use %s as HDD ?") % device
+			self.session.openWithCallback(self.saveMypointAnswer, MessageBox, message, MessageBox.TYPE_YESNO)
+
+	def saveMypointAnswer(self, answer):
+		if answer:
+			sel = self["list"].getCurrent()
+			if sel:
+				des = sel[1]
+				des = des.replace("\n", "\t")
+				parts = des.strip().split("\t")
+				self.mountp = parts[1].replace(_("Mount: "), "")
+				self.device = parts[2].replace(_("Device: "), "")
+				if self.mountp.find("/media/hdd") < 0:
+					pass
+				else:
+					self.session.open(MessageBox, _("This Device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=6, close_on_any_key=True)
+					return
+				self.Console.ePopen("[ -e /media/hdd/swapfile ] && swapoff /media/hdd/swapfile")
+				self.Console.ePopen("umount /media/hdd")
+				try:
+					f = open("/proc/mounts", "r")
+				except IOError:
+					return
+				for line in f.readlines():
+					if "/media/hdd" in line:
+						f.close()
+						return
+					else:
+						pass
+				f.close()
+				if self.mountp.find("/media/hdd") < 0 and self.mountp != _("/media/hdd"):
+					if self.mountp != _("None"):
+						self.Console.ePopen("umount " + self.mountp)
+					self.Console.ePopen("umount " + self.device)
+					self.Console.ePopen("/sbin/blkid | grep " + self.device, self.addFstab, [self.device, self.mountp])
+				try:
+					f = open("/etc/fstab", "r")
+				except IOError:
+					return
+				for line in f.readlines():
+					if "/media/hdd" in line:
+					     message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (getBoxBrand(), getBoxType())
+					     ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
+					     ybox.setTitle(_("Restart receiver."))
+
+	def restartBox(self, answer):
+		if answer is True:
+			self.session.open(TryQuitMainloop, QUIT_REBOOT)
+		else:
+			self.close()
 
 class VISIONDevicePanelConf(Screen, ConfigListScreen):
 	skin = """
@@ -372,9 +431,9 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		self["lab5"] = StaticText(_("Sources are available at:"))
 		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 
-		self['key_green'] = Label(_("Save"))
-		self['key_red'] = Label(_("Cancel"))
-		self['lab7'] = Label()
+		self["key_green"] = Label(_("Save"))
+		self["key_red"] = Label(_("Cancel"))
+		self["lab7"] = Label()
 		self["actions"] = ActionMap(["WizardActions", "ColorActions"], {
 			"red": self.close,
 			"green": self.saveconfMounts,
@@ -411,7 +470,7 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		ybox.setTitle(_("Please wait."))
 
 	def delay(self, val):
-		message = _("The changes need a system restart to take effect.\nRestart your receiver now?")
+		message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (getBoxBrand(), getBoxType())
 		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
 		ybox.setTitle(_("Restart receiver."))
 
@@ -436,7 +495,7 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 			open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if self.device_uuid not in l])
 			rename("/etc/fstab.tmp", "/etc/fstab")
 			with open("/etc/fstab", "a") as fd:
-				line = self.device_uuid + "\t" + self.mountp + "\t" + self.device_type + "\tdefaults\t0 0\n"
+				line = self.device_uuid + "\t" + self.mountp + "\tauto" + "\tdefaults\t0 0\n"
 				fd.write(line)
 
 	def restartBox(self, answer):
