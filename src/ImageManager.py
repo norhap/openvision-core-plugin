@@ -1606,7 +1606,7 @@ class ImageManagerDownload(Screen):
 			fileloc = self.BackupDirectory + selectedimage
 			url_encode = "utf-8"
 			b_url = fileurl.encode(url_encode)
-			Tools.CopyFiles.downloadFile(b_url, fileloc, selectedimage.replace("_usb", ""))
+			Tools.CopyFiles.downloadFile(b_url, fileloc, selectedimage.replace("_usb", ""), headers=headers)
 			for job in Components.Task.job_manager.getPendingJobs():
 				if job.name.startswith(_("Downloading")):
 					break
