@@ -222,14 +222,14 @@ class VISIONDevicesPanel(Screen):
 		self["lab5"] = StaticText(_("Sources are available at:"))
 		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 
-		self['key_red'] = Label(" ")
-		self['key_green'] = Label(_("Setup mounts"))
-		self['key_yellow'] = Label(_("Unmount"))
-		self['key_blue'] = Label(_("Mount"))
-		self['lab7'] = Label(_("Please wait while scanning for devices..."))
+		self["key_red"] = Label(" ")
+		self["key_green"] = Label(_("Setup mounts"))
+		self["key_yellow"] = Label(_("Unmount"))
+		self["key_blue"] = Label(_("Mount"))
+		self["lab7"] = Label(_("Please wait while scanning for devices..."))
 		self.onChangedEntry = []
 		self.list = []
-		self['list'] = List(self.list)
+		self["list"] = List(self.list)
 		self["list"].onSelectionChanged.append(self.selectionChanged)
 		self["actions"] = ActionMap(["WizardActions", "ColorActions", "MenuActions"], {
 			"back": self.close,
@@ -247,13 +247,13 @@ class VISIONDevicesPanel(Screen):
 	def selectionChanged(self):
 		if len(self.list) == 0:
 			return
-		sel = self['list'].getCurrent()
+		sel = self["list"].getCurrent()
 		seldev = sel
 		for line in sel:
 			try:
 				line = line.strip()
-				if _('Mount: ') in line:
-					if line.find('/media/hdd') < 0:
+				if _("Mount: ") in line:
+					if line.find("/media/hdd") < 0:
 					    self["key_red"].setText(_("Use as HDD"))
 				else:
 					self["key_red"].setText(" ")
@@ -281,8 +281,8 @@ class VISIONDevicesPanel(Screen):
 		self.list = []
 		SystemInfo["MountManager"] = True
 		getProcPartitions(self.list)
-		self['list'].list = self.list
-		self['lab7'].hide()
+		self["list"].list = self.list
+		self["lab7"].hide()
 
 	def setupMounts(self):
 		self.session.openWithCallback(self.setTimer, VISIONDevicePanelConf)
@@ -317,8 +317,8 @@ class VISIONDevicesPanel(Screen):
 			self.setTimer()
 
 	def saveMounts(self):
-		if len(self['list'].list) < 1: return
-		sel = self['list'].getCurrent()
+		if len(self["list"].list) < 1: return
+		sel = self["list"].getCurrent()
 		if sel:
 			des = sel[1]
 			des = des.replace('\n', '\t')
@@ -349,56 +349,55 @@ class VISIONDevicesPanel(Screen):
 		self.Console.ePopen("mount -a", self.setTimer)
 
 	def saveMounthdd(self):
-		if len(self['list'].list) < 1: return
-		sel = self['list'].getCurrent()
+		if len(self["list"].list) < 1: return
+		sel = self["list"].getCurrent()
 		if sel:
 			des = sel[1]
 			des = des.replace('\n', '\t')
 			parts = des.strip().split('\t')
 			device = parts[2].replace(_("Device: "), '')
 			moremount = sel[1]
-			message = _("Mounting ends when the red button is pressed a second time.\nUse %s as HDD ?") % device
+			message = _("Use %s as HDD ?") % device
 			self.session.openWithCallback(self.saveMypointAnswer, MessageBox, message, MessageBox.TYPE_YESNO)
 
 	def saveMypointAnswer(self, answer):
 		if answer:
-			sel = self['list'].getCurrent()
+			sel = self["list"].getCurrent()
 			if sel:
 				des = sel[1]
-				des = des.replace('\n', '\t')
-				parts = des.strip().split('\t')
-				self.mountp = parts[1].replace(_("Mount: "), '')
-				self.device = parts[2].replace(_("Device: "), '')
-				if self.mountp.find('/media/hdd') < 0:
+				des = des.replace("\n", "\t")
+				parts = des.strip().split("\t")
+				self.mountp = parts[1].replace(_("Mount: "), "")
+				self.device = parts[2].replace(_("Device: "), "")
+				if self.mountp.find("/media/hdd") < 0:
 					pass
 				else:
 					self.session.open(MessageBox, _("This Device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=6, close_on_any_key=True)
 					return
-				self.Console.ePopen('[ -e /media/hdd/swapfile ] && swapoff /media/hdd/swapfile')
-				self.Console.ePopen('umount /media/hdd')
+				self.Console.ePopen("[ -e /media/hdd/swapfile ] && swapoff /media/hdd/swapfile")
+				self.Console.ePopen("umount /media/hdd")
 				try:
-					f = open('/proc/mounts', 'r')
+					f = open("/proc/mounts", "r")
 				except IOError:
 					return
 				for line in f.readlines():
-					if '/media/hdd' in line:
+					if "/media/hdd" in line:
 						f.close()
-						self.session.open(MessageBox, _("To use HDD from red button, mount point to change must be as /media/hdd"), MessageBox.TYPE_ERROR)
 						return
 					else:
 						pass
 				f.close()
-				if self.mountp.find('/media/hdd') < 0 and self.mountp != _("/media/hdd"):
+				if self.mountp.find("/media/hdd") < 0 and self.mountp != _("/media/hdd"):
 					if self.mountp != _("None"):
-						self.Console.ePopen('umount ' + self.mountp)
-					self.Console.ePopen('umount ' + self.device)
+						self.Console.ePopen("umount " + self.mountp)
+					self.Console.ePopen("umount " + self.device)
 					self.Console.ePopen("/sbin/blkid | grep " + self.device, self.addFstab, [self.device, self.mountp])
 				try:
-					f = open('/etc/fstab', 'r')
+					f = open("/etc/fstab", "r")
 				except IOError:
 					return
 				for line in f.readlines():
-					if '/media/hdd' in line:
+					if "/media/hdd" in line:
 					     message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (getBoxBrand(), getBoxType())
 					     ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
 					     ybox.setTitle(_("Restart receiver."))
@@ -432,9 +431,9 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		self["lab5"] = StaticText(_("Sources are available at:"))
 		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 
-		self['key_green'] = Label(_("Save"))
-		self['key_red'] = Label(_("Cancel"))
-		self['lab7'] = Label()
+		self["key_green"] = Label(_("Save"))
+		self["key_red"] = Label(_("Cancel"))
+		self["lab7"] = Label()
 		self["actions"] = ActionMap(["WizardActions", "ColorActions"], {
 			"red": self.close,
 			"green": self.saveconfMounts,

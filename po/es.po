@@ -1238,9 +1238,6 @@ msgstr "Para Configurar pulse Menu."
 msgid "Setup your mounts in Setup mounts or restart your box if you only have one mount after executing this action.\n"
 msgstr "Configura tus mountajes en Configurar montajes o reinicia su receptor si solo tienes una montaje después de ejecutar esta acción.\n"
 
-msgid "To use HDD from red button, mount point to change must be as /media/hdd"
-msgstr "Para usar HDD desde el botón rojo, el punto de montaje para cambiar debe ser /media/hdd"
-
 msgid "Lets define enigma2 once more"
 msgstr "Definamos enigma2 una vez más"
 
@@ -1265,12 +1262,8 @@ msgstr "Partición: %s  Montaje: %s desmontado correctamente; si ahora se han de
 msgid "Cannot unmount partition '%s'.  Make sure this partition is not in use.  (SWAP, record/timeshift, etc.)"
 msgstr "No se puede desmontar la partición '%s'.  Asegúrese de que esta partición no esté en uso. (SWAP, grabación, timeshift, etc.)"
 
-msgid ""
-"Mounting ends when the red button is pressed a second time.\n"
-"Use %s as HDD ?"
-msgstr ""
-"El montaje finaliza cuando se pulsa botón rojo por segunda vez.\n"
-"Usar %s como HDD ?"
+msgid "Use %s as HDD ?"
+msgstr "Usar %s como HDD ?"
 
 msgid "Mount failed for '%s', error code = '%s'."
 msgstr "Montaje falló para '%s', código error = '%s'."
