@@ -359,7 +359,7 @@ class VISIONDevicesPanel(Screen):
 			parts = des.strip().split('\t')
 			device = parts[2].replace(_("Device: "), '')
 			moremount = sel[1]
-			message = _("Use %s as HDD ?") % device
+			message = _("You may have to press red button again.\nUse %s as HDD ?") % device
 			self.session.openWithCallback(self.saveMypointAnswer, MessageBox, message, MessageBox.TYPE_YESNO)
 
 	def saveMypointAnswer(self, answer):
