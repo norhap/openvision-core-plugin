@@ -1262,8 +1262,12 @@ msgstr "Partición: %s  Montaje: %s desmontado correctamente; si ahora se han de
 msgid "Cannot unmount partition '%s'.  Make sure this partition is not in use.  (SWAP, record/timeshift, etc.)"
 msgstr "No se puede desmontar la partición '%s'.  Asegúrese de que esta partición no esté en uso. (SWAP, grabación, timeshift, etc.)"
 
-msgid "Use %s as HDD ?"
-msgstr "Usar %s como HDD ?"
+msgid ""
+"You may have to press red button again.\n"
+"Use %s as HDD ?"
+msgstr ""
+"Es posible que deba pulsar el botón rojo nuevamente.\n"
+"Usar %s como HDD ?"
 
 msgid "Mount failed for '%s', error code = '%s'."
 msgstr "Montaje falló para '%s', código error = '%s'."
