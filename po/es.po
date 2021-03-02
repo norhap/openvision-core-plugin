@@ -1117,8 +1117,8 @@ msgstr "Lo sentimos, los feeds no funcionan por alguna razón. Intente usar el A
 msgid "Use the cursor keys to select an installed image and then Erase button."
 msgstr "Use las teclas del cursor para seleccionar una imagen instalada y luego el botón Borrar."
 
-msgid "Restore Settings"
-msgstr "Restaurar Configuración"
+msgid "Restore settings"
+msgstr "Restaurar configuración"
 
 msgid "Softcam Vision Setup"
 msgstr "Softcam Vision Configuración"
