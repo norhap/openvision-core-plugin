@@ -99,6 +99,9 @@ msgstr "Seguro que quieres borrar esta copia de seguridad:\n "
 msgid "Are you sure you want to restore this backup:\n "
 msgstr "Está seguro que desea restaurar esta copia de seguridad:\n "
 
+msgid "Restorer only the settings from this backup ?\n"
+msgstr "Restaurar solo la configuración de esta copia ?\n"
+
 msgid "Are you sure you want to delete this image backup:\n "
 msgstr "Está seguro que desea eliminar esta copia de imagen:\n "
 
@@ -1120,8 +1123,8 @@ msgstr "Restaurar Configuración"
 msgid "Softcam Vision Setup"
 msgstr "Softcam Vision Configuración"
 
-msgid "Restoring settings, receiver rebooting..."
-msgstr "Restaurando configuración, reiniciando receptor..."
+msgid "Restoring, the receiver go to restart..."
+msgstr "Restaurando, el receptor va a reiniciar..."
 
 msgid "Restoring please wait..."
 msgstr "Restaurando espere por favor..."
