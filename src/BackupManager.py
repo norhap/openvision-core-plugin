@@ -337,7 +337,9 @@ class VISIONBackupManager(Screen):
 	def RestoreOnlySettings(self):
 		self.sel = self['list'].getCurrent()
 		if not self.BackupRunning:
-				self.StageRestoreSettings()
+		    if self.sel:
+		        message = _("Restore only settings from this backup ?\n") + self.sel
+		        self.session.openWithCallback(self.StageRestoreSettings, MessageBox, message, MessageBox.TYPE_YESNO)
 
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
 		if path.exists('/tmp/backupkernelversion'):
@@ -445,10 +447,10 @@ class VISIONBackupManager(Screen):
 		elif answer is False:
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion  tmp/3rdPartyPlugins -C /", self.Stage1PluginsComplete)
 
-	def StageRestoreSettings(self, answer=None):
-		if answer == None:
+	def StageRestoreSettings(self, answer):
+		if answer == True:
 		     print('[BackupManager] Restoring only settings:')
-		     self.Console.ePopen("/sbin/init 4" + "&&" + "sleep 5" + "&&" + "tar -xzvf" + self.BackupDirectory + self.sel + " -C /" + "&&" + "/sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring settings, receiver rebooting..."), MessageBox.TYPE_INFO))
+		     self.Console.ePopen("/sbin/init 4" + "&&" + "sleep 5" + "&&" + "tar -xzvf" + self.BackupDirectory + self.sel + " -C /" + "&&" + "/sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring, your receiver go to restart..."), MessageBox.TYPE_INFO))
 
 	def Stage1SettingsComplete(self, result, retval, extra_args):
 		print('[BackupManager] Restoring stage 1 result:', result)
