@@ -362,7 +362,7 @@ class VISIONBackupManager(Screen):
 		self.sel = self['list'].getCurrent()
 		if not self.BackupRunning:
 		    if self.sel:
-		        message = _("Restorer only the settings from this backup ?\n") + self.sel
+		        message = _("Restore only settings from this backup ?\n") + self.sel
 		        self.session.openWithCallback(self.StageRestoreSettings, MessageBox, message, MessageBox.TYPE_YESNO)
 
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
@@ -466,7 +466,7 @@ class VISIONBackupManager(Screen):
 	def StageRestoreSettings(self, answer):
 		if answer == True:
 		     print('[BackupManager] Restoring only settings:')
-		     self.Console.ePopen("/sbin/init 4" + "&&" + "sleep 5" + "&&" + "tar -xzvf" + self.BackupDirectory + self.sel + " -C /" + "&&" + "/sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring, the receiver go to restart..."), MessageBox.TYPE_INFO))
+		     self.Console.ePopen("/sbin/init 4" + "&&" + "sleep 5" + "&&" + "tar -xzvf" + self.BackupDirectory + self.sel + " -C /" + "&&" + "/sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring, your receiver go to restart..."), MessageBox.TYPE_INFO))
 
 	def Stage1(self, answer=None):
 		print('[BackupManager] Restoring Stage 1:')
