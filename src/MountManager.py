@@ -116,7 +116,7 @@ def buildPartitionInfo(partition, bplist):
 
 	description = ""
 	mediamount = _("None")
-	format = _("unavailable")
+	_format = _("unavailable")
 	rw = _("None")
 
 	with open("/proc/mounts", "r") as f:
@@ -124,7 +124,7 @@ def buildPartitionInfo(partition, bplist):
 			if line.find(partition) != -1:
 				parts = line.strip().split()
 				mediamount = parts[1]		# media mount e.g. /media/xxxxx
-				format = parts[2]		# format e.g. ext4
+				_format = parts[2]		# _format e.g. ext4
 				rw = parts[3]			# read/write
 				break
 
@@ -132,17 +132,16 @@ def buildPartitionInfo(partition, bplist):
 		description = _("Size: ") + _("unavailable")
 	else:
 		stat = statvfs(mediamount)
-		cap = int(stat.f_blocks * stat.f_bsize)
-		size = cap // 1000 // 1000
-		if ((float(size) // 1024) // 1024) >= 1:
-			description = _("Size: ") + str(round(((float(size) // 1024) // 1024), 2)) + _("TB")
-		elif (size / 1024) >= 1:
-			description = _("Size: ") + str(round((float(size) // 1024), 2)) + _("GB")
-		elif size >= 1:
-			description = _("Size: ") + str(size) + _("MB")
+		size = (stat.f_blocks * stat.f_bsize) / (1000 * 1000) # get size in MB
+		if size < 1: # is condition ever fulfilled?
+			description = _("Size: unavailable")
+		if size < 1000:
+			description = _("Size: %sMB") % str(int(size))
+		elif size < 1000 * 1000:
+			description = _("Size: %sGB") % format(size / 1000, '.2f')
 		else:
-			description = _("Size: ") + _("unavailable")
-	if description != "":
+			description = _("Size: %sTB") % format(size / (1000 * 1000), '.2f')
+	if description != "": # how will this ever return false?
 		if SystemInfo["MountManager"]:
 			if rw.startswith("rw"):
 				rw = " R/W"
@@ -150,7 +149,7 @@ def buildPartitionInfo(partition, bplist):
 				rw = " R/O"
 			else:
 				rw = ""
-			description += "\t" + _("Mount: ") + mediamount + "\n" + _("Device: ") + "/dev/" + partition + "\t" + _("Type: ") + format + rw
+			description += "\t" + _("Mount: ") + mediamount + "\n" + _("Device: ") + "/dev/" + partition + "\t" + _("Type: ") + _format + rw
 			png = LoadPixmap(mypixmap)
 			partitionInfo = (name, description, png)
 		else:
@@ -165,13 +164,13 @@ def buildPartitionInfo(partition, bplist):
 				("/media/sdcard", "/media/sdcard")
 			]
 			item = NoSave(ConfigSelection(default="/media/%s" % partition, choices=Gmedia))
-			if format == "Linux":
-				format = "ext4"
+			if _format == "Linux":
+				_format = "ext4"
 			else:
-				format = "auto"
+				_format = "auto"
 			item.value = mediamount.strip()
 			text = name + " " + description + " /dev/" + partition
-			partitionInfo = getConfigListEntry(text, item, partition, format)
+			partitionInfo = getConfigListEntry(text, item, partition, _format)
 		bplist.append(partitionInfo)
 
 
@@ -318,7 +317,7 @@ class VISIONDevicesPanel(Screen):
 
 	def saveMounts(self):
 		if len(self["list"].list) < 1:
-		    return
+			return
 		sel = self["list"].getCurrent()
 		if sel:
 			des = sel[1]

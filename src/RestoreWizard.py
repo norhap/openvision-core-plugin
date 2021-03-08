@@ -14,6 +14,7 @@ from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
 from BackupManager import isRestorableSettings, isRestorablePlugins, isRestorableKernel
 
 
+
 class RestoreWizard(WizardLanguage, Rc):
 	def __init__(self, session):
 		self.xmlfile = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/Vision/restorewizard.xml")

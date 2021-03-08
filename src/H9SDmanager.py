@@ -31,7 +31,7 @@ class H9SDmanager(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Vision H9 SDcard manager"))
+		self.setTitle(_("Vision H9 SDcard Manager"))
 		self["labe14"] = StaticText(_("Press appropiate Init to move Nand root to SDcard or USB."))
 		self["key_red"] = StaticText(_("Reboot"))
 		self["key_green"] = StaticText(_("Init SDcard"))

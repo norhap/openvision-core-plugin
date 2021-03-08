@@ -101,7 +101,7 @@ class ClientModeBoxWizard(WizardLanguage):
 					size="440,40"
 					transparent="1" />
 
-			<ePixmap pixmap="skin_default/buttons/button_red.png"
+			<ePixmap pixmap="buttons/button_red.png"
 					 position="35,523"
 					 zPosition="0"
 					 size="15,16"
@@ -436,7 +436,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 					font="Regular;18" />
 
 			<ePixmap name="red"
-					 pixmap="skin_default/buttons/red.png"
+					 pixmap="buttons/red.png"
 					 position="0,360"
 					 size="140,40"
 					 zPosition="4"
@@ -444,7 +444,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 					 alphatest="on" />
 
 			<ePixmap name="green"
-					 pixmap="skin_default/buttons/green.png"
+					 pixmap="buttons/green.png"
 					 position="140,360"
 					 size="140,40"
 					 zPosition="4"
@@ -452,7 +452,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 					 alphatest="on" />
 
 			<ePixmap name="yellow"
-					 pixmap="skin_default/buttons/yellow.png"
+					 pixmap="buttons/yellow.png"
 					 position="280,360"
 					 size="140,40"
 					 zPosition="4"
@@ -460,7 +460,7 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 					 alphatest="on" />
 
 			<ePixmap name="blue"
-					 pixmap="skin_default/buttons/blue.png"
+					 pixmap="buttons/blue.png"
 					 position="420,360"
 					 size="140,40"
 					 zPosition="4"
@@ -869,6 +869,7 @@ class ClientModeBoxDownloader:
 			parentalControl.open()
 		else:
 			print("[ClientModeBox] parental control disabled - do nothing")
+
 
 
 class ClientModeBoxAbout(Screen):
