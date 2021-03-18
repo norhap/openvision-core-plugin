@@ -196,8 +196,8 @@ msgstr "Comprobando softcams..."
 msgid "Choose files"
 msgstr "Elegir archivos"
 
-msgid "Choose local IPK's folder"
-msgstr "Elegir carpeta local IPK"
+msgid "Choose IPK folder"
+msgstr "Elegir carpeta IPK"
 
 msgid "Choose where to mount your devices to:"
 msgstr "Elegir dónde montar sus dispositivos:"
