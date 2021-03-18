@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-06 16:11+0330\n"
+"POT-Creation-Date: 2021-03-18 10:28+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -216,12 +216,12 @@ msgstr ""
 msgid "Checking softcams..."
 msgstr ""
 
-#: ../src/BackupManager.py:933
-msgid "Choose files"
+#: ../src/BackupManager.py:934
+msgid "Choose IPK folder"
 msgstr ""
 
-#: ../src/BackupManager.py:934
-msgid "Choose local IPK's folder"
+#: ../src/BackupManager.py:933
+msgid "Choose files"
 msgstr ""
 
 #: ../src/MountManager.py:428

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vix-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-06 16:11+0330\n"
+"POT-Creation-Date: 2021-03-18 10:28+0330\n"
 "PO-Revision-Date: 2013-10-20 17:17+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@o2.co.uk>\n"
 "Language-Team: none\n"
@@ -216,12 +216,12 @@ msgstr ""
 msgid "Checking softcams..."
 msgstr ""
 
-#: ../src/BackupManager.py:933
-msgid "Choose files"
+#: ../src/BackupManager.py:934
+msgid "Choose IPK folder"
 msgstr ""
 
-#: ../src/BackupManager.py:934
-msgid "Choose local IPK's folder"
+#: ../src/BackupManager.py:933
+msgid "Choose files"
 msgstr ""
 
 #: ../src/MountManager.py:428

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vix-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-06 16:11+0330\n"
+"POT-Creation-Date: 2021-03-18 10:28+0330\n"
 "PO-Revision-Date: 2016-07-17 14:24+0200\n"
 "Last-Translator: MCelliot_g <mcelliot_g@hotmail.com>\n"
 "Language-Team: none\n"
@@ -238,15 +238,15 @@ msgstr "Έλεγχος Ελεύθερης RAM..."
 msgid "Checking softcams..."
 msgstr "Έλεγχος softcams..."
 
+#: ../src/BackupManager.py:934
+#, fuzzy
+msgid "Choose IPK folder"
+msgstr "Επιλογή φακέλου τοπικών ipk's"
+
 #: ../src/BackupManager.py:933
 #, fuzzy
 msgid "Choose files"
 msgstr "Επιλογή αρχείων"
-
-#: ../src/BackupManager.py:934
-#, fuzzy
-msgid "Choose local IPK's folder"
-msgstr "Επιλογή φακέλου τοπικών ipk's"
 
 #: ../src/MountManager.py:428
 msgid "Choose where to mount your devices to:"

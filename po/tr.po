@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-06 16:11+0330\n"
+"POT-Creation-Date: 2021-03-18 10:28+0330\n"
 "PO-Revision-Date: 2020-03-21 01:30+0300\n"
 "Last-Translator: audi06_19 <info@dreamosat-forum.com>\n"
 "Language-Team: Turkish\n"
@@ -228,13 +228,14 @@ msgstr "Ücretsiz RAM denetleniyor .."
 msgid "Checking softcams..."
 msgstr "Softcams kontrol ediliyor ..."
 
+#: ../src/BackupManager.py:934
+#, fuzzy
+msgid "Choose IPK folder"
+msgstr "Yerel IPK'nın klasörünü seç"
+
 #: ../src/BackupManager.py:933
 msgid "Choose files"
 msgstr "Dosya seç"
-
-#: ../src/BackupManager.py:934
-msgid "Choose local IPK's folder"
-msgstr "Yerel IPK'nın klasörünü seç"
 
 #: ../src/MountManager.py:428
 msgid "Choose where to mount your devices to:"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vix-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-06 16:11+0330\n"
+"POT-Creation-Date: 2021-03-18 10:28+0330\n"
 "PO-Revision-Date: 2013-10-20 17:17+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@o2.co.uk>\n"
 "Language-Team: yngvekl <yklarsen@gmail.com>\n"
@@ -239,15 +239,15 @@ msgstr "Sjekker ledig minne..."
 msgid "Checking softcams..."
 msgstr "Sjekker softcam'er..."
 
+#: ../src/BackupManager.py:934
+#, fuzzy
+msgid "Choose IPK folder"
+msgstr "Velg lokal ipk's mappe"
+
 #: ../src/BackupManager.py:933
 #, fuzzy
 msgid "Choose files"
 msgstr "Velg filer"
-
-#: ../src/BackupManager.py:934
-#, fuzzy
-msgid "Choose local IPK's folder"
-msgstr "Velg lokal ipk's mappe"
 
 #: ../src/MountManager.py:428
 msgid "Choose where to mount your devices to:"

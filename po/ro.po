@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-06 16:11+0330\n"
+"POT-Creation-Date: 2021-03-18 10:28+0330\n"
 "PO-Revision-Date: 2014-06-26 04:32+0100\n"
 "Last-Translator: Rob van der Does <robvddoes@gmail.com>\n"
 "Language-Team: Andyblac/LaZx1989\n"
@@ -233,15 +233,15 @@ msgstr "Verific Ram-ul liber."
 msgid "Checking softcams..."
 msgstr "Verific Softcam-urile."
 
+#: ../src/BackupManager.py:934
+#, fuzzy
+msgid "Choose IPK folder"
+msgstr "Alege folderul local al ipk-ului."
+
 #: ../src/BackupManager.py:933
 #, fuzzy
 msgid "Choose files"
 msgstr "Alege filele."
-
-#: ../src/BackupManager.py:934
-#, fuzzy
-msgid "Choose local IPK's folder"
-msgstr "Alege folderul local al ipk-ului."
 
 #: ../src/MountManager.py:428
 msgid "Choose where to mount your devices to:"

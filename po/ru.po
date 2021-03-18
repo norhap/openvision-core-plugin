@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vix-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-06 16:11+0330\n"
+"POT-Creation-Date: 2021-03-18 10:28+0330\n"
 "PO-Revision-Date: \n"
 "Last-Translator: litvcom\n"
 "Language-Team: Russian localization by litvcom\n"
@@ -188,7 +188,7 @@ msgstr "Резервное копирование"
 
 #: ../src/ui.py:57
 msgid "Backup/Flash/ReBoot system image."
-msgstr ""
+msgstr "Копирование/Прошивка/Перезагрузка имиджа"
 
 #: ../src/MountManager.py:437 ../src/BackupManager.py:725
 #: ../src/BackupManager.py:820 ../src/BackupManager.py:931
@@ -224,13 +224,13 @@ msgstr "Проверка свободной оперативной памяти.
 msgid "Checking softcams..."
 msgstr "Проверка эмулятора..."
 
+#: ../src/BackupManager.py:934
+msgid "Choose IPK folder"
+msgstr "Выбрать папку с IPK"
+
 #: ../src/BackupManager.py:933
 msgid "Choose files"
 msgstr "Выбрать файлы"
-
-#: ../src/BackupManager.py:934
-msgid "Choose local IPK's folder"
-msgstr "Выбрать локальную папку с IPK"
 
 #: ../src/MountManager.py:428
 msgid "Choose where to mount your devices to:"
@@ -598,9 +598,8 @@ msgid "MENU"
 msgstr ""
 
 #: ../src/ui.py:56
-#, fuzzy
 msgid "Manage settings backup."
-msgstr "Автосохранение настроек"
+msgstr "Управление резервными копиями"
 
 #: ../src/ui.py:59
 msgid "Manage your devices mount points."
@@ -1090,24 +1089,23 @@ msgid "Size: "
 msgstr "Размер: "
 
 #: ../src/MountManager.py:141
-#, fuzzy, python-format
+#, python-format
 msgid "Size: %sGB"
-msgstr "Размер: "
+msgstr "Размер: %sGB"
 
 #: ../src/MountManager.py:139
-#, fuzzy, python-format
+#, python-format
 msgid "Size: %sMB"
-msgstr "Размер: "
+msgstr "Размер: %sMB"
 
 #: ../src/MountManager.py:143
-#, fuzzy, python-format
+#, python-format
 msgid "Size: %sTB"
-msgstr "Размер: "
+msgstr "Размер: %sTB"
 
 #: ../src/MountManager.py:137
-#, fuzzy
 msgid "Size: unavailable"
-msgstr "Недоступен"
+msgstr "Размер: недоступно"
 
 #: ../src/SoftcamManager.py:401
 msgid "Softcam starting..."
@@ -1364,7 +1362,7 @@ msgstr "Управление имиджами"
 #: ../src/ImageManager.py:129
 #, fuzzy
 msgid "Vision Image Manager Setup"
-msgstr "Управление имиджами"
+msgstr "Управление ViX"
 
 #: ../src/MountManager.py:216 ../src/plugin.py:208
 #, fuzzy

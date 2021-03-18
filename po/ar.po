@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-06 16:11+0330\n"
+"POT-Creation-Date: 2021-03-18 10:28+0330\n"
 "PO-Revision-Date: 2020-12-11 17:43+0300\n"
 "Last-Translator: mosad - مساعد الجعيد <abo-mishal@hotmail.com>\n"
 "Language-Team: mosad - مساعد الجعيد\n"
@@ -239,14 +239,15 @@ msgstr "التحقق من نظام الملفات..."
 msgid "Checking softcams..."
 msgstr "فحص السجلات ..."
 
+#: ../src/BackupManager.py:934
+#, fuzzy
+msgid "Choose IPK folder"
+msgstr "خيار نظام الملفات."
+
 #: ../src/BackupManager.py:933
 #, fuzzy
 msgid "Choose files"
 msgstr "خيار نظام الملفات."
-
-#: ../src/BackupManager.py:934
-msgid "Choose local IPK's folder"
-msgstr ""
 
 #: ../src/MountManager.py:428
 msgid "Choose where to mount your devices to:"
