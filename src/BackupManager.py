@@ -292,10 +292,18 @@ class VISIONBackupManager(Screen):
 		self["backupstatus"].setText(str(backuptext))
 
 	def keyDelete(self):
-		self.sel = self["list"].getCurrent()
-		if self.sel is not None:
-			self["list"].instance.moveSelectionTo(0)
-			remove(self.BackupDirectory + self.sel)
+		self.sel = self['list'].getCurrent()
+		if self.sel:
+			message = _("Are you sure you want to delete this backup:\n ") + self.sel
+			confirm_delete = self.session.openWithCallback(self.BackupToDelete, MessageBox, message, MessageBox.TYPE_YESNO, default=False)
+			confirm_delete.setTitle(_("Remove confirmation"))
+		else:
+			self.session.open(MessageBox, _("There is no backup to delete."), MessageBox.TYPE_INFO, timeout=10)
+
+	def BackupToDelete(self, answer):
+		backupname = self.BackupDirectory + self.sel
+		if answer == True:
+			remove(backupname)
 			self.populate_List()
 
 	def GreenPressed(self):
