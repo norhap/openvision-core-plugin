@@ -586,7 +586,7 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring Stage 3: no network connection, plugin restore not possible')
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
-								 _("Your receiver is not connected to the Internet.\nIf restoring doesn't fix the problem, check your network settings.\nYour network settings will be restored now from backup"),
+								 _("Your receiver is not connected to the Internet.\nIf restoring doesn't fix the problem, check your network settings.\nYour network settings will be restored now from backup."),
 								 MessageBox.TYPE_INFO,
 								 15,
 								 NOPLUGINS

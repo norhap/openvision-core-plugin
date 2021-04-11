@@ -1102,14 +1102,14 @@ msgstr "Lo sentimos, los feeds no funcionan por alguna razón. Intente usar el A
 msgid "Your receiver is not connected to a network. Please check your network settings and try again."
 msgstr "Su receptor no está conectado a internet. Verifique la configuración de su red y vuelva a intentarlo."
 
-msgid "Your receiver is not connected to the Internet.\n"
-msgstr "Su receptor no está conectado a Internet.\n"
-
-msgid "If restoring doesn't fix the problem, check your network settings.\n"
-msgstr "Si la restauración no soluciona el problema, verifique la configuración de su red.\n"
-
-msgid "Your network settings will be restored now from backup"
-msgstr "Su configuración de red se restaurará ahora desde la copia de seguridad"
+msgid ""
+"Your receiver is not connected to the Internet.\n"
+"If restoring doesn't fix the problem, check your network settings.\n"
+"Your network settings will be restored now from backup."
+msgstr ""
+"Su receptor no está conectado a Internet.\n"
+"Si la restauración no soluciona el problema, verifique la configuración de su red.\n"
+"Su configuración de red se restaurará ahora desde la copia de seguridad."
 
 msgid "Sorry the feeds are down for maintenance. Please try again later."
 msgstr "Los feeds están inactivos por algún tipo de problema de red. Por favor, inténtelo de nuevo más tarde."
