@@ -1108,7 +1108,7 @@ msgid ""
 "Your network settings will be restored now from backup."
 msgstr ""
 "Su receptor no está conectado a Internet.\n"
-"Si la restauración no soluciona el problema, verifique la configuración de su red.\n"
+"Si la restauración no soluciona el problema, revise la configuración de red.\n"
 "Su configuración de red se restaurará ahora desde la copia de seguridad."
 
 msgid "Sorry the feeds are down for maintenance. Please try again later."
