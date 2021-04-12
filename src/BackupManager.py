@@ -498,10 +498,10 @@ class VISIONBackupManager(Screen):
 		if result2.find('wget returned 4') != -1: # probably no network adaptor connected
 			self.feeds = 'NONETWORK'
 			self.Stage2Completed = True
-		if result2.find('wget returned 8') != -1 or result2.find('wget returned 1') != -1 or result2.find('wget returned 255') != -1 or result2.find('404 Not Found') != -1: # Server issued an error response, or there was a wget generic error code.
+		if result2.find('wget returned 8') != -1 or result2.find('wget returned 255') != -1 or result2.find('404 Not Found') != -1: # Server issued an error response, or there was a wget generic error code.
 			self.feeds = 'DOWN'
 			self.Stage2Completed = True
-		elif result2.find('bad address') != -1: # probably DNS lookup failed
+		elif result2.find('bad address') != -1 or result2.find('wget returned 1') != -1 : # probably DNS lookup failed
 			self.feeds = 'BAD'
 			self.Stage2Completed = True
 		elif result2.find('Collected errors') != -1: # none of the above errors. What condition requires this to loop? Maybe double key press.
@@ -563,7 +563,7 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring stage 3: No network connection, plugin restore not possible')
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
-								 _("Your receiver is not connected to the Internet. Please check your network settings and try again."),
+								 _("Your receiver is not connected to the Internet.\nIf restoring doesn't fix the problem, check your network settings.\nYour network settings will be restored now from backup."),
 								 MessageBox.TYPE_INFO,
 								 15,
 								 NOPLUGINS
