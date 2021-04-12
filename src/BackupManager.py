@@ -524,7 +524,7 @@ class VISIONBackupManager(Screen):
 		if result2.find('wget returned 8') != -1 or result2.find('wget returned 255') != -1 or result2.find('404 Not Found') != -1: # Server issued an error response, or there was a wget generic error code.
 			self.feeds = 'DOWN'
 			self.Stage2Completed = True
-		elif result2.find('bad address') != -1 or result2.find('wget returned 1') != -1 : # probably DNS lookup failed
+		elif result2.find('bad address') != -1 or result2.find('wget returned 1') != -1: # probably DNS lookup failed
 			self.feeds = 'BAD'
 			self.Stage2Completed = True
 		elif result2.find('Collected errors') != -1: # none of the above errors. What condition requires this to loop? Maybe double key press.
