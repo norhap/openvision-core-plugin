@@ -79,9 +79,6 @@ config.imagemanager.number_to_keep = ConfigNumber(default=0)
 config.imagemanager.imagefeed_ViX = ConfigText(default="https://www.openvix.co.uk/json", fixed_size=False)
 config.imagemanager.imagefeed_ATV = ConfigText(default="http://images.mynonpublic.com/openatv/json", fixed_size=False)
 config.imagemanager.imagefeed_PLi = ConfigText(default="http://downloads.openpli.org/json", fixed_size=False)
-config.imagemanager.login_as_ViX_developer = ConfigYesNo(default=False)
-config.imagemanager.developer_username = ConfigText(default="username", fixed_size=False)
-config.imagemanager.developer_password = ConfigText(default="password", fixed_size=False)
 
 autoImageManagerTimer = None
 
@@ -1481,23 +1478,13 @@ class ImageManagerDownload(Screen):
 	def getImageDistro(self):
 		if not path.exists(self.BackupDirectory):
 			mkdir(self.BackupDirectory, 0o755)
-		self.boxtype = model
 
 		if not self.imagesList:
-			boxtype = self.boxtype
-			if self.ConfigObj is config.imagemanager.imagefeed_ViX \
-				and self.ConfigObj.value.startswith("https") \
-				and config.imagemanager.login_as_ViX_developer.value \
-				and config.imagemanager.developer_username.value \
-				and config.imagemanager.developer_username.value != config.imagemanager.developer_username.default \
-				and config.imagemanager.developer_password.value \
-				and config.imagemanager.developer_password.value != config.imagemanager.developer_password.default:
-				boxtype = path.join(boxtype, config.imagemanager.developer_username.value, config.imagemanager.developer_password.value)
 			try:
-				urljson = path.join(self.ConfigObj.value, boxtype)
+				urljson = path.join(self.ConfigObj.value, model)
 				self.imagesList = dict(json.load(urlopen("%s" % urljson)))
 			except Exception:
-				print("[ImageManager] no images available for: the '%s' at '%s'" % (self.boxtype, self.ConfigObj.value))
+				print("[ImageManager] no images available for: the '%s' at '%s'" % (model, self.ConfigObj.value))
 				return
 
 		if not self.imagesList: # Nothing has been found on that server so we might as well give up.
@@ -1621,9 +1608,6 @@ class ImageManagerSetup(Setup):
 	def keySave(self):
 		if config.imagemanager.folderprefix.value == "":
 			config.imagemanager.folderprefix.value = defaultprefix
-		for configElement in (config.imagemanager.developer_username, config.imagemanager.developer_password):
-			if not configElement.value:
-				configElement.value = configElement.default
 		if not configElement.value:
 			config.imagemanager.imagefeed_DevL.value = config.imagemanager.imagefeed_DevL.default
 		for configElement in (config.imagemanager.imagefeed_ViX, config.imagemanager.imagefeed_ATV, config.imagemanager.imagefeed_PLi):
