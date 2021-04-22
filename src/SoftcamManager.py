@@ -52,7 +52,7 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 		print("[SoftcamManager] AutoStart Enabled")
 		if path.exists('/tmp/SoftcamsDisableCheck'):
 			remove('/tmp/SoftcamsDisableCheck')
-		softcamautopoller = SoftcamAutoPoller()
+		softcamautopoller = JobStart()
 		softcamautopoller.start()
 	elif reason == 1:
 		# Stop Poller
@@ -663,12 +663,10 @@ class VISIONSoftcamLog(Screen):
 	def cancel(self):
 		self.close()
 
-
-class SoftcamAutoPoller:
+class JobStart:
 	"""Automatically Poll SoftCam"""
 
 	def __init__(self):
-		# Init Timer
 		if not path.exists('/usr/softcams'):
 			mkdir('/usr/softcams', 0o755)
 		if not path.exists('/etc/scce'):
@@ -686,6 +684,9 @@ class SoftcamAutoPoller:
 		if not path.islink('/var/scce'):
 			symlink('/etc/scce', '/var/scce')
 		self.timer = eTimer()
+		self.autostartcams = config.softcammanager.softcams_autostart.value
+		self.Console = Console()
+		self.timer = eTimer()
 
 	def start(self):
 		if self.softcam_check not in self.timer.callback:
@@ -702,9 +703,6 @@ class SoftcamAutoPoller:
 		if path.exists('/tmp/SoftcamRuningCheck.tmp'):
 			remove('/tmp/SoftcamRuningCheck.tmp')
 
-		if config.softcammanager.softcams_autostart:
-			Components.Task.job_manager.AddJob(self.createCheckJob())
-
 		if config.softcammanager.softcamtimerenabled.value and path.exists('/tmp/cam.check.log'):
 			# 			print("[SoftcamManager] Timer Check Enabled")
 			output = open('/tmp/cam.check.log', 'a')
@@ -717,22 +715,10 @@ class SoftcamAutoPoller:
 			now = datetime.now()
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Disabled\n")
 			output.close()
-			# 			print("[SoftcamManager] Timer Check Disabled")
 			softcamautopoller.stop()
 
-	def createCheckJob(self):
-		job = Components.Task.Job(_("SoftcamCheck"))
-
-		task = Components.Task.PythonTask(job, _("Checking softcams..."))
-		task.work = self.JobStart
-		task.weighting = 1
-
-		return job
-
-	def JobStart(self):
-		self.autostartcams = config.softcammanager.softcams_autostart.value
-		self.Console = Console()
-		CCcam = "CCcam"
+		if path.exists('/tmp/SoftcamRuningCheck.tmp'):
+			remove('/tmp/SoftcamRuningCheck.tmp')
 		if SystemInfo["OScamInstalled"] and not path.exists("/usr/softcams/oscam"):
 			self.Console.ePopen('ln -s /usr/bin/*oscam* /usr/softcams/')
 		if SystemInfo["NCamInstalled"] and not path.exists("/usr/softcams/ncam"):
@@ -873,6 +859,7 @@ class SoftcamAutoPoller:
 								sleep(10)
 
 					elif softcamcheck_process == "":
+						CCcam = "CCcam"
 						print("[SoftcamManager] Couldn't find " + softcamcheck + " running, Starting " + softcamcheck)
 						output = open('/tmp/cam.check.log', 'a')
 						now = datetime.now()
@@ -880,15 +867,13 @@ class SoftcamAutoPoller:
 						output.close()
 						if softcamcheck.lower().startswith('oscam') or softcamcheck.lower().startswith('ncam'):
 							self.Console.ePopen("ps.procps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/softcamRuningCheck.tmp")
-							sleep(2)
 							file = open('/tmp/softcamRuningCheck.tmp')
 							file.close()
 							self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck + " -b")
-							sleep(10)
 							remove('/tmp/softcamRuningCheck.tmp')
-						if softcamcheck.lower().startswith('wicardd'):
+						if self.autostartcams and softcamcheck.lower().startswith('wicardd'):
 						    self.Console.ePopen('/usr/softcams/' + softcamcheck + " -c" + " /etc/tuxbox/config/wicardd/wicardd.conf")
-						if CCcam and not softcamcheck.lower().startswith('mgcamd'):
+						if softcamcheck_process == "CCcam" and not softcamcheck.lower().startswith('mgcamd'):
 						    self.Console.ePopen('/usr/softcams/' + softcamcheck)
 						if getImageArch() == "armv7vehf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "cortexa15hf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "armv7ahf-neon" and softcamcheck.lower().startswith('mgcamd'):
 						    self.Console.ePopen('/usr/bin/env LD_PRELOAD=/usr/local/lib/libcrypto.so.1.0.0 /usr/softcams/' + softcamcheck)
