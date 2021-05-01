@@ -484,7 +484,7 @@ class VISIONImageManager(Screen):
 		imagedict = GetImagelist()
 		choices = []
 		HIslot = len(imagedict) + 1
-		currentimageslot = GetCurrentImage()
+		currentimageslot = getCurrentImage()
 		print("ImageManager", currentimageslot, self.imagelist)
 		for x in range(1, HIslot):
 			choices.append(((_("slot%s - %s (current image)") if x == currentimageslot else _("slot%s - %s")) % (x, imagedict[x]["imagename"]), (x)))
