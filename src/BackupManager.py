@@ -30,7 +30,7 @@ from Tools.Notifications import AddPopupWithCallback
 currentkernelversion = BoxInfo.getItem("kernel")
 visionversion = BoxInfo.getItem("visionversion")
 visionrevision = BoxInfo.getItem("visionrevision")
-currentimageversion = visionversion + "-" + visionrevision
+currentimageversion = str(visionversion) + "-" + str(visionrevision)
 distro = BoxInfo.getItem("distro")
 
 autoBackupManagerTimer = None
