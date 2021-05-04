@@ -3,7 +3,6 @@
 from __future__ import print_function
 from . import _
 from os import listdir, path, stat
-from boxbranding import getImageDistro
 from Components.About import about
 from Components.Console import Console
 from Components.Pixmap import Pixmap
@@ -11,9 +10,9 @@ from Screens.WizardLanguage import WizardLanguage
 from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
-from boxbranding import getKernelVersion
+from Components.SystemInfo import BoxInfo
 
-currentkernelversion = getKernelVersion()
+currentkernelversion = BoxInfo.getItem("kernelfile")
 currentimageversion = about.getVersionString()
 
 
@@ -44,7 +43,7 @@ class RestoreWizard(WizardLanguage, Rc):
 		list = []
 		files = []
 		mtimes = []
-		defaultprefix = getImageDistro()[4:]
+		defaultprefix = BoxInfo.getItem("distro")[4:]
 
 		for dir in ["/media/%s/backup" % media for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
 			devmounts.append(dir)

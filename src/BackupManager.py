@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 # for localized messages
-from boxbranding import getVisionVersion, getImageDistro, getImageVersion, getVisionRevision, getImageDevBuild, getKernelVersion
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod
 from time import localtime, time, strftime, mktime
 from datetime import date, datetime
 import tarfile
 import glob
-from enigma import eTimer, eEnv, eDVBDB, quitMainloop, getBoxType
+from enigma import eTimer, eEnv, eDVBDB, quitMainloop
 from . import _, PluginLanguageDomain
 from Components.ActionMap import ActionMap
 from Components.Button import Button
@@ -21,15 +20,18 @@ from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import BoxInfo, SystemInfo
 import Components.Task
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Tools.Notifications import AddPopupWithCallback
 
-currentkernelversion = getKernelVersion()
-currentimageversion = getVisionVersion() + "-" + getVisionRevision()
+currentkernelversion = BoxInfo.getItem("kernel")
+visionversion = BoxInfo.getItem("visionversion")
+visionrevision = BoxInfo.getItem("visionrevision")
+currentimageversion = visionversion + "-" + visionrevision
+distro = BoxInfo.getItem("distro")
 
 autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = 'RestoreSettingsNotification'
@@ -37,7 +39,7 @@ PLUGINRESTOREQUESTIONID = 'RestorePluginsNotification'
 NOPLUGINS = 'NoPluginsNotification'
 
 hddchoices = []
-defaultprefix = getImageDistro()[4:]
+defaultprefix = distro[4:]
 for p in harddiskmanager.getMountedPartitions():
 	if path.exists(p.mountpoint):
 		d = path.normpath(p.mountpoint)
@@ -1386,7 +1388,7 @@ class BackupFiles(Screen):
 			backupType = "-SU-"
 		elif self.imagebackup:
 			backupType = "-IM-"
-		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageDistro() + backupType + getVisionVersion() + '-' + getVisionRevision() + '-' + getBoxType() + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
+		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + distro + backupType + visionversion + '-' + visionrevision + '-' + BoxInfo.getItem("model") + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
 # Need to create a list of what to backup, so that spaces and special
 # characters don't get lost on, or mangle, the command line
 #

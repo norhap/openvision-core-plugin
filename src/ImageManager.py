@@ -12,8 +12,7 @@ except ImportError: # Python 2
 
 import json
 
-from boxbranding import getImageDistro, getVisionVersion, getImageVersion, getVisionRevision, getImageDevBuild, getImageFolder, getImageFileSystem, getMachineBuild, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
-from enigma import eTimer, fbClass, getBoxType, getBoxBrand
+from enigma import eTimer, fbClass
 from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, statvfs, chmod, walk
 from shutil import rmtree, move, copy, copyfile
 from time import localtime, time, strftime, mktime
@@ -28,7 +27,7 @@ from Components.Harddisk import harddiskmanager, getProcMounts
 from Components.Sources.StaticText import StaticText
 from Components.Label import Label
 from Components.MenuList import MenuList
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import BoxInfo, SystemInfo
 import Components.Task
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
@@ -40,18 +39,18 @@ import Tools.CopyFiles
 from Tools.Multiboot import GetImagelist, getCurrentImage
 from Tools.Notifications import AddPopupWithCallback
 
-model = getBoxType()
-brand = getBoxBrand()
-platform = getMachineBuild()
-kernelfile = getMachineKernelFile()
-mtdkernel = getMachineMtdKernel()
-mtdrootfs = getMachineMtdRoot()
-imagetype = getImageVersion()
-imagedistro = getImageDistro()
-imageversion = getVisionVersion()
-imagebuild = getVisionRevision()
-imagedir = getImageFolder()
-imagefs = getImageFileSystem()
+model = BoxInfo.getItem("model")
+brand = BoxInfo.getItem("brand")
+platform = BoxInfo.getItem("platform")
+kernelfile = BoxInfo.getItem("kernelfile")
+mtdkernel = BoxInfo.getItem("mtdkernel")
+mtdrootfs = BoxInfo.getItem("mtdrootfs")
+imagetype = BoxInfo.getItem("imageversion")
+imagedistro = BoxInfo.getItem("distro")
+imageversion = BoxInfo.getItem("visionversion")
+imagebuild = BoxInfo.getItem("visionrevision")
+imagedir = BoxInfo.getItem("imagedir")
+imagefs = BoxInfo.getItem("imagefs")
 
 hddchoices = []
 for p in harddiskmanager.getMountedPartitions():
@@ -791,10 +790,10 @@ class ImageBackup(Screen):
 			backupType = "-SoftwareUpdate-"
 		imageSubBuild = ""
 		if imagetype != "develop":
-			imageSubBuild = ".%s" % getImageDevBuild()
+			imageSubBuild = ".%s" % BoxInfo.getItem("imagedevbuild")
 		self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + backupType + imageversion + "-" + imagebuild + imageSubBuild + "-" + model + "-" + self.BackupDate
 		self.KERNELFILE = kernelfile
-		self.ROOTFSFILE = getMachineRootFile()
+		self.ROOTFSFILE = BoxInfo.getItem("rootfile")
 		self.MAINDEST = self.MAINDESTROOT + "/" + imagedir + "/"
 		self.MAINDEST2 = self.MAINDESTROOT + "/"
 		self.MODEL = model
@@ -803,8 +802,8 @@ class ImageBackup(Screen):
 		self.DISTROVERSION = imageversion
 		self.DISTROBUILD = imagebuild
 		self.KERNELBIN = kernelfile
-		self.UBINIZE_ARGS = getMachineUBINIZE()
-		self.MKUBIFS_ARGS = getMachineMKUBIFS()
+		self.UBINIZE_ARGS = BoxInfo.getItem("ubinize")
+		self.MKUBIFS_ARGS = BoxInfo.getItem("mkubifs")
 		self.ROOTFSTYPE = imagefs.strip()
 		self.ROOTFSSUBDIR = "none"
 		self.EMMCIMG = "none"
