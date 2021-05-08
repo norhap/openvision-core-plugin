@@ -32,6 +32,7 @@ visionversion = BoxInfo.getItem("visionversion")
 visionrevision = BoxInfo.getItem("visionrevision")
 currentimageversion = str(visionversion) + "-" + str(visionrevision)
 distro = BoxInfo.getItem("distro")
+model = BoxInfo.getItem("model")
 
 autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = 'RestoreSettingsNotification'
@@ -1388,7 +1389,7 @@ class BackupFiles(Screen):
 			backupType = "-SU-"
 		elif self.imagebackup:
 			backupType = "-IM-"
-		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + distro + backupType + visionversion + '-' + visionrevision + '-' + BoxInfo.getItem("model") + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
+		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + str(distro) + backupType + str(visionversion) + '-' + str(visionrevision) + '-' + str(model) + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
 # Need to create a list of what to backup, so that spaces and special
 # characters don't get lost on, or mangle, the command line
 #

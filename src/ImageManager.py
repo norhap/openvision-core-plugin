@@ -21,7 +21,7 @@ from . import _, PluginLanguageDomain
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
-from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock, configfile, getConfigListEntry
+from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock, configfile
 from Components.Console import Console
 from Components.Harddisk import harddiskmanager, getProcMounts
 from Components.Sources.StaticText import StaticText
@@ -81,8 +81,8 @@ config.imagemanager.imagefeed_PLi = ConfigText(default="http://downloads.openpli
 
 autoImageManagerTimer = None
 
-TMPDIR = config.imagemanager.backuplocation.value + "imagebackups/" + config.imagemanager.folderprefix.value + "-" + "-mount"
-if path.exists(TMPDIR + "/root") and path.ismount(TMPDIR + "/root"):
+TMPDIR = config.imagemanager.backuplocation.value + "/imagebackups/" + config.imagemanager.folderprefix.value + "-" + "mount"
+if path.exists(TMPDIR + "/root/"):
 	try:
 		system("umount " + TMPDIR + "/root")
 	except Exception:
@@ -118,7 +118,6 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		ConfigListScreen.__init__(self, [])
 		self.session = session
 		self.skin = VISIONImageManagerMenu.skin
 		self.skinName = "VISIONImageManagerMenu"
@@ -129,10 +128,6 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 		self["lab4"] = StaticText(_("https://openvision.tech"))
 		self["lab5"] = StaticText(_("Sources are available at:"))
 		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
-
-		self.onChangedEntry = []
-		self.list = []
-		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
 		self.createSetup()
 
 		self["actions"] = ActionMap(['SetupActions', 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
@@ -159,24 +154,6 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 
 		config.imagemanager.backuplocation.setChoices(imparts)
 		self.editListEntry = None
-		self.list = []
-		self.list.append(getConfigListEntry(_("Backup location"), config.imagemanager.backuplocation))
-		self.list.append(getConfigListEntry(_("Folder prefix"), config.imagemanager.folderprefix))
-		self.list.append(getConfigListEntry(_("Schedule backups"), config.imagemanager.schedule))
-		if config.imagemanager.schedule.value:
-			self.list.append(getConfigListEntry(_("Time of backup to start in minutes"), config.imagemanager.scheduletime))
-			self.list.append(getConfigListEntry(_("Repeat how often"), config.imagemanager.repeattype))
-		self["config"].list = self.list
-		self["config"].setList(self.list)
-
-	def changedEntry(self):
-		if self["config"].getCurrent()[0] == _("Schedule backups"):
-			self.createSetup()
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()
 
 	def KeyText(self):
 		if self['config'].getCurrent():
@@ -188,15 +165,6 @@ class VISIONImageManagerMenu(ConfigListScreen, Screen):
 		if callback is not None and len(callback):
 			self["config"].getCurrent()[1].setValue(callback)
 			self["config"].invalidate(self["config"].getCurrent())
-
-	def saveAll(self):
-		for x in self["config"].list:
-			x[1].save()
-		config.save()
-
-	def keySave(self):
-		self.saveAll()
-		self.close()
 
 	def cancelConfirm(self, result):
 		if not result:
@@ -364,9 +332,9 @@ class VISIONImageManager(Screen):
 			try:
 				if not path.exists(self.BackupDirectory):
 					mkdir(self.BackupDirectory, 0o755)
-				if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup"):
-					system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
-					remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
+				if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup"):
+					system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup")
+					remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup")
 				self.refreshList()
 			except Exception:
 				self["lab7"].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
@@ -408,13 +376,22 @@ class VISIONImageManager(Screen):
 
 	def keyDelete(self):
 		self.sel = self["list"].getCurrent()
-		if self.sel is not None:
-			self["list"].instance.moveSelectionTo(0)
-			if self.sel.endswith(".zip"):
-				remove(self.BackupDirectory + self.sel)
-			else:
-				rmtree(self.BackupDirectory + self.sel)
-			self.refreshList()
+		if self.sel:
+			message = _("Are you sure you want to delete this backup:\n ") + self.sel
+			confirm_delete = self.session.openWithCallback(self.BackupToDelete, MessageBox, message, MessageBox.TYPE_YESNO, default=False)
+			confirm_delete.setTitle(_("Remove confirmation"))
+		else:
+			self.session.open(MessageBox, _("There is no backup to delete."), MessageBox.TYPE_INFO, timeout=10)
+
+	def BackupToDelete(self, answer):
+		self.sel = self["list"].getCurrent()
+		backupname = self.BackupDirectory + self.sel
+		visionlanguage = open("/etc/openvision/visionlanguage", "r").read().strip()
+		cmd = "rm -rf %s" % backupname
+		folderprefix = config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-" + visionlanguage
+		if answer == True:
+		    if self.sel.startswith(folderprefix) and self.BackupRunning == False or self.sel.endswith(".zip"):
+		        Console().ePopen(cmd)
 
 	def GreenPressed(self):
 		backup = None
@@ -781,8 +758,8 @@ class ImageBackup(Screen):
 		self.BackupDirectory = config.imagemanager.backuplocation.value + "/imagebackups/"
 		print("[ImageManager] Directory: " + self.BackupDirectory)
 		self.BackupDate = strftime("%Y%m%d_%H%M%S", localtime())
-		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-temp"
-		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-mount"
+		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-temp"
+		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-mount"
 		if fileExists("/etc/openvision/visionlanguage"):
 			visionlanguage = open("/etc/openvision/visionlanguage", "r").read().strip()
 			backupType = "-" + visionlanguage + "-"
@@ -791,7 +768,7 @@ class ImageBackup(Screen):
 		imageSubBuild = ""
 		if imagetype != "develop":
 			imageSubBuild = ".%s" % BoxInfo.getItem("imagedevbuild")
-		self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + backupType + imageversion + "-" + imagebuild + imageSubBuild + "-" + model + "-" + self.BackupDate
+		self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + str(backupType) + str(imageversion) + "-" + str(imagebuild) + str(imageSubBuild) + "-" + str(model) + "-" + self.BackupDate
 		self.KERNELFILE = kernelfile
 		self.ROOTFSFILE = BoxInfo.getItem("rootfile")
 		self.MAINDEST = self.MAINDESTROOT + "/" + imagedir + "/"
@@ -925,9 +902,9 @@ class ImageBackup(Screen):
 		try:
 			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0o755)
-			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup"):
-				system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
-				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
+			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup"):
+				system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup")
+				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup")
 		except Exception as e:
 			print(str(e))
 			print("[ImageManager] Device: " + config.imagemanager.backuplocation.value + ", i don't seem to have write access to this device.")
@@ -986,15 +963,15 @@ class ImageBackup(Screen):
 			self.SwapCreated = True
 
 	def MemCheck2(self):
-		self.Console.ePopen("dd if=/dev/zero of=" + self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup bs=1024 count=61440", self.MemCheck3)
+		self.Console.ePopen("dd if=/dev/zero of=" + self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup bs=1024 count=61440", self.MemCheck3)
 
 	def MemCheck3(self, result, retval, extra_args=None):
 		if retval == 0:
-			self.Console.ePopen("mkswap " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup", self.MemCheck4)
+			self.Console.ePopen("mkswap " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup", self.MemCheck4)
 
 	def MemCheck4(self, result, retval, extra_args=None):
 		if retval == 0:
-			self.Console.ePopen("swapon " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup", self.MemCheck5)
+			self.Console.ePopen("swapon " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup", self.MemCheck5)
 
 	def MemCheck5(self, result, retval, extra_args=None):
 		self.SwapCreated = True
@@ -1002,13 +979,13 @@ class ImageBackup(Screen):
 	def doBackup1(self):
 		print("[ImageManager] Stage 1: Creating tmp folders.", self.BackupDirectory)
 		print("[ImageManager] Stage 1: Creating backup folders.")
+		mount = self.TMPDIR + "/root/"
+		for folder in ["linuxrootfs1", "proc"]:
+		    if path.exists(mount + folder):
+			    return self.session.open(TryQuitMainloop, 2)
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
 		mkdir(self.WORKDIR, 0o644)
-		if path.exists(self.TMPDIR + "/root") and path.ismount(self.TMPDIR + "/root"):
-			system("umount " + self.TMPDIR + "/root")
-		elif path.exists(self.TMPDIR + "/root"):
-			rmtree(self.TMPDIR + "/root")
 		if path.exists(self.TMPDIR):
 			rmtree(self.TMPDIR)
 		makedirs(self.TMPDIR, 0o644)
@@ -1315,7 +1292,7 @@ class ImageBackup(Screen):
 			print("[ImageManager] Stage 5: Create gpt.bin:", self.MODEL)
 
 		with open(self.MAINDEST + "/imageversion", "w") as fileout:
-			line = defaultprefix + "-" + imagetype + "-backup-" + imageversion + "." + imagebuild + "-" + self.BackupDate
+			line = defaultprefix + "-" + str(imagetype) + "-backup-" + str(imageversion) + "." + str(imageversion) + "-" + self.BackupDate
 			fileout.write(line)
 
 		if brand == "vuplus":
@@ -1355,9 +1332,9 @@ class ImageBackup(Screen):
 					fileout.write(line1)
 					fileout.close()
 		print("[ImageManager] Stage 5: Removing swap.")
-		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup"):
-			system("swapoff " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
-			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
+		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup"):
+			system("swapoff " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup")
+			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup")
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
 		if (path.exists(self.MAINDEST + "/" + self.ROOTFSFILE) and path.exists(self.MAINDEST + "/" + self.KERNELFILE)) or (model in ("h9", "i55plus") and "root=/dev/mmcblk0p1" in z):
@@ -1607,8 +1584,6 @@ class ImageManagerSetup(Setup):
 	def keySave(self):
 		if config.imagemanager.folderprefix.value == "":
 			config.imagemanager.folderprefix.value = defaultprefix
-		if not configElement.value:
-			config.imagemanager.imagefeed_DevL.value = config.imagemanager.imagefeed_DevL.default
 		for configElement in (config.imagemanager.imagefeed_ViX, config.imagemanager.imagefeed_ATV, config.imagemanager.imagefeed_PLi):
 			self.check_URL_format(configElement)
 		for x in self["config"].list:
