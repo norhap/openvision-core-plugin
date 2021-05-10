@@ -8,18 +8,18 @@ from Components.About import about
 from Components.Console import Console
 from Components.Pixmap import Pixmap
 from Screens.WizardLanguage import WizardLanguage
-from Screens.HelpMenu import ShowRemoteControl
+from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
 from BackupManager import isRestorableSettings, isRestorablePlugins, isRestorableKernel
 
 
 
-class RestoreWizard(WizardLanguage, ShowRemoteControl):
+class RestoreWizard(WizardLanguage, Rc):
 	def __init__(self, session):
 		self.xmlfile = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/Vision/restorewizard.xml")
 		WizardLanguage.__init__(self, session, showSteps=False, showStepSlider=False)
-		ShowRemoteControl.__init__(self)
+		Rc.__init__(self)
 		self.session = session
 		self["wizard"] = Pixmap()
 		self.selectedAction = None
