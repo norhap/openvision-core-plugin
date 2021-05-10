@@ -947,6 +947,7 @@ class VISIONBackupManagerMenu(Setup):
 		config.backupmanager.save()
 		config.save()
 
+
 class VISIONBackupManagerLogView(Screen):
 	skin = """
 <screen name="VISIONBackupManagerLogView" position="center,center" size="560,400">
