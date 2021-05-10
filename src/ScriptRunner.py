@@ -57,13 +57,13 @@ class VISIONScriptRunner(OpkgInstaller):
 
 		self["key_green"] = StaticText(_("Run"))
 
-		self['myactions'] = ActionMap(["ColorActions"],
-									  {
-									  "red": self.close,
-									  }, -1)
+		self['myactions'] = ActionMap(["ColorActions", "MenuActions"], {
+			"menu":self.createSetup,
+			"red": self.close,
+			}, -1)
 
 	def createSetup(self):
-		self.session.open(Setup, 'visionscriptrunner', 'SystemPlugins/Vision', PluginLanguageDomain)
+		self.session.open(ScriptRunnerSetup)
 
 	def install(self):
 		list = self.list.getSelectionsList()
@@ -74,3 +74,9 @@ class VISIONScriptRunner(OpkgInstaller):
 			cmdList.append('chmod +x /usr/script/' + self.list.getCurrent()[0][0] + ' && . ' + '/usr/script/' + str(self.list.getCurrent()[0][0]))
 		if len(cmdList) > 0:
 			self.session.open(Console, cmdlist=cmdList, closeOnSuccess=config.scriptrunner.close.value)
+
+
+class ScriptRunnerSetup(Setup):
+	def __init__(self, session):
+		Setup.__init__(self, session=session, setup="visionscriptrunner", plugin="SystemPlugins/Vision", PluginLanguageDomain=PluginLanguageDomain)
+		Setup.setTitle(self, _("Script Runner Setup"))

@@ -47,12 +47,14 @@ platform = BoxInfo.getItem("platform")
 kernelfile = BoxInfo.getItem("kernelfile")
 mtdkernel = BoxInfo.getItem("mtdkernel")
 mtdrootfs = BoxInfo.getItem("mtdrootfs")
-imagetype = BoxInfo.getItem("imageversion")
-imagedistro = BoxInfo.getItem("distro")
-imageversion = BoxInfo.getItem("visionversion")
-imagebuild = BoxInfo.getItem("visionrevision")
+imagebuild = BoxInfo.getItem("imagebuild")
 imagedir = BoxInfo.getItem("imagedir")
 imagefs = BoxInfo.getItem("imagefs")
+imagedistro = BoxInfo.getItem("distro")
+imageversion = BoxInfo.getItem("imageversion")
+visionlanguage = BoxInfo.getItem("visionlanguage")
+visionversion = BoxInfo.getItem("visionversion")
+visionrevision = BoxInfo.getItem("visionrevision")
 
 hddchoices = []
 for p in harddiskmanager.getMountedPartitions():
@@ -108,81 +110,6 @@ def ImageManagerautostart(reason, session=None, **kwargs):
 			autoImageManagerTimer.stop()
 
 
-class VISIONImageManagerMenu(ConfigListScreen, Screen):
-	skin = """
-	<screen name="VISIONImageManagerMenu" position="center,center" size="560,550">
-		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
-		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="config" position="0,90" size="560,375" transparent="0" enableWrapAround="1" scrollbarMode="showOnDemand"/>
-	</screen>"""
-
-	def __init__(self, session):
-		Screen.__init__(self, session)
-		self.session = session
-		self.skin = VISIONImageManagerMenu.skin
-		self.skinName = "VISIONImageManagerMenu"
-		Screen.setTitle(self, _("Vision Image Manager Setup"))
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
-		self.createSetup()
-
-		self["actions"] = ActionMap(['SetupActions', 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
-		{
-			"ok": self.keySave,
-			"cancel": self.keyCancel,
-			"red": self.keyCancel,
-			"green": self.keySave,
-			'showVirtualKeyboard': self.KeyText,
-			"menu": self.keyCancel,
-		}, -2)
-
-		self["key_red"] = Button(_("Cancel"))
-		self["key_green"] = Button(_("OK"))
-
-	def createSetup(self):
-		imparts = []
-		for p in harddiskmanager.getMountedPartitions():
-			if path.exists(p.mountpoint):
-				d = path.normpath(p.mountpoint)
-				m = d + '/', p.mountpoint
-				if p.mountpoint != '/':
-					imparts.append((d + '/', p.mountpoint))
-
-		config.imagemanager.backuplocation.setChoices(imparts)
-		self.editListEntry = None
-
-	def KeyText(self):
-		if self['config'].getCurrent():
-			if self['config'].getCurrent()[0] == _("Folder prefix"):
-				from Screens.VirtualKeyBoard import VirtualKeyBoard
-				self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title=self["config"].getCurrent()[0], text=self["config"].getCurrent()[1].getValue())
-
-	def VirtualKeyBoardCallback(self, callback=None):
-		if callback is not None and len(callback):
-			self["config"].getCurrent()[1].setValue(callback)
-			self["config"].invalidate(self["config"].getCurrent())
-
-	def cancelConfirm(self, result):
-		if not result:
-			return
-
-		for x in self["config"].list:
-			x[1].cancel()
-		self.close()
-
-	def keyCancel(self):
-		if self["config"].isChanged():
-			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"))
-		else:
-			self.close()
-
-
 class VISIONImageManager(Screen):
 	skin = """<screen name="VISIONImageManager" position="center,center" size="560,400">
 		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
@@ -205,7 +132,6 @@ class VISIONImageManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Vision Image Manager"))
-
 		self["lab7"] = Label()
 		self["backupstatus"] = Label()
 		self["key_red"] = Button(_("Delete"))
@@ -334,9 +260,9 @@ class VISIONImageManager(Screen):
 			try:
 				if not path.exists(self.BackupDirectory):
 					mkdir(self.BackupDirectory, 0o755)
-				if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup"):
-					system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup")
-					remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup")
+				if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imageversion) + "-swapfile_backup"):
+					system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imageversion) + "-swapfile_backup")
+					remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imageversion) + "-swapfile_backup")
 				self.refreshList()
 			except Exception:
 				self["lab7"].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
@@ -388,12 +314,12 @@ class VISIONImageManager(Screen):
 	def BackupToDelete(self, answer):
 		self.sel = self["list"].getCurrent()
 		backupname = self.BackupDirectory + self.sel
-		visionlanguage = open("/etc/openvision/visionlanguage", "r").read().strip()
+		folderprefix = config.imagemanager.folderprefix.value + "-" + str(imageversion) + "-" + str(visionlanguage)
 		cmd = "rm -rf %s" % backupname
-		folderprefix = config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-" + visionlanguage
 		if answer == True:
 		    if self.sel.startswith(folderprefix) and self.BackupRunning == False or self.sel.endswith(".zip"):
 		        Console().ePopen(cmd)
+			self.refreshList()
 
 	def GreenPressed(self):
 		backup = None
@@ -755,17 +681,13 @@ class ImageBackup(Screen):
 		self.BackupDirectory = config.imagemanager.backuplocation.value + "/imagebackups/"
 		print("[ImageManager] Directory: " + self.BackupDirectory)
 		self.BackupDate = strftime("%Y%m%d_%H%M%S", localtime())
-		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-temp"
-		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-mount"
-		if fileExists("/etc/openvision/visionlanguage"):
-			visionlanguage = open("/etc/openvision/visionlanguage", "r").read().strip()
-			backupType = "-" + visionlanguage + "-"
-		if updatebackup:
-			backupType = "-SoftwareUpdate-"
+		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imageversion) + "-temp"
+		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imageversion) + "-mount"
+		LanguageType = "-" + str(visionlanguage) + "-"
 		imageSubBuild = ""
-		if imagetype != "develop":
-			imageSubBuild = ".%s" % BoxInfo.getItem("imagedevbuild")
-		self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + str(backupType) + str(imageversion) + "-" + str(imagebuild) + str(imageSubBuild) + "-" + str(model) + "-" + self.BackupDate
+		if imageversion != "develop":
+			imageSubBuild = ".%s" % str(imagebuild)
+		self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imageversion) + str(imageSubBuild) + str(LanguageType) + str(visionversion) + "-" + str(visionrevision) + "-" + str(model) + "-" + self.BackupDate
 		self.KERNELFILE = kernelfile
 		self.ROOTFSFILE = BoxInfo.getItem("rootfile")
 		self.MAINDEST = self.MAINDESTROOT + "/" + imagedir + "/"
@@ -773,8 +695,10 @@ class ImageBackup(Screen):
 		self.MODEL = model
 		self.MCBUILD = platform
 		self.IMAGEDISTRO = imagedistro
-		self.DISTROVERSION = imageversion
-		self.DISTROBUILD = imagebuild
+		self.IMAGEVERSION = imageversion
+		self.DISTROLANGUAGE = visionlanguage
+		self.DISTROVERSION = visionversion
+		self.DISTROREVISION = visionrevision
 		self.KERNELBIN = kernelfile
 		self.UBINIZE_ARGS = BoxInfo.getItem("ubinize")
 		self.MKUBIFS_ARGS = BoxInfo.getItem("mkubifs")
@@ -899,9 +823,9 @@ class ImageBackup(Screen):
 		try:
 			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0o755)
-			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup"):
-				system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup")
-				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup")
+			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imageversion) + "-swapfile_backup"):
+				system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imageversion) + "-swapfile_backup")
+				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + str(imageversion) + "-swapfile_backup")
 		except Exception as e:
 			print(str(e))
 			print("[ImageManager] Device: " + config.imagemanager.backuplocation.value + ", i don't seem to have write access to this device.")
@@ -960,15 +884,15 @@ class ImageBackup(Screen):
 			self.SwapCreated = True
 
 	def MemCheck2(self):
-		self.Console.ePopen("dd if=/dev/zero of=" + self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup bs=1024 count=61440", self.MemCheck3)
+		self.Console.ePopen("dd if=/dev/zero of=" + self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imageversion) + "-swapfile_backup bs=1024 count=61440", self.MemCheck3)
 
 	def MemCheck3(self, result, retval, extra_args=None):
 		if retval == 0:
-			self.Console.ePopen("mkswap " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup", self.MemCheck4)
+			self.Console.ePopen("mkswap " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imageversion) + "-swapfile_backup", self.MemCheck4)
 
 	def MemCheck4(self, result, retval, extra_args=None):
 		if retval == 0:
-			self.Console.ePopen("swapon " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup", self.MemCheck5)
+			self.Console.ePopen("swapon " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imageversion) + "-swapfile_backup", self.MemCheck5)
 
 	def MemCheck5(self, result, retval, extra_args=None):
 		self.SwapCreated = True
@@ -1289,7 +1213,7 @@ class ImageBackup(Screen):
 			print("[ImageManager] Stage 5: Create gpt.bin:", self.MODEL)
 
 		with open(self.MAINDEST + "/imageversion", "w") as fileout:
-			line = defaultprefix + "-" + str(imagetype) + "-backup-" + str(imageversion) + "." + str(imageversion) + "-" + self.BackupDate
+			line = defaultprefix + "-" + str(imageversion) + "-backup-" + str(imageversion) + "." + str(imageversion) + "-" + self.BackupDate
 			fileout.write(line)
 
 		if brand == "vuplus":
@@ -1329,9 +1253,9 @@ class ImageBackup(Screen):
 					fileout.write(line1)
 					fileout.close()
 		print("[ImageManager] Stage 5: Removing swap.")
-		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup"):
-			system("swapoff " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup")
-			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imagetype) + "-swapfile_backup")
+		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imageversion) + "-swapfile_backup"):
+			system("swapoff " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imageversion) + "-swapfile_backup")
+			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-" + str(imageversion) + "-swapfile_backup")
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
 		if (path.exists(self.MAINDEST + "/" + self.ROOTFSFILE) and path.exists(self.MAINDEST + "/" + self.KERNELFILE)) or (model in ("h9", "i55plus") and "root=/dev/mmcblk0p1" in z):
@@ -1354,7 +1278,7 @@ class ImageBackup(Screen):
 		zipfolder = path.split(self.MAINDESTROOT)
 		self.commands = []
 		if SystemInfo["HasRootSubdir"]:
-			self.commands.append("7za a -r -bt -bd %s/%s-%s-%s-%s-%s_mmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROVERSION, self.DISTROBUILD, self.MODEL, self.BackupDate, self.MAINDESTROOT))
+			self.commands.append("7za a -r -bt -bd %s/%s-%s-%s-%s-%s-%s-%s_mmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.IMAGEVERSION, self.DISTROLANGUAGE, self.DISTROVERSION, self.DISTROREVISION, self.MODEL, self.BackupDate, self.MAINDESTROOT))
 		else:
 			self.commands.append("cd " + self.MAINDESTROOT + " && zip -r " + self.MAINDESTROOT + ".zip *")
 		self.commands.append("rm -rf " + self.MAINDESTROOT)
@@ -1576,6 +1500,7 @@ class ImageManagerDownload(Screen):
 class ImageManagerSetup(Setup):
 	def __init__(self, session):
 		Setup.__init__(self, session=session, setup="visionimagemanager", plugin="SystemPlugins/Vision", PluginLanguageDomain=PluginLanguageDomain)
+		Setup.setTitle(self, _("Image Manager Setup"))
 
 	def keySave(self):
 		if config.imagemanager.folderprefix.value == "":
