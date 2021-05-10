@@ -934,7 +934,7 @@ class VISIONBackupManagerMenu(Setup):
 		"yellow": self.chooseFiles,
 		"blue": self.chooseXtraPluginDir,
 		}, -2)
-		
+
 	def chooseFiles(self):
 		self.session.openWithCallback(self.backupfiles_choosen, BackupSelection)
 
