@@ -13,8 +13,7 @@ from . import _, PluginLanguageDomain
 from Components.About import about
 from Components.ActionMap import ActionMap
 from Components.Button import Button
-from Components.config import configfile, config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, ConfigLocations, NoSave, ConfigClock, ConfigDirectory, getConfigListEntry
-from Components.ConfigList import ConfigListScreen
+from Components.config import configfile, config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, ConfigLocations, NoSave, ConfigClock, ConfigDirectory
 from Components.Console import Console
 from Components.FileList import MultiFileSelectList, FileList
 from Components.Harddisk import harddiskmanager
@@ -276,7 +275,7 @@ class VISIONBackupManager(Screen):
 				self['lab7'].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
-		self.session.openWithCallback(self.setupDone, VISIONBackupManagerMenu)
+		self.session.openWithCallback(self.setupDone, VISIONBackupManagerMenu, 'visionbackupmanager', 'SystemPlugins/Vision', PluginLanguageDomain)
 
 	def showLog(self):
 		self.sel = self['list'].getCurrent()
@@ -917,7 +916,7 @@ class XtraPluginsSelection(Screen):
 		self.close(True)
 
 
-class VISIONBackupManagerMenu(Screen, ConfigListScreen):
+class VISIONBackupManagerMenu(Setup):
 	skin = """
 	<screen name="VISIONBackupManagerMenu" position="center,center" size="560,550">
 		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
@@ -937,113 +936,36 @@ class VISIONBackupManagerMenu(Screen, ConfigListScreen):
 		<widget name="description" position="0,e-75" size="560,75" font="Regular;18" halign="center" valign="top" transparent="0" zPosition="1"/>
 	</screen>"""
 
-	def __init__(self, session):
-		Screen.__init__(self, session)
-		self.skinName = "VISIONBackupManagerMenu"
-		Screen.setTitle(self, _("Vision Backup Manager Setup"))
+	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
+		Setup.__init__(self, session, setup, plugin, PluginLanguageDomain)
+		self.skinName = ["VISIONBackupManagerMenu"]
+		Setup.setTitle(self, _("Backup Manager Setup"))
 		self["lab1"] = StaticText(_("OpenVision"))
 		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
 		self["lab3"] = StaticText(_("Report problems to:"))
 		self["lab4"] = StaticText(_("https://openvision.tech"))
 		self["lab5"] = StaticText(_("Sources are available at:"))
 		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
-		self["actions"] = ActionMap(['SetupActions', 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
-		{
-			"ok": self.keySave,
-			"cancel": self.keyCancel,
-			"red": self.keyCancel,
-			"green": self.keySave,
-			"yellow": self.chooseFiles,
-			"blue": self.chooseXtraPluginDir,
-			'showVirtualKeyboard': self.KeyText,
-			"menu": self.keyCancel,
-		}, -2)
-
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("OK"))
 		self["key_yellow"] = Button(_("Choose files"))
 		self["key_blue"] = Button(_("Choose IPK folder"))
-
-		self.onChangedEntry = []
-		self.list = []
-		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
-		self.createSetup()
+		self["actions2"] = ActionMap(["SetupActions", "ColorActions", "VirtualKeyboardActions", "MenuActions"], {
+		"yellow": self.chooseFiles,
+		"blue": self.chooseXtraPluginDir,
+		}, -2)
 
 	def chooseFiles(self):
 		self.session.openWithCallback(self.backupfiles_choosen, BackupSelection)
 
 	def chooseXtraPluginDir(self):
-		self.session.openWithCallback(self.backupfiles_choosen, XtraPluginsSelection)
+		self.session.open(XtraPluginsSelection)
 
 	def backupfiles_choosen(self, ret):
-		self.backupdirs = ' '.join(config.backupmanager.backupdirs.value)
+		self.backupdirs = " ".join(config.backupmanager.backupdirs.value)
 		config.backupmanager.backupdirs.save()
 		config.backupmanager.save()
 		config.save()
-
-	def createSetup(self):
-		imparts = []
-		for p in harddiskmanager.getMountedPartitions():
-			if path.exists(p.mountpoint):
-				d = path.normpath(p.mountpoint)
-				m = d + '/', p.mountpoint
-				if p.mountpoint != '/':
-					imparts.append((d + '/', p.mountpoint))
-
-		config.backupmanager.backuplocation.setChoices(imparts)
-		self.editListEntry = None
-		self.list = []
-		self.list.append(getConfigListEntry(_("Backup location"), config.backupmanager.backuplocation))
-		self.list.append(getConfigListEntry(_("Folder Prefix"), config.backupmanager.folderprefix))
-		self.list.append(getConfigListEntry(_("Schedule backups"), config.backupmanager.schedule))
-		if config.backupmanager.schedule.value:
-			self.list.append(getConfigListEntry(_("Time of Backup to start in minutes"), config.backupmanager.scheduletime))
-			self.list.append(getConfigListEntry(_("Repeat how often"), config.backupmanager.repeattype))
-		self["config"].list = self.list
-		self["config"].setList(self.list)
-
-	def changedEntry(self):
-		if self["config"].getCurrent()[0] == _("Schedule Backups"):
-			self.createSetup()
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()
-
-	def KeyText(self):
-		if self['config'].getCurrent():
-			if self['config'].getCurrent()[0] == _("Folder Prefix"):
-				from Screens.VirtualKeyBoard import VirtualKeyBoard
-				self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title=self["config"].getCurrent()[0], text=self["config"].getCurrent()[1].getValue())
-
-	def VirtualKeyBoardCallback(self, callback=None):
-		if callback is not None and len(callback):
-			self["config"].getCurrent()[1].setValue(callback)
-			self["config"].invalidate(self["config"].getCurrent())
-
-	def saveAll(self):
-		for x in self["config"].list:
-			x[1].save()
-		config.save()
-
-	def keySave(self):
-		self.saveAll()
-		self.close()
-
-	def cancelConfirm(self, result):
-		if not result:
-			return
-
-		for x in self["config"].list:
-			x[1].cancel()
-		self.close()
-
-	def keyCancel(self):
-		if self["config"].isChanged():
-			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"))
-		else:
-			self.close()
 
 
 class VISIONBackupManagerLogView(Screen):

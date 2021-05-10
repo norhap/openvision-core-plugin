@@ -22,7 +22,7 @@ from . import _, PluginLanguageDomain
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
-from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock, configfile, getConfigListEntry
+from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock, configfile
 from Components.Console import Console
 from Components.Harddisk import harddiskmanager, getProcMounts
 from Components.Sources.StaticText import StaticText
@@ -87,8 +87,8 @@ config.imagemanager.imagefeed_PLi.value = config.imagemanager.imagefeed_PLi.defa
 
 autoImageManagerTimer = None
 
-TMPDIR = config.imagemanager.backuplocation.value + "imagebackups/" + config.imagemanager.folderprefix.value + "-" + "-mount"
-if path.exists(TMPDIR + "/root") and path.ismount(TMPDIR + "/root"):
+TMPDIR = config.imagemanager.backuplocation.value + "/imagebackups/" + config.imagemanager.folderprefix.value + "-" + "mount"
+if path.exists(TMPDIR + "/root/"):
 	try:
 		system("umount " + TMPDIR + "/root")
 	except Exception:
@@ -110,126 +110,6 @@ def ImageManagerautostart(reason, session=None, **kwargs):
 		if autoImageManagerTimer is not None:
 			print("[ImageManager] Stop")
 			autoImageManagerTimer.stop()
-
-
-class VISIONImageManagerMenu(ConfigListScreen, Screen):
-	skin = """
-	<screen name="VISIONImageManagerMenu" position="center,center" size="560,550">
-		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
-		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="config" position="0,90" size="560,375" transparent="0" enableWrapAround="1" scrollbarMode="showOnDemand"/>
-	</screen>"""
-
-	def __init__(self, session):
-		Screen.__init__(self, session)
-		ConfigListScreen.__init__(self, [])
-		self.session = session
-		self.skin = VISIONImageManagerMenu.skin
-		self.skinName = "VISIONImageManagerMenu"
-		Screen.setTitle(self, _("Vision Image Manager Setup"))
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
-
-		self.onChangedEntry = []
-		self.list = []
-		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
-		self.createSetup()
-
-		self["actions"] = ActionMap(['SetupActions', 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
-		{
-			"ok": self.keySave,
-			"cancel": self.keyCancel,
-			"red": self.keyCancel,
-			"green": self.keySave,
-			'showVirtualKeyboard': self.KeyText,
-			"menu": self.keyCancel,
-		}, -2)
-
-		self["key_red"] = Button(_("Cancel"))
-		self["key_green"] = Button(_("OK"))
-
-	def createSetup(self):
-		imparts = []
-		for p in harddiskmanager.getMountedPartitions():
-			if path.exists(p.mountpoint):
-				d = path.normpath(p.mountpoint)
-				m = d + '/', p.mountpoint
-				if p.mountpoint != '/':
-					imparts.append((d + '/', p.mountpoint))
-
-		config.imagemanager.backuplocation.setChoices(imparts)
-		self.editListEntry = None
-		self.list = []
-		self.list.append(getConfigListEntry(_("Backup Location"), config.imagemanager.backuplocation))
-		self.list.append(getConfigListEntry(_("Folder Prefix"), config.imagemanager.folderprefix))
-		self.list.append(getConfigListEntry(_("Schedule Backups"), config.imagemanager.schedule))
-		if config.imagemanager.schedule.value:
-			self.list.append(getConfigListEntry(_("Time of Backup to start in minutes"), config.imagemanager.scheduletime))
-			self.list.append(getConfigListEntry(_("Repeat how often"), config.imagemanager.repeattype))
-		self["config"].list = self.list
-		self["config"].setList(self.list)
-
-	def changedEntry(self):
-		if self["config"].getCurrent()[0] == _("Schedule Backups"):
-			self.createSetup()
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()
-
-	def KeyText(self):
-		if self['config'].getCurrent():
-			if self['config'].getCurrent()[0] == _("Folder Prefix"):
-				from Screens.VirtualKeyBoard import VirtualKeyBoard
-				self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title=self["config"].getCurrent()[0], text=self["config"].getCurrent()[1].getValue())
-
-	def VirtualKeyBoardCallback(self, callback=None):
-		if callback is not None and len(callback):
-			self["config"].getCurrent()[1].setValue(callback)
-			self["config"].invalidate(self["config"].getCurrent())
-
-	def keySave(self):
-		if config.imagemanager.folderprefix.value == "":
-			config.imagemanager.folderprefix.value = defaultprefix
-		for configElement in (config.imagemanager.developer_username, config.imagemanager.developer_password):
-			if not configElement.value:
-				configElement.value = configElement.default
-		if not configElement.value:
-			config.imagemanager.imagefeed_DevL.value = config.imagemanager.imagefeed_DevL.default
-		for configElement in (config.imagemanager.imagefeed_ViX, config.imagemanager.imagefeed_ATV, config.imagemanager.imagefeed_PLi):
-			self.check_URL_format(configElement)
-		for x in self["config"].list:
-			x[1].save()
-		configfile.save()
-		self.close()
-
-	def check_URL_format(self, configElement):
-		if configElement.value:
-			configElement.value = "%s%s" % (not (configElement.value.startswith("http://") or configElement.value.startswith("https://") or configElement.value.startswith("ftp://")) and "http://" or "", configElement.value)
-			configElement.value = configElement.value.strip("/") # remove any trailing slash
-		else:
-			configElement.value = configElement.default
-
-	def cancelConfirm(self, result):
-		if not result:
-			return
-
-		for x in self["config"].list:
-			x[1].cancel()
-		self.close()
-
-	def keyCancel(self):
-		if self["config"].isChanged():
-			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"))
-		else:
-			self.close()
 
 
 class VISIONImageManager(Screen):
@@ -254,7 +134,6 @@ class VISIONImageManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Vision Image Manager"))
-
 		self["lab7"] = Label()
 		self["backupstatus"] = Label()
 		self["key_red"] = Button(_("Delete"))
@@ -432,12 +311,21 @@ class VISIONImageManager(Screen):
 
 	def keyDelete(self):
 		self.sel = self["list"].getCurrent()
-		if self.sel is not None:
-			self["list"].instance.moveSelectionTo(0)
-			if self.sel.endswith(".zip"):
-				remove(self.BackupDirectory + self.sel)
-			else:
-				rmtree(self.BackupDirectory + self.sel)
+		if self.sel:
+			message = _("Are you sure you want to delete this backup:\n ") + self.sel
+			confirm_delete = self.session.openWithCallback(self.BackupToDelete, MessageBox, message, MessageBox.TYPE_YESNO, default=False)
+			confirm_delete.setTitle(_("Remove confirmation"))
+		else:
+			self.session.open(MessageBox, _("There is no backup to delete."), MessageBox.TYPE_INFO, timeout=10)
+
+	def BackupToDelete(self, answer):
+		self.sel = self["list"].getCurrent()
+		backupname = self.BackupDirectory + self.sel
+		folderprefix = config.imagemanager.folderprefix.value + "-" + imagetype + "-" + imageversion
+		cmd = "rm -rf %s" % backupname
+		if answer == True:
+		    if self.sel.startswith(folderprefix) and self.BackupRunning == False or self.sel.endswith(".zip"):
+		        Console().ePopen(cmd)
 			self.refreshList()
 
 	def GreenPressed(self):
@@ -1027,15 +915,15 @@ class ImageBackup(Screen):
 		self.SwapCreated = True
 
 	def doBackup1(self):
-		print("[ImageManager] Stage1: Creating tmp folders.", self.BackupDirectory)
-		print("[ImageManager] Stage1: Creating backup Folders.")
+		print("[ImageManager] Stage 1: Creating tmp folders.", self.BackupDirectory)
+		print("[ImageManager] Stage 1: Creating backup folders.")
+		mount = self.TMPDIR + "/root/"
+		for folder in ["linuxrootfs1", "proc"]:
+		    if path.exists(mount + folder):
+			    return self.session.open(TryQuitMainloop, 2)
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
 		mkdir(self.WORKDIR, 0o644)
-		if path.exists(self.TMPDIR + "/root") and path.ismount(self.TMPDIR + "/root"):
-			system("umount " + self.TMPDIR + "/root")
-		elif path.exists(self.TMPDIR + "/root"):
-			rmtree(self.TMPDIR + "/root")
 		if path.exists(self.TMPDIR):
 			rmtree(self.TMPDIR)
 		makedirs(self.TMPDIR, 0o644)
@@ -1625,12 +1513,11 @@ class ImageManagerDownload(Screen):
 class ImageManagerSetup(Setup):
 	def __init__(self, session):
 		Setup.__init__(self, session=session, setup="visionimagemanager", plugin="SystemPlugins/Vision", PluginLanguageDomain=PluginLanguageDomain)
+		Setup.setTitle(self, _("Image Manager Setup"))
 
 	def keySave(self):
 		if config.imagemanager.folderprefix.value == "":
 			config.imagemanager.folderprefix.value = defaultprefix
-		if not configElement.value:
-			config.imagemanager.imagefeed_DevL.value = config.imagemanager.imagefeed_DevL.default
 		for configElement in (config.imagemanager.imagefeed_ViX, config.imagemanager.imagefeed_ATV, config.imagemanager.imagefeed_PLi):
 			self.check_URL_format(configElement)
 		for x in self["config"].list:

@@ -156,8 +156,8 @@ msgstr "Administrador de copias configuración"
 msgid "Backup manager Log"
 msgstr "Historial de copias de seguridad"
 
-msgid "Backup manager settings"
-msgstr "Configuración copia administrador"
+msgid "Backup Manager Setup"
+msgstr "Ajustes Administrador de copias"
 
 msgid "Backup manager Setup"
 msgstr "Configuración del administrador de copias de seguridad"
@@ -586,7 +586,7 @@ msgid "Script runner"
 msgstr "Ejecuciones de Scripts"
 
 msgid "Script Runner Setup"
-msgstr "Configuración Ejecuciones de Scripts"
+msgstr "Ajustes Ejecuciones de Scripts"
 
 msgid "Select"
 msgstr "Seleccionar"
@@ -645,8 +645,8 @@ msgstr "Administrador de Softcams"
 msgid "Softcam manager Log"
 msgstr "Historial del administrador de Softcam"
 
-msgid "Softcam manager Setup"
-msgstr "Configuración de Softcam manager"
+msgid "Softcam Manager Setup"
+msgstr "Ajustes Administrador Softcam"
 
 msgid "Softcam Setup"
 msgstr "Configuración de Softcam"
@@ -1305,7 +1305,7 @@ msgstr "Ingrese su contraseña de desarrollador de ViX."
 msgid "If you are a ViX developer you can enter your login details to have direct access to ViX developer images for your receiver. This feature is only available via 'https' connections."
 msgstr "Si es un desarrollador de ViX, puede ingresar sus datos de inicio de sesión para tener acceso directo a las imágenes de desarrollador de ViX para su receptor. Esta función solo está disponible a través de conexiones 'https'."
 
-msgid "Image manager settings"
+msgid "Image Manager Setup"
 msgstr "Ajustes Administrador de Imagen"
 
 msgid "Vision Softcam setup"
@@ -1313,3 +1313,6 @@ msgstr "Ajustes Vision Softcam"
 
 msgid "Really close without saving settings?"
 msgstr "Cerrar sin guardar la configuración?"
+
+msgid "Set the time of backup to start."
+msgstr "Establezca la hora de inicio de la copia de seguridad."
