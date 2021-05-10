@@ -14,7 +14,7 @@ import json
 
 from boxbranding import getImageType, getImageDistro, getImageVersion, getImageDevBuild, getImageFolder, getImageFileSystem, getMachineBuild, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
 from enigma import eTimer, fbClass, getBoxType, getBoxBrand
-from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, statvfs, chmod, walk
+from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, rmdir, statvfs, chmod, walk
 from shutil import rmtree, move, copy, copyfile
 from time import localtime, time, strftime, mktime
 from Components.ConfigList import ConfigListScreen
@@ -40,6 +40,7 @@ import Tools.CopyFiles
 from Tools.HardwareInfo import HardwareInfo
 from Tools.Multiboot import GetImagelist, getCurrentImage
 from Tools.Notifications import AddPopupWithCallback
+import six
 
 model = getBoxType()
 brand = getBoxBrand()
@@ -503,32 +504,27 @@ class VISIONImageManager(Screen):
 
 	def ofgwriteResult(self, result, retval, extra_args=None):
 		fbClass.getInstance().unlock()
-		print("[ImageManager] ofgwrite retval :", retval)
+		print("[ImageManager] ofgwrite retval:", retval)
 		if retval == 0:
 			if SystemInfo["HiSilicon"] and SystemInfo["HasRootSubdir"] is False and self.HasSDmmc is False:	# sf8008 receiver 1 eMMC parition, No SD card
 				self.session.open(TryQuitMainloop, 2)
 			if SystemInfo["canMultiBoot"]:
-				print("[ImageManager] slot %s result %s\n" % (self.multibootslot, result))
-				self.container = Console()
-				if pathExists("/tmp/startupmount"):
-					self.ContainterFallback()
+				print("[ImageManager] slot %s result %s\n" % (self.multibootslot, six.ensure_str(result)))
+				tmp_dir = tempfile.mkdtemp(prefix="ImageManagerFlash")
+				Console().ePopen("mount %s %s" % (self.mtdboot, tmp_dir))
+				if pathExists(path.join(tmp_dir, "STARTUP")):
+					copyfile(path.join(tmp_dir, SystemInfo["canMultiBoot"][self.multibootslot]["startupfile"].replace("boxmode=12'", "boxmode=1'")), path.join(tmp_dir, "STARTUP"))
 				else:
-					mkdir("/tmp/startupmount")
-					self.container.ePopen("mount %s /tmp/startupmount" % self.mtdboot, self.ContainterFallback)
+					self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in boot partition."), MessageBox.TYPE_INFO, timeout=20)
+				Console().ePopen('umount %s' % tmp_dir)
+				if not path.ismount(tmp_dir):
+					rmdir(tmp_dir)
+				self.session.open(TryQuitMainloop, 2)
 			else:
 				self.session.open(TryQuitMainloop, 2)
 		else:
 			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("ofgwrite error (also sent to any debug log):\n%s") % result, MessageBox.TYPE_INFO, timeout=20)
-			print("[ImageManager] OFGWriteResult failed:\n", result)
-
-	def ContainterFallback(self, data=None, retval=None, extra_args=None):
-		self.container.killAll()
-		print("[ImageManager Restart] reboot3 slot:", self.multibootslot)
-		if pathExists("/tmp/startupmount/STARTUP"):
-			copyfile("/tmp/startupmount/%s" % SystemInfo["canMultiBoot"][self.multibootslot]["startupfile"].replace("boxmode=12'", "boxmode=1'"), "/tmp/startupmount/STARTUP")
-			self.session.open(TryQuitMainloop, 2)
-		else:
-			rmtree(config.imagemanager.backuplocation.getValue() + "/imagebackups/imagerestore"), self.session.open(MessageBox, _("Flash on slot successful"), MessageBox.TYPE_INFO, timeout=10)
+			print("[ImageManager] ofgwrite result failed:\n", result)
 
 	def dualBoot(self):
 		rootfs2 = False
@@ -1381,7 +1377,6 @@ class ImageManagerDownload(Screen):
 		self.setIndex = 0
 		self.expanded = []
 		self["list"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("No images found on the selected download server...if password check validity")), "Waiter"))])
-		self.imagesList = {}
 		self.getImageDistro()
 
 	def getImageDistro(self):
