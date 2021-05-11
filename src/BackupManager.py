@@ -728,7 +728,7 @@ class VISIONBackupManager(Screen):
 		self.Stage3Completed = True
 		self.Stage4Completed = True
 		self.Stage5Completed = True
-		if self.Stage5:
+		if self.didPluginsRestore or self.didSettingsRestore:
 			print('[BackupManager] Restoring completed rebooting')
 			self.Console.ePopen("sleep 100" + " &&" + " /sbin/init 4" + " &&" + " sleep 5" + " &&" + " tar -xzvf" + self.BackupDirectory + self.sel + " -C /" + " &&" + " rm -f /tmp/ExtraInstalledPlugins /tmp/backupimageversion /tmp/backupkernelversion" + " &&" + " /sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring please wait..."), MessageBox.TYPE_INFO))
 		else:
