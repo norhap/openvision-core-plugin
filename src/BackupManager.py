@@ -939,7 +939,6 @@ class VISIONBackupManagerMenu(Setup):
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
 		Setup.__init__(self, session, setup, plugin, PluginLanguageDomain)
 		self.skinName = ["VISIONBackupManagerMenu"]
-		Setup.setTitle(self, _("Backup Manager Setup"))
 		self["lab1"] = StaticText(_("OpenVision"))
 		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
 		self["lab3"] = StaticText(_("Report problems to:"))

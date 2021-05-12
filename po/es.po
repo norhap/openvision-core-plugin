@@ -156,12 +156,6 @@ msgstr "Administrador de copias configuración"
 msgid "Backup manager Log"
 msgstr "Historial de copias de seguridad"
 
-msgid "Backup Manager Setup"
-msgstr "Ajustes Administrador de copias"
-
-msgid "Backup manager Setup"
-msgstr "Configuración del administrador de copias de seguridad"
-
 msgid "Backup failed - e. g. wrong backup destination or no space left on backup device"
 msgstr "Copia fallida. Destino erróneo o no hay espacio suficiente en el dispositivo de almacenamiento"
 
@@ -328,9 +322,6 @@ msgstr "Administrador de Imagen"
 
 msgid "IPK installer"
 msgstr "IPK instalar"
-
-msgid "Image manager Setup"
-msgstr "Configuración del administrador de Imagen"
 
 msgid "Inactive"
 msgstr "Inactivo"
@@ -584,9 +575,6 @@ msgstr "Programar copias de seguridad"
 
 msgid "Script runner"
 msgstr "Ejecuciones de Scripts"
-
-msgid "Script Runner Setup"
-msgstr "Ajustes Ejecuciones de Scripts"
 
 msgid "Select"
 msgstr "Seleccionar"
@@ -1304,9 +1292,6 @@ msgstr "Ingrese su contraseña de desarrollador de ViX."
 
 msgid "If you are a ViX developer you can enter your login details to have direct access to ViX developer images for your receiver. This feature is only available via 'https' connections."
 msgstr "Si es un desarrollador de ViX, puede ingresar sus datos de inicio de sesión para tener acceso directo a las imágenes de desarrollador de ViX para su receptor. Esta función solo está disponible a través de conexiones 'https'."
-
-msgid "Image Manager Setup"
-msgstr "Ajustes Administrador de Imagen"
 
 msgid "Vision Softcam setup"
 msgstr "Ajustes Vision Softcam"

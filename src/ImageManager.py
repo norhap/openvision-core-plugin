@@ -1508,7 +1508,6 @@ class ImageManagerDownload(Screen):
 class ImageManagerSetup(Setup):
 	def __init__(self, session):
 		Setup.__init__(self, session=session, setup="visionimagemanager", plugin="SystemPlugins/Vision", PluginLanguageDomain=PluginLanguageDomain)
-		Setup.setTitle(self, _("Image Manager Setup"))
 
 	def keySave(self):
 		if config.imagemanager.folderprefix.value == "":
