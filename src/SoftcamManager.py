@@ -49,10 +49,10 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during shutdown, with reason=0 at startup?"""
 	global softcamautopoller
 	if reason == 0:
-		print("[SoftcamManager] AutoStart Enabled")
+		print("[SoftcamManager] Autostart enabled")
 		if path.exists('/tmp/SoftcamsDisableCheck'):
 			remove('/tmp/SoftcamsDisableCheck')
-		softcamautopoller = JobStart()
+		softcamautopoller = SoftcamAutoPoller()
 		softcamautopoller.start()
 	elif reason == 1:
 		# Stop Poller
@@ -195,10 +195,10 @@ class VISIONSoftcamManager(Screen):
 	def showActivecam2(self, result, retval, extra_args):
 		if retval == 0:
 			if six.PY3:
-				self.currentactivecamtemp = result.decode
+				self.currentactivecamtemp = six.ensure_str(result)
 			else:
 				self.currentactivecamtemp = result
-				self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
+			self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
 			self.currentactivecam = self.currentactivecam.replace("\n", ", ")
 			print("[SoftcamManager] Active:%s " % self.currentactivecam)
 			if path.exists("/tmp/SoftcamsScriptsRunning"):
@@ -220,7 +220,6 @@ class VISIONSoftcamManager(Screen):
 		if cams:
 			self.sel = self['list'].getCurrent()[0]
 			selcam = self.sel[0]
-			CCcam = "CCcam"
 			if self.currentactivecam.find(selcam) < 0:
 				if selcam.lower().endswith('oscam'):
 					if not path.exists('/etc/tuxbox/config/oscam/oscam.conf'):
@@ -247,11 +246,11 @@ class VISIONSoftcamManager(Screen):
 						self.session.open(MessageBox, _("No config files found, please setup Wicardd first\nin /etc/tuxbox/config/wicardd"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
 						self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-				elif CCcam and not selcam.lower().startswith('mgcamd'):
+				elif not selcam.lower().startswith('mgcamd'):
 					if not path.exists('/etc/CCcam.cfg'):
 						self.session.open(MessageBox, _("No config files found, please setup CCcam.cfg first\nin /etc/CCcam.cfg"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					else:
-						self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0]), self.Console.ePopen('/usr/softcams/' + CCcam)
+						self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0]), self.Console.ePopen('/usr/softcams/' + "CCcam")
 				elif selcam.lower().startswith('mgcamd'):
 					if not path.exists('/usr/keys/mg_cfg'):
 						self.session.open(MessageBox, _("No config files found, please setup MGcamd first\nin /usr/keys"), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
@@ -663,29 +662,27 @@ class VISIONSoftcamLog(Screen):
 	def cancel(self):
 		self.close()
 
-class JobStart:
+class SoftcamAutoPoller:
 	"""Automatically Poll SoftCam"""
 
 	def __init__(self):
-		if not path.exists('/usr/softcams'):
-			mkdir('/usr/softcams', 0o755)
-		if not path.exists('/etc/scce'):
-			mkdir('/etc/scce', 0o755)
-		if not path.exists('/etc/tuxbox/config'):
-			mkdir('/etc/tuxbox/config', 0o755)
-		if not path.islink('/var/tuxbox'):
-			symlink('/etc/tuxbox', '/var/tuxbox')
-		if not path.exists('/usr/keys'):
-			mkdir('/usr/keys', 0o755)
-		if not path.islink('/var/keys'):
-			symlink('/usr/keys', '/var/keys')
-		if not path.islink('/etc/keys'):
-			symlink('/usr/keys', '/etc/keys')
-		if not path.islink('/var/scce'):
-			symlink('/etc/scce', '/var/scce')
-		self.timer = eTimer()
-		self.autostartcams = config.softcammanager.softcams_autostart.value
-		self.Console = Console()
+		# Init Timer
+		if not path.exists("/usr/softcams"):
+			mkdir("/usr/softcams", 0o755)
+		if not path.exists("/etc/scce"):
+			mkdir("/etc/scce", 0o755)
+		if not path.exists("/etc/tuxbox/config"):
+			mkdir("/etc/tuxbox/config", 0o755)
+		if not path.islink("/var/tuxbox"):
+			symlink("/etc/tuxbox", "/var/tuxbox")
+		if not path.exists("/usr/keys"):
+			mkdir("/usr/keys", 0o755)
+		if not path.islink("/var/keys"):
+			symlink("/usr/keys", "/var/keys")
+		if not path.islink("/etc/keys"):
+			symlink("/usr/keys", "/etc/keys")
+		if not path.islink("/var/scce"):
+			symlink("/etc/scce", "/var/scce")
 		self.timer = eTimer()
 
 	def start(self):
@@ -700,25 +697,48 @@ class JobStart:
 
 	def softcam_check(self):
 		now = int(time())
-		if path.exists('/tmp/SoftcamRuningCheck.tmp'):
-			remove('/tmp/SoftcamRuningCheck.tmp')
+		if path.exists("/tmp/SoftcamRuningCheck.tmp"):
+			remove("/tmp/SoftcamRuningCheck.tmp")
 
-		if config.softcammanager.softcamtimerenabled.value and path.exists('/tmp/cam.check.log'):
-			# 			print("[SoftcamManager] Timer Check Enabled")
-			output = open('/tmp/cam.check.log', 'a')
+		if config.softcammanager.softcams_autostart:
+			Components.Task.job_manager.AddJob(self.createCheckJob())
+
+		if config.softcammanager.softcamtimerenabled.value:
+			# 			print "[SoftcamManager] Timer Check Enabled"
+			output = open("/tmp/cam.check.log", "a")
 			now = datetime.now()
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Enabled\n")
 			output.close()
 			self.timer.startLongTimer(config.softcammanager.softcamtimer.value * 60)
 		else:
-			output = open('/tmp/cam.check.log', 'a')
+			output = open("/tmp/cam.check.log", "a")
 			now = datetime.now()
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Timer Check Disabled\n")
 			output.close()
+			# 			print "[SoftcamManager] Timer Check Disabled"
 			softcamautopoller.stop()
 
-		if path.exists('/tmp/SoftcamRuningCheck.tmp'):
-			remove('/tmp/SoftcamRuningCheck.tmp')
+	def createCheckJob(self):
+		job = Components.Task.Job(_("SoftcamCheck"))
+
+		task = Components.Task.PythonTask(job, _("Checking softcams..."))
+		task.work = self.JobStart
+		task.weighting = 1
+
+		return job
+
+	def JobStart(self):
+		self.autostartcams = config.softcammanager.softcams_autostart.value
+		self.Console = Console()
+		if path.exists("/tmp/cam.check.log"):
+			if path.getsize("/tmp/cam.check.log") > 40000:
+				fh = open("/tmp/cam.check.log", "rb+")
+				fh.seek(-40000, 2)
+				data = fh.read()
+				fh.seek(0)  # rewind
+				fh.write(data)
+				fh.truncate()
+				fh.close()
 		if SystemInfo["OScamInstalled"] and not path.exists("/usr/softcams/oscam"):
 			self.Console.ePopen('ln -s /usr/bin/*oscam* /usr/softcams/')
 		if SystemInfo["NCamInstalled"] and not path.exists("/usr/softcams/ncam"):
@@ -743,73 +763,88 @@ class JobStart:
 		    self.Console.ePopen('rm -f /usr/softcams/ncam ')
 		if not path.exists("/usr/bin/oscam-emu") and path.islink("/usr/softcams/oscam-emu"):
 		    self.Console.ePopen('rm -f /usr/softcams/oscam-emu ')
-		if path.exists('/tmp/cam.check.log'):
-			if path.getsize('/tmp/cam.check.log') > 40000:
-				fh = open('/tmp/cam.check.log', 'rb+')
-				fh.seek(-40000, 2)
-				data = fh.read()
-				fh.seek(0)  # rewind
-				fh.write(data)
-				fh.truncate()
-				fh.close()
+
+		if path.exists("/etc/CCcam.cfg"):
+			f = open("/etc/CCcam.cfg", "r")
+			logwarn = ""
+			for line in f.readlines():
+				if line.find("LOG WARNINGS") != -1:
+					parts = line.strip().split()
+					logwarn = parts[2]
+					if logwarn.find(":") >= 0:
+						logwarn = logwarn.replace(":", "")
+					if logwarn == "":
+						logwarn = parts[3]
+				else:
+					logwarn = ""
+			if path.exists(logwarn):
+				if path.getsize(logwarn) > 40000:
+					fh = open(logwarn, "rb+")
+					fh.seek(-40000, 2)
+					data = fh.read()
+					fh.seek(0)  # rewind
+					fh.write(data)
+					fh.truncate()
+					fh.close()
+			f.close()
 
 		for softcamcheck in self.autostartcams:
 			softcamcheck = softcamcheck.replace("/usr/softcams/", "")
 			softcamcheck = softcamcheck.replace("\n", "")
-			if softcamcheck.endswith('.sh'):
-				if path.exists('/tmp/SoftcamsDisableCheck'):
-					file = open('/tmp/SoftcamsDisableCheck')
+			if softcamcheck.endswith(".sh"):
+				if path.exists("/tmp/SoftcamsDisableCheck"):
+					file = open("/tmp/SoftcamsDisableCheck")
 					data = file.read()
 					file.close()
 				else:
-					data = ''
+					data = ""
 				if data.find(softcamcheck) < 0:
-					if path.exists('/tmp/SoftcamsScriptsRunning'):
-						file = open('/tmp/SoftcamsScriptsRunning')
+					if path.exists("/tmp/SoftcamsScriptsRunning"):
+						file = open("/tmp/SoftcamsScriptsRunning")
 						data = file.read()
 						file.close()
 						if data.find(softcamcheck) < 0:
-							fileout = open('/tmp/SoftcamsScriptsRunning', 'a')
-							line = softcamcheck + '\n'
+							fileout = open("/tmp/SoftcamsScriptsRunning", "a")
+							line = softcamcheck + "\n"
 							fileout.write(line)
 							fileout.close()
-							print('[SoftcamManager] Starting ' + softcamcheck)
-							self.Console.ePopen('/usr/softcams/' + softcamcheck + ' start')
+							print("[SoftcamManager] Starting " + softcamcheck)
+							self.Console.ePopen("/usr/softcams/" + softcamcheck + " start")
 					else:
-						fileout = open('/tmp/SoftcamsScriptsRunning', 'w')
-						line = softcamcheck + '\n'
+						fileout = open("/tmp/SoftcamsScriptsRunning", "w")
+						line = softcamcheck + "\n"
 						fileout.write(line)
 						fileout.close()
-						print('[SoftcamManager] Starting ' + softcamcheck)
-						self.Console.ePopen('/usr/softcams/' + softcamcheck + ' start')
+						print("[SoftcamManager] Starting " + softcamcheck)
+						self.Console.ePopen("/usr/softcams/" + softcamcheck + " start")
 			else:
-				if path.exists('/tmp/SoftcamsDisableCheck'):
-					file = open('/tmp/SoftcamsDisableCheck')
+				if path.exists("/tmp/SoftcamsDisableCheck"):
+					file = open("/tmp/SoftcamsDisableCheck")
 					data = file.read()
 					file.close()
 				else:
-					data = ''
+					data = ""
 				if data.find(softcamcheck) < 0:
 					import process
 
 					p = process.ProcessList()
-					softcamcheck_process = str(p.named(softcamcheck)).strip('[]')
+					softcamcheck_process = str(p.named(softcamcheck)).strip("[]")
 					if softcamcheck_process != "":
-						if path.exists('/tmp/frozen'):
-							remove('/tmp/frozen')
-						if path.exists('/tmp/status.html'):
-							remove('/tmp/status.html')
-						if path.exists('/tmp/index.html'):
-							remove('/tmp/index.html')
-						print('[SoftcamManager] ' + softcamcheck + ' already running')
-						output = open('/tmp/cam.check.log', 'a')
+						if path.exists("/tmp/frozen"):
+							remove("/tmp/frozen")
+						if path.exists("/tmp/status.html"):
+							remove("/tmp/status.html")
+						if path.exists("/tmp/index.html"):
+							remove("/tmp/index.html")
+						print("[SoftcamManager] " + softcamcheck + " already running")
+						output = open("/tmp/cam.check.log", "a")
 						now = datetime.now()
 						output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " running OK\n")
 						output.close()
-						if softcamcheck.lower().startswith('oscam') or softcamcheck.lower().startswith('ncam'):
-							if path.exists('/tmp/status.html'):
-								remove('/tmp/status.html')
-							port = ''
+						if softcamcheck.lower().startswith("oscam"):
+							if path.exists("/tmp/status.html"):
+								remove("/tmp/status.html")
+							port = ""
 							if path.exists('/etc/tuxbox/config/oscam/oscam.conf'):
 								oscamconf = '/etc/tuxbox/config/oscam/oscam.conf'
 							elif path.exists('/etc/tuxbox/config/ncam/ncam.conf'):
@@ -820,57 +855,153 @@ class JobStart:
 								oscamconf = '/etc/tuxbox/config/oscam-smod/oscam.conf'
 							f = open(oscamconf, 'r')
 							for line in f.readlines():
-								if line.find('httpport') != -1:
+								if line.find("httpport") != -1:
 									port = re.sub("\D", "", line)
 							f.close()
-							print('[SoftcamManager] Checking if ' + softcamcheck + ' is frozen')
+							print("[SoftcamManager] Checking if " + softcamcheck + " is frozen")
 							if port == "":
 								port = "16000"
 							self.Console.ePopen("wget -T 1 http://127.0.0.1:" + port + "/status.html -O /tmp/status.html &> /tmp/frozen")
 							sleep(2)
-							f = open('/tmp/frozen')
+							f = open("/tmp/frozen")
 							frozen = f.read()
 							f.close()
-							if frozen.find('Unauthorized') != -1 or frozen.find('Authorization Required') != -1 or frozen.find('Forbidden') != -1 or frozen.find('Connection refused') != -1 or frozen.find('100%') != -1 or path.exists('/tmp/status.html') or getImageArch() != "armv7vehf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() != "cortexa15hf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() != "armv7ahf-neon" and softcamcheck.lower().startswith('mgcamd'):
-								print('[SoftcamManager] ' + softcamcheck + ' is responding like it should')
-								output = open('/tmp/cam.check.log', 'a')
+							if frozen.find("Unauthorized") != -1 or frozen.find("Authorization Required") != -1 or frozen.find("Forbidden") != -1 or frozen.find("Connection refused") != -1 or frozen.find("100%") != -1 or path.exists("/tmp/status.html"):
+								print("[SoftcamManager] " + softcamcheck + " is responding like it should")
+								output = open("/tmp/cam.check.log", "a")
 								now = datetime.now()
 								output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is responding like it should\n")
 								output.close()
 							else:
-								print('[SoftcamManager] ' + softcamcheck + ' is frozen, Restarting...')
-								output = open('/tmp/cam.check.log', 'a')
+								print("[SoftcamManager] " + softcamcheck + " is frozen, Restarting...")
+								output = open("/tmp/cam.check.log", "a")
 								now = datetime.now()
 								output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is frozen, Restarting...\n")
 								output.close()
-								print('[SoftcamManager] Stopping ' + softcamcheck)
-								output = open('/tmp/cam.check.log', 'a')
+								print("[SoftcamManager] Stopping " + softcamcheck)
+								output = open("/tmp/cam.check.log", "a")
 								now = datetime.now()
 								output.write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStopping: " + softcamcheck + "\n")
 								output.close()
 								self.Console.ePopen("killall -9 " + softcamcheck)
 								sleep(1)
-								print('[SoftcamManager] Starting ' + softcamcheck)
-								output = open('/tmp/cam.check.log', 'a')
+								self.Console.ePopen("ps.procps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/oscamRuningCheck.tmp")
+								sleep(2)
+								file = open("/tmp/oscamRuningCheck.tmp")
+								cccamcheck_process = file.read()
+								file.close()
+								cccamcheck_process = cccamcheck_process.replace("\n", "")
+								if cccamcheck_process.lower().find("cccam") != -1:
+									try:
+										print("[SoftcamManager] Stopping ", cccamcheck_process)
+										output = open("/tmp/cam.check.log", "a")
+										now = datetime.now()
+										output.write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStopping: " + cccamcheck_process + "\n")
+										output.close()
+										self.Console.ePopen("killall -9 /usr/softcams/" + str(cccamcheck_process))
+									except:
+										pass
+								print("[SoftcamManager] Starting " + softcamcheck)
+								output = open("/tmp/cam.check.log", "a")
 								now = datetime.now()
 								output.write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStarting: " + softcamcheck + "\n")
 								output.close()
-								self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck + ' -b')
+								self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + softcamcheck + " -b")
 								sleep(10)
+
+						elif softcamcheck.lower().startswith("cccam"):
+							if path.exists("/tmp/index.html"):
+								remove("/tmp/index.html")
+							allow = "no"
+							port = ""
+							f = open("/etc/CCcam.cfg", "r")
+							for line in f.readlines():
+								if line.find("ALLOW WEBINFO") != -1:
+									if not line.startswith("#"):
+										parts = line.replace("ALLOW WEBINFO", "")
+										parts = parts.replace(":", "")
+										parts = parts.replace(" ", "")
+										parts = parts.strip().split()
+										if parts[0].startswith("yes"):
+											allow = parts[0]
+								if line.find("WEBINFO LISTEN PORT") != -1:
+									port = re.sub("\D", "", line)
+							f.close()
+							if allow.lower().find("yes") != -1:
+								print("[SoftcamManager] Checking if " + softcamcheck + " is frozen")
+								if port == "":
+									port = "16001"
+								self.Console.ePopen("wget -T 1 http://127.0.0.1:" + port + " -O /tmp/index.html &> /tmp/frozen")
+								sleep(2)
+								f = open("/tmp/frozen")
+								frozen = f.read()
+								f.close()
+								if frozen.find("Unauthorized") != -1 or frozen.find("Authorization Required") != -1 or frozen.find("Forbidden") != -1 or frozen.find("Connection refused") != -1 or frozen.find("100%") != -1 or path.exists("/tmp/index.html"):
+									print("[SoftcamManager] " + softcamcheck + " is responding like it should")
+									output = open("/tmp/cam.check.log", "a")
+									now = datetime.now()
+									output.write(now.strftime("%Y-%m-%d %H:%M") + ": ' + softcamcheck + ' is responding like it should\n")
+									output.close()
+								else:
+									print("[SoftcamManager] " + softcamcheck + " is frozen, Restarting...")
+									output = open("/tmp/cam.check.log", "a")
+									now = datetime.now()
+									output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " is frozen, Restarting...\n")
+									output.close()
+									print("[SoftcamManager] Stopping " + softcamcheck)
+									self.Console.ePopen("killall -9 " + softcamcheck)
+									sleep(1)
+									print("[SoftcamManager] Starting " + softcamcheck)
+									self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + softcamcheck)
+							elif allow.lower().find("no") != -1:
+								print("[SoftcamManager] Telnet info not allowed, can not check if frozen")
+								output = open("/tmp/cam.check.log", "a")
+								now = datetime.now()
+								output.write(now.strftime("%Y-%m-%d %H:%M") + ":  Webinfo info not allowed, can not check if frozen,\n\tplease enable 'ALLOW WEBINFO: YES'\n")
+								output.close()
+							else:
+								print("[SoftcamManager] Webinfo info not setup, please enable 'ALLOW WEBINFO= YES'")
+								output = open("/tmp/cam.check.log", "a")
+								now = datetime.now()
+								output.write(now.strftime("%Y-%m-%d %H:%M") + ":  Telnet info not setup, can not check if frozen,\n\tplease enable 'ALLOW WEBINFO: YES'\n")
+								output.close()
 
 					elif softcamcheck_process == "":
 						print("[SoftcamManager] Couldn't find " + softcamcheck + " running, Starting " + softcamcheck)
-						output = open('/tmp/cam.check.log', 'a')
+						output = open("/tmp/cam.check.log", "a")
 						now = datetime.now()
 						output.write(now.strftime("%Y-%m-%d %H:%M") + ": Couldn't find " + softcamcheck + " running, Starting " + softcamcheck + "\n")
 						output.close()
-						if softcamcheck.lower().startswith('oscam') or softcamcheck.lower().startswith('ncam'):
+						if softcamcheck.lower().startswith("oscam"):
 							self.Console.ePopen("ps.procps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/softcamRuningCheck.tmp")
-							file = open('/tmp/softcamRuningCheck.tmp')
+							sleep(2)
+							file = open("/tmp/softcamRuningCheck.tmp")
+							cccamcheck_process = file.read()
+							cccamcheck_process = cccamcheck_process.replace("\n", "")
 							file.close()
-							self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + softcamcheck + " -b")
-							remove('/tmp/softcamRuningCheck.tmp')
-						if self.autostartcams and softcamcheck.lower().startswith('wicardd'):
+							if cccamcheck_process.find("cccam") >= 0 or cccamcheck_process.find("CCcam") >= 0:
+								try:
+									print("[SoftcamManager] Stopping ", cccamcheck_process)
+									output = open("/tmp/cam.check.log", "a")
+									now = datetime.now()
+									output.write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStopping: " + cccamcheck_process + "\n")
+									output.close()
+									self.Console.ePopen("killall -9 /usr/softcams/" + str(cccamcheck_process))
+								except:
+									pass
+							self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + softcamcheck + " -b")
+							sleep(10)
+							remove("/tmp/softcamRuningCheck.tmp")
+						elif softcamcheck.lower().startswith("sbox"):
+							self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + softcamcheck)
+							sleep(7)
+						elif softcamcheck.lower().startswith("gbox"):
+							self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + softcamcheck)
+							sleep(3)
+							self.Console.ePopen("start-stop-daemon --start --quiet --background --exec /usr/bin/gbox")
+						elif softcamcheck.lower().startswith('wicardd'):
 						    self.Console.ePopen('/usr/softcams/' + softcamcheck + " -c" + " /etc/tuxbox/config/wicardd/wicardd.conf")
-						if getImageArch() == "armv7vehf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "cortexa15hf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "armv7ahf-neon" and softcamcheck.lower().startswith('mgcamd'):
+						elif getImageArch() == "armv7vehf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "cortexa15hf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "armv7ahf-neon" and softcamcheck.lower().startswith('mgcamd'):
 						    self.Console.ePopen('/usr/bin/env LD_PRELOAD=/usr/local/lib/libcrypto.so.1.0.0 /usr/softcams/' + softcamcheck)
+						else:
+							self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + softcamcheck)
