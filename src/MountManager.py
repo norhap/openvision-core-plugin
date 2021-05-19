@@ -447,7 +447,7 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		self.setconfTimer()
 
 	def setconfTimer(self, result=None, retval=None, extra_args=None):
-		scanning = _("Please wait while scanning your receiver devices...")
+		scanning = _("Scanned devices")
 		self["lab7"].setText(scanning)
 		self.activityTimer.start(10)
 
