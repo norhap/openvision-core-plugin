@@ -195,10 +195,10 @@ class VISIONSoftcamManager(Screen):
 	def showActivecam2(self, result, retval, extra_args):
 		if retval == 0:
 			if six.PY3:
-				self.currentactivecamtemp = result.decode
+				self.currentactivecamtemp = six.ensure_str(result)
 			else:
 				self.currentactivecamtemp = result
-				self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
+			self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
 			self.currentactivecam = self.currentactivecam.replace("\n", ", ")
 			print("[SoftcamManager] Active:%s " % self.currentactivecam)
 			if path.exists("/tmp/SoftcamsScriptsRunning"):
@@ -448,7 +448,7 @@ class VISIONStartCam(Screen):
 			print('[SoftcamManager] Starting ' + startselectedcam)
 			now = datetime.now()
 			open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Starting " + startselectedcam + "\n")
-			if startselectedcam.lower().startswith('oscam') or startselectedcam.lower().startswith('ncam') or startselectedcam.lower().startswith('oscam-smod') or startselectedcam.lower().startswith('oscam-emu'):
+			if startselectedcam.lower().startswith('oscam') or startselectedcam.lower().startswith('ncam'):
 				self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + startselectedcam + ' -b')
 			else:
 				self.Console.ePopen('ulimit -s 1024;/usr/softcams/' + startselectedcam)
@@ -710,19 +710,19 @@ class SoftcamAutoPoller:
 						print('[SoftcamManager] ' + softcamcheck + ' already running')
 						now = datetime.now()
 						open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " running OK\n")
-						if softcamcheck.lower().startswith('oscam') or softcamcheck.lower().startswith('oscam'):
+						if softcamcheck.lower().startswith('oscam') or softcamcheck.lower().startswith('ncam'):
 							if path.exists('/tmp/status.html'):
 								remove('/tmp/status.html')
 							port = ''
 							if path.exists('/etc/tuxbox/config/oscam/oscam.conf'):
-								oscamconf = '/etc/tuxbox/config/oscam/oscam.conf'
+								camconf = '/etc/tuxbox/config/oscam/oscam.conf'
 							elif path.exists('/etc/tuxbox/config/ncam/ncam.conf'):
-								oscamconf = '/etc/tuxbox/config/ncam/ncam.conf'
+								camconf = '/etc/tuxbox/config/ncam/ncam.conf'
 							elif path.exists('/etc/tuxbox/config/oscam-emu/oscam.conf'):
-								oscamconf = '/etc/tuxbox/config/oscam-emu/oscam.conf'
+								camconf = '/etc/tuxbox/config/oscam-emu/oscam.conf'
 							elif path.exists('/etc/tuxbox/config/oscam-smod/oscam.conf'):
-								oscamconf = '/etc/tuxbox/config/oscam-smod/oscam.conf'
-							f = open(oscamconf, 'r')
+								camconf = '/etc/tuxbox/config/oscam-smod/oscam.conf'
+							f = open(camconf, 'r')
 							for line in f.readlines():
 								if line.find('httpport') != -1:
 									port = re.sub("\D", "", line)
