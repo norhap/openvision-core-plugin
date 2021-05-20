@@ -193,7 +193,7 @@ class VISIONImageManager(Screen):
 		if self.BackupRunning:
 			self["key_green"].setText(_("View progress"))
 		else:
-			self["key_green"].setText(_("New backup"))
+			self["key_green"].setText(_("New backupimage"))
 		self.activityTimer.startLongTimer(5)
 		self.refreshList()
 
