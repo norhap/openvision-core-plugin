@@ -19,7 +19,7 @@ from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import BoxInfo, SystemInfo
+from Components.SystemInfo import BoxInfo
 import Components.Task
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
@@ -43,7 +43,7 @@ defaultprefix = distro[4:]
 for p in harddiskmanager.getMountedPartitions():
 	if path.exists(p.mountpoint):
 		d = path.normpath(p.mountpoint)
-		if SystemInfo["canMultiBoot"]:
+		if BoxInfo.getItem("canMultiBoot"):
 			if "mmcblk0p" in d or "mmcblk1p" in d:
 				continue
 		if p.mountpoint != '/':

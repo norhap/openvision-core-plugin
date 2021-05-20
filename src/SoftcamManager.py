@@ -25,7 +25,7 @@ from Components.PluginComponent import plugins
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import BoxInfo
 from Components.ConfigList import ConfigListScreen
 
 config.softcammanager = ConfigSubsection()
@@ -657,9 +657,9 @@ class SoftcamAutoPoller:
 	def JobStart(self):
 		self.autostartcams = config.softcammanager.softcams_autostart.value
 		self.Console = Console()
-		if SystemInfo["OScamInstalled"] and not path.exists("/usr/softcams/oscam"):
+		if BoxInfo.getItem("OScamInstalled") and not path.exists("/usr/softcams/oscam"):
 			self.Console.ePopen('ln -s /usr/bin/*oscam* /usr/softcams/')
-		if SystemInfo["NCamInstalled"] and not path.exists("/usr/softcams/ncam"):
+		if BoxInfo.getItem("NCamInstalled") and not path.exists("/usr/softcams/ncam"):
 		    self.Console.ePopen('ln -s /usr/bin/ncam /usr/softcams/')
 		if path.exists('/tmp/cam.check.log'):
 			if path.getsize('/tmp/cam.check.log') > 40000:

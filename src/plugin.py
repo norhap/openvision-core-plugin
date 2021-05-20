@@ -12,7 +12,7 @@ from SoftcamManager import SoftcamAutostart
 from ScriptRunner import ScriptRunnerAutostart
 from IPKInstaller import OpkgInstaller
 from ClientModeBox import ClientModeBoxWizard
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import BoxInfo
 
 config.misc.restorewizardrun = ConfigBoolean(default=False)
 
@@ -131,7 +131,7 @@ def ImageMangerMenu(session, **kwargs):
 	session.open(ImageManager)
 
 
-if SystemInfo["HasH9SD"]:
+if BoxInfo.getItem("HasH9SD"):
 	def H9SDmanager(session):
 		from H9SDmanager import H9SDmanager
 		return H9SDmanager(session)

@@ -6,7 +6,7 @@ from Screens.Console import Console
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import BoxInfo
 from Tools.BoundFunction import boundFunction
 
 
@@ -46,7 +46,7 @@ class H9SDmanager(Screen):
 		}, -1)
 
 	def SDInit(self):
-		if SystemInfo["HasH9SD"]:
+		if BoxInfo.getItem("HasH9SD"):
 			self.TITLE = _("Init Zgemma H9 SDcard - please reboot after use.")
 			cmdlist = []
 			cmdlist.append("umount /dev/mmcblk0p1")

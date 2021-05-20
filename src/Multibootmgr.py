@@ -5,7 +5,7 @@ from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
 from Components.config import config
 from Components.Label import Label
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import BoxInfo
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Tools.BoundFunction import boundFunction
@@ -78,7 +78,7 @@ class MultiBoot(Screen):
 		self.currentSelected = self["config"].l.getCurrentSelection()
 		if self.currentSelected != None:
 			if self.currentSelected[0][1] != "Queued":
-				if SystemInfo["HasRootSubdir"]:
+				if BoxInfo.getItem("HasRootSubdir"):
 					message = _("Removal of this slot will not show in %s GUI.  Are you sure you want to delete image slot?" % (self.currentSelected[0][1]))
 					ybox = self.session.openWithCallback(self.doErase, MessageBox, message, MessageBox.TYPE_YESNO, default=True)
 					ybox.setTitle(_("Remove confirmation"))

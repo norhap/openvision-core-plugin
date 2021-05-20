@@ -9,7 +9,7 @@ from Components.Label import Label
 from Components.Sources.List import List
 from Screens.ParentalControlSetup import ProtectedScreen
 from Components.config import config
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import BoxInfo
 
 
 class VISIONMenu(Screen, ProtectedScreen):
@@ -61,7 +61,7 @@ class VISIONMenu(Screen, ProtectedScreen):
 			self.list.append(("Swap Manager", _("Swap Manager"), _("Create and Manage your SWAP files."), None))
 			self.list.append(("Client Mode Box", _("Client Mode Box"), _("Use this box as a client of a server."), None))
 
-			if SystemInfo["HasH9SD"]:
+			if BoxInfo.getItem("HasH9SD"):
 				self.list.append(("H9 SDcard Manager", _("H9 SDcard Manager"), _("Move Nand root to SD card"), None))
 		self["menu"] = List(self.list)
 		self["key_red"] = StaticText(_("Close"))
@@ -125,7 +125,7 @@ class VISIONMenu(Screen, ProtectedScreen):
 				elif currentEntry == "Image Manager":
 					from ImageManager import VISIONImageManager
 					self.session.open(VISIONImageManager)
-				elif currentEntry == "H9 SDcard Manager" and SystemInfo["HasH9SD"]:
+				elif currentEntry == "H9 SDcard Manager" and BoxInfo.getItem("HasH9SD"):
 					from H9SDmanager import H9SDmanager
 					self.session.open(H9SDmanager)
 				elif currentEntry == "Opkg Install":
