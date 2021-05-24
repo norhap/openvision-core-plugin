@@ -11,6 +11,7 @@ except ImportError: # Python 2
 	from urllib import urlretrieve
 
 import json
+import tempfile
 
 from boxbranding import getImageType, getImageDistro, getImageVersion, getImageDevBuild, getImageFolder, getImageFileSystem, getMachineBuild, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
 from enigma import eTimer, fbClass, getBoxType, getBoxBrand
