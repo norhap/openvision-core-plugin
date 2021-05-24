@@ -473,7 +473,7 @@ class VISIONBackupManager(Screen):
 	def StageRestoreSettings(self, answer):
 		if answer == True:
 		     print('[BackupManager] Restoring only settings:')
-		     self.Console.ePopen("/sbin/init 4" + "&&" + "sleep 5" + "&&" + "tar -xzvf" + self.BackupDirectory + self.sel + " -C /" + "&&" + "/sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring, your receiver go to restart..."), MessageBox.TYPE_INFO))
+		     self.Console.ePopen("/sbin/init 4" + " &&" + " sleep 5" + " &&" + " tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C /" + " &&" + " " + "/sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring, your receiver go to restart..."), MessageBox.TYPE_INFO))
 
 	def Stage1(self, answer=None):
 		print('[BackupManager] Restoring Stage 1:')
@@ -730,7 +730,7 @@ class VISIONBackupManager(Screen):
 		self.Stage5Completed = True
 		if self.didPluginsRestore or self.didSettingsRestore:
 			print('[BackupManager] Restoring completed rebooting')
-			self.Console.ePopen("sleep 100" + " &&" + " /sbin/init 4" + " &&" + " sleep 5" + " &&" + " tar -xzvf" + self.BackupDirectory + self.sel + " -C /" + " &&" + " rm -f /tmp/ExtraInstalledPlugins /tmp/backupimageversion /tmp/backupkernelversion" + " &&" + " /sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring please wait..."), MessageBox.TYPE_INFO))
+			self.Console.ePopen("sleep 100" + " &&" + " /sbin/init 4" + " &&" + " sleep 5" + " &&" + " tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C /" + " &&" + " rm -f /tmp/ExtraInstalledPlugins /tmp/backupimageversion /tmp/backupkernelversion" + " &&" + " /sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring please wait..."), MessageBox.TYPE_INFO))
 		else:
 			print('[BackupManager] Restoring failed or canceled')
 			self.close()
