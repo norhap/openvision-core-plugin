@@ -27,8 +27,8 @@ from Screens.Setup import Setup
 from Tools.Notifications import AddPopupWithCallback
 
 currentkernelversion = BoxInfo.getItem("kernel")
-visionversion = BoxInfo.getItem("visionversion")
-visionrevision = BoxInfo.getItem("visionrevision")
+visionversion = BoxInfo.getItem("imgversion")
+visionrevision = BoxInfo.getItem("imgrevision")
 currentimageversion = str(visionversion) + "-" + str(visionrevision)
 distro = BoxInfo.getItem("distro")
 model = BoxInfo.getItem("model")

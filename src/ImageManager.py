@@ -52,9 +52,9 @@ imagedir = BoxInfo.getItem("imagedir")
 imagefs = BoxInfo.getItem("imagefs")
 imagedistro = BoxInfo.getItem("distro")
 imageversion = BoxInfo.getItem("imageversion")
-visionlanguage = BoxInfo.getItem("visionlanguage")
-visionversion = BoxInfo.getItem("visionversion")
-visionrevision = BoxInfo.getItem("visionrevision")
+visionlanguage = BoxInfo.getItem("imglanguage")
+visionversion = BoxInfo.getItem("imgversion")
+visionrevision = BoxInfo.getItem("imgrevision")
 
 hddchoices = []
 for p in harddiskmanager.getMountedPartitions():
