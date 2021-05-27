@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-19 18:41+0430\n"
+"POT-Creation-Date: 2021-05-27 23:10+0430\n"
 "PO-Revision-Date: 2014-06-26 04:32+0100\n"
 "Last-Translator: Rob van der Does <robvddoes@gmail.com>\n"
 "Language-Team: Andyblac/LaZx1989\n"
@@ -67,7 +67,7 @@ msgstr "8 Mb"
 msgid "96 Mb"
 msgstr "96 Mb"
 
-#: ../src/BackupManager.py:511 ../src/RestoreWizard.py:273
+#: ../src/BackupManager.py:511 ../src/RestoreWizard.py:283
 #, fuzzy
 msgid "A background update check is in progress, please try again."
 msgstr "Incepe verificarea in fundal a unui update.Va rugam asteptati pentru a incerca din nou."
@@ -124,7 +124,7 @@ msgstr ""
 msgid "Autostart"
 msgstr "Start automat"
 
-#: ../src/RestoreWizard.py:161
+#: ../src/RestoreWizard.py:172
 #, fuzzy
 msgid "Background update check is in progress, please try again."
 msgstr "Incepe verificarea in fundal a unui update.Va rugam asteptati pentru a incerca din nou."
@@ -461,7 +461,7 @@ msgstr "Suficiente incercari,aman pana la urmatorul program."
 msgid "Erase"
 msgstr ""
 
-#: ../src/RestoreWizard.py:95
+#: ../src/RestoreWizard.py:106
 msgid "Exit the restore wizard"
 msgstr "Iesi din fereastra de restaurat"
 
@@ -584,6 +584,10 @@ msgstr "Inverseaza"
 msgid "It seems you have not setup an extra location. Please set it up in the Backup manager setup menu."
 msgstr "Se pare ca nu ati configurat o extra locatie,va rugam configurati in meniul Managerului Copiei de rezerva."
 
+#: ../src/RestoreWizard.py:32
+msgid "Let's define enigma2 once more"
+msgstr ""
+
 #: ../src/ui.py:50 ../src/MountManager.py:218 ../src/MountManager.py:430
 #: ../src/ScriptRunner.py:52 ../src/BackupManager.py:119
 #: ../src/BackupManager.py:824 ../src/BackupManager.py:923
@@ -658,9 +662,13 @@ msgid "Multiboot only able to restore this backup to MMC slot1"
 msgstr ""
 
 #: ../src/BackupManager.py:127 ../src/BackupManager.py:178
-#: ../src/ImageManager.py:193
 #, fuzzy
 msgid "New backup"
+msgstr "Copie de siguranta noua."
+
+#: ../src/ImageManager.py:193
+#, fuzzy
+msgid "New backupimage"
 msgstr "Copie de siguranta noua."
 
 #: ../src/BackupManager.py:148 ../src/BackupManager.py:150
@@ -751,12 +759,12 @@ msgstr ""
 msgid "No images found on the selected download server...if password check validity"
 msgstr ""
 
-#: ../src/RestoreWizard.py:106 ../src/RestoreWizard.py:109
+#: ../src/RestoreWizard.py:117 ../src/RestoreWizard.py:120
 #, fuzzy
 msgid "No, do not restore plugins"
 msgstr "NU,nu restaura pluginurile."
 
-#: ../src/RestoreWizard.py:99
+#: ../src/RestoreWizard.py:110
 #, fuzzy
 msgid "No, do not restore settings"
 msgstr "NU,nu restaurati setarile."
@@ -774,11 +782,11 @@ msgstr ""
 msgid "Now skipping restore process"
 msgstr "Acum trec peste procesul de restaurare."
 
-#: ../src/BackupManager.py:929 ../src/RestoreWizard.py:113
+#: ../src/BackupManager.py:929 ../src/RestoreWizard.py:124
 msgid "OK"
 msgstr "Ok"
 
-#: ../src/RestoreWizard.py:95
+#: ../src/RestoreWizard.py:106
 msgid "OK, to perform a restore"
 msgstr "Ok,pentru a efectua o restaurare"
 
@@ -789,9 +797,9 @@ msgstr "Ok,pentru a efectua o restaurare"
 #: ../src/ImageManager.py:1344 ../src/SoftcamManager.py:87
 #: ../src/SoftcamManager.py:327 ../src/SoftcamManager.py:402
 #: ../src/SoftcamManager.py:487 ../src/SoftcamManager.py:572
-#: ../src/IPKInstaller.py:41 ../src/SwapManager.py:113
-#: ../src/ClientModeBox.py:122 ../src/ClientModeBox.py:479
-#: ../src/ClientModeBox.py:886
+#: ../src/IPKInstaller.py:41 ../src/RestoreWizard.py:31
+#: ../src/SwapManager.py:113 ../src/ClientModeBox.py:122
+#: ../src/ClientModeBox.py:479 ../src/ClientModeBox.py:886
 msgid "OpenVision"
 msgstr ""
 
@@ -828,7 +836,7 @@ msgid ""
 "Note: If you have parental control enabled on remote box, the local settings will be overwritten."
 msgstr ""
 
-#: ../src/RestoreWizard.py:145
+#: ../src/RestoreWizard.py:156
 msgid "Please wait while plugins restore completes..."
 msgstr "Va rugam asteptati in timp ce restaurarea pluginurilor este gata."
 
@@ -843,12 +851,7 @@ msgstr ""
 msgid "Please wait while scanning for devices..."
 msgstr "Va rugam asteptati in timp ce scanez dupa device-uri."
 
-#: ../src/MountManager.py:450
-#, fuzzy
-msgid "Please wait while scanning your receiver devices..."
-msgstr "Va rugam asteptati in timp ce scanez %s %s device-urilor..."
-
-#: ../src/RestoreWizard.py:200
+#: ../src/RestoreWizard.py:210
 msgid "Please wait while settings restore completes..."
 msgstr "Va rugam asteptati pana cand restaurarea setarilor este gata."
 
@@ -865,7 +868,7 @@ msgstr "Va rugam asteptati in timp ce se opreste\n"
 msgid "Please wait while the flash prepares."
 msgstr "Va rugam asteptati in timp ce restaurarea se pregateste."
 
-#: ../src/RestoreWizard.py:133 ../src/RestoreWizard.py:138
+#: ../src/RestoreWizard.py:144 ../src/RestoreWizard.py:149
 #, fuzzy
 msgid "Please wait while the system gathers information..."
 msgstr "Va rugam asteptati in timp ce se strang informatii..."
@@ -939,9 +942,9 @@ msgstr "Repeta cat de des."
 #: ../src/ImageManager.py:1346 ../src/SoftcamManager.py:89
 #: ../src/SoftcamManager.py:329 ../src/SoftcamManager.py:404
 #: ../src/SoftcamManager.py:489 ../src/SoftcamManager.py:574
-#: ../src/IPKInstaller.py:43 ../src/SwapManager.py:115
-#: ../src/ClientModeBox.py:124 ../src/ClientModeBox.py:481
-#: ../src/ClientModeBox.py:888
+#: ../src/IPKInstaller.py:43 ../src/RestoreWizard.py:33
+#: ../src/SwapManager.py:115 ../src/ClientModeBox.py:124
+#: ../src/ClientModeBox.py:481 ../src/ClientModeBox.py:888
 msgid "Report problems to:"
 msgstr ""
 
@@ -977,13 +980,13 @@ msgstr ""
 msgid "Restore settings"
 msgstr "Da,pentru restaurarea setarilor."
 
-#: ../src/RestoreWizard.py:134 ../src/RestoreWizard.py:139
-#: ../src/RestoreWizard.py:146 ../src/RestoreWizard.py:152
-#: ../src/RestoreWizard.py:158 ../src/RestoreWizard.py:162
-#: ../src/RestoreWizard.py:188 ../src/RestoreWizard.py:192
-#: ../src/RestoreWizard.py:201 ../src/RestoreWizard.py:258
-#: ../src/RestoreWizard.py:262 ../src/RestoreWizard.py:266
-#: ../src/RestoreWizard.py:270 ../src/RestoreWizard.py:274 ../src/plugin.py:204
+#: ../src/RestoreWizard.py:145 ../src/RestoreWizard.py:150
+#: ../src/RestoreWizard.py:157 ../src/RestoreWizard.py:163
+#: ../src/RestoreWizard.py:169 ../src/RestoreWizard.py:173
+#: ../src/RestoreWizard.py:198 ../src/RestoreWizard.py:202
+#: ../src/RestoreWizard.py:211 ../src/RestoreWizard.py:268
+#: ../src/RestoreWizard.py:272 ../src/RestoreWizard.py:276
+#: ../src/RestoreWizard.py:280 ../src/RestoreWizard.py:284 ../src/plugin.py:204
 #, fuzzy
 msgid "Restore wizard"
 msgstr "Fereastra restaurarii."
@@ -1030,6 +1033,10 @@ msgstr "Salveaza"
 
 #: ../src/ClientModeBox.py:490
 msgid "Scan"
+msgstr ""
+
+#: ../src/MountManager.py:450
+msgid "Scanned devices"
 msgstr ""
 
 #: ../src/ClientModeBox.py:530
@@ -1143,21 +1150,18 @@ msgstr "Ne pare rau,dar locatia nu exista ori nu este configurata.Va rugam confi
 msgid "Sorry the feeds are down for maintenance. Please try again later."
 msgstr "Ne pare rau , feed-urile sunt oprite pentru intretinere.Va rugam incercati mai tarziu."
 
-#: ../src/RestoreWizard.py:151
+#: ../src/RestoreWizard.py:162
 #, fuzzy
 msgid "Sorry the feeds are down for maintenance. Please try using Backup manager to restore plugins later."
 msgstr "Ne pare rau,feed-urile sunt oprite pentru intretinere.Va rugam incercati sa utilizati Managerul copiei de rezerva ca sa restaurati pluginurile mai tarziu."
 
-#: ../src/RestoreWizard.py:269
+#: ../src/RestoreWizard.py:279
 #, fuzzy
 msgid "Sorry the feeds are down for maintenance. Please try using the Backup manager to restore plugins later."
 msgstr "Ne pare rau,feed-urile sunt oprite pentru intretinere.Va rugam incercati sa utilizati Managerul copiei de rezerva ca sa restaurati pluginurile mai tarziu."
 
-#: ../src/RestoreWizard.py:187 ../src/RestoreWizard.py:191
-msgid "Sorry, but the file is not compatible with this image version."
-msgstr "Ne pare rau,dar fila nu este compatibila cu versiunea imaginii."
-
 #: ../src/BackupManager.py:364 ../src/BackupManager.py:366
+#: ../src/RestoreWizard.py:197 ../src/RestoreWizard.py:201
 #, fuzzy
 msgid "Sorry, but the file is not compatible with this kernel version."
 msgstr "Ne pare rau,dar fila nu este compatibila cu versiunea imaginii."
@@ -1183,9 +1187,9 @@ msgstr "Ne pare rau , nu a fost gasit suficient ram liber,si nici un device fizi
 #: ../src/ImageManager.py:1348 ../src/SoftcamManager.py:91
 #: ../src/SoftcamManager.py:331 ../src/SoftcamManager.py:406
 #: ../src/SoftcamManager.py:491 ../src/SoftcamManager.py:576
-#: ../src/IPKInstaller.py:45 ../src/SwapManager.py:117
-#: ../src/ClientModeBox.py:126 ../src/ClientModeBox.py:483
-#: ../src/ClientModeBox.py:890
+#: ../src/IPKInstaller.py:45 ../src/RestoreWizard.py:35
+#: ../src/SwapManager.py:117 ../src/ClientModeBox.py:126
+#: ../src/ClientModeBox.py:483 ../src/ClientModeBox.py:890
 msgid "Sources are available at:"
 msgstr ""
 
@@ -1367,6 +1371,11 @@ msgstr ""
 msgid "Vision Core"
 msgstr ""
 
+#: ../src/RestoreWizard.py:27
+#, fuzzy
+msgid "Vision Core Restore Wizard"
+msgstr "Iesi din fereastra de restaurat"
+
 #: ../src/H9SDmanager.py:34
 #, fuzzy
 msgid "Vision H9 SDcard Manager"
@@ -1450,12 +1459,12 @@ msgstr ""
 msgid "Weekly"
 msgstr "Saptamanal."
 
-#: ../src/RestoreWizard.py:105 ../src/RestoreWizard.py:108
+#: ../src/RestoreWizard.py:116 ../src/RestoreWizard.py:119
 #, fuzzy
 msgid "Yes, to restore plugins"
 msgstr "Da,pentru restaurarea pluginurilor"
 
-#: ../src/RestoreWizard.py:99
+#: ../src/RestoreWizard.py:110
 #, fuzzy
 msgid "Yes, to restore settings"
 msgstr "Da,pentru restaurarea setarilor."
@@ -1476,7 +1485,7 @@ msgid ""
 "Use %s as HDD ?"
 msgstr ""
 
-#: ../src/RestoreWizard.py:261
+#: ../src/RestoreWizard.py:271
 #, fuzzy
 msgid "Your receiver could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."
 msgstr "%s %s dvs nu este conectat la internet.Incercati sa utilizati Managerul Copiei de rezerva pentru restaurarea pluginurilor mai tarziu."
@@ -1504,7 +1513,7 @@ msgstr ""
 msgid "Your receiver is not connected to a network. Please check your network settings and try again."
 msgstr "%s %s dvs nu este conectat la internet,va rugam verificati setarile retelei si incercati din nou."
 
-#: ../src/RestoreWizard.py:257
+#: ../src/RestoreWizard.py:267
 #, fuzzy
 msgid "Your receiver is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."
 msgstr "%s %s dvs nu este conectat la internet.Incercati sa utilizati Managerul Copiei de rezerva pentru restaurarea pluginurilor mai tarziu."
@@ -1517,12 +1526,12 @@ msgid ""
 "Your network settings will be restored now from backup."
 msgstr "%s %s dvs nu este conectat la internet,va rugam verificati setarile retelei si incercati din nou."
 
-#: ../src/RestoreWizard.py:157
+#: ../src/RestoreWizard.py:168
 #, fuzzy
 msgid "Your receiver is not connected to the Internet. Please try using Backup manager to restore plugins later."
 msgstr "%s %s dvs nu este conectat la internet.Incercati sa utilizati Managerul Copiei de rezerva pentru restaurarea pluginurilor mai tarziu."
 
-#: ../src/RestoreWizard.py:265
+#: ../src/RestoreWizard.py:275
 #, fuzzy
 msgid "Your receiver is not connected to the Internet. Please try using the Backup manager to restore plugins later."
 msgstr "%s %s dvs nu este conectat la internet.Incercati sa utilizati Managerul Copiei de rezerva pentru restaurarea pluginurilor mai tarziu."
@@ -1534,9 +1543,9 @@ msgstr "%s %s dvs nu este conectat la internet.Incercati sa utilizati Managerul 
 #: ../src/ImageManager.py:1349 ../src/SoftcamManager.py:92
 #: ../src/SoftcamManager.py:332 ../src/SoftcamManager.py:407
 #: ../src/SoftcamManager.py:492 ../src/SoftcamManager.py:577
-#: ../src/IPKInstaller.py:46 ../src/SwapManager.py:118
-#: ../src/ClientModeBox.py:127 ../src/ClientModeBox.py:484
-#: ../src/ClientModeBox.py:891
+#: ../src/IPKInstaller.py:46 ../src/RestoreWizard.py:36
+#: ../src/SwapManager.py:118 ../src/ClientModeBox.py:127
+#: ../src/ClientModeBox.py:484 ../src/ClientModeBox.py:891
 msgid "https://github.com/OpenVisionE2"
 msgstr ""
 
@@ -1547,9 +1556,9 @@ msgstr ""
 #: ../src/ImageManager.py:1347 ../src/SoftcamManager.py:90
 #: ../src/SoftcamManager.py:330 ../src/SoftcamManager.py:405
 #: ../src/SoftcamManager.py:490 ../src/SoftcamManager.py:575
-#: ../src/IPKInstaller.py:44 ../src/SwapManager.py:116
-#: ../src/ClientModeBox.py:125 ../src/ClientModeBox.py:482
-#: ../src/ClientModeBox.py:889
+#: ../src/IPKInstaller.py:44 ../src/RestoreWizard.py:34
+#: ../src/SwapManager.py:116 ../src/ClientModeBox.py:125
+#: ../src/ClientModeBox.py:482 ../src/ClientModeBox.py:889
 msgid "https://openvision.tech"
 msgstr ""
 

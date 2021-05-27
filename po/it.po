@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-19 18:41+0430\n"
+"POT-Creation-Date: 2021-05-27 23:10+0430\n"
 "PO-Revision-Date: 2014-10-26 07:34+0100\n"
 "Last-Translator: Rob van der Does <robvddoes@gmail.com>\n"
 "Language-Team: Vision/DAX\n"
@@ -67,7 +67,7 @@ msgstr "8 Mb"
 msgid "96 Mb"
 msgstr "96 Mb"
 
-#: ../src/BackupManager.py:511 ../src/RestoreWizard.py:273
+#: ../src/BackupManager.py:511 ../src/RestoreWizard.py:283
 #, fuzzy
 msgid "A background update check is in progress, please try again."
 msgstr "È in corso un aggiornamento, attendere per riprovare."
@@ -132,7 +132,7 @@ msgstr ""
 msgid "Autostart"
 msgstr "Autoavvio"
 
-#: ../src/RestoreWizard.py:161
+#: ../src/RestoreWizard.py:172
 #, fuzzy
 msgid "Background update check is in progress, please try again."
 msgstr "È in corso un aggiornamento, attendere per riprovare."
@@ -473,7 +473,7 @@ msgstr "Troppi tentativi, rinviato al prossimo orario."
 msgid "Erase"
 msgstr ""
 
-#: ../src/RestoreWizard.py:95
+#: ../src/RestoreWizard.py:106
 msgid "Exit the restore wizard"
 msgstr "Esci dal wizard di ripristino"
 
@@ -596,6 +596,10 @@ msgstr "Invertire"
 msgid "It seems you have not setup an extra location. Please set it up in the Backup manager setup menu."
 msgstr "Extra location non configurata, configurala nel menù di configurazione Gestione Backup"
 
+#: ../src/RestoreWizard.py:32
+msgid "Let's define enigma2 once more"
+msgstr ""
+
 #: ../src/ui.py:50 ../src/MountManager.py:218 ../src/MountManager.py:430
 #: ../src/ScriptRunner.py:52 ../src/BackupManager.py:119
 #: ../src/BackupManager.py:824 ../src/BackupManager.py:923
@@ -669,9 +673,13 @@ msgid "Multiboot only able to restore this backup to MMC slot1"
 msgstr ""
 
 #: ../src/BackupManager.py:127 ../src/BackupManager.py:178
-#: ../src/ImageManager.py:193
 #, fuzzy
 msgid "New backup"
+msgstr "Nuovo Backup"
+
+#: ../src/ImageManager.py:193
+#, fuzzy
+msgid "New backupimage"
 msgstr "Nuovo Backup"
 
 #: ../src/BackupManager.py:148 ../src/BackupManager.py:150
@@ -762,12 +770,12 @@ msgstr ""
 msgid "No images found on the selected download server...if password check validity"
 msgstr ""
 
-#: ../src/RestoreWizard.py:106 ../src/RestoreWizard.py:109
+#: ../src/RestoreWizard.py:117 ../src/RestoreWizard.py:120
 #, fuzzy
 msgid "No, do not restore plugins"
 msgstr "No, non ripristinare i plugin"
 
-#: ../src/RestoreWizard.py:99
+#: ../src/RestoreWizard.py:110
 #, fuzzy
 msgid "No, do not restore settings"
 msgstr "No, non ripristinare le configurazioni"
@@ -785,11 +793,11 @@ msgstr ""
 msgid "Now skipping restore process"
 msgstr "Salta il processo di ripristino"
 
-#: ../src/BackupManager.py:929 ../src/RestoreWizard.py:113
+#: ../src/BackupManager.py:929 ../src/RestoreWizard.py:124
 msgid "OK"
 msgstr "OK"
 
-#: ../src/RestoreWizard.py:95
+#: ../src/RestoreWizard.py:106
 msgid "OK, to perform a restore"
 msgstr "OK, per ripristino"
 
@@ -800,9 +808,9 @@ msgstr "OK, per ripristino"
 #: ../src/ImageManager.py:1344 ../src/SoftcamManager.py:87
 #: ../src/SoftcamManager.py:327 ../src/SoftcamManager.py:402
 #: ../src/SoftcamManager.py:487 ../src/SoftcamManager.py:572
-#: ../src/IPKInstaller.py:41 ../src/SwapManager.py:113
-#: ../src/ClientModeBox.py:122 ../src/ClientModeBox.py:479
-#: ../src/ClientModeBox.py:886
+#: ../src/IPKInstaller.py:41 ../src/RestoreWizard.py:31
+#: ../src/SwapManager.py:113 ../src/ClientModeBox.py:122
+#: ../src/ClientModeBox.py:479 ../src/ClientModeBox.py:886
 msgid "OpenVision"
 msgstr ""
 
@@ -839,7 +847,7 @@ msgid ""
 "Note: If you have parental control enabled on remote box, the local settings will be overwritten."
 msgstr ""
 
-#: ../src/RestoreWizard.py:145
+#: ../src/RestoreWizard.py:156
 msgid "Please wait while plugins restore completes..."
 msgstr "Completamento ripristino plugin in corso..."
 
@@ -853,12 +861,7 @@ msgstr ""
 msgid "Please wait while scanning for devices..."
 msgstr "Controllo supporti in corso..."
 
-#: ../src/MountManager.py:450
-#, fuzzy
-msgid "Please wait while scanning your receiver devices..."
-msgstr "Controllo supporti in corso..."
-
-#: ../src/RestoreWizard.py:200
+#: ../src/RestoreWizard.py:210
 msgid "Please wait while settings restore completes..."
 msgstr "Ripristino configurazioni in corso..."
 
@@ -875,7 +878,7 @@ msgstr "Arresto in corso\n"
 msgid "Please wait while the flash prepares."
 msgstr "Atttendere, preparazione ripristino"
 
-#: ../src/RestoreWizard.py:133 ../src/RestoreWizard.py:138
+#: ../src/RestoreWizard.py:144 ../src/RestoreWizard.py:149
 #, fuzzy
 msgid "Please wait while the system gathers information..."
 msgstr "Raccolta informazioni in corso..."
@@ -949,9 +952,9 @@ msgstr "Repeat how often"
 #: ../src/ImageManager.py:1346 ../src/SoftcamManager.py:89
 #: ../src/SoftcamManager.py:329 ../src/SoftcamManager.py:404
 #: ../src/SoftcamManager.py:489 ../src/SoftcamManager.py:574
-#: ../src/IPKInstaller.py:43 ../src/SwapManager.py:115
-#: ../src/ClientModeBox.py:124 ../src/ClientModeBox.py:481
-#: ../src/ClientModeBox.py:888
+#: ../src/IPKInstaller.py:43 ../src/RestoreWizard.py:33
+#: ../src/SwapManager.py:115 ../src/ClientModeBox.py:124
+#: ../src/ClientModeBox.py:481 ../src/ClientModeBox.py:888
 msgid "Report problems to:"
 msgstr ""
 
@@ -987,13 +990,13 @@ msgstr ""
 msgid "Restore settings"
 msgstr "Si, per ripristinare i settings"
 
-#: ../src/RestoreWizard.py:134 ../src/RestoreWizard.py:139
-#: ../src/RestoreWizard.py:146 ../src/RestoreWizard.py:152
-#: ../src/RestoreWizard.py:158 ../src/RestoreWizard.py:162
-#: ../src/RestoreWizard.py:188 ../src/RestoreWizard.py:192
-#: ../src/RestoreWizard.py:201 ../src/RestoreWizard.py:258
-#: ../src/RestoreWizard.py:262 ../src/RestoreWizard.py:266
-#: ../src/RestoreWizard.py:270 ../src/RestoreWizard.py:274 ../src/plugin.py:204
+#: ../src/RestoreWizard.py:145 ../src/RestoreWizard.py:150
+#: ../src/RestoreWizard.py:157 ../src/RestoreWizard.py:163
+#: ../src/RestoreWizard.py:169 ../src/RestoreWizard.py:173
+#: ../src/RestoreWizard.py:198 ../src/RestoreWizard.py:202
+#: ../src/RestoreWizard.py:211 ../src/RestoreWizard.py:268
+#: ../src/RestoreWizard.py:272 ../src/RestoreWizard.py:276
+#: ../src/RestoreWizard.py:280 ../src/RestoreWizard.py:284 ../src/plugin.py:204
 #, fuzzy
 msgid "Restore wizard"
 msgstr "Wizard Ripristino"
@@ -1040,6 +1043,10 @@ msgstr "Salva"
 
 #: ../src/ClientModeBox.py:490
 msgid "Scan"
+msgstr ""
+
+#: ../src/MountManager.py:450
+msgid "Scanned devices"
 msgstr ""
 
 #: ../src/ClientModeBox.py:530
@@ -1153,21 +1160,18 @@ msgstr "Il percorso non esiste o non è configurato, configurarlo nel menù di c
 msgid "Sorry the feeds are down for maintenance. Please try again later."
 msgstr "I feed sono down per manutenzione, riprovare più tardi."
 
-#: ../src/RestoreWizard.py:151
+#: ../src/RestoreWizard.py:162
 #, fuzzy
 msgid "Sorry the feeds are down for maintenance. Please try using Backup manager to restore plugins later."
 msgstr "I feed sono down per manutenzione, utilizzare Gestione Backup per ripristinare i plugin."
 
-#: ../src/RestoreWizard.py:269
+#: ../src/RestoreWizard.py:279
 #, fuzzy
 msgid "Sorry the feeds are down for maintenance. Please try using the Backup manager to restore plugins later."
 msgstr "I feed sono down per manutenzione, utilizzare Gestione Backup per ripristinare i plugin."
 
-#: ../src/RestoreWizard.py:187 ../src/RestoreWizard.py:191
-msgid "Sorry, but the file is not compatible with this image version."
-msgstr "Il file non è compatibile con questa versione di immagine"
-
 #: ../src/BackupManager.py:364 ../src/BackupManager.py:366
+#: ../src/RestoreWizard.py:197 ../src/RestoreWizard.py:201
 #, fuzzy
 msgid "Sorry, but the file is not compatible with this kernel version."
 msgstr "Il file non è compatibile con questa versione di immagine"
@@ -1193,9 +1197,9 @@ msgstr "Ram libera insufficiente, nessun device che supporta SWAP collegato.Impo
 #: ../src/ImageManager.py:1348 ../src/SoftcamManager.py:91
 #: ../src/SoftcamManager.py:331 ../src/SoftcamManager.py:406
 #: ../src/SoftcamManager.py:491 ../src/SoftcamManager.py:576
-#: ../src/IPKInstaller.py:45 ../src/SwapManager.py:117
-#: ../src/ClientModeBox.py:126 ../src/ClientModeBox.py:483
-#: ../src/ClientModeBox.py:890
+#: ../src/IPKInstaller.py:45 ../src/RestoreWizard.py:35
+#: ../src/SwapManager.py:117 ../src/ClientModeBox.py:126
+#: ../src/ClientModeBox.py:483 ../src/ClientModeBox.py:890
 msgid "Sources are available at:"
 msgstr ""
 
@@ -1377,6 +1381,11 @@ msgstr ""
 msgid "Vision Core"
 msgstr ""
 
+#: ../src/RestoreWizard.py:27
+#, fuzzy
+msgid "Vision Core Restore Wizard"
+msgstr "Esci dal wizard di ripristino"
+
 #: ../src/H9SDmanager.py:34
 #, fuzzy
 msgid "Vision H9 SDcard Manager"
@@ -1460,12 +1469,12 @@ msgstr ""
 msgid "Weekly"
 msgstr "Settimanale"
 
-#: ../src/RestoreWizard.py:105 ../src/RestoreWizard.py:108
+#: ../src/RestoreWizard.py:116 ../src/RestoreWizard.py:119
 #, fuzzy
 msgid "Yes, to restore plugins"
 msgstr "Si, per ripristinare i plugins"
 
-#: ../src/RestoreWizard.py:99
+#: ../src/RestoreWizard.py:110
 #, fuzzy
 msgid "Yes, to restore settings"
 msgstr "Si, per ripristinare i settings"
@@ -1486,7 +1495,7 @@ msgid ""
 "Use %s as HDD ?"
 msgstr ""
 
-#: ../src/RestoreWizard.py:261
+#: ../src/RestoreWizard.py:271
 #, fuzzy
 msgid "Your receiver could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."
 msgstr "Il tuo %s %s non è connesso ad internet, prova ad usare Gestione Backup per ripristinare i tuoi plugin."
@@ -1514,7 +1523,7 @@ msgstr ""
 msgid "Your receiver is not connected to a network. Please check your network settings and try again."
 msgstr "Il tuo %s %s non è connesso ad internet, controlla le tue configurazioni di rete e prova di nuovo."
 
-#: ../src/RestoreWizard.py:257
+#: ../src/RestoreWizard.py:267
 #, fuzzy
 msgid "Your receiver is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."
 msgstr "Il tuo %s %s non è connesso ad internet, prova ad usare Gestione Backup per ripristinare i tuoi plugin."
@@ -1527,12 +1536,12 @@ msgid ""
 "Your network settings will be restored now from backup."
 msgstr "Il tuo %s %s non è connesso ad internet, controlla le tue configurazioni di rete e prova di nuovo."
 
-#: ../src/RestoreWizard.py:157
+#: ../src/RestoreWizard.py:168
 #, fuzzy
 msgid "Your receiver is not connected to the Internet. Please try using Backup manager to restore plugins later."
 msgstr "Il tuo %s %s non è connesso ad internet, prova ad usare Gestione Backup per ripristinare i tuoi plugin."
 
-#: ../src/RestoreWizard.py:265
+#: ../src/RestoreWizard.py:275
 #, fuzzy
 msgid "Your receiver is not connected to the Internet. Please try using the Backup manager to restore plugins later."
 msgstr "Il tuo %s %s non è connesso ad internet, prova ad usare Gestione Backup per ripristinare i tuoi plugin."
@@ -1544,9 +1553,9 @@ msgstr "Il tuo %s %s non è connesso ad internet, prova ad usare Gestione Backup
 #: ../src/ImageManager.py:1349 ../src/SoftcamManager.py:92
 #: ../src/SoftcamManager.py:332 ../src/SoftcamManager.py:407
 #: ../src/SoftcamManager.py:492 ../src/SoftcamManager.py:577
-#: ../src/IPKInstaller.py:46 ../src/SwapManager.py:118
-#: ../src/ClientModeBox.py:127 ../src/ClientModeBox.py:484
-#: ../src/ClientModeBox.py:891
+#: ../src/IPKInstaller.py:46 ../src/RestoreWizard.py:36
+#: ../src/SwapManager.py:118 ../src/ClientModeBox.py:127
+#: ../src/ClientModeBox.py:484 ../src/ClientModeBox.py:891
 msgid "https://github.com/OpenVisionE2"
 msgstr ""
 
@@ -1557,9 +1566,9 @@ msgstr ""
 #: ../src/ImageManager.py:1347 ../src/SoftcamManager.py:90
 #: ../src/SoftcamManager.py:330 ../src/SoftcamManager.py:405
 #: ../src/SoftcamManager.py:490 ../src/SoftcamManager.py:575
-#: ../src/IPKInstaller.py:44 ../src/SwapManager.py:116
-#: ../src/ClientModeBox.py:125 ../src/ClientModeBox.py:482
-#: ../src/ClientModeBox.py:889
+#: ../src/IPKInstaller.py:44 ../src/RestoreWizard.py:34
+#: ../src/SwapManager.py:116 ../src/ClientModeBox.py:125
+#: ../src/ClientModeBox.py:482 ../src/ClientModeBox.py:889
 msgid "https://openvision.tech"
 msgstr ""
 

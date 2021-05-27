@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-vision-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-19 18:41+0430\n"
+"POT-Creation-Date: 2021-05-27 23:10+0430\n"
 "PO-Revision-Date: 2019-07-04 23:44+0200\n"
 "Last-Translator: Kojo\n"
 "Language-Team: Samzan/Kojo\n"
@@ -64,7 +64,7 @@ msgstr "8 Mb"
 msgid "96 Mb"
 msgstr "96 Mb"
 
-#: ../src/BackupManager.py:511 ../src/RestoreWizard.py:273
+#: ../src/BackupManager.py:511 ../src/RestoreWizard.py:283
 msgid "A background update check is in progress, please try again."
 msgstr "Taustalla ajettava päivitystarkistus käynnissä, yritä uudelleen."
 
@@ -126,7 +126,7 @@ msgstr ""
 msgid "Autostart"
 msgstr "Autom.käynnistys"
 
-#: ../src/RestoreWizard.py:161
+#: ../src/RestoreWizard.py:172
 #, fuzzy
 msgid "Background update check is in progress, please try again."
 msgstr "Taustalla ajettava päivitystarkistus käynnissä, yritä uudelleen."
@@ -447,7 +447,7 @@ msgstr "Tarpeeksi yrityksiä, koitetaan uudestaan seuraavalla kerralla."
 msgid "Erase"
 msgstr "Pyyhi"
 
-#: ../src/RestoreWizard.py:95
+#: ../src/RestoreWizard.py:106
 msgid "Exit the restore wizard"
 msgstr "Sulje palautusohjelma"
 
@@ -567,6 +567,10 @@ msgstr "Käänteinen"
 msgid "It seems you have not setup an extra location. Please set it up in the Backup manager setup menu."
 msgstr "Et ole asettanut ylimääräistä sijaintia. Aseta se Varmuuskopioiden hallintatyökalulla."
 
+#: ../src/RestoreWizard.py:32
+msgid "Let's define enigma2 once more"
+msgstr ""
+
 #: ../src/ui.py:50 ../src/MountManager.py:218 ../src/MountManager.py:430
 #: ../src/ScriptRunner.py:52 ../src/BackupManager.py:119
 #: ../src/BackupManager.py:824 ../src/BackupManager.py:923
@@ -640,8 +644,12 @@ msgid "Multiboot only able to restore this backup to MMC slot1"
 msgstr "Multiboot voi palauttaa tämän varmuuskopion vain mmc:lle paikkaan 1"
 
 #: ../src/BackupManager.py:127 ../src/BackupManager.py:178
-#: ../src/ImageManager.py:193
 msgid "New backup"
+msgstr "Uusi varmuuskopio"
+
+#: ../src/ImageManager.py:193
+#, fuzzy
+msgid "New backupimage"
 msgstr "Uusi varmuuskopio"
 
 #: ../src/BackupManager.py:148 ../src/BackupManager.py:150
@@ -732,12 +740,12 @@ msgstr ""
 msgid "No images found on the selected download server...if password check validity"
 msgstr "Valitulta palvelimelta ei löytynyt imagea, jos vaatii salasanan, varmista että se on oikein"
 
-#: ../src/RestoreWizard.py:106 ../src/RestoreWizard.py:109
+#: ../src/RestoreWizard.py:117 ../src/RestoreWizard.py:120
 #, fuzzy
 msgid "No, do not restore plugins"
 msgstr "EI, älä palauta lisäosia"
 
-#: ../src/RestoreWizard.py:99
+#: ../src/RestoreWizard.py:110
 #, fuzzy
 msgid "No, do not restore settings"
 msgstr "EI, älä palauta asetuksia"
@@ -755,11 +763,11 @@ msgstr "HUOM: Paikkalistaus ei näytä nykyistä imagea, tai tyhjiä paikkoja."
 msgid "Now skipping restore process"
 msgstr "Ohitetaan palautusprosessia"
 
-#: ../src/BackupManager.py:929 ../src/RestoreWizard.py:113
+#: ../src/BackupManager.py:929 ../src/RestoreWizard.py:124
 msgid "OK"
 msgstr "OK"
 
-#: ../src/RestoreWizard.py:95
+#: ../src/RestoreWizard.py:106
 msgid "OK, to perform a restore"
 msgstr "OK, suorita palautus"
 
@@ -770,9 +778,9 @@ msgstr "OK, suorita palautus"
 #: ../src/ImageManager.py:1344 ../src/SoftcamManager.py:87
 #: ../src/SoftcamManager.py:327 ../src/SoftcamManager.py:402
 #: ../src/SoftcamManager.py:487 ../src/SoftcamManager.py:572
-#: ../src/IPKInstaller.py:41 ../src/SwapManager.py:113
-#: ../src/ClientModeBox.py:122 ../src/ClientModeBox.py:479
-#: ../src/ClientModeBox.py:886
+#: ../src/IPKInstaller.py:41 ../src/RestoreWizard.py:31
+#: ../src/SwapManager.py:113 ../src/ClientModeBox.py:122
+#: ../src/ClientModeBox.py:479 ../src/ClientModeBox.py:886
 msgid "OpenVision"
 msgstr ""
 
@@ -808,7 +816,7 @@ msgid ""
 "Note: If you have parental control enabled on remote box, the local settings will be overwritten."
 msgstr ""
 
-#: ../src/RestoreWizard.py:145
+#: ../src/RestoreWizard.py:156
 msgid "Please wait while plugins restore completes..."
 msgstr "Odota, lisäosien palautusta suoritetaan..."
 
@@ -822,12 +830,7 @@ msgstr ""
 msgid "Please wait while scanning for devices..."
 msgstr "Odota. Etsitään laitteita..."
 
-#: ../src/MountManager.py:450
-#, fuzzy
-msgid "Please wait while scanning your receiver devices..."
-msgstr "Odota. Etsitään laitteita..."
-
-#: ../src/RestoreWizard.py:200
+#: ../src/RestoreWizard.py:210
 msgid "Please wait while settings restore completes..."
 msgstr "Odota, asetusten palautus kesken..."
 
@@ -843,7 +846,7 @@ msgstr "Odota, pysäytetään\n"
 msgid "Please wait while the flash prepares."
 msgstr "Odota kun asennusta valmistellaan."
 
-#: ../src/RestoreWizard.py:133 ../src/RestoreWizard.py:138
+#: ../src/RestoreWizard.py:144 ../src/RestoreWizard.py:149
 msgid "Please wait while the system gathers information..."
 msgstr "Ole hyvä ja odota, järjestelmä kerää tietoja..."
 
@@ -917,9 +920,9 @@ msgstr "Kuinka usein toistetaan"
 #: ../src/ImageManager.py:1346 ../src/SoftcamManager.py:89
 #: ../src/SoftcamManager.py:329 ../src/SoftcamManager.py:404
 #: ../src/SoftcamManager.py:489 ../src/SoftcamManager.py:574
-#: ../src/IPKInstaller.py:43 ../src/SwapManager.py:115
-#: ../src/ClientModeBox.py:124 ../src/ClientModeBox.py:481
-#: ../src/ClientModeBox.py:888
+#: ../src/IPKInstaller.py:43 ../src/RestoreWizard.py:33
+#: ../src/SwapManager.py:115 ../src/ClientModeBox.py:124
+#: ../src/ClientModeBox.py:481 ../src/ClientModeBox.py:888
 msgid "Report problems to:"
 msgstr ""
 
@@ -953,13 +956,13 @@ msgstr ""
 msgid "Restore settings"
 msgstr "KYLLÄ, palauttaa asetukset"
 
-#: ../src/RestoreWizard.py:134 ../src/RestoreWizard.py:139
-#: ../src/RestoreWizard.py:146 ../src/RestoreWizard.py:152
-#: ../src/RestoreWizard.py:158 ../src/RestoreWizard.py:162
-#: ../src/RestoreWizard.py:188 ../src/RestoreWizard.py:192
-#: ../src/RestoreWizard.py:201 ../src/RestoreWizard.py:258
-#: ../src/RestoreWizard.py:262 ../src/RestoreWizard.py:266
-#: ../src/RestoreWizard.py:270 ../src/RestoreWizard.py:274 ../src/plugin.py:204
+#: ../src/RestoreWizard.py:145 ../src/RestoreWizard.py:150
+#: ../src/RestoreWizard.py:157 ../src/RestoreWizard.py:163
+#: ../src/RestoreWizard.py:169 ../src/RestoreWizard.py:173
+#: ../src/RestoreWizard.py:198 ../src/RestoreWizard.py:202
+#: ../src/RestoreWizard.py:211 ../src/RestoreWizard.py:268
+#: ../src/RestoreWizard.py:272 ../src/RestoreWizard.py:276
+#: ../src/RestoreWizard.py:280 ../src/RestoreWizard.py:284 ../src/plugin.py:204
 msgid "Restore wizard"
 msgstr "Palautuksen avustaja"
 
@@ -1005,6 +1008,10 @@ msgstr "Tallenna"
 
 #: ../src/ClientModeBox.py:490
 msgid "Scan"
+msgstr ""
+
+#: ../src/MountManager.py:450
+msgid "Scanned devices"
 msgstr ""
 
 #: ../src/ClientModeBox.py:530
@@ -1110,19 +1117,16 @@ msgstr "Tämä sijainti ei ole olemassa, tai sitä ei ole asetettu. Aseta se Var
 msgid "Sorry the feeds are down for maintenance. Please try again later."
 msgstr "Syötteitä huolletaan, kokeile myöhemmin uudestaan."
 
-#: ../src/RestoreWizard.py:151
+#: ../src/RestoreWizard.py:162
 msgid "Sorry the feeds are down for maintenance. Please try using Backup manager to restore plugins later."
 msgstr "Syötteitä huolletaan. Yritä myöhemmin palauttaa pluginit käyttäen varmuuskopioiden hallinta-työkalua."
 
-#: ../src/RestoreWizard.py:269
+#: ../src/RestoreWizard.py:279
 msgid "Sorry the feeds are down for maintenance. Please try using the Backup manager to restore plugins later."
 msgstr "Syötteitä huolletaan. Yritä myöhemmin palauttaa pluginit käyttäen varmuuskopioiden hallinta-työkalua."
 
-#: ../src/RestoreWizard.py:187 ../src/RestoreWizard.py:191
-msgid "Sorry, but the file is not compatible with this image version."
-msgstr "Tiedosto ei ole yhteensopiva tämän ohjelmaversion kanssa."
-
 #: ../src/BackupManager.py:364 ../src/BackupManager.py:366
+#: ../src/RestoreWizard.py:197 ../src/RestoreWizard.py:201
 #, fuzzy
 msgid "Sorry, but the file is not compatible with this kernel version."
 msgstr "Tiedosto ei ole yhteensopiva tämän ohjelmaversion kanssa."
@@ -1147,9 +1151,9 @@ msgstr "Vapaata RAM-muistia ei ole tarpeeksi, eikä fyysistä laitetta löydy, j
 #: ../src/ImageManager.py:1348 ../src/SoftcamManager.py:91
 #: ../src/SoftcamManager.py:331 ../src/SoftcamManager.py:406
 #: ../src/SoftcamManager.py:491 ../src/SoftcamManager.py:576
-#: ../src/IPKInstaller.py:45 ../src/SwapManager.py:117
-#: ../src/ClientModeBox.py:126 ../src/ClientModeBox.py:483
-#: ../src/ClientModeBox.py:890
+#: ../src/IPKInstaller.py:45 ../src/RestoreWizard.py:35
+#: ../src/SwapManager.py:117 ../src/ClientModeBox.py:126
+#: ../src/ClientModeBox.py:483 ../src/ClientModeBox.py:890
 msgid "Sources are available at:"
 msgstr ""
 
@@ -1322,6 +1326,11 @@ msgstr ""
 msgid "Vision Core"
 msgstr ""
 
+#: ../src/RestoreWizard.py:27
+#, fuzzy
+msgid "Vision Core Restore Wizard"
+msgstr "Sulje palautusohjelma"
+
 #: ../src/H9SDmanager.py:34
 #, fuzzy
 msgid "Vision H9 SDcard Manager"
@@ -1406,12 +1415,12 @@ msgstr ""
 msgid "Weekly"
 msgstr "Viikoittain"
 
-#: ../src/RestoreWizard.py:105 ../src/RestoreWizard.py:108
+#: ../src/RestoreWizard.py:116 ../src/RestoreWizard.py:119
 #, fuzzy
 msgid "Yes, to restore plugins"
 msgstr "KYLLÄ, palauttaa lisäosat"
 
-#: ../src/RestoreWizard.py:99
+#: ../src/RestoreWizard.py:110
 #, fuzzy
 msgid "Yes, to restore settings"
 msgstr "KYLLÄ, palauttaa asetukset"
@@ -1431,7 +1440,7 @@ msgid ""
 "Use %s as HDD ?"
 msgstr ""
 
-#: ../src/RestoreWizard.py:261
+#: ../src/RestoreWizard.py:271
 #, fuzzy
 msgid "Your receiver could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."
 msgstr "Sinun %s %s ei saa yhteyttä plugin-syötteisiin. Yritä myöhemmin palauttaa pluginit käyttäen varmuuskopioiden hallinta-työkalua."
@@ -1459,7 +1468,7 @@ msgstr ""
 msgid "Your receiver is not connected to a network. Please check your network settings and try again."
 msgstr "Sinun %s %s ei saa yhteyttä verkkoon. Tarkista verkkoasetuksesi, ja kokeile uudestaan."
 
-#: ../src/RestoreWizard.py:257
+#: ../src/RestoreWizard.py:267
 #, fuzzy
 msgid "Your receiver is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."
 msgstr "Sinun %s %s ei saa yhteyttä verkkoon. Yritä myöhemmin palauttaa pluginit käyttäen varmuuskopioiden hallinta-työkalua, kun verkkoyhteys on saatavilla."
@@ -1472,12 +1481,12 @@ msgid ""
 "Your network settings will be restored now from backup."
 msgstr "Sinun %s %s ei ole yhteydessä internettiin. Tarkasta verkkoasetukset ja kokeile uudestaan."
 
-#: ../src/RestoreWizard.py:157
+#: ../src/RestoreWizard.py:168
 #, fuzzy
 msgid "Your receiver is not connected to the Internet. Please try using Backup manager to restore plugins later."
 msgstr "Sinun %s %s ei saa yhteyttä internettiin. Yritä myöhemmin palauttaa pluginit käyttäen varmuuskopioiden hallinta-työkalua."
 
-#: ../src/RestoreWizard.py:265
+#: ../src/RestoreWizard.py:275
 #, fuzzy
 msgid "Your receiver is not connected to the Internet. Please try using the Backup manager to restore plugins later."
 msgstr "Sinun %s %s ei saa yhteyttä internettiin. Yritä myöhemmin palauttaa pluginit käyttäen varmuuskopioiden hallinta-työkalua."
@@ -1489,9 +1498,9 @@ msgstr "Sinun %s %s ei saa yhteyttä internettiin. Yritä myöhemmin palauttaa p
 #: ../src/ImageManager.py:1349 ../src/SoftcamManager.py:92
 #: ../src/SoftcamManager.py:332 ../src/SoftcamManager.py:407
 #: ../src/SoftcamManager.py:492 ../src/SoftcamManager.py:577
-#: ../src/IPKInstaller.py:46 ../src/SwapManager.py:118
-#: ../src/ClientModeBox.py:127 ../src/ClientModeBox.py:484
-#: ../src/ClientModeBox.py:891
+#: ../src/IPKInstaller.py:46 ../src/RestoreWizard.py:36
+#: ../src/SwapManager.py:118 ../src/ClientModeBox.py:127
+#: ../src/ClientModeBox.py:484 ../src/ClientModeBox.py:891
 msgid "https://github.com/OpenVisionE2"
 msgstr ""
 
@@ -1502,9 +1511,9 @@ msgstr ""
 #: ../src/ImageManager.py:1347 ../src/SoftcamManager.py:90
 #: ../src/SoftcamManager.py:330 ../src/SoftcamManager.py:405
 #: ../src/SoftcamManager.py:490 ../src/SoftcamManager.py:575
-#: ../src/IPKInstaller.py:44 ../src/SwapManager.py:116
-#: ../src/ClientModeBox.py:125 ../src/ClientModeBox.py:482
-#: ../src/ClientModeBox.py:889
+#: ../src/IPKInstaller.py:44 ../src/RestoreWizard.py:34
+#: ../src/SwapManager.py:116 ../src/ClientModeBox.py:125
+#: ../src/ClientModeBox.py:482 ../src/ClientModeBox.py:889
 msgid "https://openvision.tech"
 msgstr ""
 
