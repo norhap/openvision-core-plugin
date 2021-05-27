@@ -221,7 +221,7 @@ msgid "Creating SWAP.."
 msgstr "Creando memoria intercambio.."
 
 msgid "Creating list of installed plugins..."
-msgstr "Creando una lista de complementos instalados..."
+msgstr "Creando una lista de plugins instalados..."
 
 msgid "Creating zip..."
 msgstr "Creando zip..."
@@ -258,9 +258,9 @@ msgstr ""
 "%s"
 
 msgid "Do you want to restore your Enigma2 plugins ?"
-msgstr "¿Quieres restaurar sus complementos de Enigma2?"
+msgstr "¿Quieres restaurar sus plugins de Enigma2?"
 
-msgid "Do you want to restore your enigma2 settings ?"
+msgid "Do you want to restore your Enigma2 settings ?"
 msgstr "Quieres restaurar su configuración de Enigma2 ?"
 
 msgid "Download"
@@ -417,7 +417,7 @@ msgid "Moving to backup Location..."
 msgstr "Moviendo al destino de copias..."
 
 msgid "NO, do not restore plugins"
-msgstr "NO, no restaurar complementos"
+msgstr "NO, no restaurar plugins"
 
 msgid "NO, do not restore settings"
 msgstr "NO, no restaurar configuraciones"
@@ -493,7 +493,7 @@ msgid "Please wait while the system gathers information..."
 msgstr "Espera mientras se recopila la información del sistema..."
 
 msgid "Please wait while plugins restore completes..."
-msgstr "Espera mientras se restauran los complementos..."
+msgstr "Espera mientras se restauran los plugins..."
 
 msgid "Please wait while restore prepares"
 msgstr "Por favor espere mientras se prepara la restauración"
@@ -514,10 +514,10 @@ msgid "Please wait."
 msgstr "Espera por favor."
 
 msgid "Plugin Listing failed - e. g. wrong backup destination or no space left on backup device"
-msgstr "Lista de complementos fallida - ej. destino erróneo o no hay espacio suficiente en el dispositivo de almacenamiento"
+msgstr "Lista de plugins fallida - ej. destino erróneo o no hay espacio suficiente en el dispositivo de almacenamiento"
 
 msgid "Preparing extra plugins..."
-msgstr "Preparando complementos extras..."
+msgstr "Preparando plugins extras..."
 
 msgid "Press OK to toggle the selection."
 msgstr "Pulse OK para alternar la selección."
@@ -556,10 +556,10 @@ msgid "Restoring backup..."
 msgstr "Restaurando copia..."
 
 msgid "Restoring plugins, this can take a long time..."
-msgstr "Restaurando complementos. Puede tardar mucho..."
+msgstr "Restaurando plugins. Puede tardar mucho..."
 
 msgid "Restoring plugins..."
-msgstr "Restaurando complementos..."
+msgstr "Restaurando plugins..."
 
 msgid "Run"
 msgstr "Ejecutar"
@@ -598,7 +598,7 @@ msgid "Select files/folders to backup"
 msgstr "Selecciona archivos/carpetas para copiar"
 
 msgid "Select folder that contains plugins"
-msgstr "Selecciona la carpeta que contiene los complementos"
+msgstr "Selecciona la carpeta que contiene los plugins"
 
 msgid "Select the swapfile size:"
 msgstr "Elige el tamaño del archivo swapfile:"
@@ -658,7 +658,7 @@ msgid "Sorry feeds are down for maintenance, Please try again later."
 msgstr "Ojo: los Feeds están apagados por mantenimiento. Vuelve a intentarlo más tarde."
 
 msgid "Sorry feeds are down for maintenance, Please try using Backup Manager to restore plugins later."
-msgstr "Ojo: los feeds están apagados por mantenimiento. Restaura los complementos más tarde usando el administrador de copias de seguridad."
+msgstr "Ojo: los feeds están apagados por mantenimiento. Restaura los plugins más tarde usando el administrador de copias de seguridad."
 
 msgid "Sorry you %s %s is not yet compatible."
 msgstr "Lo sentimos %s %s no es compatible."
@@ -710,6 +710,9 @@ msgstr "El destino elegido no existe. Se usará /media/hdd"
 
 msgid "The wizard is finished now, and will reboot."
 msgstr "El asistente ha terminado, el Receptor va a Reiniciar."
+
+msgid "No plugins needed to be installed"
+msgstr "No es necesario instalar plugins"
 
 msgid "The wizard is finished now."
 msgstr "El asistente ha terminado ahora pulsa OK para continuar."
@@ -793,19 +796,8 @@ msgstr "Por favor espera mientras se busca..."
 msgid "Weekly"
 msgstr "Semanal"
 
-msgid ""
-"Welcome to the restore wizard.\n"
-"\n"
-"A backup has been detected.\n"
-"You can use this wizard to restore your settings and any extra plugins that were installed when the backup was created.\n"
-msgstr ""
-"Bienvenido al asistente de restaurar.\n"
-"\n"
-"Se ha detectado una copia de seguridad.\n"
-"Puede usar este asistente para restaurar su configuración y los complementos adicionales que se instalaron cuando se creó la copia de seguridad.\n"
-
 msgid "YES, to restore plugins"
-msgstr "Sí, restaurar complementos"
+msgstr "Sí, restaurar plugins"
 
 msgid "YES, to restore settings"
 msgstr "Sí, restaurar configuración"
@@ -833,7 +825,7 @@ msgid ""
 "\n"
 "Do you want to allow this?"
 msgstr ""
-"Su receptor está a punto de ejecutar una copia de seguridad de su configuración y detectar sus complementos."
+"Su receptor está a punto de ejecutar una copia de seguridad de su configuración y detectar sus plugins."
 "\n"
 "Quieres permitir esto?"
 
@@ -850,7 +842,7 @@ msgid ""
 "Your %s %s is about to run a backup of your settings and to detect your plugins.\n"
 "Do you want to allow this?"
 msgstr ""
-"Su %s %s está a punto de ejecutar una copia de seguridad de sus configuraciones y de detectar sus complementos.\n"
+"Su %s %s está a punto de ejecutar una copia de seguridad de sus configuraciones y de detectar sus plugins.\n"
 "Quieres permitir esto?"
 
 msgid ""
@@ -863,10 +855,10 @@ msgstr ""
 "Puede tardar unos 6 minutos en completarse."
 
 msgid "Your %s %s is not connected to the internet, Please try using Backup Manager to restore plugins later."
-msgstr "Su %s %s no está conectado a Internet. Intente usar el Administrador de copia de seguridad para restaurar los complementos más tarde."
+msgstr "Su %s %s no está conectado a Internet. Intente usar el Administrador de copia de seguridad para restaurar los plugins más tarde."
 
 msgid "Your %s %s is not connected to the Internet. Please try using Backup manager to restore plugins later."
-msgstr "Su %s %s no está conectado a Internet. Intente usar el Administrador de copia de seguridad para restaurar los complementos más adelante."
+msgstr "Su %s %s no está conectado a Internet. Intente usar el Administrador de copia de seguridad para restaurar los plugins más adelante."
 
 msgid "echo 'Downloading Image.'"
 msgstr "echo 'Descargando Imagen.'"
@@ -1085,10 +1077,16 @@ msgid "Note: slot list does not show current image or empty slots."
 msgstr "Nota: la lista de slots no muestra la imagen actual o los slots vacíos."
 
 msgid "Sorry the feeds are down for maintenance. Please try using Backup manager to restore plugins later."
-msgstr "Lo sentimos, los feeds no funcionan por alguna razón. Intente usar el Administrador de copia de seguridad para restaurar los complementos más adelante."
+msgstr "Lo sentimos, los feeds no funcionan por alguna razón. Intente usar el Administrador de copia de seguridad para restaurar los plugins más adelante."
 
 msgid "Your receiver is not connected to a network. Please check your network settings and try again."
 msgstr "Su receptor no está conectado a internet. Verifique la configuración de su red y vuelva a intentarlo."
+
+msgid "Your receiver is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."
+msgstr "Su receptor no está conectado a internet. Intente usar el administrador de copia de seguridad para restaurar los plugins más tarde cuando haya una conexión de red disponible."
+
+msgid "Your receiver could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later.."
+msgstr "Su receptor no pudo conectarse a las fuentes de plugins en este momento. Intente usar el administrador de copias de seguridad para restaurar los plugins más tarde.."
 
 msgid ""
 "Your receiver is not connected to the Internet.\n"
@@ -1106,16 +1104,16 @@ msgid "A background update check is in progress, please try again."
 msgstr "Existe un chequeo de actualización en progreso en segundo plano. Vuelva a intentarlo más tarde."
 
 msgid "Your %s %s is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."
-msgstr "Su %s %s no está conectado a una red. Intente utilizar el Administrador de copia de seguridad para restaurar complementos más adelante cuando haya una conexión de red disponible."
+msgstr "Su %s %s no está conectado a una red. Intente utilizar el Administrador de copia de seguridad para restaurar plugins más adelante cuando haya una conexión de red disponible."
 
 msgid "Your %s %s could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."
-msgstr "Su %s %s is no se pudo conectar a los feeds de complementos en este momento. Intente usar el Administrador de copia de seguridad para restaurar los complementos más adelante."
+msgstr "Su %s %s is no se pudo conectar a los feeds de plugins en este momento. Intente usar el Administrador de copia de seguridad para restaurar los plugins más adelante."
 
 msgid "Your %s %s is not connected to the Internet. Please try using the Backup manager to restore plugins later."
-msgstr "Su %s %s is no está conectado a internet Intente usar el Administrador de copia de seguridad para restaurar los complementos más adelante."
+msgstr "Su %s %s is no está conectado a internet Intente usar el Administrador de copia de seguridad para restaurar los plugins más adelante."
 
 msgid "Sorry the feeds are down for maintenance. Please try using the Backup manager to restore plugins later."
-msgstr "Lo sentimos, los feeds no funcionan por alguna razón. Intente usar el Administrador de copia de seguridad para restaurar los complementos más adelante."
+msgstr "Lo sentimos, los feeds no funcionan por alguna razón. Intente usar el Administrador de copia de seguridad para restaurar los plugins más adelante."
 
 msgid "Use the cursor keys to select an installed image and then Erase button."
 msgstr "Use las teclas del cursor para seleccionar una imagen instalada y luego el botón Borrar."
@@ -1301,3 +1299,6 @@ msgstr "Cerrar sin guardar la configuración?"
 
 msgid "Set the time of backup to start."
 msgstr "Establezca la hora de inicio de la copia de seguridad."
+
+msgid "Vision Core Restore Wizard"
+msgstr "Vision Core Asistente de Restauración"
