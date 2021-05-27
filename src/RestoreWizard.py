@@ -6,14 +6,17 @@ from os import listdir, path, stat
 from Components.About import about
 from Components.Console import Console
 from Components.Pixmap import Pixmap
+from Components.Sources.StaticText import StaticText
 from Screens.WizardLanguage import WizardLanguage
 from Screens.HelpMenu import ShowRemoteControl
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
 from Components.SystemInfo import BoxInfo
 
-currentkernelversion = BoxInfo.getItem("kernelfile")
-currentimageversion = about.getVersionString()
+currentkernelversion = BoxInfo.getItem("kernel")
+visionversion = BoxInfo.getItem("imgversion")
+visionrevision = BoxInfo.getItem("imgrevision")
+currentimageversion = str(visionversion) + "-" + str(visionrevision)
 
 
 class RestoreWizard(WizardLanguage, ShowRemoteControl):
@@ -21,8 +24,16 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 		self.xmlfile = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/Vision/restorewizard.xml")
 		WizardLanguage.__init__(self, session, showSteps=False, showStepSlider=False)
 		ShowRemoteControl.__init__(self)
+		self.setTitle(_("Vision Core Restore Wizard"))
+		self.skinName = ["NetworkWizard"]
 		self.session = session
 		self["wizard"] = Pixmap()
+		self["lab1"] = StaticText(_("OpenVision"))
+		self["lab2"] = StaticText(_("Let's define enigma2 once more"))
+		self["lab3"] = StaticText(_("Report problems to:"))
+		self["lab4"] = StaticText(_("https://openvision.tech"))
+		self["lab5"] = StaticText(_("Sources are available at:"))
+		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 		self.selectedAction = None
 		self.NextStep = None
 		self.Text = None
@@ -130,35 +141,35 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 			self.buildListfinishedCB(False)
 		elif self.NextStep is 'settingrestorestarted':
 			self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion -C /", self.settingsRestore_Started)
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while the system gathers information..."), type=MessageBox.TYPE_INFO, enable_input=False, wizard=True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while the system gathers information..."), type=MessageBox.TYPE_INFO, enable_input=False)
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif self.NextStep is 'plugindetection':
 			print('[RestoreWizard] Stage 2: Restoring plugins')
 			self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion -C /", self.pluginsRestore_Started)
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while the system gathers information..."), type=MessageBox.TYPE_INFO, enable_input=False, wizard=True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while the system gathers information..."), type=MessageBox.TYPE_INFO, enable_input=False)
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif self.NextStep is 'pluginrestore':
 			if self.feeds == 'OK':
 				print('[RestoreWizard] Stage 6: Feeds OK, restoring plugins')
 				print('[RestoreWizard] Console command: ', 'opkg install ' + self.pluginslist + ' ' + self.pluginslist2)
 				self.Console.ePopen("opkg install " + self.pluginslist + ' ' + self.pluginslist2, self.pluginsRestore_Finished)
-				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while plugins restore completes..."), type=MessageBox.TYPE_INFO, enable_input=False, wizard=True)
+				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while plugins restore completes..."), type=MessageBox.TYPE_INFO, enable_input=False)
 				self.buildListRef.setTitle(_("Restore wizard"))
 			elif self.feeds == 'DOWN':
 				print('[RestoreWizard] Stage 6: Feeds down')
 				self.didPluginRestore = True
 				self.NextStep = 'reboot'
-				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Sorry the feeds are down for maintenance. Please try using Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Sorry the feeds are down for maintenance. Please try using Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30)
 				self.buildListRef.setTitle(_("Restore wizard"))
 			elif self.feeds == 'BAD':
 				print('[RestoreWizard] Stage 6: No network')
 				self.didPluginRestore = True
 				self.NextStep = 'reboot'
-				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver is not connected to the Internet. Please try using Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver is not connected to the Internet. Please try using Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30)
 				self.buildListRef.setTitle(_("Restore wizard"))
 			elif self.feeds == 'ERROR':
 				self.NextStep = 'pluginrestore'
-				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Background update check is in progress, please try again."), type=MessageBox.TYPE_INFO, timeout=10, wizard=True)
+				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Background update check is in progress, please try again."), type=MessageBox.TYPE_INFO, timeout=10)
 				self.buildListRef.setTitle(_("Restore wizard"))
 
 	def buildListfinishedCB(self, data):
@@ -175,20 +186,19 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 
 	def doRestoreSettings1(self):
 		print('[RestoreWizard] Stage 1: Check version')
-		if fileExists('/tmp/backupimageversion'):
-			imageversion = open('/tmp/backupimageversion').read()
-			print('[RestoreWizard] Backup image:', imageversion)
-			print('[RestoreWizard] Current image:', currentimageversion)
-			if imageversion == currentimageversion:
-				print('[RestoreWizard] Stage 1: Image version OK')
+		if fileExists('/tmp/backupkernelversion'):
+			kernelversion = open('/tmp/backupkernelversion').read()
+			print('[RestoreWizard] Current kernelversion:', kernelversion)
+			if kernelversion == currentkernelversion:
+				print('[RestoreWizard] Stage 1: Kernel version OK')
 				self.doRestoreSettings2()
 			else:
-				print('[RestoreWizard] Stage 1: Image version is different')
-				self.noVersion = self.session.openWithCallback(self.doNoVersion, MessageBox, _("Sorry, but the file is not compatible with this image version."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+				print('[RestoreWizard] Stage 1: Kernel version is different')
+				self.noVersion = self.session.openWithCallback(self.doNoVersion, MessageBox, _("Sorry, but the file is not compatible with this kernel version."), type=MessageBox.TYPE_INFO, timeout=30)
 				self.noVersion.setTitle(_("Restore wizard"))
 		else:
-			print('[RestoreWizard] Stage 1: No image version to check')
-			self.noVersion = self.session.openWithCallback(self.doNoVersion, MessageBox, _("Sorry, but the file is not compatible with this image version."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+			print('[RestoreWizard] Stage 1: No kernel version to check')
+			self.noVersion = self.session.openWithCallback(self.doNoVersion, MessageBox, _("Sorry, but the file is not compatible with this kernel version."), type=MessageBox.TYPE_INFO, timeout=30)
 			self.noVersion.setTitle(_("Restore wizard"))
 
 	def doNoVersion(self, result=None, retval=None, extra_args=None):
@@ -197,7 +207,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 	def doRestoreSettings2(self):
 		print('[RestoreWizard] Stage 2: Restoring settings')
 		self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /", self.settingRestore_Finished)
-		self.pleaseWait = self.session.open(MessageBox, _("Please wait while settings restore completes..."), type=MessageBox.TYPE_INFO, enable_input=False, wizard=True)
+		self.pleaseWait = self.session.open(MessageBox, _("Please wait while settings restore completes..."), type=MessageBox.TYPE_INFO, enable_input=False)
 		self.pleaseWait.setTitle(_("Restore wizard"))
 
 	def settingRestore_Finished(self, result, retval, extra_args=None):
@@ -225,7 +235,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 			print('[RestoreWizard] Current image:', currentimageversion)
 			print('[RestoreWizard] Backup kernel:', kernelversion)
 			print('[RestoreWizard] Current kernel:', currentkernelversion)
-			if imageversion == currentimageversion:
+			if kernelversion == currentkernelversion:
 				print('[RestoreWizard] Stage 3: Kernel and image version are OK')
 				self.doRestorePluginsTest()
 			else:
@@ -254,23 +264,23 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 		print('[RestoreWizard] Stage 4: Feeds test result', result2)
 		if result2.find('wget returned 4') != -1:
 			self.NextStep = 'reboot'
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."), type=MessageBox.TYPE_INFO, timeout=30)
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif result2.find('wget returned 8') != -1:
 			self.NextStep = 'reboot'
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30)
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif result2.find('bad address') != -1:
 			self.NextStep = 'reboot'
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver is not connected to the Internet. Please try using the Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver is not connected to the Internet. Please try using the Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30)
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif result2.find('wget returned 1') != -1 or result2.find('wget returned 255') != -1 or result2.find('404 Not Found') != -1:
 			self.NextStep = 'reboot'
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Sorry the feeds are down for maintenance. Please try using the Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Sorry the feeds are down for maintenance. Please try using the Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30)
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif result2.find('Collected errors') != -1:
 			print('[RestoreWizard] Stage 4: Update is in progress, delaying')
-			self.delaymess = self.session.openWithCallback(self.doRestorePluginsTest, MessageBox, _("A background update check is in progress, please try again."), type=MessageBox.TYPE_INFO, timeout=10, wizard=True)
+			self.delaymess = self.session.openWithCallback(self.doRestorePluginsTest, MessageBox, _("A background update check is in progress, please try again."), type=MessageBox.TYPE_INFO, timeout=10)
 			self.delaymess.setTitle(_("Restore wizard"))
 		else:
 			print('[RestoreWizard] Stage 4: Feeds OK')

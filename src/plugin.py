@@ -201,7 +201,7 @@ def Plugins(**kwargs):
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=ImageManagerautostart))
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=BackupManagerautostart))
 	if config.misc.firstrun.value and not config.misc.restorewizardrun.value and backupAvailable == 1:
-		plist.append(PluginDescriptor(name=_("Restore wizard"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=RestoreWizard))
+		plist.append(PluginDescriptor(name=_("Restore wizard"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(0, RestoreWizard)))
 	plist.append(PluginDescriptor(name=_("Opkg"), where=PluginDescriptor.WHERE_FILESCAN, needsRestart=False, fnc=filescan))
 	plist.append(PluginDescriptor(name=_("Vision Backup Manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=BackupManagerMenu))
 	plist.append(PluginDescriptor(name=_("Vision Image Manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ImageMangerMenu))
