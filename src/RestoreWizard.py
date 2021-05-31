@@ -162,7 +162,7 @@ class RestoreWizard(WizardLanguage, Rc):
 				print('[RestoreWizard] Stage 6: No Network')
 				self.didPluginRestore = True
 				self.NextStep = 'reboot'
-				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your receiver is not connected to the Internet. Please try using Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30)
+				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Cannot restore from this access. Please try using Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30)
 				self.buildListRef.setTitle(_("Restore wizard"))
 			elif self.feeds == 'ERROR':
 				self.NextStep = 'pluginrestore'
