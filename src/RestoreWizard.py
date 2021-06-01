@@ -257,7 +257,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 		if self.delaymess:
 			self.delaymess.close()
 		print('[RestoreWizard] Stage 4: Feeds test')
-		self.Console.ePopen('opkg update', self.doRestorePluginsTestComplete)
+		self.Console.ePopen('ifdown -v -f eth0; ifup -v eth0 && opkg update', self.doRestorePluginsTestComplete)
 
 	def doRestorePluginsTestComplete(self, result=None, retval=None, extra_args=None):
 		result2 = result.decode("utf8")
