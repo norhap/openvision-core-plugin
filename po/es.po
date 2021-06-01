@@ -1089,7 +1089,7 @@ msgid "Your receiver could not connect to the plugin feeds at this time. Please 
 msgstr "Su receptor no pudo conectarse a las fuentes de plugins en este momento. Intente usar el administrador de copias de seguridad para restaurar los plugins más tarde.."
 
 msgid "Your receiver is not connected to the Internet. Please try using the Backup manager to restore plugins later."
-msgstr "Su receptor no está conectado a Internet. Intente usar el administrador de copias de seguridad para restaurar los complementos más tarde."
+msgstr "Su receptor no está conectado a Internet. Intente usar el administrador de copias de seguridad para restaurar los plugins más tarde."
 
 msgid "Sorry the feeds are down for maintenance. Please try again later."
 msgstr "Los feeds están inactivos por algún tipo de problema de red. Por favor, inténtelo de nuevo más tarde."
