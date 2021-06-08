@@ -228,8 +228,8 @@ class VISIONDevicesPanel(Screen):
 		self["key_blue"] = Label(_("Mount"))
 		self["lab7"] = Label(_("Please wait while scanning for devices..."))
 		self.onChangedEntry = []
-		self.partitionlist = []
-		self["list"] = List(self.partitionlist)
+		self.partitionList = []
+		self["list"] = List(self.partitionList)
 		self["list"].onSelectionChanged.append(self.selectionChanged)
 		self["actions"] = ActionMap(["WizardActions", "ColorActions", "MenuActions"], {
 			"back": self.close,
@@ -246,18 +246,21 @@ class VISIONDevicesPanel(Screen):
 
 	def selectionChanged(self):
 		# print("[MountManager][selectionChanged] self.partitionList=%s" % self.partitionList)
-		if len(self.partitionList) == 0:
+		if len(self.list) == 0:
 			return
 		sel = self["list"].getCurrent()	# partitionInfo = (name, description, png)
 		# print("[MountManager][selectionChanged] sel1=%s sel2=%s" % (sel[0], sel[1]))
-		line = sel[1]
-		# print("[MountManager1][selectionChanged] line=%s" % line)
-		if line.find("Mount") >= 0:
-			if line.find("/media/hdd") < 0:
-				self["key_red"].setText(_("Use as HDD"))
-		else:
-			self["key_red"].setText("")
-		name = description = ""
+		seldev = sel
+		for line in sel:
+			try:
+				line = line.strip()
+				if _("Mount: ") in line:
+					if line.find("/media/hdd") < 0:
+					    self["key_red"].setText(_("Use as HDD"))
+				else:
+					self["key_red"].setText(" ")
+			except Exception:
+				pass
 		if sel:
 			try:
 				name = str(sel[0])
