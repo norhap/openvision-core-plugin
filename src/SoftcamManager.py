@@ -441,7 +441,6 @@ class VISIONStartCam(Screen):
 		self.onClose.append(self.delTimer)
 
 	def startShow(self):
-		self.curpix = 0
 		self.count = 0
 		self['connect'].setPixmapNum(0)
 		if startselectedcam.endswith('.sh'):
@@ -506,17 +505,14 @@ class VISIONStartCam(Screen):
 
 	def updatepix(self):
 		self.activityTimer.stop()
-		if self.curpix > 23:
-			self.curpix = 0
-		if self.count > 23:
-			self.curpix = 0
-		self['connect'].setPixmapNum(self.curpix)
-		if self.count == 25:  # timer on screen
+		maxcount = 25
+		if self.count < maxcount:  # timer on screen
+			self["connect"].setPixmapNum(self.count % 24)
+			self.activityTimer.start(120)  # cycle speed
+			self.count += 1
+		else:
 			self.hide()
 			self.close()
-		self.activityTimer.start(120)  # cycle speed
-		self.curpix += 1
-		self.count += 1
 
 	def delTimer(self):
 		del self.activityTimer
@@ -582,14 +578,12 @@ class VISIONStopCam(Screen):
 
 	def startShow(self, result, retval, extra_args):
 		if retval == 0:
-			self.curpix = 0
 			self.count = 0
 			self['connect'].setPixmapNum(0)
-			stopcam = str(result)
+			stopcam = six.ensure_str(result)
+			print("[SoftcamManager][startShow] stopcam=%s" % stopcam)
 			if path.exists('/etc/SoftcamsAutostart'):
-				file = open('/etc/SoftcamsAutostart')
-				data = file.read()
-				file.close()
+				data = open('/etc/SoftcamsAutostart').read()
 				finddata = data.find(stopselectedcam)
 				if data.find(stopselectedcam) >= 0:
 					print('[SoftcamManager] Temporarily disabled timed check for ' + stopselectedcam)
@@ -611,17 +605,13 @@ class VISIONStopCam(Screen):
 
 	def updatepix(self):
 		self.activityTimer.stop()
-		if self.curpix > 23:
-			self.curpix = 0
-		if self.count > 23:
-			self.curpix = 0
-		self['connect'].setPixmapNum(self.curpix)
-		if self.count == 25:  # timer on screen
+		if self.count < 25:  # timer on screen
+			self["connect"].setPixmapNum(self.count % 24)
+			self.activityTimer.start(120)  # cycle speed
+			self.count += 1
+		else:
 			self.hide()
 			self.close()
-		self.activityTimer.start(120)  # cycle speed
-		self.curpix += 1
-		self.count += 1
 
 	def delTimer(self):
 		del self.activityTimer
@@ -688,7 +678,7 @@ class SoftcamAutoPoller:
 	def start(self):
 		if self.softcam_check not in self.timer.callback:
 			self.timer.callback.append(self.softcam_check)
-		self.timer.startLongTimer(10)
+		self.timer.startLongTimer(1)
 
 	def stop(self):
 		if self.softcam_check in self.timer.callback:
