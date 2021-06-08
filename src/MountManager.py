@@ -48,7 +48,7 @@ def readFile(filename):
 	return data
 
 
-def getProcPartitions(bplist):
+def getProcPartitions(partitionList):
 	partitions = []
 	with open("/proc/partitions", "r") as fd:
 		for line in fd.readlines():
@@ -79,11 +79,11 @@ def getProcPartitions(bplist):
 					continue
 			if device in partitions:  # If device is already in partition list ignore it.
 				continue
-			buildPartitionInfo(device, bplist)
+			buildPartitionInfo(device, partitionList)
 			partitions.append(device)
 
 
-def buildPartitionInfo(partition, bplist):
+def buildPartitionInfo(partition, partitionList):
 	if re.search("mmcblk[0-1]p[0-3]", partition):
 		device = re.sub("p[0-9]", "", partition)
 	else:
@@ -132,6 +132,7 @@ def buildPartitionInfo(partition, bplist):
 		description = _("Size: ") + _("unavailable")
 	else:
 		stat = statvfs(mediamount)
+		# print("[MountManager1]mediamount: %s" % mediamount)
 		size = (stat.f_blocks * stat.f_bsize) / (1000 * 1000) # get size in MB
 		if size < 1: # is condition ever fulfilled?
 			description = _("Size: unavailable")
@@ -142,7 +143,7 @@ def buildPartitionInfo(partition, bplist):
 		else:
 			description = _("Size: %sTB") % format(size / (1000 * 1000), '.2f')
 	if description != "": # how will this ever return false?
-		if BoxInfo.getItem("MountManager"):
+		if BoxInfo.getItem("MountManager"): # called by VISIONDevicesPanel else DeviceMountSetup
 			if rw.startswith("rw"):
 				rw = " R/W"
 			elif rw.startswith("ro"):
@@ -171,7 +172,7 @@ def buildPartitionInfo(partition, bplist):
 			item.value = mediamount.strip()
 			text = name + " " + description + " /dev/" + partition
 			partitionInfo = getConfigListEntry(text, item, partition, _format)
-		bplist.append(partitionInfo)
+		partitionList.append(partitionInfo)
 
 
 class VISIONDevicesPanel(Screen):
@@ -227,8 +228,8 @@ class VISIONDevicesPanel(Screen):
 		self["key_blue"] = Label(_("Mount"))
 		self["lab7"] = Label(_("Please wait while scanning for devices..."))
 		self.onChangedEntry = []
-		self.list = []
-		self["list"] = List(self.list)
+		self.partitionlist = []
+		self["list"] = List(self.partitionlist)
 		self["list"].onSelectionChanged.append(self.selectionChanged)
 		self["actions"] = ActionMap(["WizardActions", "ColorActions", "MenuActions"], {
 			"back": self.close,
@@ -244,20 +245,19 @@ class VISIONDevicesPanel(Screen):
 		self.setTimer()
 
 	def selectionChanged(self):
-		if len(self.list) == 0:
+		# print("[MountManager][selectionChanged] self.partitionList=%s" % self.partitionList)
+		if len(self.partitionList) == 0:
 			return
-		sel = self["list"].getCurrent()
-		seldev = sel
-		for line in sel:
-			try:
-				line = line.strip()
-				if _("Mount: ") in line:
-					if line.find("/media/hdd") < 0:
-					    self["key_red"].setText(_("Use as HDD"))
-				else:
-					self["key_red"].setText(" ")
-			except Exception:
-				pass
+		sel = self["list"].getCurrent()	# partitionInfo = (name, description, png)
+		# print("[MountManager][selectionChanged] sel1=%s sel2=%s" % (sel[0], sel[1]))
+		line = sel[1]		
+		# print("[MountManager1][selectionChanged] line=%s" % line)
+		if line.find("Mount") >= 0:
+			if line.find("/media/hdd") < 0:
+				self["key_red"].setText(_("Use as HDD"))
+		else:
+			self["key_red"].setText("")
+		name = description = ""
 		if sel:
 			try:
 				name = str(sel[0])
@@ -284,16 +284,18 @@ class VISIONDevicesPanel(Screen):
 		self["lab7"].hide()
 
 	def setupMounts(self):
-		self.session.openWithCallback(self.setTimer, VISIONDevicePanelConf)
+		self.session.openWithCallback(self.setTimer, DeviceMountSetup)	# print("[MountManager][setupMounts]")
 
 	def unmount(self):
 		sel = self["list"].getCurrent()
+		# print("[MountManager][unmount] sel1=%s sel2=%s" % (sel[0], sel[1]))
 		if sel:
 			des = sel[1]
 			des = des.replace("\n", "\t")
 			parts = des.strip().split("\t")
 			mountp = parts[1].replace(_("Mount: "), "")
 			device = parts[2].replace(_("Device: "), "")
+			# print("[MountManager][unmount] mountp=%s device=%s" % (mountp, device))
 			exitStatus = system("umount %s" % mountp)
 			if exitStatus == 0:
 				self.session.open(MessageBox, _("Partition: %s  Mount: %s unmounted successfully; if all partitions now unmounted you can remove device.") % (device, mountp), MessageBox.TYPE_INFO)
@@ -304,12 +306,14 @@ class VISIONDevicesPanel(Screen):
 
 	def mount(self):
 		sel = self["list"].getCurrent()
+		# print("[MountManager][mount] sel1=%s sel2=%s" % (sel[0], sel[1]))
 		if sel:
 			des = sel[1]
 			des = des.replace("\n", "\t")
 			parts = des.strip().split("\t")
 			mountp = parts[1].replace(_("Mount: "), "")
 			device = parts[2].replace(_("Device: "), "")
+			# print("[MountManager][mount] mountp=%s device=%s" % (mountp, device))
 			exitStatus = system("mount %s" % device)
 			if exitStatus != 0:
 				self.session.open(MessageBox, _("Mount failed for '%s', error code = '%s'.") % (sel, exitStatus), MessageBox.TYPE_INFO, timeout=10)
@@ -319,6 +323,7 @@ class VISIONDevicesPanel(Screen):
 		if len(self["list"].list) < 1:
 			return
 		sel = self["list"].getCurrent()
+		# print("[MountManager][saveMounts] selection=%s" % sel)
 		if sel:
 			des = sel[1]
 			des = des.replace('\n', '\t')
@@ -333,7 +338,7 @@ class VISIONDevicesPanel(Screen):
 		self.device = extra_args[0]
 		self.mountp = extra_args[1]
 		self.device_uuid = "UUID=" + six.ensure_str(result).split("UUID=")[1].split(" ")[0].replace('"', '')
-		# print "[MountManager1]addFstab: device = %s, mountp=%s, UUID=%s" %(self.device, self.mountp, self.device_uuid)
+		# print("[MountManager1][addFstab1]: device = %s, mountp=%s, UUID=%s" %(self.device, self.mountp, self.device_uuid))
 		if not path.exists(self.mountp):
 			mkdir(self.mountp, 0o755)
 		open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if "/media/hdd" not in l])
@@ -410,7 +415,7 @@ class VISIONDevicesPanel(Screen):
 			self.close()
 
 
-class VISIONDevicePanelConf(Screen, ConfigListScreen):
+class DeviceMountSetup(Screen, ConfigListScreen):
 	skin = """
 	<screen position="center,center" size="640,460">
 		<ePixmap pixmap="buttons/red.png" position="25,0" size="140,40" alphatest="on"/>
@@ -423,8 +428,8 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.list = []
-		ConfigListScreen.__init__(self, self.list)
+		self.partitionList = []
+		ConfigListScreen.__init__(self, self.partitionList)
 		self.setTitle(_("Choose where to mount your devices to:"))
 		self["lab1"] = StaticText(_("OpenVision"))
 		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
@@ -453,18 +458,19 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 
 	def findconfPartitions(self):
 		self.activityTimer.stop()
-		self.bplist = []
+		self.partitionList = []
 		BoxInfo.setItem("MountManager", False)
-		getProcPartitions(self.bplist)
-		self["config"].list = self.bplist
-		self["config"].l.setList(self.bplist)
+		getProcPartitions(self.partitionList)
+		self["config"].list = self.partitionList
+		self["config"].l.setList(self.partitionList)
 		self["lab7"].hide()
 
 	def saveconfMounts(self):
-		for x in self["config"].list:
+		for x in self["config"].list: # partitionInfo = getConfigListEntry(text, item, partition, _format)
 			self.device = x[2]
 			self.mountp = x[1].value
 			self.type = x[3]
+			# print("[MountManager][saveconfMount] mountp=%s device=%s type=%s" % (self.mountp, self.device, self.type))				
 			self.Console.ePopen("umount %s" % self.device)
 			self.Console.ePopen("/sbin/blkid | grep " + self.device + " && opkg list-installed ntfs-3g", self.addconfFstab, [self.device, self.mountp])
 		message = _("Updating mount locations...")
@@ -481,9 +487,9 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		if result:
 			self.device = extra_args[0]
 			self.mountp = extra_args[1]
-			self.device_uuid = "UUID=" + result.split("UUID=")[1].split(" ")[0].replace('"', '')
-			self.device_type = result.split("TYPE=")[1].split(" ")[0].replace('"', '')
-
+			self.device_uuid = "UUID=" + six.ensure_str(result).split("UUID=")[1].split(" ")[0].replace('"', '')
+			self.device_type = six.ensure_str(result).split("TYPE=")[1].split(" ")[0].replace('"', '')
+			# print("[MountManager][addFstab2] device_uuid:%s device_type:%s" % (self.device_uuid, self.device_type))
 			if self.device_type.startswith("ext"):
 				self.device_type = "auto"
 			elif self.device_type.startswith("ntfs") and result.find("ntfs-3g") != -1:
@@ -505,23 +511,3 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 			self.session.open(TryQuitMainloop, QUIT_REBOOT)
 		else:
 			self.close()
-
-
-class VISIONDevicesPanelSummary(Screen):
-	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent=parent)
-		self["entry"] = StaticText("")
-		self["desc"] = StaticText("")
-		self.onShow.append(self.addWatcher)
-		self.onHide.append(self.removeWatcher)
-
-	def addWatcher(self):
-		self.parent.onChangedEntry.append(self.selectionChanged)
-		self.parent.selectionChanged()
-
-	def removeWatcher(self):
-		self.parent.onChangedEntry.remove(self.selectionChanged)
-
-	def selectionChanged(self, name, desc):
-		self["entry"].text = name
-		self["desc"].text = desc
