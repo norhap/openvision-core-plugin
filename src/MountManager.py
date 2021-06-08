@@ -250,7 +250,7 @@ class VISIONDevicesPanel(Screen):
 			return
 		sel = self["list"].getCurrent()	# partitionInfo = (name, description, png)
 		# print("[MountManager][selectionChanged] sel1=%s sel2=%s" % (sel[0], sel[1]))
-		line = sel[1]		
+		line = sel[1]
 		# print("[MountManager1][selectionChanged] line=%s" % line)
 		if line.find("Mount") >= 0:
 			if line.find("/media/hdd") < 0:
@@ -470,7 +470,7 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 			self.device = x[2]
 			self.mountp = x[1].value
 			self.type = x[3]
-			# print("[MountManager][saveconfMount] mountp=%s device=%s type=%s" % (self.mountp, self.device, self.type))				
+			# print("[MountManager][saveconfMount] mountp=%s device=%s type=%s" % (self.mountp, self.device, self.type))
 			self.Console.ePopen("umount %s" % self.device)
 			self.Console.ePopen("/sbin/blkid | grep " + self.device + " && opkg list-installed ntfs-3g", self.addconfFstab, [self.device, self.mountp])
 		message = _("Updating mount locations...")
