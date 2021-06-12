@@ -89,6 +89,11 @@ config.imagemanager.imagefeed_PLi.value = config.imagemanager.imagefeed_PLi.defa
 
 autoImageManagerTimer = None
 
+if path.exists(config.imagemanager.backuplocation.value + "/imagebackups/imagerestore"):
+	try:
+		rmtree(config.imagemanager.backuplocation.value + "/imagebackups/imagerestore")
+	except Exception:
+		pass
 TMPDIR = config.imagemanager.backuplocation.value + "/imagebackups/" + config.imagemanager.folderprefix.value + "-" + "mount"
 if path.exists(TMPDIR + "/root/"):
 	try:
@@ -326,7 +331,7 @@ class VISIONImageManager(Screen):
 		folderprefix = config.imagemanager.folderprefix.value + "-" + imagetype + "-" + imageversion
 		cmd = "rm -rf %s" % backupname
 		if answer == True:
-		    if self.sel.startswith(folderprefix) and self.BackupRunning == False or self.sel.endswith(".zip") or self.sel.startswith("imagerestore"):
+		    if self.sel.startswith(folderprefix) and self.BackupRunning == False or self.sel.endswith(".zip"):
 		        Console().ePopen(cmd)
 			self.refreshList()
 
@@ -462,7 +467,6 @@ class VISIONImageManager(Screen):
 				if pathExists("%s/SDAbackup" % MAINDEST) and self.multibootslot != 1:
 						self.session.open(MessageBox, _("Multiboot only able to restore this backup to MMC slot1"), MessageBox.TYPE_INFO, timeout=20)
 						print("[ImageManager] SF8008 MMC restore to SDcard failed:\n", end=' ')
-						rmtree(config.imagemanager.backuplocation.getValue() + "/imagebackups/imagerestore")
 						self.close()
 				else:
 					self.keyRestore6(0)
