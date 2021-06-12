@@ -326,7 +326,7 @@ class VISIONImageManager(Screen):
 		folderprefix = config.imagemanager.folderprefix.value + "-" + imagetype + "-" + imageversion
 		cmd = "rm -rf %s" % backupname
 		if answer == True:
-		    if self.sel.startswith(folderprefix) and self.BackupRunning == False or self.sel.endswith(".zip"):
+		    if self.sel.startswith(folderprefix) and self.BackupRunning == False or self.sel.endswith(".zip") or self.sel.startswith("imagerestore"):
 		        Console().ePopen(cmd)
 			self.refreshList()
 
