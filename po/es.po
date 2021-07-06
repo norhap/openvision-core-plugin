@@ -279,7 +279,7 @@ msgid "Downloads"
 msgstr "Descargar Imagen"
 
 msgid "%s downloads"
-msgstr "%s Descargars"
+msgstr "%s Descargas"
 
 msgid "Enable startup"
 msgstr "Habilitar al iniciar"
