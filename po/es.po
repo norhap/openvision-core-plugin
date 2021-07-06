@@ -138,6 +138,9 @@ msgstr "Copia completa..."
 msgid "Backup confirmation"
 msgstr "Confirmación de copia de seguridad"
 
+msgid "Download confirmation"
+msgstr "Confirmar Descarga"
+
 msgid "Backup created"
 msgstr "Copia de seguridad realizada"
 
@@ -274,6 +277,9 @@ msgstr "Descargando Image..."
 
 msgid "Downloads"
 msgstr "Descargar Imagen"
+
+msgid "%s downloads"
+msgstr "%s Descargars"
 
 msgid "Enable startup"
 msgstr "Habilitar al iniciar"
@@ -1061,14 +1067,14 @@ msgstr "Administrador de arranque múltiple: inicialización de la tarjeta SD, i
 msgid "Multiboot manager - to use this routine %s image must be at OpenViX 4.2.043 or later and USB flashed - reply Yes to continue"
 msgstr "Administrador de arranque múltiple: para usar esta rutina, la imagen% s debe estar en OpenViX 4.2.043 o posterior y USB flasheado: responda Sí para continuar"
 
-msgid "No images found for selected download server...if password check validity"
-msgstr "No se encontraron imágenes para el servidor de descarga seleccionado ... si la contraseña verifica la validez"
+msgid "No images found on the selected download server...if password check validity"
+msgstr "No se encontraron imágenes para el servidor de descarga seleccionado, la contraseña verifica la validez"
 
 msgid "Please wait while the flash prepares, after the image is flashed, your %s will restart - if error please use Recovery mode to restart."
 msgstr "Espere mientras se prepara el flash, después de que la imagen se muestre, su% s se reiniciará; si se produce un error, use el modo de recuperación para reiniciar."
 
-msgid "Select an image to download for %s:"
-msgstr "Seleccione una imagen para descargar para% s:"
+msgid "Select an image to download:"
+msgstr "Seleccione una imagen para descargar:"
 
 msgid "slot%s  %s current image"
 msgstr "slot%s  %s imagen actual"
