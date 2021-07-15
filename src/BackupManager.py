@@ -464,7 +464,7 @@ class VISIONBackupManager(Screen):
 
 	def JobStart(self):
 		AddPopupWithCallback(self.Stage1,
-							 _("Do you want to restore your enigma2 settings ?"),
+							 _("Do you want to restore your Enigma2 settings ?"),
 							 MessageBox.TYPE_YESNO,
 							 10,
 							 SETTINGSRESTOREQUESTIONID
