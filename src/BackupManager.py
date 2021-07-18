@@ -1269,8 +1269,8 @@ class BackupFiles(Screen):
 			print("{BackupManager] Plugin listing failed - e. g. wrong backup destination or no space left on backup device")
 
 	def Stage3(self):
-		print('[BackupManager] Finding kernel version:' + currentkernelversion)
-		open('/tmp/backupkernelversion', 'w').write(currentkernelversion)
+		print('[BackupManager] Finding kernel version:' + str(currentkernelversion))
+		open('/tmp/backupkernelversion', 'w').write(str(currentkernelversion))
 		print('[BackupManager] Finding image version:' + currentimageversion)
 		open('/tmp/backupimageversion', 'w').write(currentimageversion)
 		self.Stage3Completed = True
