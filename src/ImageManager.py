@@ -1243,8 +1243,8 @@ class ImageBackup(Screen):
 					fileout.write(line)
 					fileout.close()
 				self.session.open(MessageBox, _("Multiboot only able to restore this backup to MMC slot1"), MessageBox.TYPE_INFO, timeout=20)
-			if path.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat"):
-				copy("/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat", self.MAINDESTROOT + "/burn.bat")
+			if fileExists("/usr/share/enigma2/receiver/burn.bat"):
+				copy("/usr/share/enigma2/receiver/burn.bat", self.MAINDESTROOT + "/burn.bat")
 		elif BoxInfo.getItem("HasRootSubdir"):
 				with open(self.MAINDEST + "/force_%s_READ.ME" % model, "w") as fileout:
 					line1 = "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick" % (model, model)
