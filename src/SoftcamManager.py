@@ -277,7 +277,10 @@ class VISIONSoftcamManager(Screen):
 			return
 		else:
 			if retval == 0:
-				stopcam = str(result)
+				if six.PY3:
+					stopcam = six.ensure_str(result)
+				else:
+					stopcam = str(result)
 				print('[SoftcamManager] Stopping ' + selectedcam + ' PID ' + stopcam.replace("\n", ""))
 				now = datetime.now()
 				open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping: " + selectedcam + "\n")
