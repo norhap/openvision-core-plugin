@@ -189,7 +189,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 		if fileExists('/tmp/backupkernelversion'):
 			kernelversion = open('/tmp/backupkernelversion').read()
 			print('[RestoreWizard] Current kernelversion:', kernelversion)
-			if kernelversion == currentkernelversion:
+			if kernelversion == str(currentkernelversion):
 				print('[RestoreWizard] Stage 1: Kernel version OK')
 				self.doRestoreSettings2()
 			else:
@@ -234,8 +234,8 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 			print('[RestoreWizard] Backup image:', imageversion)
 			print('[RestoreWizard] Current image:', currentimageversion)
 			print('[RestoreWizard] Backup kernel:', kernelversion)
-			print('[RestoreWizard] Current kernel:', currentkernelversion)
-			if kernelversion == currentkernelversion:
+			print('[RestoreWizard] Current kernel:', str(currentkernelversion))
+			if kernelversion == str(currentkernelversion):
 				print('[RestoreWizard] Stage 3: Kernel and image version are OK')
 				self.doRestorePluginsTest()
 			else:
