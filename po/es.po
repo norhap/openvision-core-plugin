@@ -417,7 +417,7 @@ msgid "The mount failed, completely restart the receiver to reassemble it, or pr
 msgstr "Falló el montaje, reinicie completamente el receptor para volver a montarlo o presione botón verde (configurar montajes) para montar como /media/hdd../media/usb...etc."
 
 msgid "Mount: "
-msgstr "Montar: "
+msgstr "Montado: "
 
 msgid "Moving to backup Location..."
 msgstr "Moviendo al destino de copias..."
