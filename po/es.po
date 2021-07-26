@@ -153,8 +153,8 @@ msgstr "Localización Copias Seguridad"
 msgid "Folder Prefix"
 msgstr "Prefijo Copia"
 
-msgid "Backup manager"
-msgstr "Administrador de copias configuración"
+msgid "Backup Manager"
+msgstr "Administrador Copias de Configuración"
 
 msgid "Backup manager Log"
 msgstr "Historial de copias de seguridad"
@@ -323,7 +323,7 @@ msgstr "GB"
 msgid "HARD DISK: "
 msgstr "DISCO DURO: "
 
-msgid "Image manager"
+msgid "Image Manager"
 msgstr "Administrador de Imagen"
 
 msgid "IPK installer"
@@ -347,8 +347,8 @@ msgstr "Instalar IPKs de la carpeta /tmp."
 msgid "Install extensions."
 msgstr "Instalar extensiones."
 
-msgid "Install local extension"
-msgstr "Instalar extensión local"
+msgid "Install Local Extension"
+msgstr "Instalar Extensión Local"
 
 msgid "Installing..."
 msgstr "Instalando..."
@@ -392,8 +392,8 @@ msgstr "Administrar los puntos de montaje de sus dispositivos."
 msgid "Manage your backups of your settings."
 msgstr "Administrar sus copias de configuración."
 
-msgid "Create and flash complete images of your system."
-msgstr "Crea y flashea imágenes completas de su sistema."
+msgid "Backup/Flash/ReBoot system image."
+msgstr "Imagen del sistema Copia/Flash/ReBoot."
 
 msgid "Manage your devices mount points."
 msgstr "Gestiona sus dispositivos puntos de montaje."
@@ -410,8 +410,8 @@ msgstr "Montar"
 msgid "Un-mount"
 msgstr "Desmontar"
 
-msgid "Mount manager"
-msgstr "Administrador de montajes"
+msgid "Mount Manager"
+msgstr "Administrador de Montajes"
 
 msgid "The mount failed, completely restart the receiver to reassemble it, or press the green button (setup mounts) to mount as /media/hdd../media/usb..."
 msgstr "Falló el montaje, reinicie completamente el receptor para volver a montarlo o presione botón verde (configurar montajes) para montar como /media/hdd../media/usb...etc."
@@ -579,8 +579,8 @@ msgstr "Guardar"
 msgid "Schedule backups"
 msgstr "Programar copias de seguridad"
 
-msgid "Script runner"
-msgstr "Ejecuciones de Scripts"
+msgid "Script Runner"
+msgstr "Ejecutar Scripts"
 
 msgid "Select"
 msgstr "Seleccionar"
@@ -693,8 +693,8 @@ msgstr "Detener"
 msgid "Swapfile not found. You have to create the file before you try to activate it."
 msgstr "Archivo swapfile no encontrado. Hay que crearlo antes de intentar activarlo."
 
-msgid "SWAP manager"
-msgstr "SWAP Administrador"
+msgid "Swap Manager"
+msgstr "Administrador de SWAP"
 
 msgid "Swap place:"
 msgstr "Destino Swap:"
@@ -884,8 +884,8 @@ msgstr "Incluir el nombre del receptor en el nombre de la copia de seguridad"
 msgid "The name of the receiver can be included in the backup filename, but makes the filename lengthy."
 msgstr "El nombre del receptor se puede incluir en el nombre del archivo de respaldo, pero hace que el nombre del archivo sea largo."
 
-msgid "Manage the backups of your settings."
-msgstr "Gestiona las copias de seguridad de su configuración."
+msgid "Manage settings backup."
+msgstr "Administra la copia de seguridad de la configuración."
 
 msgid "Query before backup starts"
 msgstr "Consulta antes de que comience la copia configuración"
@@ -961,7 +961,7 @@ msgid "MultiBoot manager"
 msgstr "Administrador Multiboot"
 
 msgid "Move Nand root to SD card"
-msgstr "Mover la raíz Nand a la tarjeta SD"
+msgstr "Mover Raíz Nand a Tarjeta SD"
 
 msgid "Sorry, but the file is not compatible with this kernel version."
 msgstr "Lo sentimos, pero el backup no es compatible con esta versión de kernel."
@@ -1302,3 +1302,12 @@ msgstr "Establezca la hora de inicio de la copia de seguridad."
 
 msgid "Vision Core Restore Wizard"
 msgstr "Vision Core Asistente de Restauración"
+
+msgid "Client Mode Box"
+msgstr "Receptor en Modo Cliente"
+
+msgid "Use this box as a client of a server."
+msgstr "Utilice este receptor como cliente de un servidor."
+
+msgid "H9 SDcard Manager"
+msgstr "Administrador SDCard Receptor H9"
