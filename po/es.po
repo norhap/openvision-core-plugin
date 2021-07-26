@@ -633,6 +633,18 @@ msgstr "Mostrar en menu extensiones"
 msgid "Size: "
 msgstr "Tamaño: "
 
+msgid "Size: unavailable"
+msgstr "Tamaño: No disponible"
+
+msgid "Size: %sMB"
+msgstr "Tamaño: %sMB"
+
+msgid "Size: %sGB"
+msgstr "Tamaño: %sGB"
+
+msgid "Size: %sTB"
+msgstr "Tamaño: %sTB"
+
 msgid "Softcam manager"
 msgstr "Administrador de Softcams"
 
