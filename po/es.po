@@ -998,10 +998,10 @@ msgstr "Actualizando ubicaciones de montaje..."
 
 msgid ""
 "The changes need a system restart to take effect.\n"
-"Restart your %s %s now?"
+"Restart your %s now?"
 msgstr ""
 "Los cambios necesitan un reinicio del sistema para que tenga efecto.\n"
-"Reiniciar su %s %s ahora?"
+"Reiniciar su %s ahora?"
 
 msgid "Really unmount drive ?"
 msgstr "Realmente quieres desmontar la unidad ?"

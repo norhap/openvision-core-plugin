@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 from __future__ import print_function
 
 # required methods: Request, urlopen, HTTPError, URLError
@@ -13,8 +11,8 @@ except ImportError: # Python 2
 import json
 import tempfile
 
-from boxbranding import getImageType, getImageDistro, getImageVersion, getImageDevBuild, getImageFolder, getImageFileSystem, getMachineBuild, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
-from enigma import eTimer, fbClass, getBoxType, getBoxBrand
+from boxbranding import getImageType, getImageDistro, getImageVersion, getImageDevBuild, getImageFolder, getImageFileSystem, getMachineBuild, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE, getBoxType
+from enigma import eTimer, fbClass
 from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, rmdir, statvfs, chmod, walk
 from shutil import rmtree, move, copy, copyfile
 from time import localtime, time, strftime, mktime
@@ -39,12 +37,13 @@ from Screens.TaskView import JobView
 from Tools.Directories import fileExists, pathExists, fileHas
 import Tools.CopyFiles
 from Tools.HardwareInfo import HardwareInfo
+from Tools.StbHardware import getBrand
 from Tools.Multiboot import GetImagelist, getCurrentImage
 from Tools.Notifications import AddPopupWithCallback
 import six
 
 model = getBoxType()
-brand = getBoxBrand()
+brand = getBrand()
 platform = getMachineBuild()
 kernelfile = getMachineKernelFile()
 mtdkernel = getMachineMtdKernel()
@@ -1245,7 +1244,7 @@ class ImageBackup(Screen):
 					line = "This file forces a reboot after the update."
 					fileout.write(line)
 					fileout.close()
-		elif brand in ("xtrend", "gigablue", "octagon", "odin", "xp", "ini"):
+		elif brand in ("xtrend", "GigaBlue", "octagon", "odin", "xp", "ini"):
 			if brand in ("xtrend", "octagon", "odin", "ini"):
 				with open(self.MAINDEST + "/noforce", "w") as fileout:
 					line = "rename this file to 'force' to force an update without confirmation"

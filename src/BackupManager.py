@@ -1,14 +1,11 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 from __future__ import print_function
-# for localized messages
-from boxbranding import getImageDistro, getImageVersion, getImageDevBuild
+from boxbranding import getImageDistro, getImageVersion, getImageDevBuild, getBoxType
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod
 from time import localtime, time, strftime, mktime
 from datetime import date, datetime
 import tarfile
 import glob
-from enigma import eTimer, eEnv, eDVBDB, quitMainloop, getBoxType
+from enigma import eTimer, eEnv, eDVBDB, quitMainloop
 from . import _, PluginLanguageDomain
 from Components.About import about
 from Components.ActionMap import ActionMap
