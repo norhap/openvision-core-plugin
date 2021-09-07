@@ -140,8 +140,8 @@ class VISIONSoftcamManager(Screen):
 		selcam = ''
 		if path.islink('/usr/softcams/oscam') or path.islink('/usr/softcams/wicardd') or path.islink('/usr/softcams/mgcamd_1.38') or path.islink('/usr/softcams/mgcamd_1.35a') or path.islink('/usr/softcams/CCcam'):
 			current = self["list"].getCurrent()[0]
-			print('[SoftcamManager] Selectedcam: ' + str(selcam))
 			selcam = current[0]
+			print('[SoftcamManager] Selected cam: ' + str(selcam))
 			if self.currentactivecam.find(selcam) < 0:
 				self["key_green"].setText(_("Start"))
 			else:
