@@ -18,7 +18,7 @@ from Components.Label import Label
 from Components.Button import Button
 from Components.ScrollLabel import ScrollLabel
 from Components.Pixmap import MultiPixmap
-from Components.config import configfile, config, ConfigSubsection, ConfigYesNo, ConfigNumber, ConfigLocations, getConfigListEntry
+from Components.config import configfile, config, ConfigSubsection, ConfigYesNo, ConfigNumber, ConfigLocations, getConfigListEntry, ConfigSelection
 from Components.Console import Console
 from Components.FileList import MultiFileSelectList
 from Components.PluginComponent import plugins
@@ -193,6 +193,8 @@ class VISIONSoftcamManager(Screen):
 		# self.Console.ePopen("ps.procps | grep softcams | grep -v 'grep' | sed 's/</ /g' | awk '{print $5}' | awk '{a[$1] = $0} END { for (x in a) { print a[x] } }' | awk -F'[/]' '{print $4}'", self.showActivecam2)
 
 	def showActivecam2(self, result, retval, extra_args):
+		from Tools.camcontrol import CamControl
+		config.misc.softcams = ConfigSelection(default="None", choices=CamControl("softcam").getList())
 		if retval == 0:
 			if six.PY3:
 				self.currentactivecamtemp = six.ensure_str(result)
@@ -200,14 +202,17 @@ class VISIONSoftcamManager(Screen):
 				self.currentactivecamtemp = result
 			self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
 			self.currentactivecam = self.currentactivecam.replace("\n", ", ")
-			print("[SoftcamManager] Active:%s " % self.currentactivecam)
 			if path.exists("/tmp/SoftcamsScriptsRunning"):
 				file = open("/tmp/SoftcamsScriptsRunning")
 				SoftcamsScriptsRunning = file.read()
 				file.close()
 				SoftcamsScriptsRunning = SoftcamsScriptsRunning.replace("\n", ", ")
 				self.currentactivecam += SoftcamsScriptsRunning
-			self["activecam"].setText(self.currentactivecam)
+			print("[SoftcamManager] Active:%s SoftcamSetup:%s" % (self.currentactivecam, config.misc.softcams.value))
+			if config.misc.softcams.value != "None":
+				self["activecam"].setText(_("Softcam Setup [%s]") % config.misc.softcams.value)
+			else:
+				self["activecam"].setText(self.currentactivecam)
 			self["activecam"].show()
 		else:
 			print("[SoftcamManager] Result failed: " + str(result))

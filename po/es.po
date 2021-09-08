@@ -1323,3 +1323,6 @@ msgstr "Utilice este receptor como cliente de un servidor."
 
 msgid "H9 SDcard Manager"
 msgstr "Administrador SDCard Receptor H9"
+
+msgid "Softcam Setup [%s]"
+msgstr "Configuración de Softcam [%s]"
