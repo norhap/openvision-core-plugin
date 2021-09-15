@@ -4,11 +4,11 @@ from __future__ import print_function
 import six
 
 import re
-from os import path, makedirs, remove, rename, symlink, mkdir, listdir
+from os import path, makedirs, remove, rename, symlink, mkdir, listdir, unlink
 from datetime import datetime
 from time import time, sleep
 from boxbranding import getImageArch
-from enigma import eTimer
+from enigma import eTimer, eConsoleAppContainer
 
 from . import _, PluginLanguageDomain
 import Components.Task
@@ -22,6 +22,7 @@ from Components.config import configfile, config, ConfigSubsection, ConfigYesNo,
 from Components.Console import Console
 from Components.FileList import MultiFileSelectList
 from Components.PluginComponent import plugins
+from Tools.camcontrol import CamControl
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -33,6 +34,7 @@ config.softcammanager.softcams_autostart = ConfigLocations(default='')
 config.softcammanager.softcamtimerenabled = ConfigYesNo(default=True)
 config.softcammanager.softcamtimer = ConfigNumber(default=6)
 config.softcammanager.showinextensions = ConfigYesNo(default=True)
+config.misc.softcams = ConfigSelection(default="None", choices=CamControl("softcam").getList())
 
 softcamautopoller = None
 
@@ -49,11 +51,28 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during shutdown, with reason=0 at startup?"""
 	global softcamautopoller
 	if reason == 0:
-		print("[SoftcamManager] Autostart enabled")
-		if path.exists('/tmp/SoftcamsDisableCheck'):
-			remove('/tmp/SoftcamsDisableCheck')
-		softcamautopoller = SoftcamAutoPoller()
-		softcamautopoller.start()
+		if six.PY3:
+			link = "/etc/init.d/softcam"
+			print("[SoftcamAutostart] config.misc.softcams.value=%s" % (config.misc.softcams.value))
+			if path.exists(link) and config.misc.softcams.value != "None":
+				scr = "softcam.%s" % config.misc.softcams.value
+				unlink(link)
+				symlink(scr, link)
+				cmd = "%s %s" % (link, "start")
+				print("[SoftcamAutostart][command]Executing %s" % cmd)
+				eConsoleAppContainer().execute(cmd)
+			else:
+				print("[SoftcamManager] AutoStart Enabled")
+				if path.exists("/tmp/SoftcamsDisableCheck"):
+					remove("/tmp/SoftcamsDisableCheck")
+				softcamautopoller = SoftcamAutoPoller()
+				softcamautopoller.start()
+		else:
+			print("[SoftcamManager] AutoStart Enabled")
+			if path.exists("/tmp/SoftcamsDisableCheck"):
+				remove("/tmp/SoftcamsDisableCheck")
+			softcamautopoller = SoftcamAutoPoller()
+			softcamautopoller.start()
 	elif reason == 1:
 		# Stop Poller
 		if softcamautopoller is not None:
@@ -193,8 +212,6 @@ class VISIONSoftcamManager(Screen):
 		# self.Console.ePopen("ps.procps | grep softcams | grep -v 'grep' | sed 's/</ /g' | awk '{print $5}' | awk '{a[$1] = $0} END { for (x in a) { print a[x] } }' | awk -F'[/]' '{print $4}'", self.showActivecam2)
 
 	def showActivecam2(self, result, retval, extra_args):
-		from Tools.camcontrol import CamControl
-		config.misc.softcams = ConfigSelection(default="None", choices=CamControl("softcam").getList())
 		if retval == 0:
 			if six.PY3:
 				self.currentactivecamtemp = six.ensure_str(result)
