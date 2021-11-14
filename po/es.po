@@ -537,8 +537,8 @@ msgstr "Confirmar borrar"
 msgid "Removing temp mounts..."
 msgstr "Eliminando montajes temporales..."
 
-msgid "Repeat how often"
-msgstr "Frecuencia de repeticiones"
+msgid "- Repeat how often"
+msgstr "- Frecuencia de repeticiones"
 
 msgid "Restart"
 msgstr "Reiniciar"
@@ -747,8 +747,8 @@ msgstr "No hay imagen para borrar."
 msgid "There is no image to flash."
 msgstr "No hay imagen para flashear."
 
-msgid "Time of backup to start"
-msgstr "Hora de inicio de la copia de seguridad"
+msgid "- Time of backup to start"
+msgstr "- Hora de inicio de la copia de seguridad"
 
 msgid "Type: "
 msgstr "Tipo: "
@@ -897,22 +897,22 @@ msgid "The name of the receiver can be included in the backup filename, but make
 msgstr "El nombre del receptor se puede incluir en el nombre del archivo de respaldo, pero hace que el nombre del archivo sea largo."
 
 msgid "Manage settings backup."
-msgstr "Administra la copia de seguridad de la configuración."
+msgstr "Administra la copia de configuración."
 
-msgid "Query before backup starts"
-msgstr "Consulta antes de que comience la copia configuración"
-
-msgid "Query before image backup starts"
-msgstr "Consulta antes de que comience la copia de imagen"
+msgid "- Query before backup starts"
+msgstr "- Consulta antes de que comience la copia de configuración"
 
 msgid "Query before starting backup."
 msgstr "Consulta antes de iniciar la copia de configuración."
 
+msgid "- Query before image backup starts"
+msgstr "- Consulta antes de que comience la copia de imagen"
+
 msgid "Query before starting image backup."
 msgstr "Consulta antes de iniciar la copia de imagen."
 
-msgid "Max backups to keep (0==all)"
-msgstr "Máximas copias de seguridad para mantener (0=todas)"
+msgid "- Max backups to keep (0==all)"
+msgstr "- Máximas copias de seguridad para mantener (0=todas)"
 
 msgid "Max image backups to keep (0==all)"
 msgstr "Máximo de copias de imagen para mantener (0=todas)"
@@ -1326,3 +1326,12 @@ msgstr "Administrador SDCard Receptor H9"
 
 msgid "Softcam Setup [%s]"
 msgstr "Configuración de Softcam [%s]"
+
+msgid "Backups to prune"
+msgstr "Backups para eliminar"
+
+msgid "Types of backups to remove when stale."
+msgstr "Tipos de copias que se deben eliminar cuando están obsoletas."
+
+msgid "Maximum number of backups to keep. Older backups are given priority for removal, so the fresher ones remain."
+msgstr "Máximo de copias para conservar. Las copias más antiguas tienen prioridad para su eliminación, por lo que las más recientes permanecen."
