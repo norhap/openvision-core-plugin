@@ -224,7 +224,7 @@ class VISIONBackupManager(Screen):
 										  'red': self.keyDelete,
 										  'green': self.GreenPressed,
 										  'yellow': self.keyResstore,
-										  'blue': self.RestoreOnlySettings,
+										  'blue': self.RestoreSettings,
 										  "menu": self.createSetup,
 										  'log': self.showLog,
 										  }, -1)
@@ -362,12 +362,12 @@ class VISIONBackupManager(Screen):
 		else:
 			self.session.open(MessageBox, _("Backup in progress,\nPlease wait for it to finish, before trying again."), MessageBox.TYPE_INFO, timeout=10)
 
-	def RestoreOnlySettings(self):
+	def RestoreSettings(self):
 		self.sel = self['list'].getCurrent()
 		if not self.BackupRunning:
-		    if self.sel:
-		        message = _("Restore only settings from this backup ?\n") + self.sel
-		        self.session.openWithCallback(self.StageRestoreSettings, MessageBox, message, MessageBox.TYPE_YESNO)
+			if self.sel:
+				message = _("Restore only settings from this backup ?\n") + self.sel
+				self.session.openWithCallback(self.StageRestoreSettings, MessageBox, message, MessageBox.TYPE_YESNO)
 
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
 		if path.exists('/tmp/backupkernelversion'):
@@ -411,6 +411,7 @@ class VISIONBackupManager(Screen):
 		self.Stage2Completed = False
 		self.Stage3Completed = False
 		self.Stage4Completed = False
+		self.Stage5Completed = False
 		job = Components.Task.Job(_("Backup manager"))
 
 		task = Components.Task.PythonTask(job, _("Restoring backup..."))
@@ -453,6 +454,10 @@ class VISIONBackupManager(Screen):
 		task.work = self.Stage5
 		task.weighting = 1
 
+		task = Components.Task.ConditionTask(job, _("Restoring plugins, this can take a long time..."), timeoutCount=1200)
+		task.check = lambda: self.Stage5Completed
+		task.weighting = 1
+
 		task = Components.Task.PythonTask(job, _("Rebooting..."))
 		task.work = self.Stage6
 		task.weighting = 1
@@ -469,14 +474,15 @@ class VISIONBackupManager(Screen):
 
 	def StageRestoreSettings(self, answer):
 		if answer == True:
-		     print('[BackupManager] Restoring only settings:')
-		     self.Console.ePopen("/sbin/init 4" + " &&" + " sleep 5" + " &&" + " tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C /" + " &&" + " " + "/sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring, your receiver go to restart..."), MessageBox.TYPE_INFO))
+			 print('[BackupManager] Restoring only settings:')
+			 RestoreSettings = "/sbin/init 4 && sleep 5 && tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C / && /sbin/init 6"
+			 self.Console.ePopen("%s" % RestoreSettings, self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring settings, your receiver go to restart..."), MessageBox.TYPE_INFO))
 
 	def Stage1(self, answer=None):
 		print('[BackupManager] Restoring Stage 1:')
 		if answer is True:
-			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -O > /dev/null", self.Stage1SettingsComplete)
-		elif answer is False:
+			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /", self.Stage1SettingsComplete)
+		else:
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C / tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion  tmp/3rdPartyPlugins", self.Stage1PluginsComplete)
 
 	def Stage1SettingsComplete(self, result, retval, extra_args):
@@ -545,7 +551,7 @@ class VISIONBackupManager(Screen):
 				with open("/tmp/backupkernelversion", "r") as fd:
 					kernelversion = fd.read()
 				print('[BackupManager] Backup image:', imageversion)
-				print('[BackupManager] Current image:', about.getVersionString)
+				print('[BackupManager] Current image:', about.getImageTypeString())
 				print('[BackupManager] Backup kernel:', kernelversion)
 				print('[BackupManager] Current kernel:', about.getKernelVersionString())
 				if kernelversion:
@@ -725,12 +731,12 @@ class VISIONBackupManager(Screen):
 		self.Stage3Completed = True
 		self.Stage4Completed = True
 		self.Stage5Completed = True
+		KillE2ReBoot = "/sbin/init 4 && sleep 10 && /sbin/init 3 && sleep 30 && /sbin/init 6"
 		if self.didPluginsRestore or self.didSettingsRestore:
-			print('[BackupManager] Restoring completed rebooting')
-			self.Console.ePopen("sleep 100" + " &&" + " /sbin/init 4" + " &&" + " sleep 5" + " &&" + " tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C /" + " &&" + " rm -f /tmp/ExtraInstalledPlugins /tmp/backupimageversion /tmp/backupkernelversion" + " && /sbin/init 3 && sleep 25 && /sbin/init 6", self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring please wait..."), MessageBox.TYPE_INFO))
+			print('[BackupManager] Restoring backup')
+			self.Console.ePopen("%s" % KillE2ReBoot, self.Stage1SettingsComplete, self.session.open(MessageBox, _("Finishing restore, your receiver go to restart"), MessageBox.TYPE_INFO))
 		else:
-			print('[BackupManager] Restoring failed or canceled')
-			self.close()
+			return self.close()
 
 
 class BackupSelection(Screen):
@@ -1395,8 +1401,8 @@ class BackupFiles(Screen):
 					emlist = emlist[0:len(emlist) - config.backupmanager.number_to_keep.value]
 					for fil in emlist:
 						remove(self.BackupDirectory + fil)
-	    	except:
-	    		pass
+		except:
+			pass
 
 		if config.backupmanager.schedule.value:
 			atLeast = 60

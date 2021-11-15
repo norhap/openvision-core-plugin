@@ -164,10 +164,10 @@ msgstr "Copia fallida. Destino erróneo o no hay espacio suficiente en el dispos
 
 msgid ""
 "Backup in progress,\n"
-"Please for it to finish, before trying again"
+"Please wait for it to finish, before trying again."
 msgstr ""
 "Copia en progreso,\n"
-"Por favor espera hasta que termine"
+"Espere a que termine antes de volver a intentarlo."
 
 msgid "Backup prefix"
 msgstr "Prefijo de copias de seguridad"
@@ -562,7 +562,7 @@ msgid "Restoring backup..."
 msgstr "Restaurando copia..."
 
 msgid "Restoring plugins, this can take a long time..."
-msgstr "Restaurando plugins. Puede tardar mucho..."
+msgstr "Restaurando plugins. Puede tardar espere..."
 
 msgid "Restoring plugins..."
 msgstr "Restaurando plugins..."
@@ -1136,11 +1136,11 @@ msgstr "Restaurar configuración"
 msgid "Softcam Vision Setup"
 msgstr "Softcam Vision Configuración"
 
-msgid "Restoring, your receiver go to restart..."
-msgstr "Restaurando, su receptor va a reiniciar..."
+msgid "Restoring settings, your receiver go to restart..."
+msgstr "Restaurando configuración, su receptor va a reiniciar..."
 
-msgid "Restoring please wait..."
-msgstr "Restaurando espere por favor..."
+msgid "Finishing restore, your receiver go to restart"
+msgstr "Finalizando restauración, su receptor va a reiniciar"
 
 msgid "Use Mount manager and press green setup mounts"
 msgstr "Use Administrador de Montajes y pulse verde"
