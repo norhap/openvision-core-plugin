@@ -375,10 +375,10 @@ class VISIONBackupManager(Screen):
 	def settingsRestoreCheck(self, result, retval, extra_args=None):
 		if path.exists('/tmp/backupkernelversion'):
 			kernel = open('/tmp/backupkernelversion').read()
-			print('[BackupManager] Backup Image:', kernel)
-			print('[BackupManager] Current Image:', about.getKernelVersionString())
+			print('[BackupManager] Backup Kernel:', kernel)
+			print('[BackupManager] Current Kernel:', about.getKernelVersionString())
 			if kernel == about.getKernelVersionString():
-				print('[BackupManager] Stage 1: Image ver OK')
+				print('[BackupManager] Stage 1: Kernel ver OK')
 				self.keyResstore1()
 			else:
 				self.session.open(MessageBox, _("Sorry, but the file is not compatible with this kernel version."), MessageBox.TYPE_INFO, timeout=10)
@@ -550,10 +550,10 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring Stage 3: Feeds are OK')
 			if path.exists('/tmp/backupkernelversion') and path.exists('/tmp/backupimageversion'):
 				with open("/tmp/backupimageversion", "r") as fd:
-					imageversion = fd.read()
+					backupimageversion = fd.read()
 				with open("/tmp/backupkernelversion", "r") as fd:
 					kernelversion = fd.read()
-				print('[BackupManager] Backup image:', imageversion)
+				print('[BackupManager] Backup image:', backupimageversion)
 				print('[BackupManager] Current image:', about.getImageTypeString())
 				print('[BackupManager] Backup kernel:', kernelversion)
 				print('[BackupManager] Current kernel:', about.getKernelVersionString())
@@ -1316,9 +1316,9 @@ class BackupFiles(Screen):
 		output = open('/tmp/backupkernelversion', 'w')
 		output.write(about.getKernelVersionString())
 		output.close()
-		print('[BackupManager] Finding image version:' + about.about.getVersionString())
+		print('[BackupManager] Finding image version:' + about.getImageTypeString())
 		output = open('/tmp/backupimageversion', 'w')
-		output.write(about.about.getVersionString())
+		output.write(about.getImageTypeString())
 		output.close()
 		self.Stage3Completed = True
 
