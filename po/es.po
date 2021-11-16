@@ -1347,3 +1347,6 @@ msgstr "Todas"
 
 msgid "Monthly"
 msgstr "Mensual"
+
+msgid "Backup manager"
+msgstr "Administrador de copias"
