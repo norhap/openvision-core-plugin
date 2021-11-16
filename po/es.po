@@ -1328,10 +1328,22 @@ msgid "Softcam Setup [%s]"
 msgstr "Configuración de Softcam [%s]"
 
 msgid "Backups to prune"
-msgstr "Backups para eliminar"
+msgstr "Copias para eliminar"
 
 msgid "Types of backups to remove when stale."
 msgstr "Tipos de copias que se deben eliminar cuando están obsoletas."
 
 msgid "Maximum number of backups to keep. Older backups are given priority for removal, so the fresher ones remain."
 msgstr "Máximo de copias para conservar. Las copias más antiguas tienen prioridad para su eliminación, por lo que las más recientes permanecen."
+
+msgid "Only scheduled"
+msgstr "Solo programado"
+
+msgid "Automatically created"
+msgstr "Creado automáticamente"
+
+msgid "All"
+msgstr "Todas"
+
+msgid "Monthly"
+msgstr "Mensual"
