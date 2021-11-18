@@ -128,7 +128,7 @@ class VISIONSoftcamManager(Screen):
 									  'red': self.close,
 									  'green': self.keyStart,
 									  'yellow': self.getRestartPID,
-									  'BLUE': self.changeSelectionState,
+									  'blue': self.changeSelectionState,
 									  'log': self.showLog,
 									  'menu': self.createSetup,
 									  }, -1)
