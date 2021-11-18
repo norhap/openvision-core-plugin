@@ -1139,8 +1139,8 @@ msgstr "Softcam Vision Configuración"
 msgid "Restoring settings, your receiver go to restart..."
 msgstr "Restaurando configuración, su receptor va a reiniciar..."
 
-msgid "Finishing restore, your receiver go to restart"
-msgstr "Finalizando restauración, su receptor va a reiniciar"
+msgid "Finishing restore, your receiver go to restart."
+msgstr "Finalizando restauración, su receptor va a reiniciar."
 
 msgid "Use Mount manager and press green setup mounts"
 msgstr "Use Administrador de Montajes y pulse verde"
