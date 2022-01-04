@@ -1233,6 +1233,18 @@ msgstr "Cerrar este Asistente"
 msgid "Please wait while scan is in progress..."
 msgstr "Espere por favor búsqueda en progreso..."
 
+msgid ""
+"Please wait while scan is in progress."
+"\n"
+"This operation may take a while"
+msgstr ""
+"Espere mientras el escaneo está en progreso."
+"\n"
+"Esta operación puede tardar un poco"
+
+msgid "Choose your main device"
+msgstr "Elija su dispositivo principal"
+
 msgid "Cannot download data, we can't configure your Box, please press OK to close this Wizard."
 msgstr "No se pueden descargar datos, no podemos configurar su receptor, presione OK para cerrar este asistente."
 
