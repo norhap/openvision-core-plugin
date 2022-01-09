@@ -200,7 +200,7 @@ class VISIONImageManager(Screen):
 	def backupRunning(self):
 		self.BackupRunning = False
 		for job in Components.Task.job_manager.getPendingJobs():
-			if job.name.startswith(_("Image manager")):
+			if job.name.startswith(_("Image Manager")):
 				self.BackupRunning = True
 		if self.BackupRunning:
 			self["key_green"].setText(_("View progress"))
@@ -236,7 +236,7 @@ class VISIONImageManager(Screen):
 			self["list"].setList(self.emlist)
 			self["list"].show()
 		except OSError as err:
-			print("[Errno 2] Device is in Read-Only mode, no such file or directory: %s" % self.BackupDirectory)
+			print("[Errno 30] Device is in Read-Only mode. [Errno 2] No such file or directory: %s" % self.BackupDirectory)
 
 	def getJobName(self, job):
 		return "%s: %s (%d%%)" % (job.getStatustext(), job.name, int(100 * job.progress / float(job.end)))
@@ -348,7 +348,7 @@ class VISIONImageManager(Screen):
 		backup = None
 		self.BackupRunning = False
 		for job in Components.Task.job_manager.getPendingJobs():
-			if job.name.startswith(_("Image manager")):
+			if job.name.startswith(_("Image Manager")):
 				backup = job
 				self.BackupRunning = True
 		if self.BackupRunning and backup:
@@ -369,7 +369,7 @@ class VISIONImageManager(Screen):
 			self["key_green"].setText(_("View progress"))
 			self["key_green"].show()
 			for job in Components.Task.job_manager.getPendingJobs():
-				if job.name.startswith(_("Image manager")):
+				if job.name.startswith(_("Image Manager")):
 					break
 			self.showJobView(job)
 
@@ -781,7 +781,7 @@ class ImageBackup(Screen):
 		self.Stage6Completed = False
 
 	def createBackupJob(self):
-		job = Components.Task.Job(_("Image manager"))
+		job = Components.Task.Job(_("Image Manager"))
 
 		task = Components.Task.PythonTask(job, _("Setting up..."))
 		task.work = self.JobStart
