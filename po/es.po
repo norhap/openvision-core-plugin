@@ -854,7 +854,7 @@ msgid ""
 msgstr ""
 "Su receptor está a punto de crear una copia de seguridad de imagen completa, esto puede tardar unos 6 minutos en completarse."
 "\n"
-"Quieres crear una copia ahaora?"
+"Quieres crear una copia ahora?"
 
 msgid ""
 "Your %s %s is about to run a backup of your settings and to detect your plugins.\n"
