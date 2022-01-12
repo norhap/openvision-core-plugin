@@ -393,7 +393,7 @@ msgid "Manage your backups of your settings."
 msgstr "Administrar sus copias de configuración."
 
 msgid "Backup/Flash/ReBoot system image."
-msgstr "Imagen del sistema Copia/Flash/ReBoot."
+msgstr "Administrador de imágenes Copias/Descargas/Flash."
 
 msgid "Manage your devices mount points."
 msgstr "Gestiona sus dispositivos puntos de montaje."
