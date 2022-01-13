@@ -296,8 +296,14 @@ msgstr "Suficientes reintentos, retrasando hasta el próximo horario."
 msgid "Exit the restore wizard"
 msgstr "Salir del asistente de restauración"
 
-msgid "Extra IPK's"
-msgstr "Más IPKs"
+msgid "Search IPK's"
+msgstr "Buscar IPKs"
+
+msgid "No IPK files found in your default folder"
+msgstr "No se encontraron archivos IPK en su carpeta predeterminada"
+
+msgid "No IPK files found in temp folder"
+msgstr "No se encontraron archivos IPK en la carpeta temporal"
 
 msgid "Flash"
 msgstr "Flash"
@@ -341,8 +347,8 @@ msgstr "Instalar"
 msgid "Install confirmation"
 msgstr "Confirmación de Instalación"
 
-msgid "Install IPK's from your tmp folder."
-msgstr "Instalar IPKs de la carpeta /tmp."
+msgid "Install IPK's from /tmp folder or from your default folder."
+msgstr "Instalar IPK desde carpeta /tmp o desde su carpeta predeterminada."
 
 msgid "Install extensions."
 msgstr "Instalar extensiones."
@@ -718,7 +724,7 @@ msgid "TB"
 msgstr "TB"
 
 msgid "Temp folder"
-msgstr "Carpeta temp"
+msgstr "Carpeta temporal"
 
 msgid "The backup location does not have enough free space."
 msgstr "El destino de copias de seguridad no tiene espacio suficiente."
