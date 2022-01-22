@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 from __future__ import print_function
 import six
 from . import _
@@ -13,7 +11,7 @@ from Screens.WizardLanguage import WizardLanguage
 from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
-from BackupManager import isRestorableSettings, isRestorablePlugins, isRestorableKernel
+from .BackupManager import isRestorableSettings, isRestorablePlugins, isRestorableKernel
 
 
 
@@ -256,7 +254,7 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.Console.ePopen('ifdown -v -f eth0; ifup -v eth0 && opkg update', self.doRestorePluginsTestComplete)
 
 	def doRestorePluginsTestComplete(self, result=None, retval=None, extra_args=None):
-		result2 = result.decode("utf8")
+		result2 = result
 		print('[RestoreWizard] Stage 4: Feeds test result', result2)
 		if result2.find('wget returned 4') != -1:
 			self.NextStep = 'reboot'

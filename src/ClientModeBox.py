@@ -1,13 +1,19 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 from __future__ import print_function
+try: # python 3
+	from urllib.request import urlopen, Request, urlretrieve
+	from urllib.parse import quote	# raises ImportError in Python 2
+	from urllib.error import HTTPError, URLError # raises ImportError in Python 2
+except ImportError: # Python 2
+	from urllib import quote
+	from urllib2 import Request, urlopen, HTTPError, URLError
 from Screens.WizardLanguage import WizardLanguage
 from enigma import eEPGCache, eDVBDB
 from xml.dom import minidom
-import urllib
-import urllib2
 import re
 import os
+import six
+import locale
+from six.moves.urllib.parse import quote, urlencode
 from Components.Network import iNetwork
 from time import localtime, time, strftime, mktime, ctime
 import socket
@@ -34,6 +40,7 @@ from ServiceReference import ServiceReference
 from timer import TimerEntry
 from . import _, PluginLanguageDomain
 
+scriptLocale=locale.setlocale(category=locale.LC_ALL, locale="en_GB.UTF-8")
 mountstate = False
 mounthost = None
 MAX_THREAD_COUNT = 40
@@ -268,7 +275,7 @@ class ClientModeBoxScan:
 
 	def getBoxName(self, ipaddress):
 		try:
-			httprequest = urllib2.urlopen('http://' + ipaddress + '/web/about', timeout=5)
+			httprequest = urlopen('http://' + ipaddress + '/web/about', timeout=5)
 			xmldoc = minidom.parseString(httprequest.read())
 			return xmldoc.getElementsByTagName('e2model')[0].firstChild.nodeValue
 		except Exception:
@@ -286,7 +293,7 @@ class ClientModeBoxScan:
 		endip = list(startip)
 		brange = 32 - cidr
 		for i in range(brange):
-			endip[3 - i / 8] = endip[3 - i / 8] + (1 << (i % 8))
+			endip[3 - i // 8] = endip[3 - i // 8] + (1 << (i % 8))
 
 		if startip[0] == 0:
 			print("[ClientModeBox] your start ip address seem invalid. Skip interface scan.")
@@ -371,12 +378,12 @@ class ClientModeBoxMount:
 		return os.system('umount ' + path) == 0
 
 	def mount(self, ip, share, path):
-	    if not fileHas("/etc/fstab", ":/mnt/hdd"):
-		try:
-			os.makedirs(path)
-		except Exception:
-			pass
-		return os.system('mount -t nfs' + ' ' + ip + ':' + '/' + share + ' ' + path + ' ' + '&&' + ' ' + 'echo -e' + ' ' + '"' + ip + ':' + share + ' ' + path + ' ' + 'nfs nolock,rsize=8192,wsize=8192' + ' ' + '\n"' + ' ' + '>>' + ' ' + '/etc/fstab') == 0
+		if not fileHas("/etc/fstab", ":/mnt/hdd"):
+			try:
+				os.makedirs(path)
+			except Exception:
+				pass
+			return os.system('mount -t nfs' + ' ' + ip + ':' + '/' + share + ' ' + path + ' ' + '&&' + ' ' + 'echo -e' + ' ' + '"' + ip + ':' + share + ' ' + path + ' ' + 'nfs nolock,rsize=8192,wsize=8192' + ' ' + '\n"' + ' ' + '>>' + ' ' + '/etc/fstab') == 0
 
 
 class ClientModeBoxMenu(Screen, ConfigListScreen):
@@ -685,7 +692,7 @@ class ClientModeBoxDownloader:
 		print("[ClientModeBox] sync is done!")
 
 	def getSetting(self, baseurl, key):
-		httprequest = urllib2.urlopen(baseurl + '/web/settings')
+		httprequest = urlopen(baseurl + '/web/settings')
 		xmldoc = minidom.parseString(httprequest.read())
 		settings = xmldoc.getElementsByTagName('e2setting')
 		for setting in settings:
@@ -717,7 +724,7 @@ class ClientModeBoxDownloader:
 
 	def downloadParentalControlBouquets(self, baseurl):
 		bouquets = []
-		httprequest = urllib2.urlopen(baseurl + '/web/parentcontrollist')
+		httprequest = urlopen(baseurl + '/web/parentcontrollist')
 		xmldoc = minidom.parseString(httprequest.read())
 		services = xmldoc.getElementsByTagName('e2service')
 		for service in services:
@@ -731,7 +738,7 @@ class ClientModeBoxDownloader:
 
 	def downloadBouquets(self, baseurl, stype):
 		bouquets = []
-		httprequest = urllib2.urlopen(baseurl + '/web/bouquets?stype=' + stype)
+		httprequest = urlopen(baseurl + '/web/bouquets?stype=' + stype)
 		print("[ClientModeBox] download bouquets from " + baseurl + '/web/bouquets?stype=' + stype)
 		xmldoc = minidom.parseString(httprequest.read())
 		services = xmldoc.getElementsByTagName('e2service')
@@ -741,7 +748,7 @@ class ClientModeBoxDownloader:
 			bouquet['name'] = getValueFromNode(service, 'e2servicename')
 			bouquet['services'] = []
 
-			httprequest = urllib2.urlopen(baseurl + '/web/getservices?' + urllib.urlencode({'sRef': bouquet['reference']}) + '&hidden=1')
+			httprequest = urlopen(baseurl + '/web/getservices?' + urlencode({'sRef': bouquet['reference']}) + '&hidden=1')
 			xmldoc2 = minidom.parseString(httprequest.read())
 			services2 = xmldoc2.getElementsByTagName('e2service')
 			for service2 in services2:
@@ -792,7 +799,7 @@ class ClientModeBoxDownloader:
 						url = streamingurl + "/" + service['reference']
 
 				if isDVB:
-					outfile.write("#SERVICE " + service['reference'] + urllib.quote(url) + ":" + service['name'] + "\n")
+					outfile.write("#SERVICE " + service['reference'] + quote(url) + ":" + service['name'] + "\n")
 				elif isStreaming:
 					outfile.write("#SERVICE " + service['reference'] + "\n")
 				else:
@@ -816,9 +823,9 @@ class ClientModeBoxDownloader:
 		print("[ClientModeBox] remote EPG found at " + filename)
 
 		print("[ClientModeBox] dump remote EPG to epg.dat")
-		httprequest = urllib2.urlopen(baseurl + '/web/saveepg')
+		httprequest = urlopen(baseurl + '/web/saveepg')
 
-		httprequest = urllib2.urlopen(baseurl + '/file?action=download&file=' + urllib.quote(filename))
+		httprequest = urlopen(baseurl + '/file?action=download&file=' + quote(filename))
 		data = httprequest.read()
 		if not data:
 			print("[ClientModeBox] cannot download remote EPG. Skip EPG sync.")
@@ -1020,7 +1027,7 @@ class ClientModeBoxRemoteTimer():
 		print("[ClientModeBoxRemoteTimer] get remote timer list")
 
 		try:
-			httprequest = urllib2.urlopen(baseurl + '/web/timerlist')
+			httprequest = urlopen(baseurl + '/web/timerlist')
 			xmldoc = minidom.parseString(httprequest.read())
 			timers = xmldoc.getElementsByTagName('e2timer')
 			for timer in timers:
@@ -1157,7 +1164,7 @@ class ClientModeBoxRemoteTimer():
 		print("[ClientModeBoxRemoteTimer] record ", str(entry))
 
 		entry.service_ref = ServiceReference(":".join(str(entry.service_ref).split(":")[:10]))
-		args = urllib.urlencode({
+		args = urlencode({
 				'sRef': str(entry.service_ref),
 				'begin': str(entry.begin),
 				'end': str(entry.end),
@@ -1176,7 +1183,7 @@ class ClientModeBoxRemoteTimer():
 		print("[ClientModeBoxRemoteTimer] web interface url: " + baseurl)
 
 		try:
-			httprequest = urllib2.urlopen(baseurl + '/web/timeradd?' + args)
+			httprequest = urlopen(baseurl + '/web/timeradd?' + args)
 			xmldoc = minidom.parseString(httprequest.read())
 			status = xmldoc.getElementsByTagName('e2simplexmlresult')[0]
 			success = getValueFromNode(status, 'e2state') == "True"
@@ -1200,7 +1207,7 @@ class ClientModeBoxRemoteTimer():
 
 		entry.service_ref = ServiceReference(":".join(str(entry.service_ref).split(":")[:10]))
 		try:
-			args = urllib.urlencode({
+			args = urlencode({
 					'sRef': str(entry.service_ref),
 					'begin': str(entry.begin),
 					'end': str(entry.end),
@@ -1218,7 +1225,7 @@ class ClientModeBoxRemoteTimer():
 				})
 
 			baseurl = self.getBaseUrl()
-			httprequest = urllib2.urlopen(baseurl + '/web/timerchange?' + args)
+			httprequest = urlopen(baseurl + '/web/timerchange?' + args)
 			xmldoc = minidom.parseString(httprequest.read())
 			status = xmldoc.getElementsByTagName('e2simplexmlresult')[0]
 			success = getValueFromNode(status, 'e2state') == "True"
@@ -1241,7 +1248,7 @@ class ClientModeBoxRemoteTimer():
 		print("[ClientModeBoxRemoteTimer] timer remove ", str(entry))
 
 		entry.service_ref = ServiceReference(":".join(str(entry.service_ref).split(":")[:10]))
-		args = urllib.urlencode({
+		args = urlencode({
 				'sRef': str(entry.service_ref),
 				'begin': str(entry.begin),
 				'end': str(entry.end)
@@ -1249,7 +1256,7 @@ class ClientModeBoxRemoteTimer():
 
 		baseurl = self.getBaseUrl()
 		try:
-			httprequest = urllib2.urlopen(baseurl + '/web/timerdelete?' + args)
+			httprequest = urlopen(baseurl + '/web/timerdelete?' + args)
 			httprequest.read()
 		except Exception as e:
 			print("[ClientModeBoxRemoteTimer]", e)

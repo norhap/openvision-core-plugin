@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 from __future__ import print_function
 import six
 
@@ -701,27 +699,27 @@ class SoftcamAutoPoller:
 		if SystemInfo["OScamInstalled"] and not path.exists("/usr/softcams/oscam"):
 			self.Console.ePopen('ln -s /usr/bin/*oscam* /usr/softcams/')
 		if SystemInfo["NCamInstalled"] and not path.exists("/usr/softcams/ncam"):
-		    self.Console.ePopen('ln -s /usr/bin/ncam /usr/softcams/')
+			self.Console.ePopen('ln -s /usr/bin/ncam /usr/softcams/')
 		if path.exists("/usr/bin/wicardd") and not path.exists("/usr/softcams/wicardd"):
-		    self.Console.ePopen('ln -s /usr/bin/wicardd /usr/softcams/')
+			self.Console.ePopen('ln -s /usr/bin/wicardd /usr/softcams/')
 		if path.exists("/usr/bin/mgcamd_1.38") and not path.exists("/usr/softcams/mgcamd_1.38") or path.exists("/usr/bin/mgcamd_1.35a") and not path.exists("/usr/softcams/mgcamd_1.35a"):
-		    self.Console.ePopen('ln -s /usr/bin/*mgcamd* /usr/softcams/')
+			self.Console.ePopen('ln -s /usr/bin/*mgcamd* /usr/softcams/')
 		if path.exists("/usr/bin/CCcam") and not path.exists("/usr/softcams/CCcam"):
-		    self.Console.ePopen('ln -s /usr/bin/CCcam /usr/softcams/')
+			self.Console.ePopen('ln -s /usr/bin/CCcam /usr/softcams/')
 		if not path.exists("/usr/bin/CCcam") and path.islink("/usr/softcams/CCcam"):
-		    self.Console.ePopen('rm -f /usr/softcams/CCcam ')
+			self.Console.ePopen('rm -f /usr/softcams/CCcam ')
 		if not path.exists("/usr/bin/mgcamd_1.38") and path.islink("/usr/softcams/mgcamd_1.38"):
-		    self.Console.ePopen('rm -f /usr/softcams/mgcamd_1.38 ')
+			self.Console.ePopen('rm -f /usr/softcams/mgcamd_1.38 ')
 		if not path.exists("/usr/bin/mgcamd_1.35a") and path.islink("/usr/softcams/mgcamd_1.35a"):
-		    self.Console.ePopen('rm -f /usr/softcams/mgcamd_1.35a ')
+			self.Console.ePopen('rm -f /usr/softcams/mgcamd_1.35a ')
 		if not path.exists("/usr/bin/wicardd") and path.islink("/usr/softcams/wicardd"):
-		    self.Console.ePopen('rm -f /usr/softcams/wicardd ')
+			self.Console.ePopen('rm -f /usr/softcams/wicardd ')
 		if not path.exists("/usr/bin/oscam") and path.islink("/usr/softcams/oscam"):
-		    self.Console.ePopen('rm -f /usr/softcams/oscam ')
+			self.Console.ePopen('rm -f /usr/softcams/oscam ')
 		if not path.exists("/usr/bin/ncam") and path.islink("/usr/softcams/ncam"):
-		    self.Console.ePopen('rm -f /usr/softcams/ncam ')
+			self.Console.ePopen('rm -f /usr/softcams/ncam ')
 		if not path.exists("/usr/bin/oscam-emu") and path.islink("/usr/softcams/oscam-emu"):
-		    self.Console.ePopen('rm -f /usr/softcams/oscam-emu ')
+			self.Console.ePopen('rm -f /usr/softcams/oscam-emu ')
 
 	def start(self):
 		if self.softcam_check not in self.timer.callback:
@@ -1013,8 +1011,8 @@ class SoftcamAutoPoller:
 							sleep(3)
 							self.Console.ePopen("start-stop-daemon --start --quiet --background --exec /usr/bin/gbox")
 						elif softcamcheck.lower().startswith('wicardd'):
-						    self.Console.ePopen('/usr/softcams/' + softcamcheck + " -c" + " /etc/tuxbox/config/wicardd/wicardd.conf")
+							self.Console.ePopen('/usr/softcams/' + softcamcheck + " -c" + " /etc/tuxbox/config/wicardd/wicardd.conf")
 						elif getImageArch() == "armv7vehf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "cortexa15hf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "armv7ahf-neon" and softcamcheck.lower().startswith('mgcamd'):
-						    self.Console.ePopen('/usr/bin/env LD_PRELOAD=/usr/local/lib/libcrypto.so.1.0.0 /usr/softcams/' + softcamcheck)
+							self.Console.ePopen('/usr/bin/env LD_PRELOAD=/usr/local/lib/libcrypto.so.1.0.0 /usr/softcams/' + softcamcheck)
 						else:
 							self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + softcamcheck)

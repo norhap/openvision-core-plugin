@@ -359,8 +359,8 @@ class VISIONImageManager(Screen):
 		folderprefix = config.imagemanager.folderprefix.value + "-" + imagetype + "-" + imageversion
 		cmd = "rm -rf %s" % backupname
 		if answer == True:
-		    if self.sel.startswith(folderprefix) and self.BackupRunning == False or self.sel.endswith(".zip"):
-		        Console().ePopen(cmd)
+			if self.sel.startswith(folderprefix) and self.BackupRunning == False or self.sel.endswith(".zip"):
+				Console().ePopen(cmd)
 			self.refreshList()
 
 	def greenPressed(self):
@@ -738,7 +738,7 @@ class ImageBackup(Screen):
 			visionlanguage = open("/etc/openvision/visionlanguage", "r").read().strip()
 			backupType = "-" + visionlanguage + "-"
 		else:
-		    backupType = "-"
+			backupType = "-"
 
 		if updatebackup:
 			backupType = "-SoftwareUpdate-"
@@ -887,7 +887,7 @@ class ImageBackup(Screen):
 			print("[ImageManager] Device: " + config.imagemanager.backuplocation.value + ", i don't seem to have write access to this device.")
 
 		s = statvfs(self.BackupDevice)
-		free = (s.f_bsize * s.f_bavail) / (1024 * 1024)
+		free = (s.f_bsize * s.f_bavail) // (1024 * 1024)
 		if int(free) < 200:
 			AddPopupWithCallback(
 				self.BackupComplete,

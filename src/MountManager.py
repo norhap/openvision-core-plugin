@@ -264,7 +264,7 @@ class VISIONDevicesPanel(Screen):
 				line = line.strip()
 				if _("Mount: ") in line:
 					if line.find("/media/hdd") < 0:
-					    self["key_red"].setText(_("Use as HDD"))
+						self["key_red"].setText(_("Use as HDD"))
 				else:
 					self["key_red"].setText("")
 			except Exception:
@@ -425,9 +425,9 @@ class VISIONDevicesPanel(Screen):
 					return
 				for line in f.readlines():
 					if "/media/hdd" in line:
-					     message = _("The changes need a system restart to take effect.\nRestart your %s now?") % getBrandModel()
-					     ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
-					     ybox.setTitle(_("Restart receiver."))
+						 message = _("The changes need a system restart to take effect.\nRestart your %s now?") % getBrandModel()
+						 ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
+						 ybox.setTitle(_("Restart receiver."))
 
 	def restartBox(self, answer):
 		if answer is True:
