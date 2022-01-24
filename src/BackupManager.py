@@ -1,5 +1,5 @@
 from __future__ import print_function
-from boxbranding import getImageDistro, getImageVersion, getImageDevBuild, getBoxType
+from boxbranding import getImageDistro, getImageVersion, getBoxType
 import six
 # for localized messages
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod
@@ -1381,7 +1381,7 @@ class BackupFiles(Screen):
 			backupType = "-IM-"
 		elif self.schedulebackup:
 			backupType = "-Sch-"
-		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageDistro() + '-' + getBoxType() + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
+		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageDistro() + '-' + getImageVersion() + '-' + getBoxType() + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
 # Need to create a list of what to backup, so that spaces and special
 # characters don't get lost on, or mangle, the command line
 #
