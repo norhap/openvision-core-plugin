@@ -547,7 +547,7 @@ class VISIONBackupManager(Screen):
 		self.Console.ePopen('opkg update', self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
-		result2 = result.decode("utf8")
+		result2 = result
 		print('[BackupManager] Restoring stage 2: Result ', result2)
 		if result2.find('wget returned 4') != -1: # probably no network adaptor connected
 			self.feeds = 'NONETWORK'
