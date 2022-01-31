@@ -292,7 +292,7 @@ class RestoreWizard(WizardLanguage, Rc):
 		plugins = []
 		if path.exists('/tmp/ExtraInstalledPlugins'):
 			self.pluginslist = []
-			for line in result.decode("utf8").split("\n"):
+			for line in result.split("\n"):
 				if line:
 					parts = line.strip().split()
 					plugins.append(parts[0])
