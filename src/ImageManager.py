@@ -356,7 +356,7 @@ class VISIONImageManager(Screen):
 	def backupToDelete(self, answer):
 		self.sel = self["list"].getCurrent()
 		backupname = self.BackupDirectory + self.sel
-		folderprefix = config.imagemanager.folderprefix.value + "-" + imagetype + "-" + imageversion
+		folderprefix = config.imagemanager.folderprefix.value + "-" + imagetype
 		cmd = "rm -rf %s" % backupname
 		if answer == True:
 			if self.sel.startswith(folderprefix) and self.BackupRunning == False or self.sel.endswith(".zip"):
