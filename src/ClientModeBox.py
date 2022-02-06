@@ -40,7 +40,6 @@ from ServiceReference import ServiceReference
 from timer import TimerEntry
 from . import _, PluginLanguageDomain
 
-scriptLocale=locale.setlocale(category=locale.LC_ALL, locale="en_GB.UTF-8")
 mountstate = False
 mounthost = None
 MAX_THREAD_COUNT = 40
@@ -737,6 +736,7 @@ class ClientModeBoxDownloader:
 		return bouquets
 
 	def downloadBouquets(self, baseurl, stype):
+		scriptLocale = locale.setlocale(category=locale.LC_ALL, locale="en_GB.UTF-8")
 		bouquets = []
 		httprequest = urlopen(baseurl + '/web/bouquets?stype=' + stype)
 		print("[ClientModeBox] download bouquets from " + baseurl + '/web/bouquets?stype=' + stype)
