@@ -71,28 +71,6 @@ config.backupmanager.types_to_prune = ConfigSelection(default="none", choices=[(
 config.backupmanager.number_to_keep = ConfigNumber(default=0)
 
 
-def isRestorableSettings(imageversion):
-	minimum_version = 4.2
-	try:
-		imageversion = float(imageversion)
-	except:
-		return False
-	return imageversion >= minimum_version
-
-def isRestorablePlugins(imageversion):
-	minimum_version = 4.2
-	try:
-		imageversion = float(imageversion)
-	except:
-		return False
-	return imageversion >= minimum_version
-
-def isRestorableKernel(kernelversion):
-	# This check should no longer be necessary since auto-installed packages are no longer listed in the plugins backup.
-	# For more information please consult commit https://github.com/OpenVisionE2/openvision-core-plugin/commit/53a95067677651a3f2579a1b0d1f70172ccc493b
-	return True
-	#return kernelversion == about.getKernelVersionString()
-
 def BackupManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
 	global autoBackupManagerTimer

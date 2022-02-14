@@ -11,7 +11,6 @@ from Screens.WizardLanguage import WizardLanguage
 from Screens.Rc import Rc
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
-from .BackupManager import isRestorableSettings, isRestorablePlugins, isRestorableKernel
 
 
 
