@@ -247,8 +247,11 @@ msgstr "Deseleccionar"
 msgid "Device: "
 msgstr "Dispositivo: "
 
-msgid "Device: none available"
-msgstr "Dispositivo: ninguno disponible"
+msgid "Device: No found or not mount"
+msgstr "Dispositivo: No encontrado o no montado"
+
+msgid "Device: None available"
+msgstr "Dispositivo: Ninguno disponible"
 
 msgid "Disable startup"
 msgstr "Deshabilitar al iniciar"
@@ -418,6 +421,9 @@ msgstr "Desmontar"
 
 msgid "Mount Manager"
 msgstr "Administrador de Montajes"
+
+msgid "Check devices availables in Mount Manager"
+msgstr "Revise dispositivos disponibles en Administrador de Montajes"
 
 msgid "The mount failed, completely restart the receiver to reassemble it, or press the green button (setup mounts) to mount as /media/hdd../media/usb..."
 msgstr "Falló el montaje, reinicie completamente el receptor para volver a montarlo o presione botón verde (configurar montajes) para montar como /media/hdd../media/usb...etc."
@@ -1034,8 +1040,8 @@ msgstr ""
 "El dispositivo de montaje actual falló!\n"
 "Tal vez este dispositivo no está escrito en el fstab?"
 
-msgid "There is a problem with this device. Please reformat it and try again."
-msgstr "Hay un problema con este dispositivo. Vuelva a formatearlo e intente nuevamente."
+msgid "There is a problem with this device."
+msgstr "Hay un problema con este dispositivo."
 
 msgid "'User' url has not been specified, please use MENU button to initialise"
 msgstr "La URL del 'usuario' no se ha especificado, utilice el botón MENÚ para inicializar"
