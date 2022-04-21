@@ -778,16 +778,10 @@ msgid "Use as HDD"
 msgstr "Usar como HDD"
 
 msgid "Vision Backup Manager"
-msgstr "Vision Administrador Copias Configuración"
-
-msgid "Vision Backup Manager Setup"
-msgstr "Vision Administrador Configurar Copias de Configuración"
+msgstr "Vision Administrador de Copias"
 
 msgid "Vision Image Manager"
 msgstr "Vision Administrador Imagen"
-
-msgid "Vision Image Manager Setup"
-msgstr "Vision Configuración Administrador Imagen"
 
 msgid "Vision Mount Manager"
 msgstr "Vision Administrador Montajes"
@@ -1374,3 +1368,9 @@ msgstr "Mensual"
 
 msgid "Backup manager"
 msgstr "Administrador de copias"
+
+msgid "Backup Manager Setup"
+msgstr "Ajustes del Administrador de Copias"
+
+msgid "Image Manager Setup"
+msgstr "Ajustes del Administrador de Imagénes"
