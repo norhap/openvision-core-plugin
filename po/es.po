@@ -1374,3 +1374,6 @@ msgstr "Ajustes del Administrador de Copias"
 
 msgid "Image Manager Setup"
 msgstr "Ajustes del Administrador de Imagénes"
+
+msgid "Script Runner Setup"
+msgstr "Ajustes del Ejecutor de Scripts"
