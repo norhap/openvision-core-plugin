@@ -1,13 +1,13 @@
 from __future__ import print_function
 from boxbranding import getImageDistro, getImageVersion, getBoxType
-import six
+from six import ensure_str
 # for localized messages
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod
 from time import localtime, time, strftime, mktime
 from datetime import date, datetime
 import tarfile
 import glob
-from enigma import eTimer, eEnv, eDVBDB, quitMainloop
+from enigma import eTimer, eEnv, eDVBDB
 from . import _, PluginLanguageDomain
 from Components.About import about
 from Components.ActionMap import ActionMap
@@ -730,7 +730,7 @@ class VISIONBackupManager(Screen):
 
 	def Stage5Complete(self, result, retval, extra_args):
 		if result:
-			print("[BackupManager] opkg install result:\n", six.ensure_str(result))
+			print("[BackupManager] opkg install result:\n", ensure_str(result))
 			self.didPluginsRestore = True
 			self.Stage5Completed = True
 			print('[BackupManager] Restoring Stage 5: Completed')
