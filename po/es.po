@@ -1377,3 +1377,12 @@ msgstr "Ajustes del Administrador de Imagénes"
 
 msgid "Script Runner Setup"
 msgstr "Ajustes del Ejecutor de Scripts"
+
+msgid "EPG imported successfully from %s"
+msgstr "EPG importada con éxito desde %s"
+
+msgid "Channels imported successfully from %s"
+msgstr "Canales importados con éxito desde %s"
+
+msgid "EPG not imported check that path EPG in %s is in internal flash"
+msgstr "EPG no importada verifique que la ruta EPG en %s esté en flash interna"
