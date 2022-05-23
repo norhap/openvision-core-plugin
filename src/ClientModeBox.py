@@ -1049,7 +1049,6 @@ class ClientModeBoxDownloader:
 			print("[ClientModeBox] parental control disabled - do nothing")
 
 
-
 class ClientModeBoxAbout(Screen):
 	skin = """
 			<screen position="100,100" size="560,400">

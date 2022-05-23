@@ -673,6 +673,7 @@ class VISIONSoftcamLog(Screen):
 	def cancel(self):
 		self.close()
 
+
 class SoftcamAutoPoller:
 	"""Automatically Poll SoftCam"""
 

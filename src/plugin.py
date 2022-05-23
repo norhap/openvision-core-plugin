@@ -136,7 +136,6 @@ if SystemInfo["HasH9SD"]:
 		from .H9SDmanager import H9SDmanager
 		return H9SDmanager(session)
 
-
 	def H9SDmanagerMenu(session, **kwargs):
 		session.open(H9SDmanager)
 
