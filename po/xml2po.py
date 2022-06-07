@@ -1,18 +1,21 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+try:
+    import builtins
+except ImportError:
+    import __builtin__ as builtins
+
 import sys
 import os
-import string
 import re
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler, property_lexical_handler
 
 try:
 	from _xmlplus.sax.saxlib import LexicalHandler
-
 	no_comments = False
-except ImportError as e:
+except ImportError:
 	class LexicalHandler:
 		def __init__(self):
 			pass
@@ -28,15 +31,15 @@ class parseXML(ContentHandler, LexicalHandler):
 		self.ishex = re.compile('#[0-9a-fA-F]+\Z')
 
 	def comment(self, comment):
-		if comment.find("TRANSLATORS:") != -1:
+		if "TRANSLATORS:" in comment:
 			self.last_comment = comment
 
 	def startElement(self, name, attrs):
 		for x in ["text", "title", "value", "caption", "summary", "description"]:
 			try:
-				k = str(attrs[x])
+				k = builtins.str(attrs[x])
 				if k.strip() != "" and not self.ishex.match(k):
-					attrlist.add((attrs[x], self.last_comment))
+					attrlist.add((k, self.last_comment))
 					self.last_comment = None
 			except KeyError:
 				pass
@@ -65,18 +68,11 @@ for arg in sys.argv[1:]:
 	for (k, c) in attrlist:
 		print()
 		print('#: ' + arg)
-# We need to escape all "s that we have in the string.
-# This replace() *must* come before anything that adds "s!! (such as the
-# newline-handling code).
-# Ideally we'd do this "intelligently" (check for no current preceding \)
-# but there is no reason for there ever to be one, so....
-#
-		k = str(k).replace('"', '\\"')
-		k = k.replace("\\n", "\"\n\"")
+		k.replace("\\n", "\"\n\"")
 		if c:
 			for l in c.split('\n'):
 				print("#. ", l)
-		print('msgid "' + k + '"')
+		print('msgid "' + builtins.str(k) + '"')
 		print('msgstr ""')
 
 	attrlist = set()
