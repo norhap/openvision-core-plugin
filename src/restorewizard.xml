@@ -1,8 +1,8 @@
 <!--suppress XmlUnboundNsPrefix -->
 <wizard>
     <step id="welcome">
-        <text value="Bienvenido al asistente para restaurar su copia.\n\nSe ha detectado una copia de seguridad.\nPuede usar este asistente para restaurar su configuracion y los plugins que se instalaron cuando se creo la copia de seguridad."/>
-        <displaytext value="Se ha detectado una copia de seguridad."/>
+        <text value="Welcome to the restore wizard.\n\nYou can use this wizard to restore your settings and any extra plugins that were installed when the backup was created.\n\nA backup has been detected."/>
+        <displaytext value="A backup has been detected."/>
         <list type="dynamic" source="listAction" evaluation="ActionSelectionMade" onselect="ActionSelectionMoved"/>
         <code>
 self.clearSelectedKeys()
