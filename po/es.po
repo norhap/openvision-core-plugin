@@ -1358,10 +1358,10 @@ msgstr "Administrador SDCard Receptor H9"
 
 msgid ""
 "From Softcam Setup [%s].\n"
-"Active: %s"
+"%s"
 msgstr ""
 "Desde Configuración de Softcam [%s].\n"
-"Activo: %s"
+"%s"
 
 msgid "Backups to prune"
 msgstr "Copias para eliminar"
