@@ -184,16 +184,16 @@ class RestoreWizard(WizardLanguage, Rc):
 			kernelversion = open('/tmp/backupkernelversion').read()
 			print('[RestoreWizard] Backup Kernel:', kernelversion)
 			print('[RestoreWizard] Current Kernel:', about.getKernelVersionString())
-			if kernelversion == about.getKernelVersionString():
+			if kernelversion == about.getKernelVersionString() or about.getKernelVersionString() == "unknown":
 				print('[RestoreWizard] Stage 1: kernel OK')
 				self.doRestoreSettings2()
 			else:
 				print('[RestoreWizard] Stage 1: Image ver different')
-				self.noVersion = self.session.openWithCallback(self.doNoVersion, MessageBox, _("Sorry, but the file is not compatible with this image version."), type=MessageBox.TYPE_INFO, timeout=30)
+				self.noVersion = self.session.openWithCallback(self.doNoVersion, MessageBox, _("Sorry, but the file is not compatible with this kernel version."), type=MessageBox.TYPE_INFO, timeout=30)
 				self.noVersion.setTitle(_("Restore wizard"))
 		else:
 			print('[RestoreWizard] Stage 1: No Image ver to check')
-			self.noVersion = self.session.openWithCallback(self.doNoVersion, MessageBox, _("Sorry, but the file is not compatible with this image version."), type=MessageBox.TYPE_INFO, timeout=30)
+			self.noVersion = self.session.openWithCallback(self.doNoVersion, MessageBox, _("Sorry, but the file is not compatible with this kernel version."), type=MessageBox.TYPE_INFO, timeout=30)
 			self.noVersion.setTitle(_("Restore wizard"))
 
 	def doNoVersion(self, result=None, retval=None, extra_args=None):
