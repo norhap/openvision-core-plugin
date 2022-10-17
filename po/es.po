@@ -886,11 +886,11 @@ msgstr ""
 msgid ""
 "Do you want to create a full image backup?"
 "\n"
-"This can take about 6 minutes to complete."
+"This task can take about to complete."
 msgstr ""
 "¿Quieres crear una copia de seguridad de imagen completa?"
 "\n"
-"Puede tardar unos 6 minutos en completarse."
+"Esta tarea puede tardar en completarse."
 
 msgid "Your %s %s is not connected to the internet, Please try using Backup Manager to restore plugins later."
 msgstr "Su %s %s no está conectado a Internet. Intente usar el Administrador de copia de seguridad para restaurar los plugins más tarde."
@@ -964,14 +964,17 @@ msgstr "Administrador Multiboot - No se puede inicializar la tarjeta SD cuando s
 msgid "Multiboot manager - The SDcard must be at least 8MB."
 msgstr "Administrador Multiboot: la tarjeta SD debe tener al menos 8 MB."
 
-msgid "Multiboot only able to restore this backup to MMC slot1"
-msgstr "Multiboot solo puede restaurar esta copia de seguridad en MMC ranura1"
+msgid "Creating image flash online for ofgwrite and recovery image eMMC."
+msgstr "Creación de flash de imagen en línea para ofgwrite e imagen de recuperación eMMC."
+
+msgid "Creating flash image online for ofgwrite."
+msgstr "Creación de imágenes flash en línea para ofgwrite."
 
 msgid "Empty slot"
-msgstr "Ranura vacía"
+msgstr "Slot vacío"
 
 msgid "Retrieving image slots - Please wait..."
-msgstr "Recuperando ranuras de imágenes - Por favor espere ..."
+msgstr "Recuperando slots de imágenes - Por favor espere ..."
 
 msgid ""
 "OFGwrite error (also sent to any debug log):\n"
@@ -987,7 +990,7 @@ msgid "Please wait while the flash prepares."
 msgstr "Por favor espere mientras se prepara el flash."
 
 msgid "Create empty slot."
-msgstr "Crear ranura vacía."
+msgstr "Crear slot vacío."
 
 msgid "MultiBoot manager"
 msgstr "Administrador Multiboot"
