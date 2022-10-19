@@ -4,7 +4,7 @@ import six
 import re
 from os import path, makedirs, remove, rename, symlink, mkdir, listdir, unlink
 from datetime import datetime
-from time import time, sleep
+from time import time
 from boxbranding import getImageArch
 from enigma import eTimer, eConsoleAppContainer
 
@@ -873,7 +873,6 @@ class SoftcamAutoPoller:
 							if port == "":
 								port = "16000"
 							self.Console.ePopen("wget -T 1 http://127.0.0.1:" + port + "/status.html -O /tmp/status.html &> /tmp/frozen")
-							sleep(2)
 							f = open("/tmp/frozen")
 							frozen = f.read()
 							f.close()
@@ -895,9 +894,7 @@ class SoftcamAutoPoller:
 								output.write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStopping: " + softcamcheck + "\n")
 								output.close()
 								self.Console.ePopen("killall -9 " + softcamcheck)
-								sleep(1)
 								self.Console.ePopen("ps.procps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/oscamRuningCheck.tmp")
-								sleep(2)
 								file = open("/tmp/oscamRuningCheck.tmp")
 								cccamcheck_process = file.read()
 								file.close()
@@ -918,7 +915,6 @@ class SoftcamAutoPoller:
 								output.write(now.strftime("%Y-%m-%d %H:%M") + ": AutoStarting: " + softcamcheck + "\n")
 								output.close()
 								self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + softcamcheck + " -b")
-								sleep(10)
 
 						elif softcamcheck.lower().startswith("cccam"):
 							if path.exists("/tmp/index.html"):
@@ -943,7 +939,6 @@ class SoftcamAutoPoller:
 								if port == "":
 									port = "16001"
 								self.Console.ePopen("wget -T 1 http://127.0.0.1:" + port + " -O /tmp/index.html &> /tmp/frozen")
-								sleep(2)
 								f = open("/tmp/frozen")
 								frozen = f.read()
 								f.close()
@@ -961,7 +956,6 @@ class SoftcamAutoPoller:
 									output.close()
 									print("[SoftcamManager] Stopping " + softcamcheck)
 									self.Console.ePopen("killall -9 " + softcamcheck)
-									sleep(1)
 									print("[SoftcamManager] Starting " + softcamcheck)
 									self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + softcamcheck)
 							elif allow.lower().find("no") != -1:
@@ -985,7 +979,6 @@ class SoftcamAutoPoller:
 						output.close()
 						if softcamcheck.lower().startswith("oscam"):
 							self.Console.ePopen("ps.procps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/softcamRuningCheck.tmp")
-							sleep(2)
 							file = open("/tmp/softcamRuningCheck.tmp")
 							cccamcheck_process = file.read()
 							cccamcheck_process = cccamcheck_process.replace("\n", "")
@@ -1001,14 +994,11 @@ class SoftcamAutoPoller:
 								except:
 									pass
 							self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + softcamcheck + " -b")
-							sleep(10)
 							remove("/tmp/softcamRuningCheck.tmp")
 						elif softcamcheck.lower().startswith("sbox"):
 							self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + softcamcheck)
-							sleep(7)
 						elif softcamcheck.lower().startswith("gbox"):
 							self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + softcamcheck)
-							sleep(3)
 							self.Console.ePopen("start-stop-daemon --start --quiet --background --exec /usr/bin/gbox")
 						elif softcamcheck.lower().startswith('wicardd'):
 							self.Console.ePopen('/usr/softcams/' + softcamcheck + " -c" + " /etc/tuxbox/config/wicardd/wicardd.conf")
