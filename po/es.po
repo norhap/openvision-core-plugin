@@ -964,11 +964,11 @@ msgstr "Administrador Multiboot - No se puede inicializar la tarjeta SD cuando s
 msgid "Multiboot manager - The SDcard must be at least 8MB."
 msgstr "Administrador Multiboot: la tarjeta SD debe tener al menos 8 MB."
 
-msgid "Creating image flash online for ofgwrite and recovery image eMMC."
-msgstr "Creación de flash de imagen en línea para ofgwrite e imagen de recuperación eMMC."
+msgid "Creating image online flash for ofgwrite and recovery eMMC."
+msgstr "Creación de imagen flash en línea para ofgwrite y recovery eMMC."
 
-msgid "Creating flash image online for ofgwrite."
-msgstr "Creación de imágenes flash en línea para ofgwrite."
+msgid "Creating image online flash for ofgwrite."
+msgstr "Creación de imagen flash en línea para ofgwrite."
 
 msgid "Empty slot"
 msgstr "Slot vacío"

@@ -1244,7 +1244,7 @@ class ImageBackup(Screen):
 			if self.EMMCIMG == "emmc.img" or self.EMMCIMG == "disk.img" and path.exists("%s/%s" % (self.WORKDIR, self.EMMCIMG)):
 				if path.exists("%s/%s" % (self.WORKDIR, self.EMMCIMG)):
 					move("%s/%s" % (self.WORKDIR, self.EMMCIMG), "%s%s" % (self.MAINDEST, self.EMMCIMG))
-				if path.exists("%s/rootfs.ext4" % self.WORKDIR):
+				if path.exists("%s/rootfs.ext4" % self.WORKDIR) and not model.startswith("osmio4k"):
 					move("%s/rootfs.ext4" % self.WORKDIR, "%s%s" % (self.MAINDEST, self.EMMCIMG))
 			if self.EMMCIMG == "usb_update.bin":
 				if path.exists("%s/%s" % (self.WORKDIR, self.EMMCIMG)):
@@ -1316,10 +1316,10 @@ class ImageBackup(Screen):
 							line = defaultprefix + "-" + backupimage + "-" + model + "-" + self.BackupDate
 							fileout.write(line)
 							fileout.close()
-					if self.EMMCIMG in ("emmc.img", "disk.img") or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
-						self.session.open(MessageBox, _("Creating image flash online for ofgwrite and recovery image eMMC."), MessageBox.TYPE_INFO, timeout=10)
+					if self.EMMCIMG in ("emmc.img", "disk.img") and not model.startswith("osmio4k") or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
+						self.session.open(MessageBox, _("Creating image online flash for ofgwrite and recovery eMMC."), MessageBox.TYPE_INFO, timeout=10)
 					else:
-						self.session.open(MessageBox, _("Creating flash image online for ofgwrite."), MessageBox.TYPE_INFO, timeout=10)
+						self.session.open(MessageBox, _("Creating image online flash for ofgwrite."), MessageBox.TYPE_INFO, timeout=10)
 			elif SystemInfo["HasRootSubdir"]:
 					with open(self.MAINDEST + "/force_%s_READ.ME" % model, "w") as fileout:
 						line1 = "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick" % (model, model)
@@ -1359,7 +1359,7 @@ class ImageBackup(Screen):
 		zipfolder = path.split(self.MAINDESTROOT)
 		try:
 			if self.EMMCIMG in ("emmc.img", "disk.img", "usb_update.bin"):
-				if self.EMMCIMG in ("emmc.img", "disk.img") or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
+				if self.EMMCIMG in ("emmc.img", "disk.img") and not model.startswith("osmio4k") or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
 					self.commandMB.append("7za a -r -bt -bd %s%s-%s-%s-%s_recovery_emmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROBUILD, self.MODEL, self.BackupDate, self.MAINDESTROOT))
 				else:
 					self.commandMB.append("7za a -r -bt -bd %s%s-%s-%s-%s_mmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROBUILD, self.MODEL, self.BackupDate, self.MAINDESTROOT))
