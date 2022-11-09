@@ -7,7 +7,7 @@ from Components.SystemInfo import SystemInfo
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Tools.BoundFunction import boundFunction
-from Tools.Multiboot import GetImagelist, getCurrentImage, getCurrentImageMode, EmptySlot
+from Tools.Multiboot import getImagelist, getCurrentImage, getCurrentImageMode, EmptySlot
 
 
 class MultiBoot(Screen):
@@ -60,7 +60,7 @@ class MultiBoot(Screen):
 		}, -1)
 
 	def startit(self):
-		self.getImageList = GetImagelist(self.ImageList)
+		self.getImageList = getImagelist(self.ImageList)
 
 	def ImageList(self, imagedict):
 		list = []

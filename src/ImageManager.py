@@ -32,7 +32,7 @@ from Tools.Directories import fileExists, pathExists, fileHas
 import Tools.CopyFiles
 from Tools.HardwareInfo import HardwareInfo
 from Tools.StbHardware import getBrand
-from Tools.Multiboot import GetImagelist, getCurrentImage
+from Tools.Multiboot import getImagelist, getCurrentImage
 from Tools.Notifications import AddPopupWithCallback
 import six
 
@@ -426,7 +426,7 @@ class VISIONImageManager(Screen):
 				if SystemInfo["HiSilicon"]:
 					if pathExists("/dev/sda4"):
 						self.HasSDmmc = True
-				imagedict = GetImagelist()
+				imagedict = getImagelist()
 				choices = []
 				HIslot = len(imagedict) + 1
 				currentimageslot = getCurrentImage()
@@ -447,7 +447,7 @@ class VISIONImageManager(Screen):
 			if SystemInfo["HiSilicon"]:
 				if pathExists("/dev/sda4"):
 					self.HasSDmmc = True
-			imagedict = GetImagelist()
+			imagedict = getImagelist()
 			choices = []
 			HIslot = len(imagedict) + 1
 			currentimageslot = getCurrentImage()
