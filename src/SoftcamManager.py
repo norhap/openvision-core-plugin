@@ -872,7 +872,7 @@ class SoftcamAutoPoller:
 							print("[SoftcamManager] Checking if " + softcamcheck + " is frozen")
 							if port == "":
 								port = "16000"
-							self.Console.ePopen("wget -T 1 http://127.0.0.1:" + port + "/status.html -O /tmp/status.html &> /tmp/frozen")
+							self.Console.ePopen("wget http://127.0.0.1:" + port + "/status.html -O /tmp/status.html &> /tmp/frozen")
 							f = open("/tmp/frozen")
 							frozen = f.read()
 							f.close()
@@ -938,7 +938,7 @@ class SoftcamAutoPoller:
 								print("[SoftcamManager] Checking if " + softcamcheck + " is frozen")
 								if port == "":
 									port = "16001"
-								self.Console.ePopen("wget -T 1 http://127.0.0.1:" + port + " -O /tmp/index.html &> /tmp/frozen")
+								self.Console.ePopen("wget http://127.0.0.1:" + port + " -O /tmp/index.html &> /tmp/frozen")
 								f = open("/tmp/frozen")
 								frozen = f.read()
 								f.close()
