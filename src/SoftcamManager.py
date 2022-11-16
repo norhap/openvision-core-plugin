@@ -1002,7 +1002,5 @@ class SoftcamAutoPoller:
 							self.Console.ePopen("start-stop-daemon --start --quiet --background --exec /usr/bin/gbox")
 						elif softcamcheck.lower().startswith('wicardd'):
 							self.Console.ePopen('/usr/softcams/' + softcamcheck + " -c" + " /etc/tuxbox/config/wicardd/wicardd.conf")
-						elif getImageArch() == "armv7vehf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "cortexa15hf-neon-vfpv4" and softcamcheck.lower().startswith('mgcamd') or getImageArch() == "armv7ahf-neon" and softcamcheck.lower().startswith('mgcamd'):
-							self.Console.ePopen('/usr/bin/env LD_PRELOAD=/usr/local/lib/libcrypto.so.1.0.0 /usr/softcams/' + softcamcheck)
 						else:
 							self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + softcamcheck)
