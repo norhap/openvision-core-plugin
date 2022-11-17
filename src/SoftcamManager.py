@@ -732,12 +732,20 @@ class SoftcamAutoPoller:
 		self.timer.stop()
 
 	def softcam_check(self):
+		from process import ProcessList
+		wicardd = str(ProcessList().named("wicardd")).strip("[]")
+		cccam = str(ProcessList().named("CCcam")).strip("[]")
 		now = int(time())
 		if path.exists("/tmp/SoftcamRuningCheck.tmp"):
 			remove("/tmp/SoftcamRuningCheck.tmp")
 
 		if config.softcammanager.softcams_autostart:
 			Components.Task.job_manager.AddJob(self.createCheckJob())
+		if config.softcammanager.softcams_autostart.value not in ("wicardd", "CCcam") and config.misc.softcams.value not in ("wicardd", "CCcam"):
+			if wicardd:
+				self.Console.ePopen('kill -9 %s' % wicardd)
+			if cccam:
+				self.Console.ePopen('kill -9 %s' % cccam)
 
 		if config.softcammanager.softcamtimerenabled.value:
 			# 			print "[SoftcamManager] Timer Check Enabled"
@@ -836,9 +844,9 @@ class SoftcamAutoPoller:
 				else:
 					data = ""
 				if data.find(softcamcheck) < 0:
-					import process
+					from process import ProcessList
 
-					p = process.ProcessList()
+					p = ProcessList()
 					softcamcheck_process = str(p.named(softcamcheck)).strip("[]")
 					if softcamcheck_process != "":
 						if path.exists("/tmp/frozen"):
