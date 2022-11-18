@@ -677,7 +677,8 @@ class SoftcamAutoPoller:
 	"""Automatically Poll SoftCam"""
 
 	def __init__(self):
-		# Init Timer
+		self.timer = eTimer()
+		self.Console = Console()
 		if not path.exists("/usr/softcams"):
 			mkdir("/usr/softcams", 0o755)
 		if not path.exists("/etc/scce"):
@@ -694,18 +695,6 @@ class SoftcamAutoPoller:
 			symlink("/usr/keys", "/etc/keys")
 		if not path.islink("/var/scce"):
 			symlink("/etc/scce", "/var/scce")
-		self.timer = eTimer()
-		self.Console = Console()
-		if SystemInfo["OScamInstalled"] and not path.exists("/usr/softcams/oscam"):
-			self.Console.ePopen('ln -s /usr/bin/*oscam* /usr/softcams/')
-		if SystemInfo["NCamInstalled"] and not path.exists("/usr/softcams/ncam"):
-			self.Console.ePopen('ln -s /usr/bin/ncam /usr/softcams/')
-		if path.exists("/usr/bin/wicardd") and not path.exists("/usr/softcams/wicardd"):
-			self.Console.ePopen('ln -s /usr/bin/wicardd /usr/softcams/')
-		if path.exists("/usr/bin/mgcamd_1.38") and not path.exists("/usr/softcams/mgcamd_1.38") or path.exists("/usr/bin/mgcamd_1.35a") and not path.exists("/usr/softcams/mgcamd_1.35a"):
-			self.Console.ePopen('ln -s /usr/bin/*mgcamd* /usr/softcams/')
-		if path.exists("/usr/bin/CCcam") and not path.exists("/usr/softcams/CCcam"):
-			self.Console.ePopen('ln -s /usr/bin/CCcam /usr/softcams/')
 		if not path.exists("/usr/bin/CCcam") and path.islink("/usr/softcams/CCcam"):
 			self.Console.ePopen('rm -f /usr/softcams/CCcam ')
 		if not path.exists("/usr/bin/mgcamd_1.38") and path.islink("/usr/softcams/mgcamd_1.38"):
