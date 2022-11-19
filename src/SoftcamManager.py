@@ -156,6 +156,21 @@ class VISIONSoftcamManager(Screen):
 		cams = []
 		cams = listdir('/usr/softcams')
 		selcam = ''
+		self.Console = Console()
+		if not path.exists("/usr/bin/CCcam") and path.islink("/usr/softcams/CCcam"):
+			self.Console.ePopen('rm -f /usr/softcams/CCcam ')
+		if not path.exists("/usr/bin/mgcamd_1.38") and path.islink("/usr/softcams/mgcamd_1.38"):
+			self.Console.ePopen('rm -f /usr/softcams/mgcamd_1.38 ')
+		if not path.exists("/usr/bin/mgcamd_1.35a") and path.islink("/usr/softcams/mgcamd_1.35a"):
+			self.Console.ePopen('rm -f /usr/softcams/mgcamd_1.35a ')
+		if not path.exists("/usr/bin/ncam") and path.islink("/usr/softcams/ncam"):
+			self.Console.ePopen('rm -f /usr/softcams/ncam ')
+		if not path.exists("/usr/bin/wicardd") and path.islink("/usr/softcams/wicardd"):
+			self.Console.ePopen('rm -f /usr/softcams/wicardd ')
+		if not path.exists("/usr/bin/oscam") and path.islink("/usr/softcams/oscam"):
+			self.Console.ePopen('rm -f /usr/softcams/oscam ')
+		if not path.exists("/usr/bin/oscam-emu") and path.islink("/usr/softcams/oscam-emu"):
+			self.Console.ePopen('rm -f /usr/softcams/oscam-emu ')
 		if path.islink('/usr/softcams/oscam') or path.islink('/usr/softcams/wicardd') or path.islink('/usr/softcams/mgcamd_1.38') or path.islink('/usr/softcams/mgcamd_1.35a') or path.islink('/usr/softcams/CCcam'):
 			current = self["list"].getCurrent()[0]
 			selcam = current[0]
@@ -695,20 +710,6 @@ class SoftcamAutoPoller:
 			symlink("/usr/keys", "/etc/keys")
 		if not path.islink("/var/scce"):
 			symlink("/etc/scce", "/var/scce")
-		if not path.exists("/usr/bin/CCcam") and path.islink("/usr/softcams/CCcam"):
-			self.Console.ePopen('rm -f /usr/softcams/CCcam ')
-		if not path.exists("/usr/bin/mgcamd_1.38") and path.islink("/usr/softcams/mgcamd_1.38"):
-			self.Console.ePopen('rm -f /usr/softcams/mgcamd_1.38 ')
-		if not path.exists("/usr/bin/mgcamd_1.35a") and path.islink("/usr/softcams/mgcamd_1.35a"):
-			self.Console.ePopen('rm -f /usr/softcams/mgcamd_1.35a ')
-		if not path.exists("/usr/bin/wicardd") and path.islink("/usr/softcams/wicardd"):
-			self.Console.ePopen('rm -f /usr/softcams/wicardd ')
-		if not path.exists("/usr/bin/oscam") and path.islink("/usr/softcams/oscam"):
-			self.Console.ePopen('rm -f /usr/softcams/oscam ')
-		if not path.exists("/usr/bin/ncam") and path.islink("/usr/softcams/ncam"):
-			self.Console.ePopen('rm -f /usr/softcams/ncam ')
-		if not path.exists("/usr/bin/oscam-emu") and path.islink("/usr/softcams/oscam-emu"):
-			self.Console.ePopen('rm -f /usr/softcams/oscam-emu ')
 
 	def start(self):
 		if self.softcam_check not in self.timer.callback:
