@@ -130,7 +130,7 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def buildList(self, action):
 		if self.NextStep == 'reboot':
-			self.Console.ePopen("killall -9 enigma2 && sleep 10 && init 3 && sleep 25 && init 6")
+			self.Console.ePopen("killall -9 enigma2 && sleep 5 && init 6")
 		elif self.NextStep == 'settingsquestion' or self.NextStep == 'settingsrestore' or self.NextStep == 'pluginsquestion' or self.NextStep == 'pluginsrestoredevice' or self.NextStep == 'end' or self.NextStep == 'noplugins':
 			self.buildListfinishedCB(False)
 		elif self.NextStep == 'settingrestorestarted':
