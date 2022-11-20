@@ -1,5 +1,5 @@
 import re
-from os import path, makedirs, remove, rename, symlink, mkdir, listdir, unlink
+from os import path, makedirs, remove, rename, symlink, mkdir, listdir, unlink, system
 from datetime import datetime
 from time import time
 from boxbranding import getImageArch
@@ -839,7 +839,7 @@ class SoftcamAutoPoller:
 							print("[SoftcamManager] Checking if " + softcamcheck + " is frozen")
 							if port == "":
 								port = "16000"
-							self.Console.ePopen("wget http://127.0.0.1:" + port + "/status.html -O /tmp/status.html &> /tmp/frozen")
+							system("wget http://127.0.0.1:" + port + "/status.html -O /tmp/status.html &> /tmp/frozen")
 							f = open("/tmp/frozen")
 							frozen = f.read()
 							f.close()
@@ -905,7 +905,7 @@ class SoftcamAutoPoller:
 								print("[SoftcamManager] Checking if " + softcamcheck + " is frozen")
 								if port == "":
 									port = "16001"
-								self.Console.ePopen("wget http://127.0.0.1:" + port + " -O /tmp/index.html &> /tmp/frozen")
+								system("wget http://127.0.0.1:" + port + " -O /tmp/index.html &> /tmp/frozen")
 								f = open("/tmp/frozen")
 								frozen = f.read()
 								f.close()
