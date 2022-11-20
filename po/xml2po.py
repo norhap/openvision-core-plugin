@@ -1,10 +1,5 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
-from __future__ import print_function
-try:
-    import builtins
-except ImportError:
-    import __builtin__ as builtins
+import builtins
 
 import sys
 import os

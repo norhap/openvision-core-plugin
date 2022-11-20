@@ -31,8 +31,7 @@ self.download()
 		</step>
 
 		<step id="abort">
-			<text value="Your Box is not configured.Please press OK to close this Wizard." />
-			<text value="Please press OK to close this Wizard." />
+			<text value="Your Box is not configured. Please press OK to close this Wizard." />
 			<code>
 config.ipboxclient.firstconf.value = True
 config.ipboxclient.firstconf.save()
@@ -43,7 +42,7 @@ self.close()
 		</step>
 
 		<step id="nodevices">
-			<text value="No receivers found, we cannot configure your receiver, press OK to close this wizard."/>
+			<text value="No receivers found, we cannot configure your receiver."/>
 			<list>
 				<listentry caption="Try to scan again" step="scan" />
 				<listentry caption="Abort this Wizard" step="abort" />

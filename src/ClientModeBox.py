@@ -1,20 +1,13 @@
-from __future__ import print_function
-try: # python 3
-	from urllib.request import urlopen, Request, urlretrieve
-	from urllib.parse import quote	# raises ImportError in Python 2
-	from urllib.error import HTTPError, URLError # raises ImportError in Python 2
-except ImportError: # Python 2
-	from urllib import quote
-	from urllib2 import Request, urlopen, HTTPError, URLError
+from urllib.request import urlopen, Request, urlretrieve
+from urllib.parse import quote, urlencode
+from urllib.error import HTTPError, URLError
 from Screens.WizardLanguage import WizardLanguage
 from enigma import eEPGCache, eDVBDB
 from xml.dom import minidom
 import re
 import os
-import six
 import shutil
 import locale
-from six.moves.urllib.parse import quote, urlencode
 from Components.Network import iNetwork
 from time import localtime, time, strftime, mktime, ctime
 import socket
@@ -40,7 +33,7 @@ from Components.TimerSanityCheck import TimerSanityCheck
 from RecordTimer import RecordTimerEntry, AFTEREVENT
 from ServiceReference import ServiceReference
 from timer import TimerEntry
-from . import _, PluginLanguageDomain
+from .__init__ import _, PluginLanguageDomain
 
 mountstate = False
 mounthost = None

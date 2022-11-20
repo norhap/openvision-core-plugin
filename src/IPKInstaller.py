@@ -1,7 +1,7 @@
 # for localized messages
 from os import listdir, path
 
-from . import _
+from .__init__ import _
 from Components.config import config
 from Components.ActionMap import ActionMap
 from Components.Label import Label

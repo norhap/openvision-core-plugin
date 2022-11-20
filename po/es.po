@@ -1238,14 +1238,14 @@ msgstr "Elija su receptor servidor, recuerde HDD servidor debe estar montado com
 msgid "important, remote HDD must be mounted as /media/hdd"
 msgstr "importante, remoto HDD debe estar montado como /media/hdd"
 
-msgid "Your Box is not configured.Please press OK to close this Wizard."
+msgid "Your Box is not configured. Please press OK to close this Wizard."
 msgstr "Su Receptor no está configurado. Presione OK para cerrar este Asistente."
 
 msgid "Please press OK to close this Wizard."
 msgstr "Presione OK para cerrar este Asistente."
 
-msgid "No receivers found, we cannot configure your receiver, press OK to close this wizard."
-msgstr "No se encontraron receptores, no podemos configurar su receptor, presione OK para cerrar este asistente."
+msgid "No receivers found, we cannot configure your receiver."
+msgstr "No se encontraron receptores, no podemos configurar su receptor."
 
 msgid "Try to scan again"
 msgstr "Intenta buscar de nuevo"
@@ -1404,3 +1404,6 @@ msgstr "EPG importada con éxito desde %s"
 
 msgid "Channels imported successfully from %s"
 msgstr "Canales importados con éxito desde %s"
+
+msgid "No devices found"
+msgstr "No se encontraron servidores"

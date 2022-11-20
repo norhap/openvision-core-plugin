@@ -1,17 +1,15 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
-from __future__ import print_function
-from . import _
+from .__init__ import _
 from os import listdir, path
 from Plugins.Plugin import PluginDescriptor
 from Components.config import config, ConfigBoolean
-from . BackupManager import BackupManagerautostart
-from . ImageManager import ImageManagerautostart
-from . SwapManager import SwapAutostart
-from . SoftcamManager import SoftcamAutostart
-from . ScriptRunner import ScriptRunnerAutostart
-from . IPKInstaller import OpkgInstaller
-from . ClientModeBox import ClientModeBoxWizard
+from .BackupManager import BackupManagerautostart
+from .ImageManager import ImageManagerautostart
+from .SwapManager import SwapAutostart
+from .SoftcamManager import SoftcamAutostart
+from .ScriptRunner import ScriptRunnerAutostart
+from .IPKInstaller import OpkgInstaller
+from .ClientModeBox import ClientModeBoxWizard
 from Components.SystemInfo import SystemInfo
 
 config.misc.restorewizardrun = ConfigBoolean(default=False)

@@ -1,6 +1,4 @@
-from __future__ import print_function
-from sys import version_info
-from six.moves.urllib.request import urlopen
+from urllib.request import urlopen
 
 import json
 import tempfile
@@ -11,7 +9,7 @@ from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, rmd
 from shutil import rmtree, move, copy, copyfile
 from time import localtime, time, strftime, mktime
 from Components.ConfigList import ConfigListScreen
-from . import _, PluginLanguageDomain
+from .__init__ import _, PluginLanguageDomain
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
@@ -34,7 +32,6 @@ from Tools.HardwareInfo import HardwareInfo
 from Tools.StbHardware import getBrand
 from Tools.Multiboot import getImagelist, getCurrentImage
 from Tools.Notifications import AddPopupWithCallback
-import six
 
 model = getBoxType()
 brand = getBrand()
@@ -546,7 +543,7 @@ class VISIONImageManager(Screen):
 			if SystemInfo["HiSilicon"] and SystemInfo["HasRootSubdir"] is False and self.HasSDmmc is False:	# sf8008 receiver 1 eMMC parition, No SD card
 				self.session.open(TryQuitMainloop, 2)
 			if SystemInfo["canMultiBoot"]:
-				print("[ImageManager] slot %s result %s\n" % (self.multibootslot, six.ensure_str(result)))
+				print("[ImageManager] slot %s result %s\n" % (self.multibootslot, str(result)))
 				tmp_dir = tempfile.mkdtemp(prefix="ImageManagerFlash")
 				Console().ePopen("mount %s %s" % (self.mtdboot, tmp_dir))
 				if pathExists(path.join(tmp_dir, "STARTUP")):
@@ -1549,7 +1546,7 @@ class ImageManagerDownload(Screen):
 			headers, fileurl = self.processAuthLogin(currentSelected[0][1])
 			fileloc = self.BackupDirectory + selectedimage
 			url_encode = "utf-8"
-			b_url = fileurl.encode(url_encode).decode() if version_info.major >= 3 else fileurl.encode(url_encode)
+			b_url = fileurl.encode(url_encode).decode()
 			Tools.CopyFiles.downloadFile(b_url, fileloc, selectedimage.replace("_usb", ""), headers=headers)
 			for job in Components.Task.job_manager.getPendingJobs():
 				if job.name.startswith(_("Downloading")):
@@ -1565,22 +1562,20 @@ class ImageManagerDownload(Screen):
 		Components.Task.job_manager.in_background = in_background
 
 	def processAuthLogin(self, url):
-		try:
-			from urlparse import urlparse
-		except:
-			from urllib.parse import urlparse
+		from urllib.parse import urlparse
 		headers = None
 		parsed = urlparse(url)
 		scheme = parsed.scheme
 		username = parsed.username if parsed.username else ""
 		password = parsed.password if parsed.password else ""
 		hostname = parsed.hostname
-		path = parsed.path
+		port = ":%s" % parsed.port if parsed.port else ""
+		query = "?%s" % parsed.query if parsed.query else ""
 		if username or password:
-			import base64
-			base64string = base64.b64encode(six.ensure_binary('%s:%s' % (username, password)))
-			headers = {six.ensure_binary("Authorization"): six.ensure_binary("Basic %s" % six.ensure_str(base64string))}
-		return headers, scheme + "://" + hostname + path
+			from base64 import b64encode
+			base64bytes = b64encode(('%s:%s' % (username, password)).encode())
+			headers = {("Authorization").encode(): ("Basic %s" % base64bytes.decode()).encode()}
+		return headers, scheme + "://" + hostname + port + parsed + query
 
 
 class ImageManagerSetup(Setup):

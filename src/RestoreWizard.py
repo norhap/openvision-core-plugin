@@ -1,6 +1,4 @@
-from __future__ import print_function
-import six
-from . import _
+from .__init__ import _
 from os import listdir, path, stat
 from boxbranding import getImageDistro
 from Components.About import about
@@ -217,7 +215,7 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def pluginsRestore_Finished(self, result, retval, extra_args=None):
 		if result:
-			print("[RestoreWizard] opkg install result:\n", six.ensure_str(result))
+			print("[RestoreWizard] opkg install result:\n", str(result))
 		self.didPluginRestore = True
 		self.NextStep = 'reboot'
 		self.buildListRef.close(True)

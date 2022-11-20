@@ -1,6 +1,3 @@
-from __future__ import print_function
-import six
-
 import re
 from os import path, makedirs, remove, rename, symlink, mkdir, listdir, unlink
 from datetime import datetime
@@ -8,7 +5,7 @@ from time import time
 from boxbranding import getImageArch
 from enigma import eTimer, eConsoleAppContainer
 
-from . import _, PluginLanguageDomain
+from .__init__ import _, PluginLanguageDomain
 import Components.Task
 from Components.ActionMap import ActionMap
 from Components.Sources.StaticText import StaticText
@@ -49,24 +46,17 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during shutdown, with reason=0 at startup?"""
 	global softcamautopoller
 	if reason == 0:
-		if six.PY3:
-			link = "/etc/init.d/softcam"
-			print("[SoftcamAutostart] config.misc.softcams.value=%s" % (config.misc.softcams.value))
-			if path.exists(link) and config.misc.softcams.value != "None":
-				scr = "softcam.%s" % config.misc.softcams.value
-				unlink(link)
-				symlink(scr, link)
-				cmd = "%s %s" % (link, "start")
-				print("[SoftcamAutostart][command]Executing %s" % cmd)
-				eConsoleAppContainer().execute(cmd)
-				softcamautopoller = SoftcamAutoPoller()
-				softcamautopoller.start()
-			else:
-				print("[SoftcamManager] AutoStart Enabled")
-				if path.exists("/tmp/SoftcamsDisableCheck"):
-					remove("/tmp/SoftcamsDisableCheck")
-				softcamautopoller = SoftcamAutoPoller()
-				softcamautopoller.start()
+		link = "/etc/init.d/softcam"
+		print("[SoftcamAutostart] config.misc.softcams.value=%s" % (config.misc.softcams.value))
+		if path.exists(link) and config.misc.softcams.value != "None":
+			scr = "softcam.%s" % config.misc.softcams.value
+			unlink(link)
+			symlink(scr, link)
+			cmd = "%s %s" % (link, "start")
+			print("[SoftcamAutostart][command]Executing %s" % cmd)
+			eConsoleAppContainer().execute(cmd)
+			softcamautopoller = SoftcamAutoPoller()
+			softcamautopoller.start()
 		else:
 			print("[SoftcamManager] AutoStart Enabled")
 			if path.exists("/tmp/SoftcamsDisableCheck"):
@@ -210,10 +200,7 @@ class VISIONSoftcamManager(Screen):
 
 	def showActivecam2(self, result, retval, extra_args):
 		if retval == 0:
-			if six.PY3:
-				self.currentactivecamtemp = six.ensure_str(result)
-			else:
-				self.currentactivecamtemp = result
+			self.currentactivecamtemp = str(result)
 			self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
 			self.currentactivecam = self.currentactivecam.replace("\n", ", ")
 			if path.exists("/tmp/SoftcamsScriptsRunning"):
@@ -296,10 +283,7 @@ class VISIONSoftcamManager(Screen):
 			return
 		else:
 			if retval == 0:
-				if six.PY3:
-					stopcam = six.ensure_str(result)
-				else:
-					stopcam = str(result)
+				stopcam = str(result)
 				print('[SoftcamManager] Stopping ' + selectedcam + ' PID ' + stopcam.replace("\n", ""))
 				now = datetime.now()
 				open('/tmp/cam.check.log', 'a').write(now.strftime("%Y-%m-%d %H:%M") + ": Stopping: " + selectedcam + "\n")
@@ -601,7 +585,7 @@ class VISIONStopCam(Screen):
 		if retval == 0:
 			self.count = 0
 			self['connect'].setPixmapNum(0)
-			stopcam = six.ensure_str(result)
+			stopcam = str(result)
 			print("[SoftcamManager][startShow] stopcam=%s" % stopcam)
 			if path.exists('/etc/SoftcamsAutostart'):
 				data = open('/etc/SoftcamsAutostart').read()
