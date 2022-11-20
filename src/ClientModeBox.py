@@ -7,7 +7,7 @@ from xml.dom import minidom
 import re
 import os
 import shutil
-import locale
+#import locale
 from Components.Network import iNetwork
 from time import localtime, time, strftime, mktime, ctime
 import socket
@@ -733,7 +733,7 @@ class ClientModeBoxDownloader:
 		return bouquets
 
 	def downloadBouquets(self, baseurl, stype):
-		scriptLocale = locale.setlocale(category=locale.LC_ALL, locale="en_GB.UTF-8")
+		#scriptLocale = locale.setlocale(category=locale.LC_ALL, locale="en_GB.UTF-8")
 		bouquets = []
 		httprequest = urlopen(baseurl + '/web/bouquets?stype=' + stype)
 		print("[ClientModeBox] download bouquets from " + baseurl + '/web/bouquets?stype=' + stype)
