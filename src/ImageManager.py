@@ -1575,7 +1575,7 @@ class ImageManagerDownload(Screen):
 			from base64 import b64encode
 			base64bytes = b64encode(('%s:%s' % (username, password)).encode())
 			headers = {("Authorization").encode(): ("Basic %s" % base64bytes.decode()).encode()}
-		return headers, scheme + "://" + hostname + port + parsed + query
+		return headers, scheme + "://" + hostname + port + parsed.path + query
 
 
 class ImageManagerSetup(Setup):
