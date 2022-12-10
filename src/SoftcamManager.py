@@ -34,6 +34,14 @@ config.misc.softcams = ConfigSelection(default="None", choices=CamControl("softc
 
 softcamautopoller = None
 
+wicardd = str(ProcessList().named("wicardd")).strip("[]")
+cccam = str(ProcessList().named("CCcam")).strip("[]")
+if config.softcammanager.softcams_autostart.value not in ("wicardd", "CCcam") and config.misc.softcams.value not in ("wicardd", "CCcam"):
+	if wicardd:
+		Console().ePopen('kill -9 %s' % wicardd)
+	if cccam:
+		Console().ePopen('kill -9 %s' % cccam)
+
 
 def updateExtensions(configElement):
 	plugins.clearPluginList()
@@ -69,13 +77,6 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 		if softcamautopoller is not None:
 			softcamautopoller.stop()
 			softcamautopoller = None
-	wicardd = str(ProcessList().named("wicardd")).strip("[]")
-	cccam = str(ProcessList().named("CCcam")).strip("[]")
-	if config.softcammanager.softcams_autostart.value not in ("wicardd", "CCcam") and config.misc.softcams.value not in ("wicardd", "CCcam"):
-		if wicardd:
-			Console().ePopen('kill -9 %s' % wicardd)
-		if cccam:
-			Console().ePopen('kill -9 %s' % cccam)
 
 
 class VISIONSoftcamManager(Screen):
