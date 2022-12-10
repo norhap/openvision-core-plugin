@@ -920,22 +920,22 @@ class SoftcamAutoPoller:
 						output.write(now.strftime("%Y-%m-%d %H:%M") + ": Couldn't find " + softcamcheck + " running, Starting " + softcamcheck + "\n")
 						output.close()
 						if softcamcheck.lower().startswith("oscam"):
-							self.Console.ePopen("ps.procps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/softcamRuningCheck.tmp")
+							system("ps.procps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/softcamRuningCheck.tmp")
 							file = open("/tmp/softcamRuningCheck.tmp")
-							self.Console.ePopen('sh /etc/init.d/softcam.%s start' % softcamcheck)
+							system('sh /etc/init.d/softcam.%s start' % softcamcheck)
 							remove("/tmp/softcamRuningCheck.tmp")
 						if softcamcheck.lower().startswith("ncam"):
 							self.Console.ePopen("ps.procps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/softcamRuningCheck.tmp")
 							file = open("/tmp/softcamRuningCheck.tmp")
-							self.Console.ePopen('sh /etc/init.d/softcam.%s start' % softcamcheck)
+							system('sh /etc/init.d/softcam.%s start' % softcamcheck)
 							remove("/tmp/softcamRuningCheck.tmp")
 						if softcamcheck.lower().startswith("sbox"):
-							self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + softcamcheck)
+							system("ulimit -s 1024;/usr/softcams/" + softcamcheck)
 						if softcamcheck.lower().startswith("gbox"):
-							self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + softcamcheck)
-							self.Console.ePopen("start-stop-daemon --start --quiet --background --exec /usr/bin/gbox")
+							system("ulimit -s 1024;/usr/softcams/" + softcamcheck)
+							system("start-stop-daemon --start --quiet --background --exec /usr/bin/gbox")
 						if softcamcheck.lower().startswith('wicardd') or softcamcheck.startswith('mgcamd') or softcamcheck.startswith('CCcam'):
-							self.Console.ePopen('sh /etc/init.d/softcam.%s start' % softcamcheck)
+							system('sh /etc/init.d/softcam.%s start' % softcamcheck)
 						# if softcamcheck.startswith('mgcamd'): # code no increse RAM for MGcamd.
 							# mgcamd = str(ProcessList().named("mgcamd")).strip("[]")
 							# if not mgcamd:
