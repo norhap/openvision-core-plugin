@@ -6,16 +6,16 @@ from Components.Console import Console
 from Components.Pixmap import Pixmap
 from Components.Sources.StaticText import StaticText
 from Screens.WizardLanguage import WizardLanguage
-from Screens.Rc import Rc
+from Screens.HelpMenu import ShowRemoteControl
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
 
 
-class RestoreWizard(WizardLanguage, Rc):
+class RestoreWizard(WizardLanguage, ShowRemoteControl):
 	def __init__(self, session):
 		self.xmlfile = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/Vision/restorewizard.xml")
 		WizardLanguage.__init__(self, session, showSteps=False, showStepSlider=False)
-		Rc.__init__(self)
+		ShowRemoteControl.__init__(self)
 		self.setTitle(_("Vision Core Restore Wizard"))
 		self.skinName = ["NetworkWizard"]
 		self.session = session
