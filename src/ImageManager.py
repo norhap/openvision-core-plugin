@@ -1545,13 +1545,12 @@ class ImageManagerDownload(Screen):
 			selectedimage = currentSelected[0][0]
 			headers, fileurl = self.processAuthLogin(currentSelected[0][1])
 			fileloc = self.BackupDirectory + selectedimage
-			url_encode = "utf-8"
-			b_url = fileurl.encode(url_encode).decode()
-			Tools.CopyFiles.downloadFile(b_url, fileloc, selectedimage.replace("_usb", ""), headers=headers)
+			Tools.CopyFiles.downloadFile(fileurl, fileloc, selectedimage.replace("_usb", ""), headers=headers)
 			for job in Components.Task.job_manager.getPendingJobs():
-				if job.name.startswith(_("Downloading")):
-					break
-			self.showJobView(job)
+				if job:
+					if job.name.startswith(_("Downloading")):
+						break
+					self.showJobView(job)
 			self.close()
 
 	def showJobView(self, job):
