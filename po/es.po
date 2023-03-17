@@ -433,6 +433,9 @@ msgstr "Montar"
 msgid "Un-mount"
 msgstr "Desmontar"
 
+msgid "Unzip error (also sent to any debug log):\n%s"
+msgstr "Unzip error (también enviado a cualquier debug log):\n%s"
+
 msgid "Mount Manager"
 msgstr "Administrador de Montajes"
 
@@ -981,9 +984,6 @@ msgstr "Inicializar SDCARD"
 msgid "Init SDcard"
 msgstr "Inicializar SDcard"
 
-msgid "Multiboot ERROR! - no STARTUP in boot partition."
-msgstr "Multiboot ERROR! - No hay STARTUP en la partición de arranque."
-
 msgid "Multiboot manager - Cannot initialize SDcard when running image on SDcard."
 msgstr "Administrador Multiboot - No se puede inicializar la tarjeta SD cuando se ejecuta la imagen en la tarjeta SD."
 
@@ -1127,6 +1127,9 @@ msgstr "Administrador de arranque múltiple: inicialización de la tarjeta SD, i
 
 msgid "Multiboot manager - to use this routine %s image must be at OpenViX 4.2.043 or later and USB flashed - reply Yes to continue"
 msgstr "Administrador de arranque múltiple: para usar esta rutina, la imagen% s debe estar en OpenViX 4.2.043 o posterior y USB flasheado: responda Sí para continuar"
+
+msgid "Multiboot only able to restore this backup to MMC slot1"
+msgstr "Multiboot solo puede restaurar esta copia de seguridad en slot1 de MMC"
 
 msgid "No images found on the selected download server...if password check validity"
 msgstr "No se encontraron imágenes para el servidor de descarga seleccionado, la contraseña verifica la validez"

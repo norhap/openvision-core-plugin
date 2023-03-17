@@ -537,6 +537,7 @@ class VISIONImageManager(Screen):
 		fbClass.getInstance().lock()
 
 	def ofgwriteResult(self, result, retval, extra_args=None):
+		from Screens.FlashImage import MultibootSelection
 		fbClass.getInstance().unlock()
 		print("[ImageManager] ofgwrite retval:", retval)
 		if retval == 0:
@@ -549,11 +550,15 @@ class VISIONImageManager(Screen):
 				if pathExists(path.join(tmp_dir, "STARTUP")):
 					copyfile(path.join(tmp_dir, SystemInfo["canMultiBoot"][self.multibootslot]["startupfile"].replace("boxmode=12'", "boxmode=1'")), path.join(tmp_dir, "STARTUP"))
 				else:
-					self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in boot partition."), MessageBox.TYPE_INFO, timeout=20)
+					if path.exists(config.imagemanager.backuplocation.value + "/imagebackups/imagerestore"):
+						try:
+							rmtree(config.imagemanager.backuplocation.value + "/imagebackups/imagerestore")
+						except Exception:
+							pass
 				Console().ePopen('umount %s' % tmp_dir)
 				if not path.ismount(tmp_dir):
 					rmdir(tmp_dir)
-				self.session.open(TryQuitMainloop, 2)
+				self.session.openWithCallback(self.close, MultibootSelection)
 			else:
 				self.session.open(TryQuitMainloop, 2)
 		else:
