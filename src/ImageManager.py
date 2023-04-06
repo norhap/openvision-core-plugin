@@ -3,7 +3,7 @@ from urllib.request import urlopen
 import json
 import tempfile
 
-from boxbranding import getImageType, getImageDistro, getImageVersion, getImageDevBuild, getImageFolder, getImageFileSystem, getMachineBuild, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE, getBoxType
+from boxbranding import getImageType, getImageDistro, getImageVersion, getImageDevBuild, getImageFolder, getImageFileSystem, getMachineBuild, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
 from enigma import eTimer, fbClass
 from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, rmdir, statvfs, chmod, walk
 from shutil import rmtree, move, copy, copyfile
@@ -19,7 +19,7 @@ from Components.Harddisk import harddiskmanager, getProcMounts, getFolderSize
 from Components.Sources.StaticText import StaticText
 from Components.Label import Label
 from Components.MenuList import MenuList
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, MODEL
 import Components.Task
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
@@ -28,13 +28,10 @@ from Screens.Standby import TryQuitMainloop
 from Screens.TaskView import JobView
 from Tools.Directories import fileExists, pathExists, fileHas
 import Tools.CopyFiles
-from Tools.HardwareInfo import HardwareInfo
-from Tools.StbHardware import getBrand
+from Tools.HardwareInfo import getBrand, HardwareInfo
 from Tools.Multiboot import getImagelist, getCurrentImage
 from Tools.Notifications import AddPopupWithCallback
 
-model = getBoxType()
-brand = getBrand()
 kernelfile = getMachineKernelFile()
 mtdkernel = getMachineMtdKernel()
 mtdrootfs = getMachineMtdRoot()
@@ -153,7 +150,6 @@ class VISIONImageManager(Screen):
 		self["lab4"] = StaticText(_("https://openvision.tech"))
 		self["lab5"] = StaticText(_("Sources are available at:"))
 		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
-
 		self.BackupRunning = False
 		self.BackupDirectory = " "
 		if SystemInfo["canMultiBoot"]:
@@ -409,7 +405,7 @@ class VISIONImageManager(Screen):
 				self.multibootslot = 1
 				self.MTDKERNEL = mtdkernel
 				self.MTDROOTFS = mtdrootfs
-				if model == "et8500" and path.exists("/proc/mtd"):
+				if MODEL == "et8500" and path.exists("/proc/mtd"):
 					self.dualboot = self.dualBoot()
 				recordings = self.session.nav.getRecordings()
 				if not recordings:
@@ -490,7 +486,7 @@ class VISIONImageManager(Screen):
 	def keyRestore4(self, result, retval, extra_args=None):
 		if retval == 0:
 			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("Flash image unzip successful."), MessageBox.TYPE_INFO, timeout=4)
-			if model == "et8500" and self.dualboot:
+			if MODEL == "et8500" and self.dualboot:
 				message = _("ET8500 Multiboot: Yes to restore OS1 No to restore OS2:\n ") + self.sel
 				ybox = self.session.openWithCallback(self.keyRestore5_ET8500, MessageBox, message, MessageBox.TYPE_YESNO)
 				ybox.setTitle(_("ET8500 Image Restore"))
@@ -739,12 +735,12 @@ class ImageBackup(Screen):
 		imageSubBuild = ""
 		if imagetype != "develop":
 			imageSubBuild = ".%s" % getImageDevBuild()
-		self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-" + backupimage + "-" + model + "-" + self.BackupDate
+		self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-" + backupimage + "-" + MODEL + "-" + self.BackupDate
 		self.KERNELFILE = kernelfile
 		self.ROOTFSFILE = getMachineRootFile()
 		self.MAINDEST = self.MAINDESTROOT + "/" + imagedir + "/"
 		self.MAINDEST2 = self.MAINDESTROOT + "/"
-		self.MODEL = model
+		self.MODEL = MODEL
 		self.MCBUILD = getMachineBuild()
 		self.IMAGEDISTRO = imagedistro
 		self.DISTROVERSION = imageversion
@@ -770,7 +766,7 @@ class ImageBackup(Screen):
 		else:
 			self.MTDKERNEL = mtdkernel
 			self.MTDROOTFS = mtdrootfs
-		if getMachineBuild() == "gb7252" or model == "gbx34k":
+		if getMachineBuild() == "gb7252" or MODEL == "gbx34k":
 			self.GB4Kbin = "boot.bin"
 			self.GB4Krescue = "rescue.bin"
 		if "sda" in self.MTDKERNEL:
@@ -986,7 +982,7 @@ class ImageBackup(Screen):
 			if "jffs2" in self.ROOTFSTYPE.split():
 				print("[ImageManager] Stage2: JFFS2 Detected.")
 				self.ROOTFSTYPE = "jffs2"
-				if model == "gb800solo":
+				if MODEL == "gb800solo":
 					JFFS2OPTIONS = " --disable-compressor=lzo -e131072 -l -p125829120"
 				else:
 					JFFS2OPTIONS = " --disable-compressor=lzo --eraseblock=0x20000 -n -l"
@@ -1005,7 +1001,7 @@ class ImageBackup(Screen):
 					output.write("vol_flags=autoresize\n")
 
 				self.commands.append("mount -o bind,ro / %s/root" % self.TMPMOUNTDIR)
-				if model in ("h9", "i55plus"):
+				if MODEL in ("h9", "i55plus"):
 					with open("/proc/cmdline", "r") as z:
 						if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z.read():
 							self.ROOTFSTYPE = "tar.bz2"
@@ -1046,7 +1042,7 @@ class ImageBackup(Screen):
 				else:
 					self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPMOUNTDIR))
 				self.commands.append("/usr/bin/bzip2 %s/rootfs.tar" % self.WORKDIR)
-				if getMachineBuild() == "gb7252" or model == "gbx34k":
+				if getMachineBuild() == "gb7252" or MODEL == "gbx34k":
 					self.commands.append("dd if=/dev/mmcblk0p1 of=%s/boot.bin" % self.WORKDIR)
 					self.commands.append("dd if=/dev/mmcblk0p3 of=%s/rescue.bin" % self.WORKDIR)
 					print("[ImageManager] Stage2: Create: boot dump boot.bin:", self.MODEL)
@@ -1067,7 +1063,7 @@ class ImageBackup(Screen):
 		SEEK_CONT = int((getFolderSize(self.TMPMOUNTDIR) / 1024) + 100000)
 		try:
 			if self.EMMCIMG == "disk.img":
-				print("[ImageManager] %s: EMMC Detected." % model)  # boxes with multiple eMMC partitions in class
+				print("[ImageManager] %s: EMMC Detected." % MODEL)  # boxes with multiple eMMC partitions in class
 				EMMC_IMAGE = "%s/%s" % (self.WORKDIR, self.EMMCIMG)
 				BLOCK_SIZE = 512
 				BLOCK_SECTOR = 2
@@ -1119,7 +1115,7 @@ class ImageBackup(Screen):
 				self.Console.eBatch(self.commandMB, self.Stage3Complete, debug=False)
 
 			elif self.EMMCIMG == "emmc.img":
-				print("[ImageManager] %s: EMMC Detected." % model)  # boxes with multiple eMMC partitions in class
+				print("[ImageManager] %s: EMMC Detected." % MODEL)  # boxes with multiple eMMC partitions in class
 				EMMC = "rootfs.ext4"
 				EMMC_IMAGE = "%s/%s" % (self.WORKDIR, EMMC)
 				IMAGE_ROOTFS_ALIGNMENT = 1024
@@ -1170,7 +1166,7 @@ class ImageBackup(Screen):
 				# self.commandMB.append("dd if=/dev/%s of=%s seek=1 bs=%s" % (self.MTDROOTFS, EMMC_IMAGE, ROOTFS_IMAGE_BS)) # deactive (not work image emmc.img).
 				self.Console.eBatch(self.commandMB, self.Stage3Complete, debug=False)
 			elif self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"): # create slot 1 recovery backup image and empty partitions for the remaining slots.
-				print("[ImageManager] %s: Making emmc_partitions.xml" % model)
+				print("[ImageManager] %s: Making emmc_partitions.xml" % MODEL)
 				with open("%s/emmc_partitions.xml" % self.WORKDIR, "w") as f:
 					f.write('<?xml version="1.0" encoding="GB2312" ?>\n')
 					f.write('<Partition_Info>\n')
@@ -1186,7 +1182,7 @@ class ImageBackup(Screen):
 					f.write('<Part Sel="1" PartitionName="rootfs" FlashType="emmc" FileSystem="ext3/4" Start="130M" Length="7000M" SelectFile="rootfs.ext4"/>\n')
 					f.write('</Partition_Info>\n')
 					f.close()
-				print('[ImageManager] %s: Executing partitions for %s' % (model, self.EMMCIMG))
+				print('[ImageManager] %s: Executing partitions for %s' % (MODEL, self.EMMCIMG))
 				self.commandMB.append('echo "Create: fastboot dump"')
 				self.commandMB.append("dd if=/dev/mmcblk0p1 of=%s/fastboot.bin" % self.WORKDIR)
 				self.commandMB.append('echo "Create: bootargs dump"')
@@ -1212,7 +1208,7 @@ class ImageBackup(Screen):
 				self.commandMB.append("dd if=/dev/zero of=%s/rootfs.ext4 seek=%s count=60 bs=1024" % (self.WORKDIR, SEEK_CONT))
 				self.commandMB.append("mkfs.ext4 -F -i 4096 %s/rootfs.ext4 -d %s/userdata" % (self.WORKDIR, self.WORKDIR))
 				self.commandMB.append("umount %s/userdata/linuxrootfs1" % (self.WORKDIR))
-				self.commandMB.append('echo "Creating recovery emmc %s image for %s"' % (self.EMMCIMG, model))
+				self.commandMB.append('echo "Creating recovery emmc %s image for %s"' % (self.EMMCIMG, MODEL))
 				self.commandMB.append('mkupdate -s 00000003-00000001-01010101 -f %s/emmc_partitions.xml -d %s/%s' % (self.WORKDIR, self.WORKDIR, self.EMMCIMG))
 				self.Console.eBatch(self.commandMB, self.Stage3Complete, debug=False)
 			else:
@@ -1249,7 +1245,7 @@ class ImageBackup(Screen):
 			if self.EMMCIMG == "emmc.img" or self.EMMCIMG == "disk.img" and path.exists("%s/%s" % (self.WORKDIR, self.EMMCIMG)):
 				if path.exists("%s/%s" % (self.WORKDIR, self.EMMCIMG)):
 					move("%s/%s" % (self.WORKDIR, self.EMMCIMG), "%s%s" % (self.MAINDEST, self.EMMCIMG))
-				if path.exists("%s/rootfs.ext4" % self.WORKDIR) and not model.startswith("osmio4k"):
+				if path.exists("%s/rootfs.ext4" % self.WORKDIR) and not MODEL.startswith("osmio4k"):
 					move("%s/rootfs.ext4" % self.WORKDIR, "%s%s" % (self.MAINDEST, self.EMMCIMG))
 			if self.EMMCIMG == "usb_update.bin":
 				if path.exists("%s/%s" % (self.WORKDIR, self.EMMCIMG)):
@@ -1266,7 +1262,7 @@ class ImageBackup(Screen):
 			else:
 				move("%s/vmlinux.gz" % self.WORKDIR, "%s/%s" % (self.MAINDEST, self.KERNELFILE))
 
-			if model in ("h9", "i55plus"):
+			if MODEL in ("h9", "i55plus"):
 				system("mv %s/fastboot.bin %s/fastboot.bin" % (self.WORKDIR, self.MAINDEST))
 				system("mv %s/bootargs.bin %s/bootargs.bin" % (self.WORKDIR, self.MAINDEST))
 				system("mv %s/pq_param.bin %s/pq_param.bin" % (self.WORKDIR, self.MAINDEST))
@@ -1282,18 +1278,18 @@ class ImageBackup(Screen):
 			else:
 				move("%s/rootfs.%s" % (self.WORKDIR, self.ROOTFSTYPE), "%s/%s" % (self.MAINDEST, self.ROOTFSFILE))
 
-			if getMachineBuild() == "gb7252" or model == "gbx34k":
+			if getMachineBuild() == "gb7252" or MODEL == "gbx34k":
 				move("%s/%s" % (self.WORKDIR, self.GB4Kbin), "%s/%s" % (self.MAINDEST, self.GB4Kbin))
 				move("%s/%s" % (self.WORKDIR, self.GB4Krescue), "%s/%s" % (self.MAINDEST, self.GB4Krescue))
 				system("cp -f /usr/share/gpt.bin %s/gpt.bin" % self.MAINDEST)
 				print("[ImageManager] Stage5: Create: gpt.bin:", self.MODEL)
 
 			with open(self.MAINDEST + "/imageversion", "w") as fileout:
-				line = defaultprefix + "-" + backupimage + "-" + model + "-" + self.BackupDate
+				line = defaultprefix + "-" + backupimage + "-" + MODEL + "-" + self.BackupDate
 				fileout.write(line)
 				fileout.close()
-			if brand == "vuplus":
-				if model == "vuzero":
+			if getBrand() == "vuplus":
+				if MODEL == "vuzero":
 					with open(self.MAINDEST + "/force.update", "w") as fileout:
 						line = "This file forces the update."
 						fileout.write(line)
@@ -1303,7 +1299,7 @@ class ImageBackup(Screen):
 						line = "This file forces a reboot after the update."
 						fileout.write(line)
 						fileout.close()
-			elif brand in ("xtrend", "GigaBlue", "octagon", "odin", "xp", "INI", "Edision"):
+			elif getBrand() in ("xtrend", "GigaBlue", "octagon", "odin", "xp", "INI", "Edision"):
 				with open(self.MAINDEST + "/noforce", "w") as fileout:
 					line = "rename this file to 'force' to force an update without confirmation"
 					fileout.write(line)
@@ -1312,28 +1308,28 @@ class ImageBackup(Screen):
 					copy("/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat", self.MAINDESTROOT + "/burn.bat")
 				if SystemInfo["HiSilicon"] and self.KERN == "mmc":
 					with open(self.MAINDEST + "/SDAbackup", "w") as fileout:
-						line = "%s indicate type of backup %s" % (model, self.KERN)
+						line = "%s indicate type of backup %s" % (MODEL, self.KERN)
 						fileout.write(line)
 						fileout.close()
 				if self.EMMCIMG in ("emmc.img", "disk.img", "usb_update.bin"):
 					if self.EMMCIMG == "usb_update.bin":
 						with open(self.MAINDEST2 + "/imageversion", "w") as fileout:
-							line = defaultprefix + "-" + backupimage + "-" + model + "-" + self.BackupDate
+							line = defaultprefix + "-" + backupimage + "-" + MODEL + "-" + self.BackupDate
 							fileout.write(line)
 							fileout.close()
-					if self.EMMCIMG in ("emmc.img", "disk.img") and not model.startswith("osmio4k") or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
+					if self.EMMCIMG in ("emmc.img", "disk.img") and not MODEL.startswith("osmio4k") or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
 						self.session.open(MessageBox, _("Creating image online flash for ofgwrite and recovery eMMC."), MessageBox.TYPE_INFO, timeout=10)
 					else:
 						self.session.open(MessageBox, _("Creating image online flash for ofgwrite."), MessageBox.TYPE_INFO, timeout=10)
 			elif SystemInfo["HasRootSubdir"]:
-					with open(self.MAINDEST + "/force_%s_READ.ME" % model, "w") as fileout:
-						line1 = "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick" % (model, model)
+					with open(self.MAINDEST + "/force_%s_READ.ME" % MODEL, "w") as fileout:
+						line1 = "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick" % (MODEL, MODEL)
 						line2 = "When you enter the recovery menu then it will force the image to be installed in the linux selection"
 						fileout.write(line1)
 						fileout.write(line2)
 						fileout.close()
-					with open(self.MAINDEST2 + "/unforce_%s.txt" % model, "w") as fileout:
-						line1 = "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation" % (model, model)
+					with open(self.MAINDEST2 + "/unforce_%s.txt" % MODEL, "w") as fileout:
+						line1 = "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation" % (MODEL, MODEL)
 						fileout.write(line1)
 						fileout.close()
 			print("[ImageManager] Stage5: Removing Swap.")
@@ -1342,7 +1338,7 @@ class ImageBackup(Screen):
 				remove(self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
 			if path.exists(self.WORKDIR):
 				rmtree(self.WORKDIR)
-			if (path.exists(self.MAINDEST + "/" + self.ROOTFSFILE) and path.exists(self.MAINDEST + "/" + self.KERNELFILE)) or (model in ("h9", "i55plus") and "root=/dev/mmcblk0p1" in z):
+			if (path.exists(self.MAINDEST + "/" + self.ROOTFSFILE) and path.exists(self.MAINDEST + "/" + self.KERNELFILE)) or (MODEL in ("h9", "i55plus") and "root=/dev/mmcblk0p1" in z):
 				for root, dirs, files in walk(self.MAINDEST):
 					for momo in dirs:
 						chmod(path.join(root, momo), 0o644)
@@ -1364,7 +1360,7 @@ class ImageBackup(Screen):
 		zipfolder = path.split(self.MAINDESTROOT)
 		try:
 			if self.EMMCIMG in ("emmc.img", "disk.img", "usb_update.bin"):
-				if self.EMMCIMG in ("emmc.img", "disk.img") and not model.startswith("osmio4k") or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
+				if self.EMMCIMG in ("emmc.img", "disk.img") and not MODEL.startswith("osmio4k") or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
 					self.commandMB.append("7za a -r -bt -bd %s%s-%s-%s-%s_recovery_emmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROBUILD, self.MODEL, self.BackupDate, self.MAINDESTROOT))
 				else:
 					self.commandMB.append("7za a -r -bt -bd %s%s-%s-%s-%s_mmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROBUILD, self.MODEL, self.BackupDate, self.MAINDESTROOT))
@@ -1472,10 +1468,10 @@ class ImageManagerDownload(Screen):
 
 		if not self.imagesList:
 			try:
-				urljson = path.join(self.ConfigObj.value, model)
+				urljson = path.join(self.ConfigObj.value, MODEL)
 				self.imagesList = dict(json.load(urlopen("%s" % urljson)))
 			except Exception:
-				print("[ImageManager] no images available for: the '%s' at '%s'" % (model, self.ConfigObj.value))
+				print("[ImageManager] no images available for: the '%s' at '%s'" % (MODEL, self.ConfigObj.value))
 				return
 
 		if not self.imagesList: # Nothing has been found on that server so we might as well give up.

@@ -2,7 +2,6 @@ import re
 from os import path, makedirs, remove, rename, symlink, mkdir, listdir, unlink, system
 from datetime import datetime
 from time import time
-from boxbranding import getImageArch
 from enigma import eTimer, eConsoleAppContainer
 
 from .__init__ import _, PluginLanguageDomain
@@ -21,7 +20,6 @@ from Tools.camcontrol import CamControl
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
-from Components.SystemInfo import SystemInfo
 from Components.ConfigList import ConfigListScreen
 from process import ProcessList
 

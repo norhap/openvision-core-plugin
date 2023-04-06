@@ -19,7 +19,7 @@ from Screens.Screen import Screen
 from Screens.Standby import QUIT_REBOOT, TryQuitMainloop
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_GUISKIN, resolveFilename, SCOPE_PLUGINS
-from Tools.StbHardware import getBrandModel
+from Tools.HardwareInfo import getBrandModel
 from re import search
 
 blacklistedDisks = [
