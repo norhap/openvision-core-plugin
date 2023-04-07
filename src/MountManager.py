@@ -13,13 +13,12 @@ from Components.config import config, getConfigListEntry, ConfigSelection, NoSav
 from Components.Console import Console
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, BRAND, DISPLAYMODEL
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Standby import QUIT_REBOOT, TryQuitMainloop
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_GUISKIN, resolveFilename, SCOPE_PLUGINS
-from Tools.HardwareInfo import getBrandModel
 from re import search
 
 blacklistedDisks = [
@@ -429,7 +428,7 @@ class VISIONDevicesPanel(Screen):
 					return
 				for line in f.readlines():
 					if "/media/hdd" in line:
-						 message = _("The changes need a system restart to take effect.\nRestart your %s now?") % getBrandModel()
+						 message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (BRAND, DISPLAYMODEL)
 						 ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
 						 ybox.setTitle(_("Restart receiver."))
 
@@ -503,7 +502,7 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 		ybox.setTitle(_("Please wait."))
 
 	def delay(self, val):
-		message = _("The changes need a system restart to take effect.\nRestart your %s now?") % getBrandModel()
+		message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (BRAND, DISPLAYMODEL)
 		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
 		ybox.setTitle(_("Restart receiver."))
 

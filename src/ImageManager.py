@@ -19,7 +19,7 @@ from Components.Harddisk import harddiskmanager, getProcMounts, getFolderSize
 from Components.Sources.StaticText import StaticText
 from Components.Label import Label
 from Components.MenuList import MenuList
-from Components.SystemInfo import SystemInfo, MODEL
+from Components.SystemInfo import SystemInfo, BRAND, MODEL
 import Components.Task
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
@@ -28,7 +28,7 @@ from Screens.Standby import TryQuitMainloop
 from Screens.TaskView import JobView
 from Tools.Directories import fileExists, pathExists, fileHas
 import Tools.CopyFiles
-from Tools.HardwareInfo import getBrand, HardwareInfo
+from Tools.HardwareInfo import HardwareInfo
 from Tools.Multiboot import getImagelist, getCurrentImage
 from Tools.Notifications import AddPopupWithCallback
 
@@ -1288,7 +1288,7 @@ class ImageBackup(Screen):
 				line = defaultprefix + "-" + backupimage + "-" + MODEL + "-" + self.BackupDate
 				fileout.write(line)
 				fileout.close()
-			if getBrand() == "vuplus":
+			if BRAND == "vuplus":
 				if MODEL == "vuzero":
 					with open(self.MAINDEST + "/force.update", "w") as fileout:
 						line = "This file forces the update."
@@ -1299,7 +1299,7 @@ class ImageBackup(Screen):
 						line = "This file forces a reboot after the update."
 						fileout.write(line)
 						fileout.close()
-			elif getBrand() in ("xtrend", "GigaBlue", "octagon", "odin", "xp", "INI", "Edision"):
+			elif BRAND in ("xtrend", "GigaBlue", "octagon", "odin", "xp", "INI", "Edision"):
 				with open(self.MAINDEST + "/noforce", "w") as fileout:
 					line = "rename this file to 'force' to force an update without confirmation"
 					fileout.write(line)
