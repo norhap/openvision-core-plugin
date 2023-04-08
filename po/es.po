@@ -787,8 +787,8 @@ msgstr "El asistente ha terminado, el Receptor va a Reiniciar."
 msgid "No plugins needed to be installed"
 msgstr "No es necesario instalar plugins"
 
-msgid "The wizard is finished now."
-msgstr "El asistente ha terminado ahora pulsa OK para continuar."
+msgid "The restore wizard is over now. Press OK to continue."
+msgstr "El asistente de restauración ha terminado ahora. Pulse OK para continuar."
 
 msgid "There is no backup to delete."
 msgstr "No hay una copia de seguridad para eliminar."
