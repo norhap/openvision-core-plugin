@@ -1042,10 +1042,13 @@ class ImageBackup(Screen):
 				slot = getCurrentImage()
 				print("[ImageManager] Stage 1: Making kernel image.")
 			if "bin" or "uImage" in self.KERNELFILE:
-				if SystemInfo["hasKexec"]:
-	#				boot = "boot" if slot > 0 and slot < 4 else "dev/%s/%s"  %(self.MTDROOTFS, self.ROOTFSSUBDIR)
-					boot = "boot"
-					self.command = "dd if=/%s/%s of=%s/vmlinux.bin" % (boot, SystemInfo["canMultiBoot"][slot]["kernel"].rsplit("/", 1)[1], self.WORKDIR) if slot != 0 else "dd if=/dev/%s of=%s/vmlinux.bin" % (self.MTDKERNEL, self.WORKDIR)
+				if BRAND == "Vu+":
+					if SystemInfo["hasKexec"]:
+		#				boot = "boot" if slot > 0 and slot < 4 else "dev/%s/%s"  %(self.MTDROOTFS, self.ROOTFSSUBDIR)
+						boot = "boot"
+						self.command = "dd if=/%s/%s of=%s/vmlinux.bin" % (boot, SystemInfo["canMultiBoot"][slot]["kernel"].rsplit("/", 1)[1], self.WORKDIR) if slot != 0 else "dd if=/dev/%s of=%s/vmlinux.bin" % (self.MTDKERNEL, self.WORKDIR)
+					else:
+						self.command = "dd if=/dev/%s of=%s/vmlinux.bin" % (self.MTDKERNEL, self.WORKDIR)
 				else:
 					self.command = "dd if=/dev/%s of=%s/kernel.bin" % (self.MTDKERNEL, self.WORKDIR)
 			else:
@@ -1343,6 +1346,8 @@ class ImageBackup(Screen):
 
 			if "bin" or "uImage" in self.KERNELFILE and path.exists("%s/kernel.bin" % self.WORKDIR):
 				move("%s/kernel.bin" % self.WORKDIR, "%s/%s" % (self.MAINDEST, self.KERNELFILE))
+			elif path.exists("%s/vmlinux.bin" % self.WORKDIR):
+				move("%s/vmlinux.bin" % self.WORKDIR, "%s/%s" % (self.MAINDEST, self.KERNELFILE))
 			else:
 				move("%s/vmlinux.gz" % self.WORKDIR, "%s/%s" % (self.MAINDEST, self.KERNELFILE))
 
