@@ -1372,8 +1372,8 @@ class ImageBackup(Screen):
 				line = defaultprefix + "-" + backupimage + "-" + MODEL + "-" + self.BackupDate
 				fileout.write(line)
 				fileout.close()
-			if BRAND == "vuplus":
-				if MODEL == "vuzero":
+			if BRAND == "Vu+":
+				if MODEL in ("vuzero4k, vuuno4k"):
 					with open(self.MAINDEST + "/force.update", "w") as fileout:
 						line = "This file forces the update."
 						fileout.write(line)
