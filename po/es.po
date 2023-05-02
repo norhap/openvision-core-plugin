@@ -283,11 +283,8 @@ msgstr "Deseleccionar"
 msgid "Device: "
 msgstr "Dispositivo: "
 
-msgid "Device: No found or not mount"
-msgstr "Dispositivo: No encontrado o no montado"
-
-msgid "Device: None available"
-msgstr "Dispositivo: Ninguno disponible"
+msgid "Device no available"
+msgstr "Dispositivo no disponible"
 
 msgid "Disable startup"
 msgstr "Deshabilitar al iniciar"
@@ -466,9 +463,6 @@ msgstr "Unzip error el dispositivo no esta montado:\n%s"
 
 msgid "Mount Manager"
 msgstr "Administrador de Montajes"
-
-msgid "Check devices availables in Mount Manager"
-msgstr "Revise dispositivos disponibles en Administrador de Montajes"
 
 msgid "The mount failed, completely restart the receiver to reassemble it, or press the green button (setup mounts) to mount as /media/hdd../media/usb..."
 msgstr "Falló el montaje, reinicie completamente el receptor para volver a montarlo o presione botón verde (configurar montajes) para montar como /media/hdd../media/usb...etc."
