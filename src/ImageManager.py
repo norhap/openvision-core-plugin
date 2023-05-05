@@ -41,14 +41,17 @@ imagedir = getImageFolder()
 imagefs = getImageFileSystem()
 
 mountpointchoices = []
-for p in harddiskmanager.getMountedPartitions():
-	if path.exists(p.mountpoint):
-		d = path.normpath(p.mountpoint)
+partitions = sorted(harddiskmanager.getMountedPartitions(), key=lambda partitions: partitions.device or "")
+for parts in partitions:
+	partition = path.join(str(parts.device))
+	mount = path.join(str(parts.mountpoint))
+	if path.exists(parts.mountpoint):
+		d = path.normpath(parts.mountpoint)
 		if SystemInfo["canMultiBoot"]:
 			if "mmcblk0p" in d or "mmcblk1p" in d:
 				continue
-		if p.mountpoint != "/":
-			mountpointchoices.append((p.mountpoint, d))
+		if parts.mountpoint != "/":
+			mountpointchoices.append((parts.mountpoint, d))
 defaultprefix = imagedistro
 config.imagemanager = ConfigSubsection()
 config.imagemanager.autosettingsbackup = ConfigYesNo(default=True)
@@ -167,7 +170,8 @@ class VISIONImageManager(Screen):
 			backuptext = _("Next backup: ") + strftime(_("%a %e %b  %-H:%M"), t)
 		else:
 			backuptext = _("Next backup: ")
-		self["backupstatus"].setText(str(backuptext))
+		if config.imagemanager.schedule.value:
+			self["backupstatus"].setText(str(backuptext))
 		if self.selectionChanged not in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 
@@ -190,7 +194,7 @@ class VISIONImageManager(Screen):
 						self.BackupRunning = True
 				if self.BackupRunning:
 					self["key_green"].setText(_("View progress"))
-				if config.imagemanager.backuplocation.value and not self.BackupRunning:
+				if partition != "None" and not self.BackupRunning:
 					self["key_green"].setText(_("New backupimage"))
 				self.activityTimer.startLongTimer(1)
 				self.refreshList()
@@ -206,7 +210,7 @@ class VISIONImageManager(Screen):
 	def refreshList(self):
 		if self.BackupDirectory == " ":
 			return
-		try:
+		if partition != "None":
 			images = listdir(self.BackupDirectory)
 			del self.emlist[:]
 			mtimes = []
@@ -225,14 +229,13 @@ class VISIONImageManager(Screen):
 				self["key_red"].setText("")
 				self["key_blue"].setText("")
 				self["key_yellow"].setText(_("Downloads"))
-		except OSError as err:
-			self["lab7"].setText(_("Device no available") + "\n" + "%s" % err + "\n" + _("There is a problem with this device."))
+		else:
+			hotplugInfoDevice
 			self["list"].hide()
 			self["key_red"].setText("")
 			self["key_green"].setText("")
 			self["key_blue"].setText("")
 			self["key_yellow"].setText("")
-			print("%s" % err)
 
 	def getJobName(self, job):
 		return "%s: %s (%d%%)" % (job.getStatustext(), job.name, int(100 * job.progress / float(job.end)))
@@ -245,51 +248,64 @@ class VISIONImageManager(Screen):
 		Components.Task.job_manager.in_background = in_background
 
 	def populate_List(self):
-		if not config.imagemanager.backuplocation.getValue():
-			if harddiskmanager.HDDList():
-				self.session.open(TryQuitMainloop, 2)
+		hotplugInfoDevice = self["lab7"].setText(_("Your device is not available.\nRecommended reboot receiver.") if harddiskmanager.HDDList() else _("Device is not available."))
+		if partition == "None":
 			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
 				"cancel": self.close,
 				"menu": self.createSetup
 			}, -1)
-			self["lab7"].setText(_("Device no available"))
+			self["list"].hide()
+			self["key_red"].setText("")
+			self["key_green"].setText("")
+			self["key_yellow"].setText("")
+			self["key_blue"].setText("")
+			return hotplugInfoDevice
 		else:
-			self["myactions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "HelpActions"], {
-				"cancel": self.close,
-				"red": self.keyDelete,
-				"green": self.greenPressed,
-				"yellow": self.doDownload,
-				"menu": self.createSetup,
-				"ok": self.keyRestore,
-				"blue": self.keyRestore,
-				"up": self.refreshUp,
-				"down": self.refreshDown,
-				"displayHelp": self.doDownload
-			}, -1)
-			if mountpointchoices:
-				self.BackupDirectory = config.imagemanager.backuplocation.value + "/imagebackups/"
-				config.imagemanager.backuplocation.save()
 			try:
 				size = statvfs(config.imagemanager.backuplocation.value)
 				free = (size.f_bfree * size.f_frsize) // (1024 * 1024) // 1000
-				self["lab7"].setText(_("Device: ") + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB") + "\n" + _("Select what you want to do"))
-				if not path.exists(config.imagemanager.backuplocation.value + '/imagebackups'):
-					mkdir(config.imagemanager.backuplocation.value + '/imagebackups', 0o755)
-
-				if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup"):
-					system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
-					remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
-				self.refreshList()
-				if self.BackupDirectory:
-					self["list"].show()
-					self["key_red"].setText(_("Delete"))
-					self["key_yellow"].setText(_("Downloads"))
-					self["key_blue"].setText(_("Flash"))
-				if self.BackupDirectory and not self.BackupRunning:
-					self["key_green"].setText(_("New backupimage"))
-			except Exception as err:
-				print("%s" % err)
-				self["lab7"].setText(_("Device no available") + "\n" + "%s" % err + "\n" + _("There is a problem with this device."))
+				if free == 0:
+					self["myactions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "HelpActions"], {
+						'cancel': self.close,
+						"menu": self.createSetup
+					}, -1)
+					self["lab7"].setText(_("Device is not available."))
+				else:
+					self["lab7"].setText(_("Device: ") + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
+					self.BackupDirectory = config.imagemanager.backuplocation.value + "/imagebackups/"
+					config.imagemanager.backuplocation.save()
+					self["myactions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "HelpActions"], {
+						"cancel": self.close,
+						"red": self.keyDelete,
+						"green": self.greenPressed,
+						"yellow": self.doDownload,
+						"menu": self.createSetup,
+						"ok": self.keyRestore,
+						"blue": self.keyRestore,
+						"up": self.refreshUp,
+						"down": self.refreshDown,
+						"displayHelp": self.doDownload
+					}, -1)
+					if not path.exists(config.imagemanager.backuplocation.value + '/imagebackups'):
+						mkdir(config.imagemanager.backuplocation.value + '/imagebackups', 0o755)
+					if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup"):
+						system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
+						remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
+					self.refreshList()
+					if self.BackupDirectory and free > 0:
+						self["list"].show()
+						self["key_red"].setText(_("Delete"))
+						self["key_yellow"].setText(_("Downloads"))
+						self["key_blue"].setText(_("Flash"))
+					if self.BackupDirectory and not self.BackupRunning and free > 0:
+						self["key_green"].setText(_("New backupimage"))
+			except:
+				self["key_green"].setText("")  # device lost, then actions cancel screen or actions menu is possible
+				self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
+					"cancel": self.close,
+					"menu": self.createSetup
+				}, -1)
+				hotplugInfoDevice
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, ImageManagerSetup)
@@ -328,7 +344,8 @@ class VISIONImageManager(Screen):
 			backuptext = _("Next backup: ") + strftime(_("%a %e %b  %-H:%M"), t)
 		else:
 			backuptext = _("Next backup: ")
-		self["backupstatus"].setText(str(backuptext))
+		if config.imagemanager.schedule.value:
+			self["backupstatus"].setText(str(backuptext))
 
 	def keyDelete(self):
 		try:

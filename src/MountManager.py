@@ -20,6 +20,12 @@ from Screens.Standby import QUIT_REBOOT, TryQuitMainloop
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_GUISKIN, resolveFilename, SCOPE_PLUGINS
 from re import search
+from Components.Harddisk import harddiskmanager
+
+partitions = sorted(harddiskmanager.getMountedPartitions(), key=lambda partitions: partitions.device or "")
+for parts in partitions:
+	partition = path.join(str(parts.device))
+	mount = path.join(str(parts.mountpoint))
 
 blacklistedDisks = [
 	1,  	# RAM disk (/dev/ram0=0, /dev/initrd=250 [250=Initial RAM disk for old systems, new systems use 0])
@@ -226,8 +232,12 @@ class VISIONDevicesPanel(Screen):
 		self["lab5"] = StaticText(_("Sources are available at:"))
 		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 		self["lab7"] = Label(_("Please wait while scanning for devices..."))
-		from Components.Harddisk import harddiskmanager
-		if harddiskmanager.HDDList():
+		if path.exists(mount):
+			size = statvfs(mount)
+		else:
+			size = statvfs(0)
+		free = (size.f_bfree * size.f_frsize) // (1024 * 1024) // 1000
+		if harddiskmanager.HDDList() and partition != "None" and free != 0:
 			self["key_red"] = StaticText("")
 			self["key_green"] = StaticText(_("Setup mounts"))
 			self["key_yellow"] = StaticText(_("Unmount"))
@@ -293,7 +303,12 @@ class VISIONDevicesPanel(Screen):
 		SystemInfo["MountManager"] = True
 		getProcPartitions(self.list)
 		self["list"].list = self.list
-		self["lab7"].hide()
+		if path.exists(mount):
+			size = statvfs(mount)
+		else:
+			size = statvfs(0)
+		free = (size.f_bfree * size.f_frsize) // (1024 * 1024) // 1000
+		self["lab7"].hide() if partition != "None" and free != 0 else self["lab7"].setText(_("Your device is not available.\nRecommended reboot receiver.") if harddiskmanager.HDDList() else _("Device is not available."))
 
 	def setupMounts(self):
 		sel = self["list"].getCurrent()

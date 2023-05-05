@@ -283,8 +283,8 @@ msgstr "Deseleccionar"
 msgid "Device: "
 msgstr "Dispositivo: "
 
-msgid "Device no available"
-msgstr "Dispositivo no disponible"
+msgid "Device is not available."
+msgstr "El dispositivo no está disponible."
 
 msgid "Disable startup"
 msgstr "Deshabilitar al iniciar"
@@ -800,9 +800,6 @@ msgstr "Carpeta temporal"
 msgid "The backup location does not have enough free space."
 msgstr "El destino de copias de seguridad no tiene espacio suficiente."
 
-msgid "The chosen location does not exist, using /media/hdd"
-msgstr "El destino elegido no existe. Se usará /media/hdd"
-
 msgid "The wizard is finished now, and will reboot."
 msgstr "El asistente ha terminado, el Receptor va a Reiniciar."
 
@@ -1113,9 +1110,6 @@ msgstr ""
 "El dispositivo de montaje actual falló!\n"
 "Tal vez este dispositivo no está escrito en el fstab?"
 
-msgid "There is a problem with this device."
-msgstr "Hay un problema con este dispositivo."
-
 msgid "'User' url has not been specified, please use MENU button to initialise"
 msgstr "La URL del 'usuario' no se ha especificado, utilice el botón MENÚ para inicializar"
 
@@ -1188,6 +1182,9 @@ msgstr "Nota: la lista de slots no muestra la imagen actual o los slots vacíos.
 msgid "Sorry the feeds are down for maintenance. Please try using Backup manager to restore plugins later."
 msgstr "Lo sentimos, los feeds no funcionan por alguna razón. Intente usar el Administrador de copia de seguridad para restaurar los plugins más adelante."
 
+msgid "Your device is not available.\nRecommended reboot receiver."
+msgstr "Su dispositivo no está disponible.\nSe recomienda reiniciar el receptor."
+
 msgid "Your receiver is not connected to a network. Please check your network settings and try again."
 msgstr "Su receptor no está conectado a internet. Verifique la configuración de su red y vuelva a intentarlo."
 
@@ -1235,9 +1232,6 @@ msgstr "Finalizando restauración, su receptor va a reiniciar."
 
 msgid "Use Mount manager and press green setup mounts"
 msgstr "Use Administrador de Montajes y pulse verde"
-
-msgid "Select what you want to do"
-msgstr "Selecciona lo que quieras hacer"
 
 msgid "Vision Client Mode Box"
 msgstr "Vision Receptor Modo Cliente"
