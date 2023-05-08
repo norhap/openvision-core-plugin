@@ -214,11 +214,10 @@ class VISIONImageManager(Screen):
 			images = listdir(self.BackupDirectory)
 			del self.emlist[:]
 			mtimes = []
-			for fil in images:
-				if fil.endswith(".zip") or path.isdir(path.join(self.BackupDirectory, fil)):
-					mtimes.append((fil, stat(self.BackupDirectory + fil).st_mtime))  # (filname, mtime)
-			for fil in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]:  # sort by mtime
-				self.emlist.append(fil)
+			for file in [x for x in images if path.splitext(x)[1] == ".zip" and MODEL in x]:
+					mtimes.append((file, stat(self.BackupDirectory + file).st_mtime))  # (filname, mtime)
+			for file in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]:  # sort by mtime
+				self.emlist.append(file)
 			if len(self.emlist):
 				self["list"].setList(self.emlist)
 				self["list"].show()
