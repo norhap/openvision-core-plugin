@@ -10,7 +10,7 @@ from Screens.HelpMenu import ShowRemoteControl
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
 from Tools.Multiboot import bootmviSlot, createInfo, getCurrentImage
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, MODEL
 
 
 class RestoreWizard(WizardLanguage, ShowRemoteControl):
@@ -63,8 +63,9 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 					files = []
 				if len(files):
 					for file in files:
-						if file.endswith(".tar.gz") and "vision" in file.lower() or file.startswith("%s" % defaultprefix):
-							mtimes.append((path.join(devpath, file), stat(path.join(devpath, file)).st_mtime)) # (filname, mtime)
+						if MODEL in file:
+							if file.endswith(".tar.gz") and "vision" in file.lower() or file.startswith("%s" % defaultprefix):
+								mtimes.append((path.join(devpath, file), stat(path.join(devpath, file)).st_mtime)) # (filname, mtime)
 		for file in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]: # sort by mtime
 			list.append((file, file))
 		return list
