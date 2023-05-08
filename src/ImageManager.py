@@ -810,7 +810,7 @@ class ImageBackup(Screen):
 		self.errorCallback = None
 		self.BackupDevice = config.imagemanager.backuplocation.value
 		print("[ImageManager] Device: " + self.BackupDevice)
-		self.BackupDirectory = config.imagemanager.backuplocation.value + "/imagebackups/"
+		self.BackupDirectory = config.imagemanager.backuplocation.value + "/imagebackups/" if not config.imagemanager.backuplocation.value.endswith("/") else config.imagemanager.backuplocation.value + "imagebackups/"
 		print("[ImageManager] Directory: " + self.BackupDirectory)
 		self.BackupDate = strftime("%Y%m%d_%H%M%S", localtime())
 		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-temp"
