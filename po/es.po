@@ -1072,6 +1072,9 @@ msgstr "Quiere montar %s como HDD?"
 msgid "This Device is already mounted as HDD."
 msgstr "Este dispositivo ya está montado como HDD."
 
+msgid "This device is not mounted."
+msgstr "Este dispositivo no está montado."
+
 msgid "Please wait while scanning your %s %s devices..."
 msgstr "Espera mientras escaneas sus dispositivos %s %s..."
 
