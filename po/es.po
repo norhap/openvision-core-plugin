@@ -286,6 +286,9 @@ msgstr "Dispositivo: "
 msgid "Device is not available."
 msgstr "El dispositivo no está disponible."
 
+msgid "Device is not available.\nError: %s\n\nPress RED button in next screen \"Job cancel\""
+msgstr "El dispositivo no está disponible.\nError: %s\n\nPulse el botón ROJO en la siguiente pantalla \"Cancelar trabajo\""
+
 msgid "Disable startup"
 msgstr "Deshabilitar al iniciar"
 
