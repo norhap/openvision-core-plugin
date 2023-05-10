@@ -1720,14 +1720,17 @@ class ImageManagerDownload(Screen):
 class ImageManagerSetup(Setup):
 	def __init__(self, session):
 		Setup.__init__(self, session=session, setup="visionimagemanager", plugin="SystemPlugins/Vision", PluginLanguageDomain=PluginLanguageDomain)
-		self["actions"] = ActionMap(["SetupActions", "ConfigListActions"], {
+		self["actions"] = ActionMap(["SetupActions", "OkCancelActions", "MenuActions"], {
+			"ok": self.keySelect,
 			"cancel": self.keyCancel,
-			"ok": self.keyMenu,
 			"menu": self.keyMenu,
 			"save": self.keySave,
 			"left": self.keyLeft,
 			"right": self.keyLeft
 		})
+
+	def keySelect(self):
+		Setup.keySelect(self)
 
 	def keyCancel(self):
 		Setup.keyCancel(self)
