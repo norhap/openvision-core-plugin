@@ -237,10 +237,11 @@ class VISIONDevicesPanel(Screen):
 		else:
 			size = statvfs(0)
 		free = (size.f_bfree * size.f_frsize) // (1024 * 1024) // 1000
-		if harddiskmanager.HDDList() and partition != "None" and free != 0:
+		if harddiskmanager.HDDList():
 			self["key_red"] = StaticText("")
 			self["key_green"] = StaticText(_("Setup mounts"))
-			self["key_yellow"] = StaticText(_("Unmount"))
+			if partition != "None" and free > 0:
+				self["key_yellow"] = StaticText(_("Unmount"))
 			self["key_blue"] = StaticText(_("Mount"))
 		else:
 			self["key_green"] = StaticText("")
@@ -304,15 +305,7 @@ class VISIONDevicesPanel(Screen):
 		SystemInfo["MountManager"] = True
 		getProcPartitions(self.list)
 		self["list"].list = self.list
-		if path.exists(mount):
-			size = statvfs(mount)
-		else:
-			size = statvfs(0)
-		free = (size.f_bfree * size.f_frsize) // (1024 * 1024) // 1000
-		if sel:
-			self["lab7"].hide() if partition != "None" and free != 0 else self["lab7"].setText(_("This device is not mounted.") if harddiskmanager.HDDList() else "")
-		else:
-			self["lab7"].hide() if partition != "None" and free != 0 else self["lab7"].setText(_("Your device is not available.\nRecommended reboot receiver.") if harddiskmanager.HDDList() else "")
+		self["lab7"].setText(_("No device available.")) if mount == "/" else self["lab7"].hide()
 
 	def setupMounts(self):
 		sel = self["list"].getCurrent()
@@ -320,6 +313,8 @@ class VISIONDevicesPanel(Screen):
 			self.session.openWithCallback(self.setTimer, DeviceMountSetup)	# print("[MountManager][setupMounts]")
 
 	def unmount(self):
+		if partition == "None":
+			return
 		sel = self["list"].getCurrent()
 		# print("[MountManager][unmount] sel1=%s sel2=%s" % (sel[0], sel[1]))
 		if sel:

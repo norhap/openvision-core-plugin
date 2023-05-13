@@ -283,8 +283,8 @@ msgstr "Deseleccionar"
 msgid "Device: "
 msgstr "Dispositivo: "
 
-msgid "Device is not available."
-msgstr "El dispositivo no está disponible."
+msgid "No device available."
+msgstr "Ningún dispositivo disponible."
 
 msgid "Device is not available.\nError: %s\n\nPress RED button in next screen \"Job cancel\""
 msgstr "El dispositivo no está disponible.\nError: %s\n\nPulse el botón ROJO en la siguiente pantalla \"Cancelar trabajo\""
@@ -475,6 +475,9 @@ msgstr "Montado: "
 
 msgid "Moving to backup Location..."
 msgstr "Moviendo al destino de copias..."
+
+msgid "Network server:\n"
+msgstr "Servidor de Red:\n"
 
 msgid "NO, do not restore plugins"
 msgstr "NO, no restaurar plugins"
@@ -1075,9 +1078,6 @@ msgstr "Quiere montar %s como HDD?"
 msgid "This Device is already mounted as HDD."
 msgstr "Este dispositivo ya está montado como HDD."
 
-msgid "This device is not mounted."
-msgstr "Este dispositivo no está montado."
-
 msgid "Please wait while scanning your %s %s devices..."
 msgstr "Espera mientras escaneas sus dispositivos %s %s..."
 
@@ -1188,8 +1188,8 @@ msgstr "Nota: la lista de slots no muestra la imagen actual o los slots vacíos.
 msgid "Sorry the feeds are down for maintenance. Please try using Backup manager to restore plugins later."
 msgstr "Lo sentimos, los feeds no funcionan por alguna razón. Intente usar el Administrador de copia de seguridad para restaurar los plugins más adelante."
 
-msgid "Your device is not available.\nRecommended reboot receiver."
-msgstr "Su dispositivo no está disponible.\nSe recomienda reiniciar el receptor."
+msgid "Your mount has changed, restart enigma2 for apply you new mount."
+msgstr "Su montaje ha cambiado, reinicia enigma2 para aplicar su nuevo montaje."
 
 msgid "Your receiver is not connected to a network. Please check your network settings and try again."
 msgstr "Su receptor no está conectado a internet. Verifique la configuración de su red y vuelva a intentarlo."
