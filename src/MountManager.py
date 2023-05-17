@@ -1,6 +1,7 @@
 import errno
-from os import mkdir, path, remove, rename, statvfs, system
-import re
+from os import mkdir, remove, rename, statvfs
+from os.path import join, exists, realpath
+from re import search, sub
 
 from enigma import eTimer
 
@@ -19,13 +20,12 @@ from Screens.Screen import Screen
 from Screens.Standby import QUIT_REBOOT, TryQuitMainloop
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_GUISKIN, resolveFilename, SCOPE_PLUGINS
-from re import search
 from Components.Harddisk import harddiskmanager
 
 partitions = sorted(harddiskmanager.getMountedPartitions(), key=lambda partitions: partitions.device or "")
 for parts in partitions:
-	partition = path.join(str(parts.device))
-	mount = path.join(str(parts.mountpoint))
+	partition = join(str(parts.device))
+	mount = join(str(parts.mountpoint))
 
 blacklistedDisks = [
 	1,  	# RAM disk (/dev/ram0=0, /dev/initrd=250 [250=Initial RAM disk for old systems, new systems use 0])
@@ -67,16 +67,16 @@ def getProcPartitions(partitionList):
 				if not SystemInfo["HasSDnomount"]:  # Only interested in h9/i55/h9combo(+dups) mmc partitions.  h9combo(+dups) uses mmcblk1p[0-3].
 					continue
 				if SystemInfo["HasH9SD"]:
-					if not re.search("mmcblk0p1", device):  # h9/i55 only mmcblk0p1 mmc partition
+					if not search("mmcblk0p1", device):  # h9/i55 only mmcblk0p1 mmc partition
 						continue
 					if SystemInfo["HasMMC"]:  # With h9/i55 reject mmcblk0p1 mmc partition if root device.
 						continue
-				if SystemInfo["HasSDnomount"][0] and not re.search("mmcblk1p[0-3]", device):  # h9combo(+dups) uses mmcblk1p[0-3] include
+				if SystemInfo["HasSDnomount"][0] and not search("mmcblk1p[0-3]", device):  # h9combo(+dups) uses mmcblk1p[0-3] include
 					continue
 			if devMajor == 8:
-				if not re.search("sd[a-z][1-9]", device):  # If storage use partitions only.
+				if not search("sd[a-z][1-9]", device):  # If storage use partitions only.
 					continue
-				if SystemInfo["HiSilicon"] and path.exists("/dev/sda4") and re.search("sd[a][1-4]", device):  # Sf8008 using SDcard for slots ---> exclude
+				if SystemInfo["HiSilicon"] and exists("/dev/sda4") and search("sd[a][1-4]", device):  # Sf8008 using SDcard for slots ---> exclude
 					continue
 			if device in partitions:  # If device is already in partition list ignore it.
 				continue
@@ -85,15 +85,15 @@ def getProcPartitions(partitionList):
 
 
 def buildPartitionInfo(partition, partitionList):
-	if re.search("mmcblk[0-1]p[0-3]", partition):
-		device = re.sub("p[0-9]", "", partition)
+	if search("mmcblk[0-1]p[0-3]", partition):
+		device = sub("p[0-9]", "", partition)
 	else:
-		device = re.sub("[0-9]", "", partition)
-	physicalDevice = path.realpath(path.join("/sys/block", device, "device"))
+		device = sub("[0-9]", "", partition)
+	physicalDevice = realpath(join("/sys/block", device, "device"))
 
-	description = readFile(path.join(physicalDevice, "model"))
+	description = readFile(join(physicalDevice, "model"))
 	if description is None:
-		description = readFile(path.join(physicalDevice, "name"))
+		description = readFile(join(physicalDevice, "name"))
 	if description is None:
 		description = _("Device %s") % partition
 	description = str(description).replace("\n", "")
@@ -110,7 +110,7 @@ def buildPartitionInfo(partition, partitionList):
 	name = _("%s: " % pngType.upper())
 	name += description
 
-	if path.exists(resolveFilename(SCOPE_GUISKIN, "visioncore/dev_%s.png" % pngType)):
+	if exists(resolveFilename(SCOPE_GUISKIN, "visioncore/dev_%s.png" % pngType)):
 		mypixmap = resolveFilename(SCOPE_GUISKIN, "visioncore/dev_%s.png" % pngType)
 	else:
 		mypixmap = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/Vision/images/dev_%s.png" % pngType)
@@ -202,11 +202,11 @@ class VISIONDevicesPanel(Screen):
 				}
 			</convert>
 		</widget>
-		<widget name="lab7" position="%d,%d" size="%d,%d" font="Regular;%d" halign="center" transparent="1" valign="center" zPosition="+1" />
-		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
-		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
-		<widget source="key_yellow" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_yellow" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
-		<widget source="key_blue" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_blue" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
+		<widget name="lab7" position="%d,%d" size="%d,%d" font="Regular;%d" horizontalAlignment="center" transparent="1" verticalAlignment="center" zPosition="+1" />
+		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" horizontalAlignment="center" verticalAlignment="center" />
+		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" horizontalAlignment="center" verticalAlignment="center" />
+		<widget source="key_yellow" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_yellow" font="Regular;%d" foregroundColor="key_text" horizontalAlignment="center" verticalAlignment="center" />
+		<widget source="key_blue" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_blue" font="Regular;%d" foregroundColor="key_text" horizontalAlignment="center" verticalAlignment="center" />
 	</screen>""",
 		640, 495,
 		10, 10, 620, 425,
@@ -232,7 +232,7 @@ class VISIONDevicesPanel(Screen):
 		self["lab5"] = StaticText(_("Sources are available at:"))
 		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
 		self["lab7"] = Label(_("Please wait while scanning for devices..."))
-		if path.exists(mount):
+		if exists(mount):
 			size = statvfs(mount)
 		else:
 			size = statvfs(0)
@@ -324,13 +324,14 @@ class VISIONDevicesPanel(Screen):
 			mountp = parts[1].replace(_("Mount: "), "")
 			device = parts[2].replace(_("Device: "), "")
 			# print("[MountManager][unmount] mountp=%s device=%s" % (mountp, device))
-			exitStatus = system("umount %s" % mountp)
+			exitStatus = self.Console.ePopen("umount %s" % mountp)
 			if exitStatus == 0:
 				self.session.open(MessageBox, _("Partition: %s  Mount: %s unmounted successfully; if all partitions now unmounted you can remove device.") % (device, mountp), MessageBox.TYPE_INFO)
 				self.setTimer()
 			else:
-				self.session.open(MessageBox, _("Cannot unmount partition '%s'.  Make sure this partition is not in use.  (SWAP, record/timeshift, etc.)") % mountp, MessageBox.TYPE_INFO)
-				return -1
+				# self.session.open(MessageBox, _("Cannot unmount partition '%s'.  Make sure this partition is not in use.  (SWAP, record/timeshift, etc.)") % mountp, MessageBox.TYPE_INFO)
+				# return -1
+				self.setTimer()
 
 	def mount(self):
 		if mount != "/":
@@ -343,9 +344,7 @@ class VISIONDevicesPanel(Screen):
 				mountp = parts[1].replace(_("Mount: "), "")
 				device = parts[2].replace(_("Device: "), "")
 				# print("[MountManager][mount] mountp=%s device=%s" % (mountp, device))
-				exitStatus = system("mount %s" % device)
-				if exitStatus != 0:
-					self.session.open(MessageBox, _("Mount failed for '%s', error code = '%s'.") % (sel, exitStatus), MessageBox.TYPE_INFO, timeout=10)
+				self.Console.ePopen("mount %s" % device)
 				self.setTimer()
 
 	def saveMounts(self):
@@ -369,7 +368,7 @@ class VISIONDevicesPanel(Screen):
 			self.mountp = extra_args[1]
 			self.device_uuid = "UUID=" + str(result).split("UUID=")[1].split(" ")[0].replace('"', '')
 			# print("[MountManager1][addFstab1]: device = %s, mountp=%s, UUID=%s" %(self.device, self.mountp, self.device_uuid))
-			if not path.exists(self.mountp):
+			if not exists(self.mountp):
 				mkdir(self.mountp, 0o755)
 			open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if "/media/hdd" not in l])
 			rename("/etc/fstab.tmp", "/etc/fstab")
@@ -457,12 +456,12 @@ class VISIONDevicesPanel(Screen):
 class DeviceMountSetup(Screen, ConfigListScreen):
 	skin = """
 	<screen position="center,center" size="640,460">
-		<ePixmap pixmap="buttons/red.png" position="25,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="buttons/green.png" position="175,0" size="140,40" alphatest="blend"/>
-		<widget name="key_red" position="25,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="key_green" position="175,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
+		<ePixmap pixmap="buttons/red.png" position="25,0" size="140,40" alphaTest="blend"/>
+		<ePixmap pixmap="buttons/green.png" position="175,0" size="140,40" alphaTest="blend"/>
+		<widget name="key_red" position="25,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#9f1313" transparent="1"/>
+		<widget name="key_green" position="175,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="config" position="30,60" size="580,275" scrollbarMode="showOnDemand"/>
-		<widget name="lab7" position="30,375" size="580,20" font="Regular;18" halign="center" valign="center" backgroundColor="#9f1313"/>
+		<widget name="lab7" position="30,375" size="580,20" font="Regular;18" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#9f1313"/>
 	</screen>"""
 
 	def __init__(self, session):
@@ -527,8 +526,8 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 			self.device = extra_args[0]
 			self.mountp = extra_args[1]
 			result = str(result)
-			uuid = re.search('UUID=\"([^\"]+)\"', result)
-			type = re.search('TYPE=\"([^\"]+)\"', result)
+			uuid = search('UUID=\"([^\"]+)\"', result)
+			type = search('TYPE=\"([^\"]+)\"', result)
 			if uuid and type:
 				self.device_uuid = "UUID=" + uuid.group(1)
 				self.device_type = type.group(1)
@@ -539,7 +538,7 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 					self.device_type = "ntfs-3g"
 				elif self.device_type.startswith("ntfs") and result.find("ntfs-3g") == -1:
 					self.device_type = "ntfs"
-				if not path.exists(self.mountp):
+				if not exists(self.mountp):
 					mkdir(self.mountp, 0o755)
 				open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if self.device not in l])
 				rename("/etc/fstab.tmp", "/etc/fstab")
