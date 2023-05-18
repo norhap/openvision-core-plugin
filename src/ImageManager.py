@@ -225,7 +225,7 @@ class VISIONImageManager(Screen):
 			del self.emlist[:]
 			mtimes = []
 			for file in [x for x in images if path.splitext(x)[1] == ".zip" and MODEL in x]:
-					mtimes.append((file, stat(self.BackupDirectory + file).st_mtime))  # (filname, mtime)
+				mtimes.append((file, stat(self.BackupDirectory + file).st_mtime))  # (filname, mtime)
 			for file in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]:  # sort by mtime
 				self.emlist.append(file)
 			if len(self.emlist):
@@ -237,7 +237,10 @@ class VISIONImageManager(Screen):
 			else:
 				self["key_red"].setText("")
 				self["key_blue"].setText("")
-				self["key_yellow"].setText("")
+				if config.imagemanager.backuplocation.value != "/":
+					size = statvfs(config.imagemanager.backuplocation.value)
+					free = (size.f_bfree * size.f_frsize) // (1024 * 1024) // 1000
+					self["key_yellow"].setText(_("Downloads")) if free > 0 else self["key_yellow"].setText("")
 
 	def getJobName(self, job):
 		return "%s: %s (%d%%)" % (job.getStatustext(), job.name, int(100 * job.progress / float(job.end)))
@@ -250,7 +253,7 @@ class VISIONImageManager(Screen):
 		Components.Task.job_manager.in_background = in_background
 
 	def populate_List(self):
-		hotplugInfoDevice = self["lab7"].setText(_("Your mount has changed, restart enigma2 for apply you new mount.") if harddiskmanager.HDDList() and mountpointchoices else _("No device available."))
+		hotplugInfoDevice = self["lab7"].setText(_("Your mount has changed, restart enigma2 for apply you new mount.") if harddiskmanager.HDDList() else _("No device available."))
 		if partition == "None" and not mountpointchoices:
 			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
 				"cancel": self.close,
@@ -267,64 +270,43 @@ class VISIONImageManager(Screen):
 				size = statvfs(config.imagemanager.backuplocation.value)
 				free = (size.f_bfree * size.f_frsize) // (1024 * 1024) // 1000
 				if free == 0 and not mountpointchoices:
-					self["myactions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "HelpActions"], {
-						'cancel': self.close,
+					self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
+						"cancel": self.close,
 						"menu": self.createSetup
 					}, -1)
 					self["lab7"].setText(_("No device available."))
 				else:
-					sizehdd = statvfs("/media/hdd")
-					freehdd = (sizehdd.f_bfree * sizehdd.f_frsize) // (1024 * 1024) // 1000
-					if free == 0 and freehdd > 0:
-						self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', "MenuActions", "TimerEditActions"], {
-							'cancel': self.close,
-							'ok': self.keyResstore,
-							'red': self.keyDelete,
-							'green': self.greenPressed,
-							'yellow': self.keyResstore,
-							'blue': self.restoreSettings,
-							"menu": self.createSetup,
-							'log': self.showLog
-						}, -1)
-						config.imagemanager.backuplocation.value = "/media/hdd"
-						config.imagemanager.backuplocation.save()
-					elif free == 0 and freehdd == 0:
-						self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
-							"cancel": self.close,
-							"menu": self.createSetup
-							}, -1)
-						self["lab7"].setText(_("Your mount has changed, restart enigma2 for apply you new mount."))
+					self.BackupDirectory = config.imagemanager.backuplocation.value + "/imagebackups/" if not config.imagemanager.backuplocation.value.endswith("/") else config.imagemanager.backuplocation.value + "imagebackups/"
+					if nameDevice.split()[0] != "Internal" and not "/media/net" in config.imagemanager.backuplocation.value and not "/media/autofs" in config.imagemanager.backuplocation.value and free > 0:
+						self["lab7"].setText(nameDevice.split()[0] + " " + nameDevice.split()[1] + "\n\n" + _("Mount: ") + " " + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
+					elif free > 0:
+						self["lab7"].setText(_("Network server:\n") + _("Mount: ") + " " + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
 					else:
-						self.BackupDirectory = config.imagemanager.backuplocation.value + "/imagebackups/" if not config.imagemanager.backuplocation.value.endswith("/") else config.imagemanager.backuplocation.value + "imagebackups/"
-						if nameDevice.split()[0] != "Internal" and not "/media/net" in config.imagemanager.backuplocation.value and not "/media/autofs" in config.imagemanager.backuplocation.value:
-							self["lab7"].setText(nameDevice.split()[0] + " " + nameDevice.split()[1] + "\n\n" + _("Mount: ") + " " + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
-						else:
-							self["lab7"].setText(_("Network server:\n") + _("Mount: ") + " " + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
-						self["myactions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "HelpActions"], {
-							"cancel": self.close,
-							"red": self.keyDelete,
-							"green": self.greenPressed,
-							"yellow": self.doDownload,
-							"menu": self.createSetup,
-							"ok": self.keyRestore,
-							"blue": self.keyRestore,
-							"up": self.refreshUp,
-							"down": self.refreshDown,
-							"displayHelp": self.doDownload
-						}, -1)
-						if not path.exists(config.imagemanager.backuplocation.value + '/imagebackups'):
-							mkdir(config.imagemanager.backuplocation.value + '/imagebackups', 0o755)
-						if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup"):
-							system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
-							remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
-						self.refreshList()
-						if self.BackupDirectory and free > 0:
-							self["list"].show()
-							self["key_red"].setText(_("Delete"))
-							self["key_yellow"].setText(_("Downloads"))
-							self["key_blue"].setText(_("Flash"))
-						if self.BackupDirectory and not self.BackupRunning and free > 0:
-							self["key_green"].setText(_("New backupimage"))
+						self["lab7"].setText(_("Your mount has changed, restart enigma2 for apply you new mount."))
+					self["myactions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "HelpActions"], {
+						"cancel": self.close,
+						"red": self.keyDelete,
+						"green": self.greenPressed,
+						"yellow": self.doDownload,
+						"menu": self.createSetup,
+						"ok": self.keyRestore,
+						"blue": self.keyRestore,
+						"up": self.refreshUp,
+						"down": self.refreshDown,
+						"displayHelp": self.doDownload
+					}, -1)
+					if config.imagemanager.backuplocation.value != "/" and not path.exists(config.imagemanager.backuplocation.value + '/imagebackups'):
+						mkdir(config.imagemanager.backuplocation.value + '/imagebackups', 0o755)
+					if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup"):
+						system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
+						remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
+					if self.BackupDirectory and free > 0:
+						self["list"].show()
+						self["key_red"].setText(_("Delete"))
+						self["key_yellow"].setText(_("Downloads"))
+						self["key_blue"].setText(_("Flash"))
+					if self.BackupDirectory and not self.BackupRunning and free > 0:
+						self["key_green"].setText(_("New backupimage"))
 			except:
 				self["key_green"].setText("")  # device lost, then actions cancel screen or actions menu is possible
 				self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
@@ -333,6 +315,7 @@ class VISIONImageManager(Screen):
 				}, -1)
 				hotplugInfoDevice
 				self["key_green"].setText("")
+		self.refreshList()
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, ImageManagerSetup)
