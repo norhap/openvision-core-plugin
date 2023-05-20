@@ -522,7 +522,7 @@ class VISIONImageManager(Screen):
 		else:
 			self.TEMPDESTROOT = self.BackupDirectory + "imagerestore"
 		if self.sel.endswith(".zip"):
-			if not path.exists(self.TEMPDESTROOT) and path.ismount(self.BackupDirectory):
+			if self.BackupDirectory != " " and not path.exists(self.TEMPDESTROOT):
 				mkdir(self.TEMPDESTROOT, 0o755)
 			self.Console.ePopen("unzip -o %s%s -d %s" % (self.BackupDirectory, self.sel, self.TEMPDESTROOT), self.keyRestore4)
 		else:
@@ -545,7 +545,7 @@ class VISIONImageManager(Screen):
 				else:
 					self.keyRestore6(0)
 		else:
-			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("Unzip error the device is not mounted:\n%s") % result, MessageBox.TYPE_INFO, timeout=20)
+			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("Bad image file unzip Error:\n%s") % result, MessageBox.TYPE_ERROR, timeout=20)
 			print("[ImageManager] unzip failed:\n", result)
 			self.close()
 

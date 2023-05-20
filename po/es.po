@@ -461,8 +461,8 @@ msgstr "Montar"
 msgid "Un-mount"
 msgstr "Desmontar"
 
-msgid "Unzip error the device is not mounted:\n%s"
-msgstr "Unzip error el dispositivo no esta montado:\n%s"
+msgid "Bad image file unzip Error:\n%s"
+msgstr "Archivo de imagen incorrecto Error al descomprimir:\n%s"
 
 msgid "Mount Manager"
 msgstr "Administrador de Montajes"
