@@ -197,14 +197,14 @@ class VISIONImageManager(Screen):
 		try:
 			size = statvfs(config.imagemanager.backuplocation.value)
 			free = (size.f_bfree * size.f_frsize) // (1024 * 1024) // 1000
-			if self.BackupDirectory:
+			if free > 0:
 				self.BackupRunning = False
 				for job in Components.Task.job_manager.getPendingJobs():
 					if job.name.startswith(_("Image Manager")):
 						self.BackupRunning = True
 				if self.BackupRunning:
 					self["key_green"].setText(_("View progress"))
-				if partition != "None" and not self.BackupRunning and free > 0:
+				if partition != "None" and not self.BackupRunning:
 					self["key_green"].setText(_("New backupimage"))
 				self.activityTimer.startLongTimer(1)
 				self.refreshList()
@@ -322,7 +322,7 @@ class VISIONImageManager(Screen):
 
 	def doDownload(self):
 		try:
-			if self.BackupDirectory:
+			if config.imagemanager.backuplocation.value != "/":
 				choices = [("Open Vision", config.imagemanager.imagefeed_OV), ("OpenATV", config.imagemanager.imagefeed_ATV), ("OpenPLi", config.imagemanager.imagefeed_PLi), ("OpenViX", config.imagemanager.imagefeed_ViX), ("OpenBh", config.imagemanager.imagefeed_OBH)]
 				message = _("From which image library do you want to download?")
 				self.session.openWithCallback(self.doDownloadCallback, MessageBox, message, list=sorted(sorted(choices, key=lambda choice: choice[0]), key=lambda choice: choice[0] == imagedistro, reverse=True), default=0, simple=True)
@@ -359,7 +359,7 @@ class VISIONImageManager(Screen):
 
 	def keyDelete(self):
 		try:
-			if self.BackupDirectory:
+			if config.imagemanager.backuplocation.value != "/":
 				self.sel = self["list"].getCurrent()
 				if self.sel:
 					message = _("Are you sure you want to delete this backup:\n ") + self.sel
@@ -380,7 +380,7 @@ class VISIONImageManager(Screen):
 
 	def greenPressed(self):
 		try:
-			if self.BackupDirectory:
+			if config.imagemanager.backuplocation.value != "/":
 				backup = None
 				self.BackupRunning = False
 				for job in Components.Task.job_manager.getPendingJobs():
@@ -522,7 +522,7 @@ class VISIONImageManager(Screen):
 		else:
 			self.TEMPDESTROOT = self.BackupDirectory + "imagerestore"
 		if self.sel.endswith(".zip"):
-			if self.BackupDirectory != " " and not path.exists(self.TEMPDESTROOT):
+			if config.imagemanager.backuplocation.value != "/" and not path.exists(self.TEMPDESTROOT):
 				mkdir(self.TEMPDESTROOT, 0o755)
 			self.Console.ePopen("unzip -o %s%s -d %s" % (self.BackupDirectory, self.sel, self.TEMPDESTROOT), self.keyRestore4)
 		else:
@@ -973,7 +973,7 @@ class ImageBackup(Screen):
 
 	def JobStart(self):
 		try:
-			if not path.exists(self.BackupDirectory):
+			if config.imagemanager.backuplocation.value != "/" and not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0o755)
 			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup"):
 				system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
@@ -1051,7 +1051,7 @@ class ImageBackup(Screen):
 
 	def doBackup1(self):
 		try:
-			if self.BackupDirectory:
+			if config.imagemanager.backuplocation.value != "/":
 				print("[ImageManager] Stage 1: Creating tmp folders.", self.BackupDirectory)
 				print("[ImageManager] Stage 1: Creating backup folders.")
 				mount = self.TMPMOUNTDIR + "/root/"
@@ -1533,7 +1533,8 @@ class ImageBackup(Screen):
 				if len(emlist) > config.imagemanager.number_to_keep.value:
 					emlist = emlist[0:len(emlist) - config.imagemanager.number_to_keep.value]
 					for fil in emlist:
-						remove(self.BackupDirectory + fil)
+						if path.exists(self.BackupDirectory + fil):
+							remove(self.BackupDirectory + fil)
 		except Exception:
 			pass
 		if config.imagemanager.schedule.value:
@@ -1601,7 +1602,7 @@ class ImageManagerDownload(Screen):
 		self.getImageDistro()
 
 	def getImageDistro(self):
-		if not path.exists(self.BackupDirectory):
+		if config.imagemanager.backuplocation.value != "/" and not path.exists(self.BackupDirectory):
 			mkdir(self.BackupDirectory, 0o755)
 
 		if not self.imagesList:
