@@ -36,7 +36,6 @@ defaultprefix = getImageDistro()[4:]
 partitions = sorted(harddiskmanager.getMountedPartitions(), key=lambda partitions: partitions.device or "")
 for parts in partitions:
 	partition = path.join(str(parts.device))
-	nameDevice = path.join(str(parts.description))
 	if path.exists(parts.mountpoint):
 		d = path.normpath(parts.mountpoint)
 		if SystemInfo["canMultiBoot"]:
@@ -235,8 +234,8 @@ class VISIONBackupManager(Screen):
 					"menu": self.createSetup,
 					"log": self.showLog
 				}, -1)
-				if nameDevice.split()[0] != "Internal" and not "/media/net" in config.backupmanager.backuplocation.value and not "/media/autofs" in config.backupmanager.backuplocation.value and free > 0:
-					self["lab7"].setText(nameDevice.split()[0] + " " + nameDevice.split()[1] + "\n\n" + _("Mount: ") + " " + config.backupmanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
+				if not "/media/net" in config.backupmanager.backuplocation.value and not "/media/autofs" in config.backupmanager.backuplocation.value and free > 0:
+					self["lab7"].setText(_("Storage Device:\n") + _("Mount: ") + " " + config.backupmanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
 				elif free > 0:
 					self["lab7"].setText(_("Network server:\n") + _("Mount: ") + " " + config.backupmanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
 				else:
@@ -978,7 +977,7 @@ class VISIONBackupManagerMenu(Setup):
 			"save": self.keySave,
 			"menu": self.keyMenu,
 			"left": self.keyLeft,
-			"right": self.keyLeft
+			"right": self.keyRight
 		}, -2)
 
 	def chooseFiles(self):
@@ -1001,6 +1000,9 @@ class VISIONBackupManagerMenu(Setup):
 
 	def keyLeft(self):
 		Setup.keyLeft(self)
+
+	def keyRight(self):
+		Setup.keyRight(self)
 
 	def keySave(self):
 		Setup.keySave(self)

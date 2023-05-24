@@ -728,6 +728,9 @@ msgstr "Tamaño: %sGB"
 msgid "Size: %sTB"
 msgstr "Tamaño: %sTB"
 
+msgid "Storage Device:\n"
+msgstr "Dispositivo Almacenamiento:\n"
+
 msgid "Softcam manager"
 msgstr "Administrador de Softcams"
 
