@@ -43,14 +43,12 @@ imagefs = getImageFileSystem()
 mountpointchoices = []
 partitions = sorted(harddiskmanager.getMountedPartitions(), key=lambda partitions: partitions.device or "")
 for parts in partitions:
-	partition = path.join(str(parts.device))
-	if path.exists(parts.mountpoint):
-		d = path.normpath(parts.mountpoint)
-		if SystemInfo["canMultiBoot"]:
-			if "mmcblk0p" in d or "mmcblk1p" in d:
-				continue
-		if parts.mountpoint != "/":
-			mountpointchoices.append((parts.mountpoint, d))
+	d = path.normpath(parts.mountpoint)
+	if SystemInfo["canMultiBoot"]:
+		if "mmcblk0p" in d or "mmcblk1p" in d:
+			continue
+	if parts.mountpoint != "/":
+		mountpointchoices.append((parts.mountpoint, d))
 
 
 def getMountDefault(mountpointchoices):
@@ -252,8 +250,8 @@ class VISIONImageManager(Screen):
 		Components.Task.job_manager.in_background = in_background
 
 	def populate_List(self):
-		hotplugInfoDevice = self["lab7"].setText(_("Your mount has changed, restart enigma2 for apply you new mount.") if harddiskmanager.HDDList() else _("No device available."))
-		if partition == "None" and not mountpointchoices:
+		hotplugInfoDevice = self["lab7"].setText(_("Your mount has changed, restart enigma2 to updated.") if harddiskmanager.HDDList() else _("No device available."))
+		if not mountpointchoices:
 			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
 				"cancel": self.close,
 				"menu": self.createSetup
@@ -289,11 +287,11 @@ class VISIONImageManager(Screen):
 					"displayHelp": self.doDownload
 				}, -1)
 				if not "/media/net" in config.imagemanager.backuplocation.value and not "/media/autofs" in config.imagemanager.backuplocation.value and free > 0:
-					self["lab7"].setText(_("Storage Device:\n") + _("Mount: ") + " " + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
+					self["lab7"].setText(_("Storage Device:\n\n") + _("Mount: ") + " " + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
 				elif free > 0:
-					self["lab7"].setText(_("Network server:\n") + _("Mount: ") + " " + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
+					self["lab7"].setText(_("Network server:\n\n") + _("Mount: ") + " " + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
 				else:
-					self["lab7"].setText(_("Your mount has changed, restart enigma2 for apply you new mount."))
+					self["lab7"].setText(_("Your mount has changed, restart enigma2 to updated."))
 				self.BackupDirectory = config.imagemanager.backuplocation.value + "/imagebackups/" if not config.imagemanager.backuplocation.value.endswith("/") else config.imagemanager.backuplocation.value + "imagebackups/"
 				if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup"):
 					system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
