@@ -720,7 +720,7 @@ class VISIONBackupManager(Screen):
 		elif answer is False:
 			print('[BackupManager] Restoring Stage 4: plugin restore skipped by user')
 			AddPopupWithCallback(self.Stage6,
-				_("Now skipping restore process"),
+				_("Now skipping restore process plugins."),
 				MessageBox.TYPE_INFO,
 				15,
 				NOPLUGINS

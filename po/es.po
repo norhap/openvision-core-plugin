@@ -545,8 +545,8 @@ msgstr "No es necesario instalar ningún complemento"
 msgid "None"
 msgstr "Ninguno"
 
-msgid "Now skipping restore process"
-msgstr "Se saltará el proceso de restaurar"
+msgid "Now skipping restore process plugins."
+msgstr "Se saltará el proceso de restaurar plugins."
 
 msgid "OK"
 msgstr "OK"
