@@ -1,4 +1,5 @@
 from .__init__ import _
+from enigma import eConsoleAppContainer
 from os import listdir, path, stat
 from boxbranding import getImageDistro
 from Components.About import about
@@ -137,8 +138,8 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 				bootmviSlot(text=text, slot=slot)
 			if self.didSettingsRestore:
 				self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /" + " etc/enigma2/settings")
-			kille2reboot = "sleep 10 && killall -9 enigma2 && init 6"
-			self.Console.ePopen("%s" % kille2reboot, self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO, simple=True))
+			self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO, simple=True)
+			eConsoleAppContainer().execute("sleep 10 && killall -9 enigma2 && init 6")
 		elif self.NextStep == 'settingsquestion' or self.NextStep == 'settingsrestore' or self.NextStep == 'pluginsquestion' or self.NextStep == 'pluginsrestoredevice' or self.NextStep == 'end' or self.NextStep == 'noplugins':
 			self.buildListfinishedCB(False)
 		elif self.NextStep == 'settingrestorestarted':
