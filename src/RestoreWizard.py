@@ -136,8 +136,8 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 				slot = getCurrentImage()
 				text = createInfo(slot)
 				bootmviSlot(text=text, slot=slot)
-			if self.didSettingsRestore:
-				self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /" + " etc/enigma2/settings")
+			if self.didSettingsRestore and path.exists("/tmp/etc/enigma2/settings"):
+				self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /")
 			self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO, simple=True)
 			eConsoleAppContainer().execute("sleep 10 && killall -9 enigma2 && init 6")
 		elif self.NextStep == 'settingsquestion' or self.NextStep == 'settingsrestore' or self.NextStep == 'pluginsquestion' or self.NextStep == 'pluginsrestoredevice' or self.NextStep == 'end' or self.NextStep == 'noplugins':
@@ -210,7 +210,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 
 	def doRestoreSettings2(self):
 		print('[RestoreWizard] Stage 2: Restoring settings')
-		self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /", self.settingRestore_Finished)
+		self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /tmp/ etc/enigma2/settings", self.settingRestore_Finished)
 		self.pleaseWait = self.session.open(MessageBox, _("Please wait while settings restore completes..."), type=MessageBox.TYPE_INFO, enable_input=False, simple=True)
 		self.pleaseWait.setTitle(_("Restore wizard"))
 
