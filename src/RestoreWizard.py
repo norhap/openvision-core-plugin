@@ -139,7 +139,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 			if self.didSettingsRestore and path.exists("/tmp/etc/enigma2/settings"):
 				self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /")
 			self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO, simple=True)
-			eConsoleAppContainer().execute("sleep 10 && killall -9 enigma2 && init 6")
+			eConsoleAppContainer().execute("sleep 5 && killall -9 enigma2 && init 6")
 		elif self.NextStep == 'settingsquestion' or self.NextStep == 'settingsrestore' or self.NextStep == 'pluginsquestion' or self.NextStep == 'pluginsrestoredevice' or self.NextStep == 'end' or self.NextStep == 'noplugins':
 			self.buildListfinishedCB(False)
 		elif self.NextStep == 'settingrestorestarted':
