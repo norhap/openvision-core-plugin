@@ -44,12 +44,11 @@ class VISIONMenu(Screen, ProtectedScreen):
 		self.setTitle(_("Vision Core"))
 		self.menu = args
 		self.list = []
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
+		self["lab1"] = StaticText(_("norhap"))
+		self["lab2"] = StaticText(_("Report problems to:"))
+		self["lab3"] = StaticText(_("telegram @norhap"))
+		self["lab4"] = StaticText(_("Sources are available at:"))
+		self["lab5"] = StaticText(_("https://github.com/norhap"))
 		BackupManager = (_("Backup Manager"))
 		ImageManager = (_("Image Manager"))
 		InstallLocalExtension = (_("Install Local Extension"))

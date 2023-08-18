@@ -88,9 +88,9 @@ class VISIONSoftcamManager(Screen):
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
 		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-		<widget name="lab7" position="40,60" size="170,20" font="Regular; 22" halign="right" zPosition="2" transparent="0"/>
+		<widget name="lab6" position="40,60" size="170,20" font="Regular; 22" halign="right" zPosition="2" transparent="0"/>
 		<widget name="list" position="225,60" size="240,100" transparent="0" scrollbarMode="showOnDemand"/>
-		<widget name="lab8" position="40,165" size="170,30" font="Regular; 22" halign="right" zPosition="2" transparent="0"/>
+		<widget name="lab7" position="40,165" size="170,30" font="Regular; 22" halign="right" zPosition="2" transparent="0"/>
 		<widget name="activecam" position="225,166" size="240,100" font="Regular; 20" halign="left" zPosition="2" transparent="0" noWrap="1"/>
 		<applet type="onLayoutFinish">
 			self["list"].instance.setItemHeight(25)
@@ -100,15 +100,14 @@ class VISIONSoftcamManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Vision Softcam"))
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
+		self["lab1"] = StaticText(_("norhap"))
+		self["lab2"] = StaticText(_("Report problems to:"))
+		self["lab3"] = StaticText(_("telegram @norhap"))
+		self["lab4"] = StaticText(_("Sources are available at:"))
+		self["lab5"] = StaticText(_("https://github.com/norhap"))
 
-		self['lab7'] = Label(_('Select:'))
-		self['lab8'] = Label(_('Active:'))
+		self['lab6'] = Label(_('Select:'))
+		self['lab7'] = Label(_('Active:'))
 		self['activecam'] = Label()
 		self.onChangedEntry = []
 
@@ -359,12 +358,11 @@ class VISIONSoftcamMenu(ConfigListScreen, Screen):
 		Screen.__init__(self, session)
 		self.skinName = "VISIONSoftcamMenu"
 		Screen.setTitle(self, _("Vision Softcam setup"))
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
+		self["lab1"] = StaticText(_("norhap"))
+		self["lab2"] = StaticText(_("Report problems to:"))
+		self["lab3"] = StaticText(_("telegram @norhap"))
+		self["lab4"] = StaticText(_("Sources are available at:"))
+		self["lab5"] = StaticText(_("https://github.com/norhap"))
 
 		self.onChangedEntry = []
 		self.list = []
@@ -427,20 +425,19 @@ class VISIONStartCam(Screen):
 	skin = """
 	<screen name="VISIONStartCam" position="center,center" size="484, 150" title="Starting Softcam">
 		<widget name="connect" position="217, 0" size="64,64" zPosition="2" pixmaps="Vision_HD_Common/busy/busy1.png,Vision_HD_Common/busy/busy2.png,Vision_HD_Common/busy/busy3.png,Vision_HD_Common/busy/busy4.png,Vision_HD_Common/busy/busy5.png,Vision_HD_Common/busy/busy6.png,Vision_HD_Common/busy/busy7.png,Vision_HD_Common/busy/busy8.png,Vision_HD_Common/busy/busy9.png,Vision_HD_Common/busy/busy9.png,Vision_HD_Common/busy/busy10.png,Vision_HD_Common/busy/busy11.png,Vision_HD_Common/busy/busy12.png,Vision_HD_Common/busy/busy13.png,Vision_HD_Common/busy/busy14.png,Vision_HD_Common/busy/busy15.png,Vision_HD_Common/busy/busy17.png,Vision_HD_Common/busy/busy18.png,Vision_HD_Common/busy/busy19.png,Vision_HD_Common/busy/busy20.png,Vision_HD_Common/busy/busy21.png,Vision_HD_Common/busy/busy22.png,Vision_HD_Common/busy/busy23.png,Vision_HD_Common/busy/busy24.png"  transparent="1" alphatest="blend"/>
-		<widget name="lab7" position="10, 80" halign="center" size="460, 60" zPosition="1" font="Regular;20" valign="top" transparent="1"/>
+		<widget name="lab6" position="10, 80" halign="center" size="460, 60" zPosition="1" font="Regular;20" valign="top" transparent="1"/>
 	</screen>"""
 
 	def __init__(self, session, selectedcam):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("Softcam starting..."))
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
+		self["lab1"] = StaticText(_("norhap"))
+		self["lab2"] = StaticText(_("Report problems to:"))
+		self["lab3"] = StaticText(_("telegram @norhap"))
+		self["lab4"] = StaticText(_("Sources are available at:"))
+		self["lab5"] = StaticText(_("https://github.com/norhap"))
 		self['connect'] = MultiPixmap()
-		self['lab7'] = Label(_("Please wait while starting\n") + selectedcam + '...')
+		self['lab6'] = Label(_("Please wait while starting\n") + selectedcam + '...')
 		global startselectedcam
 		startselectedcam = selectedcam
 		self.Console = Console()
@@ -524,7 +521,7 @@ class VISIONStopCam(Screen):
 	skin = """
 	<screen name="VISIONStopCam" position="center,center" size="484, 150">
 		<widget name="connect" position="217, 0" size="64,64" zPosition="2" pixmaps="Vision_HD_Common/busy/busy1.png,Vision_HD_Common/busy/busy2.png,Vision_HD_Common/busy/busy3.png,Vision_HD_Common/busy/busy4.png,Vision_HD_Common/busy/busy5.png,Vision_HD_Common/busy/busy6.png,Vision_HD_Common/busy/busy7.png,Vision_HD_Common/busy/busy8.png,Vision_HD_Common/busy/busy9.png,Vision_HD_Common/busy/busy9.png,Vision_HD_Common/busy/busy10.png,Vision_HD_Common/busy/busy11.png,Vision_HD_Common/busy/busy12.png,Vision_HD_Common/busy/busy13.png,Vision_HD_Common/busy/busy14.png,Vision_HD_Common/busy/busy15.png,Vision_HD_Common/busy/busy17.png,Vision_HD_Common/busy/busy18.png,Vision_HD_Common/busy/busy19.png,Vision_HD_Common/busy/busy20.png,Vision_HD_Common/busy/busy21.png,Vision_HD_Common/busy/busy22.png,Vision_HD_Common/busy/busy23.png,Vision_HD_Common/busy/busy24.png"  transparent="1" alphatest="blend"/>
-		<widget name="lab7" position="10, 80" halign="center" size="460, 60" zPosition="1" font="Regular;20" valign="top" transparent="1"/>
+		<widget name="lab6" position="10, 80" halign="center" size="460, 60" zPosition="1" font="Regular;20" valign="top" transparent="1"/>
 	</screen>"""
 
 	def __init__(self, session, selectedcam):
@@ -532,14 +529,13 @@ class VISIONStopCam(Screen):
 		global stopselectedcam
 		stopselectedcam = selectedcam
 		Screen.setTitle(self, _("Softcam stopping..."))
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
+		self["lab1"] = StaticText(_("norhap"))
+		self["lab2"] = StaticText(_("Report problems to:"))
+		self["lab3"] = StaticText(_("telegram @norhap"))
+		self["lab4"] = StaticText(_("Sources are available at:"))
+		self["lab5"] = StaticText(_("https://github.com/norhap"))
 		self['connect'] = MultiPixmap()
-		self['lab7'] = Label(_("Please wait while stopping\n") + selectedcam + '...')
+		self['lab6'] = Label(_("Please wait while stopping\n") + selectedcam + '...')
 		self.Console = Console()
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.updatepix)
@@ -629,12 +625,11 @@ class VISIONSoftcamLog(Screen):
 		self.session = session
 		Screen.__init__(self, session)
 		self.setTitle(_("Vision Softcam logs"))
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
+		self["lab1"] = StaticText(_("norhap"))
+		self["lab2"] = StaticText(_("Report problems to:"))
+		self["lab3"] = StaticText(_("telegram @norhap"))
+		self["lab4"] = StaticText(_("Sources are available at:"))
+		self["lab5"] = StaticText(_("https://github.com/norhap"))
 
 		if path.exists('/var/volatile/tmp/cam.check.log'):
 			file = open('/var/volatile/tmp/cam.check.log')

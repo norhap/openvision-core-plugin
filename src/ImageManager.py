@@ -129,7 +129,7 @@ class VISIONImageManager(Screen):
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
 		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
 		<ePixmap pixmap="buttons/key_menu.png" position="0,40" size="35,25" alphatest="blend" transparent="1" zPosition="3"/>
-		<widget name="lab7" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
+		<widget name="lab6" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
 		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand"/>
 		<widget name="backupstatus" position="10,370" size="400,30" font="Regular;20" zPosition="5"/>
 		<applet type="onLayoutFinish">
@@ -140,19 +140,18 @@ class VISIONImageManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Vision Image Manager"))
-		self["lab7"] = Label()
+		self["lab6"] = Label()
 		self["backupstatus"] = Label()
 		self["key_red"] = StaticText("")
 		self["key_green"] = StaticText("")
 		self["key_yellow"] = StaticText("")
 		self["key_blue"] = StaticText("")
 		self["key_menu"] = StaticText(_("MENU"))
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
+		self["lab1"] = StaticText(_("norhap"))
+		self["lab2"] = StaticText(_("Report problems to:"))
+		self["lab3"] = StaticText(_("telegram @norhap"))
+		self["lab4"] = StaticText(_("Sources are available at:"))
+		self["lab5"] = StaticText(_("https://github.com/norhap"))
 		self.BackupRunning = False
 		self.BackupDirectory = " "
 		if SystemInfo["canMultiBoot"]:
@@ -250,7 +249,7 @@ class VISIONImageManager(Screen):
 		Components.Task.job_manager.in_background = in_background
 
 	def populate_List(self):
-		hotplugInfoDevice = self["lab7"].setText(_("Your mount has changed, restart enigma2 to updated.") if harddiskmanager.HDDList() else _("No device available."))
+		hotplugInfoDevice = self["lab6"].setText(_("Your mount has changed, restart enigma2 to updated.") if harddiskmanager.HDDList() else _("No device available."))
 		if not mountpointchoices:
 			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
 				"cancel": self.close,
@@ -271,7 +270,7 @@ class VISIONImageManager(Screen):
 						"cancel": self.close,
 						"menu": self.createSetup
 					}, -1)
-					self["lab7"].setText(_("No device available."))
+					self["lab6"].setText(_("No device available."))
 				if config.imagemanager.backuplocation.value != "/" and not path.exists(config.imagemanager.backuplocation.value + '/imagebackups'):
 					mkdir(config.imagemanager.backuplocation.value + '/imagebackups', 0o755)
 				self["myactions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "HelpActions"], {
@@ -287,11 +286,11 @@ class VISIONImageManager(Screen):
 					"displayHelp": self.doDownload
 				}, -1)
 				if not "/media/net" in config.imagemanager.backuplocation.value and not "/media/autofs" in config.imagemanager.backuplocation.value and free > 0:
-					self["lab7"].setText(_("Storage Device:\n\n") + _("Mount: ") + " " + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
+					self["lab6"].setText(_("Storage Device:\n\n") + _("Mount: ") + " " + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
 				elif free > 0:
-					self["lab7"].setText(_("Network server:\n\n") + _("Mount: ") + " " + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
+					self["lab6"].setText(_("Network server:\n\n") + _("Mount: ") + " " + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
 				else:
-					self["lab7"].setText(_("Your mount has changed, restart enigma2 to updated."))
+					self["lab6"].setText(_("Your mount has changed, restart enigma2 to updated."))
 				self.BackupDirectory = config.imagemanager.backuplocation.value + "/imagebackups/" if not config.imagemanager.backuplocation.value.endswith("/") else config.imagemanager.backuplocation.value + "imagebackups/"
 				if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup"):
 					system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
@@ -803,7 +802,7 @@ class ImageBackup(Screen):
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
 		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
-		<widget name="lab7" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
+		<widget name="lab6" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
 		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand"/>
 		<applet type="onLayoutFinish">
 			self["list"].instance.setItemHeight(25)
@@ -1551,7 +1550,7 @@ class ImageManagerDownload(Screen):
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
 		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1" />
-		<widget name="lab7" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
+		<widget name="lab6" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
 		<widget name="list" position="10,105" size="980,480" scrollbarMode="showOnDemand" />
 		<applet type="onLayoutFinish">
 			self["list"].instance.setItemHeight(25)
@@ -1563,13 +1562,12 @@ class ImageManagerDownload(Screen):
 		self.setTitle(_("%s downloads") % {config.imagemanager.imagefeed_OV: "Open Vision", config.imagemanager.imagefeed_ATV: "OpenATV", config.imagemanager.imagefeed_PLi: "OpenPLi", config.imagemanager.imagefeed_ViX: "OpenViX", config.imagemanager.imagefeed_OBH: "OpenBh"}.get(ConfigObj, ''))
 		self.ConfigObj = ConfigObj
 		self.BackupDirectory = BackupDirectory
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
-		self["lab7"] = Label(_("Select an image to download:"))
+		self["lab1"] = StaticText(_("norhap"))
+		self["lab2"] = StaticText(_("Report problems to:"))
+		self["lab3"] = StaticText(_("telegram @norhap"))
+		self["lab4"] = StaticText(_("Sources are available at:"))
+		self["lab5"] = StaticText(_("https://github.com/norhap"))
+		self["lab6"] = Label(_("Select an image to download:"))
 		self["key_red"] = Button(_("Close"))
 		self["key_green"] = StaticText("")
 		self["ImageDown"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"], {

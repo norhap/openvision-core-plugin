@@ -104,7 +104,7 @@ class VISIONBackupManager(Screen):
 		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
 		<ePixmap pixmap="buttons/key_menu.png" position="0,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
 		<ePixmap pixmap="buttons/key_info.png" position="40,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
-		<widget name="lab7" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center" />
+		<widget name="lab6" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center" />
 		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand" />
 		<widget name="backupstatus" position="10,370" size="400,30" font="Regular;20" zPosition="5" />
 		<applet type="onLayoutFinish">
@@ -115,14 +115,13 @@ class VISIONBackupManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Vision Backup Manager"))
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
+		self["lab1"] = StaticText(_("norhap"))
+		self["lab2"] = StaticText(_("Report problems to:"))
+		self["lab3"] = StaticText(_("telegram @norhap"))
+		self["lab4"] = StaticText(_("Sources are available at:"))
+		self["lab5"] = StaticText(_("https://github.com/norhap"))
 
-		self["lab7"] = Label()
+		self["lab6"] = Label()
 		self["backupstatus"] = Label()
 		self["key_red"] = StaticText("")
 		self["key_green"] = StaticText("")
@@ -198,7 +197,7 @@ class VISIONBackupManager(Screen):
 		Components.Task.job_manager.in_background = in_background
 
 	def populate_List(self):
-		hotplugInfoDevice = self["lab7"].setText(_("Your mount has changed, restart enigma2 to updated.") if harddiskmanager.HDDList() else _("No device available."))
+		hotplugInfoDevice = self["lab6"].setText(_("Your mount has changed, restart enigma2 to updated.") if harddiskmanager.HDDList() else _("No device available."))
 		if not mountpointchoices:
 			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
 				"cancel": self.close,
@@ -219,7 +218,7 @@ class VISIONBackupManager(Screen):
 						"cancel": self.close,
 						"menu": self.createSetup
 					}, -1)
-					self["lab7"].setText(_("No device available."))
+					self["lab6"].setText(_("No device available."))
 				if config.backupmanager.backuplocation.value != "/" and not path.exists(config.backupmanager.backuplocation.value + '/backup'):
 					mkdir(config.backupmanager.backuplocation.value + '/backup', 0o755)
 				self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', "MenuActions", "TimerEditActions"], {
@@ -233,11 +232,11 @@ class VISIONBackupManager(Screen):
 					"log": self.showLog
 				}, -1)
 				if not "/media/net" in config.backupmanager.backuplocation.value and not "/media/autofs" in config.backupmanager.backuplocation.value and free > 0:
-					self["lab7"].setText(_("Storage Device:\n\n") + _("Mount: ") + " " + config.backupmanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
+					self["lab6"].setText(_("Storage Device:\n\n") + _("Mount: ") + " " + config.backupmanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
 				elif free > 0:
-					self["lab7"].setText(_("Network server:\n\n") + _("Mount: ") + " " + config.backupmanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
+					self["lab6"].setText(_("Network server:\n\n") + _("Mount: ") + " " + config.backupmanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
 				else:
-					self["lab7"].setText(_("Your mount has changed, restart enigma2 to updated."))
+					self["lab6"].setText(_("Your mount has changed, restart enigma2 to updated."))
 				self.BackupDirectory = config.backupmanager.backuplocation.value + '/backup/' if not config.backupmanager.backuplocation.value.endswith("/") else config.backupmanager.backuplocation.value + 'backup/'
 				del self.emlist[:]
 				backups = listdir(self.BackupDirectory)
@@ -861,12 +860,11 @@ class XtraPluginsSelection(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Select extra packages folder"))
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
+		self["lab1"] = StaticText(_("norhap"))
+		self["lab2"] = StaticText(_("Report problems to:"))
+		self["lab3"] = StaticText(_("telegram @norhap"))
+		self["lab4"] = StaticText(_("Sources are available at:"))
+		self["lab5"] = StaticText(_("https://github.com/norhap"))
 
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
@@ -958,12 +956,11 @@ class VISIONBackupManagerMenu(Setup):
 
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
 		Setup.__init__(self, session, setup="visionbackupmanager", plugin="SystemPlugins/Vision", PluginLanguageDomain=PluginLanguageDomain)
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
+		self["lab1"] = StaticText(_("norhap"))
+		self["lab2"] = StaticText(_("Report problems to:"))
+		self["lab3"] = StaticText(_("telegram @norhap"))
+		self["lab4"] = StaticText(_("Sources are available at:"))
+		self["lab5"] = StaticText(_("https://github.com/norhap"))
 		self["key_yellow"] = Button(_("Choose files"))
 		self["key_blue"] = Button(_("Choose IPK folder"))
 		self["actions2"] = ActionMap(["ColorActions", "VirtualKeyboardActions", "SetupActions", "ConfigListActions"], {
@@ -1028,12 +1025,11 @@ class VISIONBackupManagerLogView(Screen):
 		tar.close()
 		backuplog = backuplog + contents
 
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
+		self["lab1"] = StaticText(_("norhap"))
+		self["lab2"] = StaticText(_("Report problems to:"))
+		self["lab3"] = StaticText(_("telegram @norhap"))
+		self["lab4"] = StaticText(_("Sources are available at:"))
+		self["lab5"] = StaticText(_("https://github.com/norhap"))
 		self["list"] = ScrollLabel(str(backuplog))
 		self["setupActions"] = ActionMap(["SetupActions", "ColorActions", "DirectionActions", "MenuActions"], {
 			"cancel": self.cancel,

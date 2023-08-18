@@ -197,7 +197,7 @@ class VISIONDevicesPanel(Screen):
 				}
 			</convert>
 		</widget>
-		<widget name="lab7" position="%d,%d" size="%d,%d" font="Regular;%d" horizontalAlignment="center" transparent="1" verticalAlignment="center" zPosition="+1" />
+		<widget name="lab6" position="%d,%d" size="%d,%d" font="Regular;%d" horizontalAlignment="center" transparent="1" verticalAlignment="center" zPosition="+1" />
 		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" horizontalAlignment="center" verticalAlignment="center" />
 		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" horizontalAlignment="center" verticalAlignment="center" />
 		<widget source="key_yellow" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_yellow" font="Regular;%d" foregroundColor="key_text" horizontalAlignment="center" verticalAlignment="center" />
@@ -220,13 +220,12 @@ class VISIONDevicesPanel(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Vision Mount Manager"))
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
-		self["lab7"] = Label(_("Please wait while scanning for devices..."))
+		self["lab1"] = StaticText(_("norhap"))
+		self["lab2"] = StaticText(_("Report problems to:"))
+		self["lab3"] = StaticText(_("telegram @norhap"))
+		self["lab4"] = StaticText(_("Sources are available at:"))
+		self["lab5"] = StaticText(_("https://github.com/norhap"))
+		self["lab6"] = Label(_("Please wait while scanning for devices..."))
 		if harddiskmanager.HDDList():
 			self["key_red"] = StaticText("")
 			self["key_green"] = StaticText(_("Setup mounts"))
@@ -284,7 +283,7 @@ class VISIONDevicesPanel(Screen):
 			cb(name, desc)
 
 	def setTimer(self, result=None, retval=None, extra_args=None):
-		self["lab7"].show()
+		self["lab6"].show()
 		self.activityTimer.start(10)
 
 	def findPartitions(self):
@@ -294,7 +293,7 @@ class VISIONDevicesPanel(Screen):
 		SystemInfo["MountManager"] = True
 		getProcPartitions(self.list)
 		self["list"].list = self.list
-		self["lab7"].setText(_("No device available.")) if not harddiskmanager.HDDList() else self["lab7"].hide()
+		self["lab6"].setText(_("No device available.")) if not harddiskmanager.HDDList() else self["lab6"].hide()
 
 	def setupMounts(self):
 		sel = self["list"].getCurrent()
@@ -448,7 +447,7 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 		<widget name="key_red" position="25,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#9f1313" transparent="1"/>
 		<widget name="key_green" position="175,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="config" position="30,60" size="580,275" scrollbarMode="showOnDemand"/>
-		<widget name="lab7" position="30,375" size="580,20" font="Regular;18" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#9f1313"/>
+		<widget name="lab6" position="30,375" size="580,20" font="Regular;18" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#9f1313"/>
 	</screen>"""
 
 	def __init__(self, session):
@@ -456,16 +455,15 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 		self.partitionList = []
 		ConfigListScreen.__init__(self, self.partitionList)
 		self.setTitle(_("Choose where to mount your devices to:"))
-		self["lab1"] = StaticText(_("OpenVision"))
-		self["lab2"] = StaticText(_("Lets define enigma2 once more"))
-		self["lab3"] = StaticText(_("Report problems to:"))
-		self["lab4"] = StaticText(_("https://openvision.tech"))
-		self["lab5"] = StaticText(_("Sources are available at:"))
-		self["lab6"] = StaticText(_("https://github.com/OpenVisionE2"))
+		self["lab1"] = StaticText(_("norhap"))
+		self["lab2"] = StaticText(_("Report problems to:"))
+		self["lab3"] = StaticText(_("telegram @norhap"))
+		self["lab4"] = StaticText(_("Sources are available at:"))
+		self["lab5"] = StaticText(_("https://github.com/norhap"))
 
 		self["key_green"] = Label(_("Save"))
 		self["key_red"] = Label(_("Cancel"))
-		self["lab7"] = Label()
+		self["lab6"] = Label()
 		self["actions"] = ActionMap(["WizardActions", "ColorActions"], {
 			"red": self.close,
 			"green": self.saveconfMounts,
@@ -478,7 +476,7 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 
 	def setconfTimer(self, result=None, retval=None, extra_args=None):
 		scanning = _("Scanned devices")
-		self["lab7"].setText(scanning)
+		self["lab6"].setText(scanning)
 		self.activityTimer.start(10)
 
 	def findconfPartitions(self):
@@ -488,7 +486,7 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 		getProcPartitions(self.partitionList)
 		self["config"].list = self.partitionList
 		self["config"].l.setList(self.partitionList)
-		self["lab7"].hide()
+		self["lab6"].hide()
 
 	def saveconfMounts(self):
 		for x in self["config"].list: # partitionInfo = getConfigListEntry(text, item, partition, _format)
