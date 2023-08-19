@@ -25,6 +25,7 @@ from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Tools.Directories import fileExists
 from Tools.Notifications import AddPopupWithCallback
+from Tools.Multiboot import bootmviSlot, createInfo, getCurrentImage
 
 autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = 'RestoreSettingsNotification'
@@ -747,6 +748,10 @@ class VISIONBackupManager(Screen):
 		self.Stage3Completed = True
 		self.Stage4Completed = True
 		self.Stage5Completed = True
+		if SystemInfo["hasKexec"]:
+			slot = getCurrentImage()
+			text = createInfo(slot)
+			bootmviSlot(text=text, slot=slot)
 		if self.didPluginsRestore and fileExists("/tmp/backupkernelversion") or self.didSettingsRestore and fileExists("/tmp/backupkernelversion"):
 			print('[BackupManager] Restoring backup')
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /", self.Stage1SettingsComplete)
