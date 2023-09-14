@@ -33,7 +33,7 @@ PLUGINRESTOREQUESTIONID = 'RestorePluginsNotification'
 NOPLUGINS = 'NoPluginsNotification'
 
 mountpointchoices = []
-defaultprefix = getImageDistro()[4:]
+defaultprefix = getImageDistro()
 partitions = sorted(harddiskmanager.getMountedPartitions(), key=lambda partitions: partitions.device or "")
 for parts in partitions:
 	d = path.normpath(parts.mountpoint)
@@ -1391,7 +1391,7 @@ class BackupFiles(Screen):
 			backupType = "Sch-"
 		else:
 			backupType = ""
-		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + getImageDistro() + '-' + backupType + MODEL + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
+		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + '-' + backupType + MODEL + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
 # Need to create a list of what to backup, so that spaces and special
 # characters don't get lost on, or mangle, the command line
 #

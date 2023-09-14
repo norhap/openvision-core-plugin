@@ -54,7 +54,7 @@ def checkConfigBackup():
 					files = []
 				if len(files):
 					for file in files:
-						if file.endswith('.tar.gz') and "vision" in file.lower():
+						if file.endswith('.tar.gz') and "norhap" in file.lower():
 							list.append((path.join(devpath, file)))
 		if len(list):
 			print('[Vision] Backup image:', list[0])

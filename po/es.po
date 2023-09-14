@@ -869,8 +869,8 @@ msgstr "Vision Administrador SWAP"
 msgid "View progress"
 msgstr "Ver progreso"
 
-msgid "Wait please while creating swapfile..."
-msgstr "Por favor espera mientras se crea un archivo de intercambio..."
+msgid "Wait please while creating swap file..."
+msgstr "Por favor espera mientras se crea el archivo SWAP..."
 
 msgid ""
 "Wait please while scanning\n"
