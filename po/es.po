@@ -303,7 +303,7 @@ msgid "Do you want to restore your Enigma2 plugins ?"
 msgstr "¿Quieres restaurar sus plugins de Enigma2?"
 
 msgid "Do you want to restore your Enigma2 settings ?"
-msgstr "Quieres restaurar su configuración de Enigma2 ?"
+msgstr "¿Quieres restaurar su configuración de Enigma2?"
 
 msgid "Download"
 msgstr "Descargar"
