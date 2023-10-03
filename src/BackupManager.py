@@ -198,7 +198,7 @@ class VISIONBackupManager(Screen):
 		Components.Task.job_manager.in_background = in_background
 
 	def populate_List(self):
-		hotplugInfoDevice = self["lab6"].setText(_("Your mount has changed, restart enigma2 to updated.") if harddiskmanager.HDDList() else _("No device available."))
+		hotplugInfoDevice = self["lab6"].setText(_("Your mount has changed, no device mount.") if harddiskmanager.HDDList() else _("No device available."))
 		if not mountpointchoices:
 			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
 				"cancel": self.close,
@@ -237,7 +237,7 @@ class VISIONBackupManager(Screen):
 				elif free > 0:
 					self["lab6"].setText(_("Network server:\n\n") + _("Mount: ") + " " + config.backupmanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
 				else:
-					self["lab6"].setText(_("Your mount has changed, restart enigma2 to updated."))
+					self["lab6"].setText(_("Your mount has changed, no device mount."))
 				self.BackupDirectory = config.backupmanager.backuplocation.value + '/backup/' if not config.backupmanager.backuplocation.value.endswith("/") else config.backupmanager.backuplocation.value + 'backup/'
 				del self.emlist[:]
 				backups = listdir(self.BackupDirectory)
