@@ -65,8 +65,8 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 					for file in files:
 						if MODEL in file:
 							if file.endswith(".tar.gz") and "norhap" in file.lower() or file.startswith("%s" % defaultprefix):
-								mtimes.append((path.join(devpath, file), stat(path.join(devpath, file)).st_mtime)) # (filname, mtime)
-		for file in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]: # sort by mtime
+								mtimes.append((path.join(devpath, file), stat(path.join(devpath, file)).st_mtime))  # (filname, mtime)
+		for file in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]:  # sort by mtime
 			list.append((file, file))
 		return list
 
@@ -334,7 +334,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 							files = []
 							self.plugfile = self.plugfiles[3]
 							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
-								if media != "autofs" or "net":
+								if "autofs" not in dir or "net" not in dir:
 									devmounts.append(dir)
 							if len(devmounts):
 								for x in devmounts:

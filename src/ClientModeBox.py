@@ -1,4 +1,4 @@
-from urllib.request import urlopen, Request, urlretrieve
+from urllib.request import urlopen, Request
 from urllib.parse import quote, urlencode
 from urllib.error import HTTPError, URLError
 from Screens.WizardLanguage import WizardLanguage
@@ -7,15 +7,14 @@ from xml.dom import minidom
 import re
 import os
 import shutil
-#import locale
+# import locale
 from Components.Network import iNetwork
-from time import localtime, time, strftime, mktime, ctime
+from time import localtime, time, mktime
 import socket
 import threading
 from Components.Console import Console
-from Components.Pixmap import Pixmap
+from Components.Pixmap import Pixmap  # noqa: F401
 from Components.Sources.Boolean import Boolean
-from Tools import Directories
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -24,13 +23,13 @@ from Screens.Standby import TryQuitMainloop
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.ConfigList import ConfigListScreen
-from Components.config import config, ConfigBoolean, getConfigListEntry, ConfigSubsection, ConfigInteger, ConfigYesNo, ConfigText, ConfigClock, ConfigSelection
+from Components.config import config, getConfigListEntry, ConfigSubsection, ConfigInteger, ConfigYesNo, ConfigText, ConfigClock, ConfigSelection
 from Components.Sources.StaticText import StaticText
 from enigma import eTimer
 from Components.Label import Label
 from bisect import insort
 from Components.TimerSanityCheck import TimerSanityCheck
-from RecordTimer import RecordTimerEntry, AFTEREVENT
+from RecordTimer import RecordTimerEntry
 from ServiceReference import ServiceReference
 from timer import TimerEntry
 from .__init__ import _, PluginLanguageDomain
@@ -49,7 +48,7 @@ config.ipboxclient.firstconf = ConfigYesNo(default=False)
 config.ipboxclient.username = ConfigText(default="", fixed_size=False)
 config.ipboxclient.password = ConfigText(default="", fixed_size=False)
 config.ipboxclient.schedule = ConfigYesNo(default=False)
-config.ipboxclient.scheduletime = ConfigClock(default=0) # 1:00
+config.ipboxclient.scheduletime = ConfigClock(default=0)  # 1:00
 config.ipboxclient.repeattype = ConfigSelection(default="daily", choices=[("daily", _("Daily")), ("weekly", _("Weekly")), ("monthly", _("Monthly"))])
 config.ipboxclient.mounthdd = ConfigYesNo(default=False)
 config.ipboxclient.remotetimers = ConfigYesNo(default=False)
@@ -103,11 +102,11 @@ class ClientModeBoxWizard(WizardLanguage):
 					transparent="1" />
 
 			<ePixmap pixmap="buttons/button_red.png"
-					 position="35,523"
-					 zPosition="0"
-					 size="15,16"
-					 transparent="1"
-					 alphatest="blend" />
+					position="35,523"
+					zPosition="0"
+					size="15,16"
+					transparent="1"
+					alphaTest="blend" />
 
 			<widget name="languagetext"
 					position="65,520"
@@ -116,7 +115,7 @@ class ClientModeBoxWizard(WizardLanguage):
 		</screen>"""
 
 	def __init__(self, session):
-		self.xmlfile = Directories.resolveFilename(Directories.SCOPE_PLUGINS, "SystemPlugins/Vision/clientmodebox.xml")
+		self.xmlfile = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/Vision/clientmodebox.xml")
 		WizardLanguage.__init__(self, session)
 		self.setTitle(_('Vision Client Mode Box'))
 		self.skinName = ["ClientModeBoxWizard"]
@@ -396,8 +395,8 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 			<widget name="key_red"
 					position="0,360"
 					size="140,40"
-					valign="center"
-					halign="center"
+					verticalAlignment="center"
+					horizontalAlignment="center"
 					zPosition="5"
 					transparent="1"
 					foregroundColor="white"
@@ -406,8 +405,8 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 			<widget name="key_green"
 					position="140,360"
 					size="140,40"
-					valign="center"
-					halign="center"
+					verticalAlignment="center"
+					horizontalAlignment="center"
 					zPosition="5"
 					transparent="1"
 					foregroundColor="white"
@@ -416,8 +415,8 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 			<widget name="key_yellow"
 					position="280,360"
 					size="140,40"
-					valign="center"
-					halign="center"
+					verticalAlignment="center"
+					horizontalAlignment="center"
 					zPosition="5"
 					transparent="1"
 					foregroundColor="white"
@@ -426,44 +425,44 @@ class ClientModeBoxMenu(Screen, ConfigListScreen):
 			<widget name="key_blue"
 					position="420,360"
 					size="140,40"
-					valign="center"
-					halign="center"
+					verticalAlignment="center"
+					horizontalAlignment="center"
 					zPosition="5"
 					transparent="1"
 					foregroundColor="white"
 					font="Regular;18" />
 
 			<ePixmap name="red"
-					 pixmap="buttons/red.png"
-					 position="0,360"
-					 size="140,40"
-					 zPosition="4"
-					 transparent="1"
-					 alphatest="blend" />
+					pixmap="buttons/red.png"
+					position="0,360"
+					size="140,40"
+					zPosition="4"
+					transparent="1"
+					alphaTest="blend" />
 
 			<ePixmap name="green"
-					 pixmap="buttons/green.png"
-					 position="140,360"
-					 size="140,40"
-					 zPosition="4"
-					 transparent="1"
-					 alphatest="blend" />
+					pixmap="buttons/green.png"
+					position="140,360"
+					size="140,40"
+					zPosition="4"
+					transparent="1"
+					alphaTest="blend" />
 
 			<ePixmap name="yellow"
-					 pixmap="buttons/yellow.png"
-					 position="280,360"
-					 size="140,40"
-					 zPosition="4"
-					 transparent="1"
-					 alphatest="blend" />
+					pixmap="buttons/yellow.png"
+					position="280,360"
+					size="140,40"
+					zPosition="4"
+					transparent="1"
+					alphaTest="blend" />
 
 			<ePixmap name="blue"
-					 pixmap="buttons/blue.png"
-					 position="420,360"
-					 size="140,40"
-					 zPosition="4"
-					 transparent="1"
-					 alphatest="blend" />
+					pixmap="buttons/blue.png"
+					position="420,360"
+					size="140,40"
+					zPosition="4"
+					transparent="1"
+					alphaTest="blend" />
 		</screen>"""
 
 	def __init__(self, session, timerinstance):
@@ -731,7 +730,7 @@ class ClientModeBoxDownloader:
 		return bouquets
 
 	def downloadBouquets(self, baseurl, stype):
-		#scriptLocale = locale.setlocale(category=locale.LC_ALL, locale="en_GB.UTF-8")
+		# scriptLocale = locale.setlocale(category=locale.LC_ALL, locale="en_GB.UTF-8")
 		bouquets = []
 		httprequest = urlopen(baseurl + '/web/bouquets?stype=' + stype)
 		print("[ClientModeBox] download bouquets from " + baseurl + '/web/bouquets?stype=' + stype)
@@ -821,7 +820,7 @@ class ClientModeBoxDownloader:
 		else:
 			print("EPG not received from server")
 
-	def forceSaveEPGonRemoteReceiver(self, baseurl):
+	def forceSaveEPGonRemoteReceiver(self, baseurl, timeout=5):
 		urlserver = "%s/api/saveepg" % baseurl.replace(":80", "")
 		print('[ClientModeBox] saveEPGonRemoteReceiver URL: %s' % urlserver)
 		try:
@@ -1276,14 +1275,14 @@ class ClientModeBoxRemoteTimer():
 						if xend < xbegin:
 							xend += 1440
 						if begin2 < xbegin <= end2:
-							if xend < end2: # recording within event
+							if xend < end2:  # recording within event
 								time_match = (xend - xbegin) * 60
 								type = type_offset + 3
 							else:           # recording last part of event
 								time_match = (end2 - xbegin) * 60
 								type = type_offset + 1
 						elif xbegin <= begin2 <= xend:
-							if xend < end2: # recording first part of event
+							if xend < end2:  # recording first part of event
 								time_match = (xend - begin2) * 60
 								type = type_offset + 4
 							else:           # recording whole event
@@ -1291,21 +1290,21 @@ class ClientModeBoxRemoteTimer():
 								type = type_offset + 2
 				else:
 					if begin < x.begin <= end:
-						if timer_end < end: # recording within event
+						if timer_end < end:  # recording within event
 							time_match = timer_end - x.begin
 							type = type_offset + 3
 						else:           # recording last part of event
 							time_match = end - x.begin
 							type = type_offset + 1
 					elif x.begin <= begin <= timer_end:
-						if timer_end < end: # recording first part of event
+						if timer_end < end:  # recording first part of event
 							time_match = timer_end - begin
 							type = type_offset + 4
 						else:           # recording whole event
 							time_match = end - begin
 							type = type_offset + 2
 				if time_match:
-					if type in (2, 7, 12): # When full recording do not look further
+					if type in (2, 7, 12):  # When full recording do not look further
 						returnValue = (time_match, [type], isAutoTimer)
 						break
 					elif returnValue:

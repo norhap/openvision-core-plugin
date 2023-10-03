@@ -4,7 +4,7 @@ from datetime import datetime
 from time import time
 from enigma import eTimer, eConsoleAppContainer
 
-from .__init__ import _, PluginLanguageDomain
+from .__init__ import _
 import Components.Task
 from Components.ActionMap import ActionMap
 from Components.Sources.StaticText import StaticText
@@ -80,18 +80,18 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 class VISIONSoftcamManager(Screen):
 	skin = """
 	<screen name="VISIONSoftcamManager" position="center,center" size="560,400">
-		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphatest="blend"/>
-		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-		<widget name="lab6" position="40,60" size="170,20" font="Regular; 22" halign="right" zPosition="2" transparent="0"/>
+		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphaTest="blend"/>
+		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphaTest="blend"/>
+		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphaTest="blend"/>
+		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphaTest="blend"/>
+		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#9f1313" transparent="1"/>
+		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#1f771f" transparent="1"/>
+		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#a08500" transparent="1"/>
+		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#a08500" transparent="1"/>
+		<widget name="lab6" position="40,60" size="170,20" font="Regular; 22" horizontalAlignment="right" zPosition="2" transparent="0"/>
 		<widget name="list" position="225,60" size="240,100" transparent="0" scrollbarMode="showOnDemand"/>
-		<widget name="lab7" position="40,165" size="170,30" font="Regular; 22" halign="right" zPosition="2" transparent="0"/>
-		<widget name="activecam" position="225,166" size="240,100" font="Regular; 20" halign="left" zPosition="2" transparent="0" noWrap="1"/>
+		<widget name="lab7" position="40,165" size="170,30" font="Regular; 22" horizontalAlignment="right" zPosition="2" transparent="0"/>
+		<widget name="activecam" position="225,166" size="240,100" font="Regular; 20" horizontalAlignment="left" zPosition="2" transparent="0" noWrap="1"/>
 		<applet type="onLayoutFinish">
 			self["list"].instance.setItemHeight(25)
 		</applet>
@@ -141,7 +141,7 @@ class VISIONSoftcamManager(Screen):
 		self.activityTimer.timeout.get().append(self.getActivecam)
 		self.Console = Console()
 		self.showActivecam()
-		if not self.selectionChanged in self["list"].onSelectionChanged:
+		if self.selectionChanged not in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 
 	def createSummary(self):
@@ -270,7 +270,7 @@ class VISIONSoftcamManager(Screen):
 			# if selcam.startswith('mgcamd'): # code no increse RAM for MGcamd.
 				# mgcamd = str(ProcessList().named("mgcamd")).strip("[]")
 				# if not mgcamd:
-					# self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0]), self.Console.ePopen('sh /etc/init.d/softcam.%s start' % selcam)
+				# self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0]), self.Console.ePopen('sh /etc/init.d/softcam.%s start' % selcam)
 
 	def getRestartPID(self):
 		cams = []
@@ -295,41 +295,41 @@ class VISIONSoftcamManager(Screen):
 				self.Console.ePopen("kill -9 " + stopcam.replace("\n", ""))
 			else:
 				print('[SoftcamManager] RESULT FAILED: ' + str(result))
-			if selectedcam.lower().endswith('oscam') and path.exists('/etc/tuxbox/config/oscam/oscam.conf') == True:
+			if selectedcam.lower().endswith('oscam') and path.exists('/etc/tuxbox/config/oscam/oscam.conf'):
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-			elif selectedcam.lower().startswith('ncam') and path.exists('/etc/tuxbox/config/ncam/ncam.conf') == True:
+			elif selectedcam.lower().startswith('ncam') and path.exists('/etc/tuxbox/config/ncam/ncam.conf'):
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-			elif selectedcam.lower().endswith('smod') and path.exists('/etc/tuxbox/config/oscam-smod/oscam.conf') == True:
+			elif selectedcam.lower().endswith('smod') and path.exists('/etc/tuxbox/config/oscam-smod/oscam.conf'):
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-			elif selectedcam.lower().endswith('emu') and path.exists('/etc/tuxbox/config/oscam-emu/oscam.conf') == True:
+			elif selectedcam.lower().endswith('emu') and path.exists('/etc/tuxbox/config/oscam-emu/oscam.conf'):
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-			elif selectedcam.lower().startswith('wicardd') and path.exists('/etc/tuxbox/config/wicardd/wicardd.conf') == True:
+			elif selectedcam.lower().startswith('wicardd') and path.exists('/etc/tuxbox/config/wicardd/wicardd.conf'):
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-			elif selectedcam.startswith('mgcamd') and path.exists('/usr/keys/mg_cfg') == True:
+			elif selectedcam.startswith('mgcamd') and path.exists('/usr/keys/mg_cfg'):
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-			elif selectedcam.startswith('CCcam') and path.exists('/etc/CCcam.cfg') == True:
+			elif selectedcam.startswith('CCcam') and path.exists('/etc/CCcam.cfg'):
 				self.session.openWithCallback(self.showActivecam, VISIONStartCam, self.sel[0])
-			elif selectedcam.lower().startswith('oscam') and path.exists('/etc/tuxbox/config/oscam/oscam.conf') == False:
+			elif selectedcam.lower().startswith('oscam') and not path.exists('/etc/tuxbox/config/oscam/oscam.conf'):
 				if not path.exists('/etc/tuxbox/config/oscam'):
 					makedirs('/etc/tuxbox/config/oscam')
 				self.session.open(MessageBox, _("No config files found, please setup OSCam first\nin /etc/tuxbox/config/oscam."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-			elif selectedcam.lower().endswith('ncam') and path.exists('/etc/tuxbox/config/ncam/ncam.conf') == False:
+			elif selectedcam.lower().endswith('ncam') and not path.exists('/etc/tuxbox/config/ncam/ncam.conf'):
 				if not path.exists('/etc/tuxbox/config/ncam'):
 					makedirs('/etc/tuxbox/config/ncam')
 				self.session.open(MessageBox, _("No config files found, please setup NCam first\nin /etc/tuxbox/config/ncam."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-			elif selectedcam.lower().endswith('emu') and path.exists('/etc/tuxbox/config/oscam-emu/oscam.conf') == False:
+			elif selectedcam.lower().endswith('emu') and not path.exists('/etc/tuxbox/config/oscam-emu/oscam.conf'):
 				if not path.exists('/etc/tuxbox/config/oscam-emu'):
 					makedirs('/etc/tuxbox/config/oscam-emu')
 				self.session.open(MessageBox, _("No config files found, please setup OSCam-emu first\nin /etc/tuxbox/config/oscam-emu."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-			elif selectedcam.lower().endswith('oscam-smod') and path.exists('/etc/tuxbox/config/oscam-smod/oscam.conf') == False:
+			elif selectedcam.lower().endswith('oscam-smod') and not path.exists('/etc/tuxbox/config/oscam-smod/oscam.conf'):
 				if not path.exists('/etc/tuxbox/config/oscam-smod'):
 					makedirs('/etc/tuxbox/config/oscam-smod')
 				self.session.open(MessageBox, _("No config files found, please setup OSCam-smod first\nin /etc/tuxbox/config/oscam-smod."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-			elif selectedcam.lower().startswith('wicardd') and path.exists('/etc/tuxbox/config/wicardd/wicardd.conf') == False:
+			elif selectedcam.lower().startswith('wicardd') and not path.exists('/etc/tuxbox/config/wicardd/wicardd.conf'):
 				if not path.exists('/etc/tuxbox/config/wicardd'):
 					makedirs('/etc/tuxbox/config/wicardd')
 				self.session.open(MessageBox, _("No config files found, please setup Wicardd first\nin /etc/tuxbox/config/wicardd."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-			elif selectedcam.lower().startswith('mgcamd') and path.exists('/usr/keys/mg_cfg') == False:
+			elif selectedcam.lower().startswith('mgcamd') and not path.exists('/usr/keys/mg_cfg'):
 				if not path.exists('/usr/keys'):
 					makedirs('/usr/keys')
 				self.session.open(MessageBox, _("No config files found, please setup MgCamd first\nin /usr/keys."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
@@ -347,10 +347,10 @@ class VISIONSoftcamManager(Screen):
 class VISIONSoftcamMenu(ConfigListScreen, Screen):
 	skin = """
 		<screen name="VISIONSoftcamMenu" position="center,center" size="500,285" title="Softcam Menu">
-			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="blend" />
-			<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="blend" />
-			<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
-			<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
+			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphaTest="blend" />
+			<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphaTest="blend" />
+			<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#9f1313" transparent="1" />
+			<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#1f771f" transparent="1" />
 			<widget name="config" position="10,45" size="480,250" scrollbarMode="showOnDemand" />
 		</screen>"""
 
@@ -424,8 +424,8 @@ class VISIONSoftcamMenu(ConfigListScreen, Screen):
 class VISIONStartCam(Screen):
 	skin = """
 	<screen name="VISIONStartCam" position="center,center" size="484, 150" title="Starting Softcam">
-		<widget name="connect" position="217, 0" size="64,64" zPosition="2" pixmaps="Vision_HD_Common/busy/busy1.png,Vision_HD_Common/busy/busy2.png,Vision_HD_Common/busy/busy3.png,Vision_HD_Common/busy/busy4.png,Vision_HD_Common/busy/busy5.png,Vision_HD_Common/busy/busy6.png,Vision_HD_Common/busy/busy7.png,Vision_HD_Common/busy/busy8.png,Vision_HD_Common/busy/busy9.png,Vision_HD_Common/busy/busy9.png,Vision_HD_Common/busy/busy10.png,Vision_HD_Common/busy/busy11.png,Vision_HD_Common/busy/busy12.png,Vision_HD_Common/busy/busy13.png,Vision_HD_Common/busy/busy14.png,Vision_HD_Common/busy/busy15.png,Vision_HD_Common/busy/busy17.png,Vision_HD_Common/busy/busy18.png,Vision_HD_Common/busy/busy19.png,Vision_HD_Common/busy/busy20.png,Vision_HD_Common/busy/busy21.png,Vision_HD_Common/busy/busy22.png,Vision_HD_Common/busy/busy23.png,Vision_HD_Common/busy/busy24.png"  transparent="1" alphatest="blend"/>
-		<widget name="lab6" position="10, 80" halign="center" size="460, 60" zPosition="1" font="Regular;20" valign="top" transparent="1"/>
+		<widget name="connect" position="217, 0" size="64,64" zPosition="2" pixmaps="Vision_HD_Common/busy/busy1.png,Vision_HD_Common/busy/busy2.png,Vision_HD_Common/busy/busy3.png,Vision_HD_Common/busy/busy4.png,Vision_HD_Common/busy/busy5.png,Vision_HD_Common/busy/busy6.png,Vision_HD_Common/busy/busy7.png,Vision_HD_Common/busy/busy8.png,Vision_HD_Common/busy/busy9.png,Vision_HD_Common/busy/busy9.png,Vision_HD_Common/busy/busy10.png,Vision_HD_Common/busy/busy11.png,Vision_HD_Common/busy/busy12.png,Vision_HD_Common/busy/busy13.png,Vision_HD_Common/busy/busy14.png,Vision_HD_Common/busy/busy15.png,Vision_HD_Common/busy/busy17.png,Vision_HD_Common/busy/busy18.png,Vision_HD_Common/busy/busy19.png,Vision_HD_Common/busy/busy20.png,Vision_HD_Common/busy/busy21.png,Vision_HD_Common/busy/busy22.png,Vision_HD_Common/busy/busy23.png,Vision_HD_Common/busy/busy24.png"  transparent="1" alphaTest="blend"/>
+		<widget name="lab6" position="10, 80" horizontalAlignment="center" size="460,60" zPosition="1" font="Regular;20" verticalAlignment="top" transparent="1"/>
 	</screen>"""
 
 	def __init__(self, session, selectedcam):
@@ -520,8 +520,8 @@ class VISIONStartCam(Screen):
 class VISIONStopCam(Screen):
 	skin = """
 	<screen name="VISIONStopCam" position="center,center" size="484, 150">
-		<widget name="connect" position="217, 0" size="64,64" zPosition="2" pixmaps="Vision_HD_Common/busy/busy1.png,Vision_HD_Common/busy/busy2.png,Vision_HD_Common/busy/busy3.png,Vision_HD_Common/busy/busy4.png,Vision_HD_Common/busy/busy5.png,Vision_HD_Common/busy/busy6.png,Vision_HD_Common/busy/busy7.png,Vision_HD_Common/busy/busy8.png,Vision_HD_Common/busy/busy9.png,Vision_HD_Common/busy/busy9.png,Vision_HD_Common/busy/busy10.png,Vision_HD_Common/busy/busy11.png,Vision_HD_Common/busy/busy12.png,Vision_HD_Common/busy/busy13.png,Vision_HD_Common/busy/busy14.png,Vision_HD_Common/busy/busy15.png,Vision_HD_Common/busy/busy17.png,Vision_HD_Common/busy/busy18.png,Vision_HD_Common/busy/busy19.png,Vision_HD_Common/busy/busy20.png,Vision_HD_Common/busy/busy21.png,Vision_HD_Common/busy/busy22.png,Vision_HD_Common/busy/busy23.png,Vision_HD_Common/busy/busy24.png"  transparent="1" alphatest="blend"/>
-		<widget name="lab6" position="10, 80" halign="center" size="460, 60" zPosition="1" font="Regular;20" valign="top" transparent="1"/>
+		<widget name="connect" position="217, 0" size="64,64" zPosition="2" pixmaps="Vision_HD_Common/busy/busy1.png,Vision_HD_Common/busy/busy2.png,Vision_HD_Common/busy/busy3.png,Vision_HD_Common/busy/busy4.png,Vision_HD_Common/busy/busy5.png,Vision_HD_Common/busy/busy6.png,Vision_HD_Common/busy/busy7.png,Vision_HD_Common/busy/busy8.png,Vision_HD_Common/busy/busy9.png,Vision_HD_Common/busy/busy9.png,Vision_HD_Common/busy/busy10.png,Vision_HD_Common/busy/busy11.png,Vision_HD_Common/busy/busy12.png,Vision_HD_Common/busy/busy13.png,Vision_HD_Common/busy/busy14.png,Vision_HD_Common/busy/busy15.png,Vision_HD_Common/busy/busy17.png,Vision_HD_Common/busy/busy18.png,Vision_HD_Common/busy/busy19.png,Vision_HD_Common/busy/busy20.png,Vision_HD_Common/busy/busy21.png,Vision_HD_Common/busy/busy22.png,Vision_HD_Common/busy/busy23.png,Vision_HD_Common/busy/busy24.png"  transparent="1" alphaTest="blend"/>
+		<widget name="lab6" position="10, 80" horizontalAlignment="center" size="460,60" zPosition="1" font="Regular;20" verticalAlignment="top" transparent="1"/>
 	</screen>"""
 
 	def __init__(self, session, selectedcam):
@@ -643,7 +643,7 @@ class VISIONSoftcamLog(Screen):
 			"ok": self.cancel,
 			"up": self["list"].pageUp,
 			"down": self["list"].pageDown
-		 }, -2)
+		}, -2)
 
 	def cancel(self):
 		self.close()
@@ -815,7 +815,7 @@ class SoftcamAutoPoller:
 							f = open(oscamconf, 'r')
 							for line in f.readlines():
 								if line.find("httpport") != -1:
-									port = re.sub("\D", "", line)
+									port = re.sub(r"\D", "", line)
 							f.close()
 							print("[SoftcamManager] Checking if " + softcamcheck + " is frozen")
 							if port == "":
@@ -867,7 +867,7 @@ class SoftcamAutoPoller:
 										if parts[0].startswith("yes"):
 											allow = parts[0]
 								if line.find("WEBINFO LISTEN PORT") != -1:
-									port = re.sub("\D", "", line)
+									port = re.sub(r"\D", "", line)
 							f.close()
 							if allow.lower().find("yes") != -1:
 								print("[SoftcamManager] Checking if " + softcamcheck + " is frozen")
@@ -930,8 +930,8 @@ class SoftcamAutoPoller:
 						if softcamcheck.lower().startswith('wicardd') or softcamcheck.startswith('mgcamd') or softcamcheck.startswith('CCcam'):
 							system('sh /etc/init.d/softcam.%s start' % softcamcheck)
 						# if softcamcheck.startswith('mgcamd'): # code no increse RAM for MGcamd.
-							# mgcamd = str(ProcessList().named("mgcamd")).strip("[]")
-							# if not mgcamd:
-								# self.Console.ePopen('sh /etc/init.d/softcam.%s start' % softcamcheck)
+						# mgcamd = str(ProcessList().named("mgcamd")).strip("[]")
+						# if not mgcamd:
+						# self.Console.ePopen('sh /etc/init.d/softcam.%s start' % softcamcheck)
 						# if softcamcheck.startswith('CCcam'):
-							# self.Console.ePopen('sh /etc/init.d/softcam.%s start' % softcamcheck)
+						# self.Console.ePopen('sh /etc/init.d/softcam.%s start' % softcamcheck)

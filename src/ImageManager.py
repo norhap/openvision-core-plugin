@@ -8,7 +8,6 @@ from enigma import eTimer, fbClass
 from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, rmdir, statvfs, chmod, walk
 from shutil import rmtree, move, copy, copyfile
 from time import localtime, time, strftime, mktime
-from Components.ConfigList import ConfigListScreen
 from .__init__ import _, PluginLanguageDomain
 from Components.ActionMap import ActionMap
 from Components.Button import Button
@@ -28,7 +27,6 @@ from Screens.Standby import TryQuitMainloop
 from Screens.TaskView import JobView
 from Tools.Directories import fileExists, pathExists, fileHas
 import Tools.CopyFiles
-from Tools.HardwareInfo import HardwareInfo
 from Tools.Multiboot import getImagelist, getCurrentImage
 from Tools.Notifications import AddPopupWithCallback
 
@@ -72,15 +70,15 @@ config.imagemanager.query = ConfigYesNo(default=True)
 config.imagemanager.lastbackup = ConfigNumber(default=0)
 config.imagemanager.number_to_keep = ConfigNumber(default=0)
 config.imagemanager.imagefeed_OV = ConfigText(default="https://images.openvision.dedyn.io/json", fixed_size=False) if config.usage.alternative_imagefeed.value != "all" else ConfigText(default="https://images.openvision.dedyn.io/json%s" % config.usage.alternative_imagefeed.value, fixed_size=False)
-config.imagemanager.imagefeed_OV.value = config.imagemanager.imagefeed_OV.default # this is no longer a user setup option
+config.imagemanager.imagefeed_OV.value = config.imagemanager.imagefeed_OV.default  # this is no longer a user setup option
 config.imagemanager.imagefeed_ViX = ConfigText(default="https://www.openvix.co.uk/json", fixed_size=False)
-config.imagemanager.imagefeed_ViX.value = config.imagemanager.imagefeed_ViX.default # this is no longer a user setup option
+config.imagemanager.imagefeed_ViX.value = config.imagemanager.imagefeed_ViX.default  # this is no longer a user setup option
 config.imagemanager.imagefeed_ATV = ConfigText(default="http://images.mynonpublic.com/openatv/json", fixed_size=False)
-config.imagemanager.imagefeed_ATV.value = config.imagemanager.imagefeed_ATV.default # this is no longer a user setup option
+config.imagemanager.imagefeed_ATV.value = config.imagemanager.imagefeed_ATV.default  # this is no longer a user setup option
 config.imagemanager.imagefeed_PLi = ConfigText(default="http://downloads.openpli.org/json", fixed_size=False)
-config.imagemanager.imagefeed_PLi.value = config.imagemanager.imagefeed_PLi.default # this is no longer a user setup option
+config.imagemanager.imagefeed_PLi.value = config.imagemanager.imagefeed_PLi.default  # this is no longer a user setup option
 config.imagemanager.imagefeed_OBH = ConfigText(default="https://images.openbh.net/json", fixed_size=False)
-config.imagemanager.imagefeed_OBH.value = config.imagemanager.imagefeed_OBH.default # this is no longer a user setup option
+config.imagemanager.imagefeed_OBH.value = config.imagemanager.imagefeed_OBH.default  # this is no longer a user setup option
 
 autoImageManagerTimer = None
 
@@ -120,16 +118,16 @@ class tmp:
 
 class VISIONImageManager(Screen):
 	skin = """<screen name="VISIONImageManager" position="center,center" size="560,400">
-		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphatest="blend"/>
-		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
-		<ePixmap pixmap="buttons/key_menu.png" position="0,40" size="35,25" alphatest="blend" transparent="1" zPosition="3"/>
-		<widget name="lab6" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
+		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphaTest="blend"/>
+		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphaTest="blend"/>
+		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphaTest="blend"/>
+		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphaTest="blend"/>
+		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#9f1313" transparent="1"/>
+		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#1f771f" transparent="1"/>
+		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#a08500" transparent="1"/>
+		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#18188b" transparent="1"/>
+		<ePixmap pixmap="buttons/key_menu.png" position="0,40" size="35,25" alphaTest="blend" transparent="1" zPosition="3"/>
+		<widget name="lab6" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" horizontalAlignment="center"/>
 		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand"/>
 		<widget name="backupstatus" position="10,370" size="400,30" font="Regular;20" zPosition="5"/>
 		<applet type="onLayoutFinish">
@@ -285,7 +283,7 @@ class VISIONImageManager(Screen):
 					"down": self.refreshDown,
 					"displayHelp": self.doDownload
 				}, -1)
-				if not "/media/net" in config.imagemanager.backuplocation.value and not "/media/autofs" in config.imagemanager.backuplocation.value and free > 0:
+				if "/media/net" not in config.imagemanager.backuplocation.value and "/media/autofs" not in config.imagemanager.backuplocation.value and free > 0:
 					self["lab6"].setText(_("Storage Device:\n\n") + _("Mount: ") + " " + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
 				elif free > 0:
 					self["lab6"].setText(_("Network server:\n\n") + _("Mount: ") + " " + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
@@ -324,7 +322,7 @@ class VISIONImageManager(Screen):
 		except OSError as err:
 			print("%s" % err)
 
-	def doDownloadCallback(self, retval): # retval will be the config element (or False, in the case of aborting the MessageBox).
+	def doDownloadCallback(self, retval):  # retval will be the config element (or False, in the case of aborting the MessageBox).
 		if retval:
 			self.session.openWithCallback(self.refreshList, ImageManagerDownload, self.BackupDirectory, retval)
 
@@ -368,8 +366,8 @@ class VISIONImageManager(Screen):
 		backupname = self.BackupDirectory + self.sel
 		folderprefix = config.imagemanager.folderprefix.value + "-" + imagetype
 		cmd = "rm -rf %s" % backupname
-		if answer == True:
-			if self.sel.startswith(folderprefix) and self.BackupRunning == False or self.sel.endswith(".zip"):
+		if answer:
+			if self.sel.startswith(folderprefix) and not self.BackupRunning or self.sel.endswith(".zip"):
 				Console().ePopen(cmd)
 			self.refreshList()
 
@@ -416,11 +414,11 @@ class VISIONImageManager(Screen):
 		self.session.openWithCallback(self.keyRestore3, JobView, job, cancelable=False, backgroundable=False, afterEventChangeable=False)
 
 	def keyRestore(self):
-		self.sel = self["list"].getCurrent() # (name, link)
+		self.sel = self["list"].getCurrent()  # (name, link)
 		if not self.sel:
 			return
 		print("[ImageManager][keyRestore] self.sel getCurrentImage", self.sel, "   ", getCurrentImage())
-		if getCurrentImage() == 0 and self.isVuKexecCompatibleImage(self.sel): # only if Vu multiboot has been enabled and the image is compatible
+		if getCurrentImage() == 0 and self.isVuKexecCompatibleImage(self.sel):  # only if Vu multiboot has been enabled and the image is compatible
 			message = (_("Do you want to flash Recovery image?\nThis will change all eMMC slots.") if "VuSlot0" in self.sel else _("This selection will flash the Recovery image.\nWe advise flashing new image to a MultiBoot slot and restoring (default) settings backup.\nSelect \"NO\" to flash a MultiBoot slot."))
 			ybox = self.session.openWithCallback(self.keyRestorez0, MessageBox, message, default=False)
 			ybox.setTitle(_("Restore confirmation"))
@@ -534,9 +532,9 @@ class VISIONImageManager(Screen):
 			else:
 				MAINDEST = "%s/%s" % (self.TEMPDESTROOT, imagedir)
 				if pathExists("%s/SDAbackup" % MAINDEST) and self.multibootslot != 1:
-						self.session.open(MessageBox, _("Multiboot only able to restore this backup to MMC slot1"), MessageBox.TYPE_INFO, timeout=20)
-						print("[ImageManager] SF8008 MMC restore to SDcard failed:\n", end=' ')
-						self.close()
+					self.session.open(MessageBox, _("Multiboot only able to restore this backup to MMC slot1"), MessageBox.TYPE_INFO, timeout=20)
+					print("[ImageManager] SF8008 MMC restore to SDcard failed:\n", end=' ')
+					self.close()
 				else:
 					self.keyRestore6(0)
 		else:
@@ -556,23 +554,23 @@ class VISIONImageManager(Screen):
 			CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST
 			# normal non multiboot receiver
 			if SystemInfo["canMultiBoot"]:
-				if self.multibootslot == 0 and SystemInfo["hasKexec"]:	# reset Vu Multiboot slot0
+				if self.multibootslot == 0 and SystemInfo["hasKexec"]:  # reset Vu Multiboot slot0
 					kz0 = getMachineMtdKernel()
 					rz0 = getMachineMtdRoot()
-					CMD = "/usr/bin/ofgwrite -kkz0 -rrz0 '%s'" % MAINDEST	# slot0 treat as kernel/root only multiboot receiver
-				elif SystemInfo["HiSilicon"] and SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"] is None:	# sf8008 type receiver using SD card in multiboot
+					CMD = "/usr/bin/ofgwrite -kkz0 -rrz0 '%s'" % MAINDEST  # slot0 treat as kernel/root only multiboot receiver
+				elif SystemInfo["HiSilicon"] and SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"] is None:  # sf8008 type receiver using SD card in multiboot
 					CMD = "/usr/bin/ofgwrite -r%s -k%s -m0 '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
 					print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
 					if fileExists("/boot/STARTUP") and fileExists("/boot/STARTUP_6"):
 						copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
 				elif SystemInfo["hasKexec"]:
 					if SystemInfo["HasKexecUSB"] and "mmcblk" not in self.MTDROOTFS:
-						   CMD = "/usr/bin/ofgwrite -r%s -kzImage -s'%s/linuxrootfs' -m%s '%s'" % (self.MTDROOTFS, MODEL[2:], self.multibootslot, MAINDEST)
+						CMD = "/usr/bin/ofgwrite -r%s -kzImage -s'%s/linuxrootfs' -m%s '%s'" % (self.MTDROOTFS, MODEL[2:], self.multibootslot, MAINDEST)
 					else:
-						   CMD = "/usr/bin/ofgwrite -r%s -kzImage -m%s '%s'" % (self.MTDROOTFS, self.multibootslot, MAINDEST)
+						CMD = "/usr/bin/ofgwrite -r%s -kzImage -m%s '%s'" % (self.MTDROOTFS, self.multibootslot, MAINDEST)
 					print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
 				else:
-					CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)	# Normal multiboot
+					CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)  # Normal multiboot
 			elif SystemInfo["HasH9SD"]:
 				if fileHas("/proc/cmdline", "root=/dev/mmcblk0p1") is True and fileExists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 using SD card
 					CMD = "/usr/bin/ofgwrite -rmmcblk0p1 '%s'" % MAINDEST
@@ -589,7 +587,7 @@ class VISIONImageManager(Screen):
 		fbClass.getInstance().unlock()
 		print("[ImageManager] ofgwrite retval:", retval)
 		if retval == 0:
-			if SystemInfo["HiSilicon"] and SystemInfo["HasRootSubdir"] is False and self.HasSDmmc is False:	# sf8008 receiver 1 eMMC parition, No SD card
+			if SystemInfo["HiSilicon"] and SystemInfo["HasRootSubdir"] is False and self.HasSDmmc is False:  # sf8008 receiver 1 eMMC parition, No SD card
 				self.session.open(TryQuitMainloop, 2)
 			if SystemInfo["canMultiBoot"]:
 				print("[ImageManager] slot %s result %s\n" % (self.multibootslot, str(result)))
@@ -634,13 +632,13 @@ class VISIONImageManager(Screen):
 			retval = True
 		else:
 			name_split = name.split("-")
-			if len(name_split) > 1 and name_split[0] in ("openbh", "openvix", "openvision") and name[-8:] == "_usb.zip": # "_usb.zip" only in build server images
+			if len(name_split) > 1 and name_split[0] in ("openbh", "openvix", "openvision") and name[-8:] == "_usb.zip":  # "_usb.zip" only in build server images
 				parts = name_split[1].split(".")
 				if len(parts) > 1 and parts[0].isnumeric() and parts[1].isnumeric():
 					version = float(parts[0] + "." + parts[1])
 					if name_split[0] == "openbh" and version > 5.1:
 						retval = True
-					if name_split[0] == "openvix" and (version > 6.3 or version == 6.3 and len(parts) > 2 and parts[2].isnumeric() and int(parts[2]) > 2): # greater than 6.2.002
+					if name_split[0] == "openvix" and (version > 6.3 or version == 6.3 and len(parts) > 2 and parts[2].isnumeric() and int(parts[2]) > 2):  # greater than 6.2.002
 						retval = True
 					if name_split[0] == "openvision":
 						retval = True
@@ -794,15 +792,15 @@ class AutoImageManagerTimer:
 class ImageBackup(Screen):
 	skin = """
 	<screen name="VISIONImageManager" position="center,center" size="560,400">
-		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphatest="blend"/>
-		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
-		<widget name="lab6" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
+		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphaTest="blend"/>
+		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphaTest="blend"/>
+		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphaTest="blend"/>
+		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphaTest="blend"/>
+		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#9f1313" transparent="1"/>
+		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#1f771f" transparent="1"/>
+		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#a08500" transparent="1"/>
+		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#18188b" transparent="1"/>
+		<widget name="lab6" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" horizontalAlignment="center"/>
 		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand"/>
 		<applet type="onLayoutFinish">
 			self["list"].instance.setItemHeight(25)
@@ -858,7 +856,7 @@ class ImageBackup(Screen):
 			else:
 				self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"].split("/")[2]
 			if SystemInfo["HasMultibootMTD"]:
-				self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["device"]	# sfx60xx ubi0:ubifs not mtd=
+				self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["device"]  # sfx60xx ubi0:ubifs not mtd=
 			elif not SystemInfo["hasKexec"]:
 				self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["device"].split("/")[2]
 			if SystemInfo["HasRootSubdir"] and slot != 0:
@@ -1069,7 +1067,7 @@ class ImageBackup(Screen):
 			if "bin" or "uImage" in self.KERNELFILE:
 				if BRAND == "Vu+":
 					if SystemInfo["hasKexec"]:
-		#				boot = "boot" if slot > 0 and slot < 4 else "dev/%s/%s"  %(self.MTDROOTFS, self.ROOTFSSUBDIR)
+						# boot = "boot" if slot > 0 and slot < 4 else "dev/%s/%s"  %(self.MTDROOTFS, self.ROOTFSSUBDIR)
 						boot = "boot"
 						self.command = "dd if=/%s/%s of=%s/vmlinux.bin" % (boot, SystemInfo["canMultiBoot"][slot]["kernel"].rsplit("/", 1)[1], self.TMPDIR) if slot != 0 else "dd if=/dev/%s of=%s/vmlinux.bin" % (self.MTDKERNEL, self.TMPDIR)
 					else:
@@ -1242,9 +1240,9 @@ class ImageBackup(Screen):
 				IMAGE_ROOTFS_ALIGNMENT = 1024
 				BOOT_PARTITION_SIZE = 3072
 				KERNEL_PARTITION_SIZE = 8192
-				ROOTFS_PARTITION_SIZE = 1898496 # work backup partitions with 848576
-				EMMC_IMAGE_SIZE = 7634944 # work backup partitions with 3817472
-				#######################################ENUMERATE PARTITIONS ###########################################################
+				ROOTFS_PARTITION_SIZE = 1898496  # work backup partitions with 848576
+				EMMC_IMAGE_SIZE = 7634944  # work backup partitions with 3817472
+				# ######################################ENUMERATE PARTITIONS ###########################################################
 				KERNEL1_PARTITION_OFFSET = int(IMAGE_ROOTFS_ALIGNMENT) + int(BOOT_PARTITION_SIZE)
 				ROOTFS1_PARTITION_OFFSET = int(KERNEL1_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
 				KERNEL2_PARTITION_OFFSET = int(ROOTFS1_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
@@ -1253,7 +1251,7 @@ class ImageBackup(Screen):
 				ROOTFS3_PARTITION_OFFSET = int(KERNEL3_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
 				KERNEL4_PARTITION_OFFSET = int(ROOTFS3_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
 				ROOTFS4_PARTITION_OFFSET = int(KERNEL4_PARTITION_OFFSET) + int(KERNEL_PARTITION_SIZE)
-				#######################################CREATE PARTITIONS 4 SLOTS#######################################################
+				# ######################################CREATE PARTITIONS 4 SLOTS#######################################################
 				EMMC_IMAGE_SEEK = int(EMMC_IMAGE_SIZE) * int(IMAGE_ROOTFS_ALIGNMENT)
 				self.commandMB.append("dd if=/dev/zero of=%s bs=1 count=0 seek=%s" % (EMMC_IMAGE, EMMC_IMAGE_SEEK))
 				self.commandMB.append("parted -s %s mklabel gpt" % EMMC_IMAGE)
@@ -1276,7 +1274,7 @@ class ImageBackup(Screen):
 				self.commandMB.append("parted -s %s unit KiB mkpart kernel4 %s %s" % (EMMC_IMAGE, KERNEL4_PARTITION_OFFSET, PARTED_END_KERNEL4))
 				PARTED_END_ROOTFS4 = int(ROOTFS4_PARTITION_OFFSET) + int(ROOTFS_PARTITION_SIZE)
 				self.commandMB.append("parted -s %s unit KiB mkpart rootfs4 ext4 %s %s" % (EMMC_IMAGE, ROOTFS4_PARTITION_OFFSET, PARTED_END_ROOTFS4))
-				#######################################CREATE FULL BACKUP IMAGE SLOT 1 WITH BOOT + KERNEL + ROOTFS IMAGE###############
+				# ######################################CREATE FULL BACKUP IMAGE SLOT 1 WITH BOOT + KERNEL + ROOTFS IMAGE###############
 				BOOT_IMAGE_BS = int(IMAGE_ROOTFS_ALIGNMENT) * int(IMAGE_ROOTFS_ALIGNMENT)
 				self.commandMB.append("dd conv=notrunc if=%s of=%s seek=1 bs=%s" % (self.MTDBOOT, EMMC_IMAGE, BOOT_IMAGE_BS))
 				KERNEL = int(BOOT_PARTITION_SIZE) * int(IMAGE_ROOTFS_ALIGNMENT)
@@ -1286,7 +1284,7 @@ class ImageBackup(Screen):
 				ROOTFS_IMAGE_BS = KERNEL_BS + ROOTFS_IMAGE
 				# self.commandMB.append("dd if=/dev/%s of=%s seek=1 bs=%s" % (self.MTDROOTFS, EMMC_IMAGE, ROOTFS_IMAGE_BS)) # deactive (not work image emmc.img).
 				self.Console.eBatch(self.commandMB, self.Stage3Complete, debug=False)
-			elif self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"): # create slot 1 recovery backup image and empty partitions for the remaining slots.
+			elif self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):  # create slot 1 recovery backup image and empty partitions for the remaining slots.
 				print("[ImageManager] %s: Making emmc_partitions.xml" % MODEL)
 				with open("%s/emmc_partitions.xml" % self.TMPDIR, "w") as f:
 					f.write('<?xml version="1.0" encoding="GB2312" ?>\n')
@@ -1450,16 +1448,16 @@ class ImageBackup(Screen):
 					else:
 						self.session.open(MessageBox, _("Creating image online flash for ofgwrite."), MessageBox.TYPE_INFO, timeout=10)
 			elif SystemInfo["HasRootSubdir"]:
-					with open(self.MAINDEST + "/force_%s_READ.ME" % MODEL, "w") as fileout:
-						line1 = "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick" % (MODEL, MODEL)
-						line2 = "When you enter the recovery menu then it will force the image to be installed in the linux selection"
-						fileout.write(line1)
-						fileout.write(line2)
-						fileout.close()
-					with open(self.MAINDEST2 + "/unforce_%s.txt" % MODEL, "w") as fileout:
-						line1 = "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation" % (MODEL, MODEL)
-						fileout.write(line1)
-						fileout.close()
+				with open(self.MAINDEST + "/force_%s_READ.ME" % MODEL, "w") as fileout:
+					line1 = "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick" % (MODEL, MODEL)
+					line2 = "When you enter the recovery menu then it will force the image to be installed in the linux selection"
+					fileout.write(line1)
+					fileout.write(line2)
+					fileout.close()
+				with open(self.MAINDEST2 + "/unforce_%s.txt" % MODEL, "w") as fileout:
+					line1 = "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation" % (MODEL, MODEL)
+					fileout.write(line1)
+					fileout.close()
 			print("[ImageManager] Stage5: Removing Swap.")
 			if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup"):
 				system("swapoff " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + imagetype + "-swapfile_backup")
@@ -1542,15 +1540,15 @@ class ImageBackup(Screen):
 class ImageManagerDownload(Screen):
 	skin = """
 	<screen name="VISIONImageManager" position="center,center" size="1000,500">
-		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="blend" />
-		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="blend" />
-		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="blend" />
-		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphatest="blend" />
-		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
-		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
-		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
-		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1" />
-		<widget name="lab6" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
+		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphaTest="blend" />
+		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphaTest="blend" />
+		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphaTest="blend" />
+		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphaTest="blend" />
+		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#9f1313" transparent="1" />
+		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#1f771f" transparent="1" />
+		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#a08500" transparent="1" />
+		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#18188b" transparent="1" />
+		<widget name="lab6" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" horizontalAlignment="center"/>
 		<widget name="list" position="10,105" size="980,480" scrollbarMode="showOnDemand" />
 		<applet type="onLayoutFinish">
 			self["list"].instance.setItemHeight(25)
@@ -1607,10 +1605,10 @@ class ImageManagerDownload(Screen):
 				print("[ImageManager] no images available for: the '%s' at '%s'" % (MODEL, self.ConfigObj.value))
 				return
 
-		if not self.imagesList: # Nothing has been found on that server so we might as well give up.
+		if not self.imagesList:  # Nothing has been found on that server so we might as well give up.
 			return
 
-		imglist = [] # this is reset on every "ok" key press of an expandable item so it reflects the current state of expandability of that item
+		imglist = []  # this is reset on every "ok" key press of an expandable item so it reflects the current state of expandability of that item
 		for categorie in sorted(self.imagesList.keys(), reverse=True):
 			if categorie in self.expanded:
 				imglist.append(ChoiceEntryComponent("expanded", ((str(categorie)), "Expander")))
@@ -1762,6 +1760,6 @@ class ImageManagerSetup(Setup):
 	def check_URL_format(self, configElement):
 		if configElement.value:
 			configElement.value = "%s%s" % (not (configElement.value.startswith("http://") or configElement.value.startswith("https://") or configElement.value.startswith("ftp://")) and "http://" or "", configElement.value)
-			configElement.value = configElement.value.strip("/") # remove any trailing slash
+			configElement.value = configElement.value.strip("/")  # remove any trailing slash
 		else:
 			configElement.value = configElement.default

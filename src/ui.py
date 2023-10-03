@@ -3,7 +3,7 @@ from .__init__ import _
 from Screens.Screen import Screen
 from Components.ActionMap import NumberActionMap
 from Components.Sources.StaticText import StaticText
-from Components.Label import Label
+from Components.Label import Label  # noqa: F401
 from Components.Sources.List import List
 from Screens.ParentalControlSetup import ProtectedScreen
 from Components.config import config
@@ -13,8 +13,8 @@ from Components.SystemInfo import SystemInfo
 class VISIONMenu(Screen, ProtectedScreen):
 	skin = """
 		<screen name="VISIONMenu" position="center,center" size="610,410">
-			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="blend"/>
-			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
+			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphaTest="blend"/>
+			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" backgroundColor="#9f1313" transparent="1"/>
 			<widget source="menu" render="Listbox" position="15,60" size="330,290" scrollbarMode="showOnDemand">
 				<convert type="TemplatedMultiContent">
 					{"template": [
@@ -25,7 +25,7 @@ class VISIONMenu(Screen, ProtectedScreen):
 					}
 				</convert>
 			</widget>
-			<widget source="menu" render="Listbox" position="360,50" size="240,300" scrollbarMode="showNever" selectionDisabled="1">
+			<widget source="menu" render="Listbox" position="360,50" size="240,300" scrollbarMode="showNever" selection="1">
 				<convert type="TemplatedMultiContent">
 					{"template": [
 							MultiContentEntryText(pos = (2,2), size = (240,300), flags = RT_HALIGN_CENTER|RT_VALIGN_CENTER|RT_WRAP, text = 2), # index 2 is the Description,
@@ -35,7 +35,7 @@ class VISIONMenu(Screen, ProtectedScreen):
 					}
 				</convert>
 			</widget>
-			<widget source="status" render="Label" position="5,360" zPosition="10" size="600,50" halign="center" valign="center" font="Regular;22" transparent="1" shadowColor="black" shadowOffset="-1,-1" />
+			<widget source="status" render="Label" position="5,360" zPosition="10" size="600,50" horizontalAlignment="center" verticalAlignment="center" font="Regular;22" transparent="1" shadowColor="black" shadowOffset="-1,-1" />
 		</screen>"""
 
 	def __init__(self, session, args=0):

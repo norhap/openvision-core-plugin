@@ -1,4 +1,4 @@
-from boxbranding import getImageDistro, getImageVersion
+from boxbranding import getImageDistro
 # for localized messages
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod
 from time import localtime, time, strftime, mktime
@@ -53,7 +53,7 @@ def getMountDefault(mountpointchoices):
 config.backupmanager = ConfigSubsection()
 config.backupmanager.backupdirs = ConfigLocations(
 	default=[eEnv.resolve('${sysconfdir}/enigma2/'), eEnv.resolve('${sysconfdir}/fstab'), eEnv.resolve('${sysconfdir}/crontab'), eEnv.resolve('${sysconfdir}/hostname'), eEnv.resolve('${sysconfdir}/network/interfaces'), eEnv.resolve('${sysconfdir}/passwd'), eEnv.resolve('${sysconfdir}/shadow'), eEnv.resolve('${sysconfdir}/etc/shadow'),
-			 eEnv.resolve('${sysconfdir}/resolv.conf'), eEnv.resolve('${sysconfdir}/ushare.conf'), eEnv.resolve('${sysconfdir}/inadyn.conf'), eEnv.resolve('${sysconfdir}/tuxbox/config/'), eEnv.resolve('${sysconfdir}/wpa_supplicant.conf')])
+	eEnv.resolve('${sysconfdir}/resolv.conf'), eEnv.resolve('${sysconfdir}/ushare.conf'), eEnv.resolve('${sysconfdir}/inadyn.conf'), eEnv.resolve('${sysconfdir}/tuxbox/config/'), eEnv.resolve('${sysconfdir}/wpa_supplicant.conf')])
 config.backupmanager.backuplocation = ConfigSelection(choices=mountpointchoices, default=getMountDefault(mountpointchoices))
 config.backupmanager.backupretry = ConfigNumber(default=30)
 config.backupmanager.backupretrycount = NoSave(ConfigNumber(default=0))
@@ -95,17 +95,17 @@ def BackupManagerautostart(reason, session=None, **kwargs):
 
 class VISIONBackupManager(Screen):
 	skin = """<screen name="VISIONBackupManager" position="center,center" size="560,400">
-		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="blend" />
-		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="blend" />
-		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="blend" />
-		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphatest="blend"/>
-		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
-		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
-		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
-		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
-		<ePixmap pixmap="buttons/key_menu.png" position="0,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
-		<ePixmap pixmap="buttons/key_info.png" position="40,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
-		<widget name="lab6" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center" />
+		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphaTest="blend" />
+		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphaTest="blend" />
+		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphaTest="blend" />
+		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphaTest="blend"/>
+		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center"verticalAlignment="center" backgroundColor="#9f1313" transparent="1" />
+		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center"verticalAlignment="center" backgroundColor="#1f771f" transparent="1" />
+		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center"verticalAlignment="center" backgroundColor="#a08500" transparent="1" />
+		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center"verticalAlignment="center" backgroundColor="#a08500" transparent="1" />
+		<ePixmap pixmap="buttons/key_menu.png" position="0,40" size="35,25" alphaTest="blend" transparent="1" zPosition="3" />
+		<ePixmap pixmap="buttons/key_info.png" position="40,40" size="35,25" alphaTest="blend" transparent="1" zPosition="3" />
+		<widget name="lab6" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" horizontalAlignment="center" />
 		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand" />
 		<widget name="backupstatus" position="10,370" size="400,30" font="Regular;20" zPosition="5" />
 		<applet type="onLayoutFinish">
@@ -150,7 +150,7 @@ class VISIONBackupManager(Screen):
 			backuptext = _("Next backup: ")
 		if config.backupmanager.schedule.value:
 			self["backupstatus"].setText(str(backuptext))
-		if not self.selectionChanged in self["list"].onSelectionChanged:
+		if self.selectionChanged not in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 
 	def createSummary(self):
@@ -232,7 +232,7 @@ class VISIONBackupManager(Screen):
 					"menu": self.createSetup,
 					"log": self.showLog
 				}, -1)
-				if not "/media/net" in config.backupmanager.backuplocation.value and not "/media/autofs" in config.backupmanager.backuplocation.value and free > 0:
+				if "/media/net" not in config.backupmanager.backuplocation.value and "/media/autofs" not in config.backupmanager.backuplocation.value and free > 0:
 					self["lab6"].setText(_("Storage Device:\n\n") + _("Mount: ") + " " + config.backupmanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
 				elif free > 0:
 					self["lab6"].setText(_("Network server:\n\n") + _("Mount: ") + " " + config.backupmanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _(" GB"))
@@ -250,8 +250,8 @@ class VISIONBackupManager(Screen):
 							else:
 								prefix = "A"
 							key = "%s-%012u" % (prefix, stat(self.BackupDirectory + fil).st_mtime)
-							mtimes.append((fil, key)) # (filname, prefix-mtime)
-				for fil in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]: # sort by mtime
+							mtimes.append((fil, key))  # (filname, prefix-mtime)
+				for fil in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]:  # sort by mtime
 					self.emlist.append(fil)
 				self["list"].setList(self.emlist)
 				if len(self.emlist):
@@ -331,7 +331,7 @@ class VISIONBackupManager(Screen):
 
 	def BackupToDelete(self, answer):
 		backupname = self.BackupDirectory + self.sel
-		if answer == True:
+		if answer:
 			remove(backupname)
 			self.populate_List()
 
@@ -490,10 +490,10 @@ class VISIONBackupManager(Screen):
 		)
 
 	def StageRestoreSettings(self, answer):
-		if answer == True:
-			 print('[BackupManager] Restoring only settings:')
-			 restoreSettings = "/sbin/init 4 && sleep 5 && tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C / && /sbin/init 6"
-			 self.Console.ePopen("%s" % restoreSettings, self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring settings, your receiver go to restart..."), MessageBox.TYPE_INFO))
+		if answer:
+			print('[BackupManager] Restoring only settings:')
+			restoreSettings = "/sbin/init 4 && sleep 5 && tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C / && /sbin/init 6"
+			self.Console.ePopen("%s" % restoreSettings, self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring settings, your receiver go to restart..."), MessageBox.TYPE_INFO))
 
 	def Stage1(self, answer=None):
 		print('[BackupManager] Restoring Stage 1:')
@@ -537,16 +537,16 @@ class VISIONBackupManager(Screen):
 	def Stage2Complete(self, result, retval, extra_args):
 		result2 = result
 		print('[BackupManager] Restoring stage 2: Result ', result2)
-		if result2.find('wget returned 4') != -1: # probably no network adaptor connected
+		if result2.find('wget returned 4') != -1:  # probably no network adaptor connected
 			self.feeds = 'NONETWORK'
 			self.Stage2Completed = True
-		if result2.find('wget returned 8') != -1 or result2.find('wget returned 255') != -1 or result2.find('404 Not Found') != -1: # Server issued an error response, or there was a wget generic error code.
+		if result2.find('wget returned 8') != -1 or result2.find('wget returned 255') != -1 or result2.find('404 Not Found') != -1:  # Server issued an error response, or there was a wget generic error code.
 			self.feeds = 'DOWN'
 			self.Stage2Completed = True
-		elif result2.find('bad address') != -1 or result2.find('wget returned 1') != -1: # probably DNS lookup failed
+		elif result2.find('bad address') != -1 or result2.find('wget returned 1') != -1:  # probably DNS lookup failed
 			self.feeds = 'BAD'
 			self.Stage2Completed = True
-		elif result2.find('Collected errors') != -1: # none of the above errors. What condition requires this to loop? Maybe double key press.
+		elif result2.find('Collected errors') != -1:  # none of the above errors. What condition requires this to loop? Maybe double key press.
 			AddPopupWithCallback(self.Stage2,
 				_("A background update check is in progress, please try again."),
 				MessageBox.TYPE_INFO,
@@ -661,7 +661,7 @@ class VISIONBackupManager(Screen):
 							files = []
 							self.plugfile = self.plugfiles[3]
 							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
-								if media != "autofs" or "net":
+								if "autofs" not in dir or "net" not in dir:
 									devmounts.append(dir)
 							if len(devmounts):
 								for x in devmounts:
@@ -764,12 +764,12 @@ class VISIONBackupManager(Screen):
 class BackupSelection(Screen):
 	skin = """
 		<screen name="BackupSelection" position="center,center" size="560,400">
-			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="blend"/>
-			<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="blend"/>
-			<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="blend"/>
-			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-			<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-			<widget source="key_yellow" render="Label" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
+			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphaTest="blend"/>
+			<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphaTest="blend"/>
+			<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphaTest="blend"/>
+			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center"verticalAlignment="center" backgroundColor="#9f1313" transparent="1"/>
+			<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center"verticalAlignment="center" backgroundColor="#1f771f" transparent="1"/>
+			<widget source="key_yellow" render="Label" position="280,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center"verticalAlignment="center" backgroundColor="#a08500" transparent="1"/>
 			<widget name="checkList" position="5,50" size="550,250" transparent="1" scrollbarMode="showOnDemand"/>
 		</screen>"""
 
@@ -798,7 +798,7 @@ class BackupSelection(Screen):
 			"up": self.up,
 			"menu": self.exit
 		}, -1)
-		if not self.selectionChanged in self["checkList"].onSelectionChanged:
+		if self.selectionChanged not in self["checkList"].onSelectionChanged:
 			self["checkList"].onSelectionChanged.append(self.selectionChanged)
 		self.onLayoutFinish.append(self.layoutFinished)
 
@@ -853,12 +853,12 @@ class BackupSelection(Screen):
 class XtraPluginsSelection(Screen):
 	skin = """
 		<screen name="BackupSelection" position="center,center" size="560,400">
-			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="blend"/>
-			<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="blend"/>
-			<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="blend"/>
-			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-			<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-			<widget source="key_yellow" render="Label" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
+			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphaTest="blend"/>
+			<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphaTest="blend"/>
+			<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphaTest="blend"/>
+			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center"verticalAlignment="center" backgroundColor="#9f1313" transparent="1"/>
+			<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center"verticalAlignment="center" backgroundColor="#1f771f" transparent="1"/>
+			<widget source="key_yellow" render="Label" position="280,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center"verticalAlignment="center" backgroundColor="#a08500" transparent="1"/>
 			<widget name="checkList" position="5,50" size="550,250" transparent="1" scrollbarMode="showOnDemand"/>
 		</screen>"""
 
@@ -889,7 +889,7 @@ class XtraPluginsSelection(Screen):
 			"up": self.up,
 			"menu": self.exit
 		}, -1)
-		if not self.selectionChanged in self["checkList"].onSelectionChanged:
+		if self.selectionChanged not in self["checkList"].onSelectionChanged:
 			self["checkList"].onSelectionChanged.append(self.selectionChanged)
 		self.onLayoutFinish.append(self.layoutFinished)
 
@@ -942,21 +942,21 @@ class XtraPluginsSelection(Screen):
 class VISIONBackupManagerMenu(Setup):
 	skin = """
 	<screen name="VISIONBackupManagerMenu" position="center,center" size="560,550">
-		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphatest="blend"/>
-		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
-		<widget name="HelpWindow" pixmap="buttons/vkey_icon.png" position="450,510" zPosition="1" size="1,1" transparent="1" alphatest="blend"/>
-		<widget source="VKeyIcon" render="Pixmap" pixmap="buttons/key_text.png" position="0,500" zPosition="1" size="35,25" transparent="1" alphatest="blend">
+		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphaTest="blend"/>
+		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphaTest="blend"/>
+		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphaTest="blend"/>
+		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphaTest="blend"/>
+		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center"verticalAlignment="center" backgroundColor="#9f1313" transparent="1"/>
+		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center"verticalAlignment="center" backgroundColor="#1f771f" transparent="1"/>
+		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center"verticalAlignment="center" backgroundColor="#a08500" transparent="1"/>
+		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" horizontalAlignment="center"verticalAlignment="center" backgroundColor="#18188b" transparent="1"/>
+		<widget name="HelpWindow" pixmap="buttons/vkey_icon.png" position="450,510" zPosition="1" size="1,1" transparent="1" alphaTest="blend"/>
+		<widget source="VKeyIcon" render="Pixmap" pixmap="buttons/key_text.png" position="0,500" zPosition="1" size="35,25" transparent="1" alphaTest="blend">
 			<convert type="ConditionalShowHide"/>
 		</widget>
-		<widget name="footnote" position="0,50" size="300,20" zPosition="1" font="Regular;20" halign="left" transparent="1" valign="top"/>
+		<widget name="footnote" position="0,50" size="300,20" zPosition="1" font="Regular;20" horizontalAlignment="left" transparent="1"verticalAlignment="top"/>
 		<widget name="config" position="0,90" size="560,375" transparent="0" enableWrapAround="1" scrollbarMode="showOnDemand"/>
-		<widget name="description" position="0,e-75" size="560,75" font="Regular;18" halign="center" valign="top" transparent="0" zPosition="1"/>
+		<widget name="description" position="0,e-75" size="560,75" font="Regular;18" horizontalAlignment="center"verticalAlignment="top" transparent="0" zPosition="1"/>
 	</screen>"""
 
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
@@ -1102,11 +1102,11 @@ class AutoBackupManagerTimer:
 		now = int(time())
 		if BackupTime > 0:
 			if BackupTime < now + atLeast:
-# Backup missed - run it 60s from now
+				# Backup missed - run it 60s from now
 				self.backuptimer.startLongTimer(60)
 				print("[BackupManager] Backup Time overdue - running in 60s")
 			else:
-# Backup in future - set the timer...
+				# Backup in future - set the timer...
 				delay = BackupTime - now
 				self.backuptimer.startLongTimer(delay)
 		else:
@@ -1253,8 +1253,8 @@ class BackupFiles(Screen):
 			self.selectedFiles.append('/usr/crossepg/providers')
 		if path.exists('/usr/lib/sabnzbd') and '/usr/lib/sabnzbd' not in self.selectedFiles:
 			self.selectedFiles.append('/usr/lib/sabnzbd')
-#		if path.exists("/etc/samba") and "/etc/samba" not in self.selectedFiles:
-#			self.selectedFiles.append("/etc/samba")
+		# if path.exists("/etc/samba") and "/etc/samba" not in self.selectedFiles:
+		# self.selectedFiles.append("/etc/samba")
 		if path.exists("/etc/samba/smb-user.conf") and "/etc/samba/smb-user.conf" not in self.selectedFiles:
 			self.selectedFiles.append("/etc/samba/smb-user.conf")
 		if path.exists("/etc/samba/private") and "/etc/samba/private" not in self.selectedFiles:
@@ -1429,8 +1429,8 @@ class BackupFiles(Screen):
 #
 		try:
 			if config.backupmanager.types_to_prune.value != "none" \
-			 and config.backupmanager.number_to_keep.value > 0 \
-			 and path.exists(self.BackupDirectory): # !?!
+				and config.backupmanager.number_to_keep.value > 0 \
+				and path.exists(self.BackupDirectory):  # !?!
 				backups = listdir(self.BackupDirectory)
 # Only try to delete backups with the current user prefix
 				emlist = []

@@ -7,9 +7,8 @@ from .BackupManager import BackupManagerautostart
 from .ImageManager import ImageManagerautostart
 from .SwapManager import SwapAutostart
 from .SoftcamManager import SoftcamAutostart
-from .ScriptRunner import ScriptRunnerAutostart
+from .ScriptRunner import ScriptRunnerAutostart  # noqa: F401
 from .IPKInstaller import OpkgInstaller
-from .ClientModeBox import ClientModeBoxWizard
 from Components.SystemInfo import SystemInfo
 
 config.misc.restorewizardrun = ConfigBoolean(default=False)
@@ -165,10 +164,6 @@ def SwapManagerMenu(session, **kwargs):
 	session.open(SwapManager)
 
 
-def ClientModeBoxMenu(session, **kwargs):
-	session.open(ClientModeBox)
-
-
 def filescan_open(list, session, **kwargs):
 	filelist = [x.path for x in list]
 	session.open(OpkgInstaller, filelist)  # list
@@ -177,19 +172,15 @@ def filescan_open(list, session, **kwargs):
 def filescan(**kwargs):
 	from Components.Scanner import Scanner, ScanPath
 	return Scanner(mimetypes=["application/x-debian-package"],
-				paths_to_scan=[
-					ScanPath(path="ipk", with_subdirs=True),
-					ScanPath(path="", with_subdirs=False),
-				],
-				name="Opkg",
-				description=_("Install extensions."),
-				openfnc=filescan_open)
+		paths_to_scan=[
+			ScanPath(path="ipk", with_subdirs=True),
+			ScanPath(path="", with_subdirs=False),], name="Opkg", description=_("Install extensions."), openfnc=filescan_open)
 
 
 def Plugins(**kwargs):
 	plist = [PluginDescriptor(where=PluginDescriptor.WHERE_MENU, needsRestart=False, fnc=startSetup),
-			 PluginDescriptor(name=_("Vision Core"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=UpgradeMain),
-			 PluginDescriptor(where=PluginDescriptor.WHERE_MENU, fnc=SoftcamSetup)]
+		PluginDescriptor(name=_("Vision Core"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=UpgradeMain),
+		PluginDescriptor(where=PluginDescriptor.WHERE_MENU, fnc=SoftcamSetup)]
 	if config.softcammanager.showinextensions.value:
 		plist.append(PluginDescriptor(name=_("Vision Softcam"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=SoftcamMenu))
 	if config.scriptrunner.showinextensions.value:
@@ -206,5 +197,5 @@ def Plugins(**kwargs):
 	plist.append(PluginDescriptor(name=_("Vision Mount Manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=MountManagerMenu))
 	plist.append(PluginDescriptor(name=_("Vision Script Runner"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ScriptRunnerMenu))
 	plist.append(PluginDescriptor(name=_("Vision SWAP Manager"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=SwapManagerMenu))
-	plist.append(PluginDescriptor(name=_("Vision Client Mode Box"), where=PluginDescriptor.WHERE_VISIONMENU, fnc=ClientModeBoxMenu))
+	plist.append(PluginDescriptor(name=_("Vision Client Mode Box"), where=PluginDescriptor.WHERE_VISIONMENU))
 	return plist

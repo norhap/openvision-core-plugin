@@ -1,5 +1,5 @@
 import errno
-from os import mkdir, remove, rename, statvfs
+from os import mkdir, rename
 from os.path import join, exists, realpath
 from re import search, sub
 
@@ -10,7 +10,7 @@ from .__init__ import _
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.ConfigList import ConfigListScreen
-from Components.config import config, getConfigListEntry, ConfigSelection, NoSave
+from Components.config import config, getConfigListEntry, ConfigSelection, NoSave  # noqa: F401
 from Components.Console import Console
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
@@ -138,8 +138,8 @@ def buildPartitionInfo(partition, partitionList):
 					if res.returncode == 0:
 						_format = str(res.stdout).strip()
 				break
-		size = int(parts[2]) # get size partitions
-		if size < 1: # is condition ever fulfilled?
+		size = int(parts[2])  # get size partitions
+		if size < 1:  # is condition ever fulfilled?
 			description = _("Size: unavailable")
 		if size < 1000 * 1000:
 			description = _("Size: %sMB") % str(int(size))
@@ -147,9 +147,9 @@ def buildPartitionInfo(partition, partitionList):
 			description = _("Size: %sGB") % format(size / (1000 * 1000), '.2f')
 		else:
 			description = _("Size: %sTB") % format(size / (1000 * 1000 * 1000), '.2f')
-	if description != "": # how will this ever return false?
-		if SystemInfo["MountManager"]: # called by VISIONDevicesPanel else DeviceMountSetup
-			if rw.startswith("rw"): # read/write
+	if description != "":  # how will this ever return false?
+		if SystemInfo["MountManager"]:  # called by VISIONDevicesPanel else DeviceMountSetup
+			if rw.startswith("rw"):  # read/write
 				rw = " R/W"
 			elif rw.startswith("ro"):
 				rw = " R/O"
@@ -214,8 +214,7 @@ class VISIONDevicesPanel(Screen):
 		10, 50, 140, 40, 20,
 		160, 50, 140, 40, 20,
 		310, 50, 140, 40, 20,
-		460, 50, 140, 40, 20
-	]
+		460, 50, 140, 40, 20]
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -256,7 +255,7 @@ class VISIONDevicesPanel(Screen):
 		# print("[MountManager][selectionChanged] self.partitionList=%s" % self.partitionList)
 		if len(self.list) == 0:
 			return
-		sel = self["list"].getCurrent()	# partitionInfo = (name, description, png)
+		sel = self["list"].getCurrent()  # partitionInfo = (name, description, png)
 		# print("[MountManager][selectionChanged] sel1=%s sel2=%s" % (sel[0], sel[1]))
 		seldev = sel
 		for line in sel:
@@ -298,7 +297,7 @@ class VISIONDevicesPanel(Screen):
 	def setupMounts(self):
 		sel = self["list"].getCurrent()
 		if sel:
-			self.session.openWithCallback(self.setTimer, DeviceMountSetup)	# print("[MountManager][setupMounts]")
+			self.session.openWithCallback(self.setTimer, DeviceMountSetup)
 
 	def unmount(self):
 		sel = self["list"].getCurrent()
@@ -428,9 +427,9 @@ class VISIONDevicesPanel(Screen):
 					return
 				for line in f.readlines():
 					if "/media/hdd" in line:
-						 message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (BRAND, DISPLAYMODEL)
-						 ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
-						 ybox.setTitle(_("Restart receiver."))
+						message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (BRAND, DISPLAYMODEL)
+						ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
+						ybox.setTitle(_("Restart receiver."))
 
 	def restartBox(self, answer):
 		if answer is True:
@@ -489,7 +488,7 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 		self["lab6"].hide()
 
 	def saveconfMounts(self):
-		for x in self["config"].list: # partitionInfo = getConfigListEntry(text, item, partition, _format)
+		for x in self["config"].list:  # partitionInfo = getConfigListEntry(text, item, partition, _format)
 			self.device = x[2]
 			self.mountp = x[1].value
 			self.type = x[3]

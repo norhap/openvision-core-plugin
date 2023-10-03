@@ -1,11 +1,8 @@
 # for localized messages
 from .__init__ import _, PluginLanguageDomain
-
-from Screens.Screen import Screen
 from Screens.Console import Console
 from Screens.Setup import Setup
 from Components.ActionMap import ActionMap
-from Components.Label import Label
 from Components.Sources.StaticText import StaticText
 from Components.config import config, ConfigSubsection, ConfigYesNo
 from .IPKInstaller import OpkgInstaller
