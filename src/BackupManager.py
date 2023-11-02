@@ -26,6 +26,7 @@ from Screens.Setup import Setup
 from Tools.Directories import fileExists
 from Tools.Notifications import AddPopupWithCallback
 from Tools.Multiboot import bootmviSlot, createInfo, getCurrentImage
+from time import sleep
 
 autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = 'RestoreSettingsNotification'
@@ -53,7 +54,7 @@ def getMountDefault(mountpointchoices):
 config.backupmanager = ConfigSubsection()
 config.backupmanager.backupdirs = ConfigLocations(
 	default=[eEnv.resolve('${sysconfdir}/enigma2/'), eEnv.resolve('${sysconfdir}/fstab'), eEnv.resolve('${sysconfdir}/crontab'), eEnv.resolve('${sysconfdir}/hostname'), eEnv.resolve('${sysconfdir}/network/interfaces'), eEnv.resolve('${sysconfdir}/passwd'), eEnv.resolve('${sysconfdir}/shadow'), eEnv.resolve('${sysconfdir}/etc/shadow'),
-	eEnv.resolve('${sysconfdir}/resolv.conf'), eEnv.resolve('${sysconfdir}/ushare.conf'), eEnv.resolve('${sysconfdir}/inadyn.conf'), eEnv.resolve('${sysconfdir}/tuxbox/config/'), eEnv.resolve('${sysconfdir}/wpa_supplicant.conf')])
+	eEnv.resolve('${sysconfdir}/ushare.conf'), eEnv.resolve('${sysconfdir}/inadyn.conf'), eEnv.resolve('${sysconfdir}/tuxbox/config/'), eEnv.resolve('${sysconfdir}/wpa_supplicant.conf')])
 config.backupmanager.backuplocation = ConfigSelection(choices=mountpointchoices, default=getMountDefault(mountpointchoices))
 config.backupmanager.backupretry = ConfigNumber(default=30)
 config.backupmanager.backupretrycount = NoSave(ConfigNumber(default=0))
@@ -492,8 +493,11 @@ class VISIONBackupManager(Screen):
 	def StageRestoreSettings(self, answer):
 		if answer:
 			print('[BackupManager] Restoring only settings:')
-			restoreSettings = "/sbin/init 4 && sleep 5 && tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C / && /sbin/init 6"
+			restoreSettings = "tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C /"
 			self.Console.ePopen("%s" % restoreSettings, self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring settings, your receiver go to restart..."), MessageBox.TYPE_INFO))
+			if path.islink("/etc/resolv.conf"):
+				self.Console.ePopen("rm -f /etc/resolv.conf")
+			self.Console.ePopen("/sbin/init 4 && sleep 5 && /sbin/init 6")
 
 	def Stage1(self, answer=None):
 		print('[BackupManager] Restoring Stage 1:')
@@ -511,6 +515,9 @@ class VISIONBackupManager(Screen):
 			self.Stage1Completed = True
 			eDVBDB.getInstance().reloadServicelist()
 			eDVBDB.getInstance().reloadBouquets()
+			sleep(0.5)
+			if path.islink("/etc/resolv.conf"):
+				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
 			self.session.nav.PowerTimer.loadTimer()
 # Don't check RecordTimers for conflicts. On a restore we may
 # not have the correct tuner configuration (and no USB tuners)...
@@ -755,6 +762,9 @@ class VISIONBackupManager(Screen):
 		if self.didPluginsRestore and fileExists("/tmp/backupkernelversion") or self.didSettingsRestore and fileExists("/tmp/backupkernelversion"):
 			print('[BackupManager] Restoring backup')
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /", self.Stage1SettingsComplete)
+			sleep(0.5)
+			if path.islink("/etc/resolv.conf"):
+				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
 			self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO)
 			self.Console.ePopen("sleep 5 && killall -9 enigma2 && init 6")
 		else:

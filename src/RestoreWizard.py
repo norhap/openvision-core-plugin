@@ -12,6 +12,7 @@ from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
 from Tools.Multiboot import bootmviSlot, createInfo, getCurrentImage
 from Components.SystemInfo import SystemInfo, MODEL
+from time import sleep
 
 
 class RestoreWizard(WizardLanguage, ShowRemoteControl):
@@ -137,6 +138,9 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 				bootmviSlot(text=text, slot=slot)
 			if self.didSettingsRestore and path.exists("/tmp/etc/enigma2/settings"):
 				self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /")
+			sleep(0.5)
+			if path.islink("/etc/resolv.conf"):
+				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
 			self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO, simple=True)
 			eConsoleAppContainer().execute("sleep 5 && killall -9 enigma2 && init 6")
 		elif self.NextStep == 'settingsquestion' or self.NextStep == 'settingsrestore' or self.NextStep == 'pluginsquestion' or self.NextStep == 'pluginsrestoredevice' or self.NextStep == 'end' or self.NextStep == 'noplugins':
