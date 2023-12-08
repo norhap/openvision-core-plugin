@@ -39,7 +39,7 @@ class VISIONScriptRunner(OpkgInstaller):
 			for line in f:
 				parts = line.split()
 				pkg = parts[0]
-				if pkg.find('.sh') >= 0:
+				if pkg.find('.sh') >= 0 or pkg.find('.py') >= 0:
 					list.append(pkg)
 		OpkgInstaller.__init__(self, session, list)
 		self.setTitle(_("Vision Script Runner"))
@@ -69,9 +69,15 @@ class VISIONScriptRunner(OpkgInstaller):
 		list = self.list.getSelectionsList()
 		cmdList = []
 		for item in list:
-			cmdList.append('chmod +x /usr/script/' + item[0] + ' && . ' + '/usr/script/' + str(item[0]))
-		if len(cmdList) < 1 and len(self.list.list):
-			cmdList.append('chmod +x /usr/script/' + self.list.getCurrent()[0][0] + ' && . ' + '/usr/script/' + str(self.list.getCurrent()[0][0]))
+			if ".sh" in str(self.list.getCurrent()[0][0]):
+				cmdList.append('chmod +x /usr/script/' + item[0] + ' && . ' + '/usr/script/' + str(item[0]))
+				if len(cmdList) < 1 and len(self.list.list):
+					cmdList.append('chmod +x /usr/script/' + self.list.getCurrent()[0][0] + ' && . ' + '/usr/script/' + str(self.list.getCurrent()[0][0]))
+					break
+			else:
+				if len(cmdList) < 1 and len(self.list.list):
+					cmdList.append('python ' + '/usr/script/' + str(self.list.getCurrent()[0][0]))
+					break
 		if len(cmdList) > 0:
 			self.session.open(Console, cmdlist=cmdList, closeOnSuccess=config.scriptrunner.close.value)
 
