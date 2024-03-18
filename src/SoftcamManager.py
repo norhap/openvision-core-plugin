@@ -32,13 +32,23 @@ config.misc.softcams = ConfigSelection(default="None", choices=CamControl("softc
 
 softcamautopoller = None
 
-wicardd = str(ProcessList().named("wicardd")).strip("[]")
-cccam = str(ProcessList().named("CCcam")).strip("[]")
-if config.softcammanager.softcams_autostart.value not in ("wicardd", "CCcam") and config.misc.softcams.value not in ("wicardd", "CCcam"):
-	if wicardd:
-		Console().ePopen('kill -9 %s' % wicardd)
-	if cccam:
-		Console().ePopen('kill -9 %s' % cccam)
+
+def updateActiveProcess():
+	wicardd = str(ProcessList().named("wicardd")).strip("[]")
+	cccam = str(ProcessList().named("CCcam232")).strip("[]")
+	if not cccam:
+		cccam = str(ProcessList().named("CCcam239")).strip("[]")
+	if not cccam:
+		cccam = str(ProcessList().named("CCcam209")).strip("[]")
+	if not cccam:
+		cccam = str(ProcessList().named("CCcam221")).strip("[]")
+	if not cccam:
+		cccam = str(ProcessList().named("CCcam230")).strip("[]")
+	if config.softcammanager.softcams_autostart.value not in ("wicardd", str(cccam)) and config.misc.softcams.value not in ("wicardd", str(cccam)):
+		if wicardd:
+			Console().ePopen(f'kill -9 {wicardd}')
+		if cccam:
+			Console().ePopen(f'kill -9 {cccam}')
 
 
 def updateExtensions(configElement):
@@ -52,6 +62,7 @@ config.softcammanager.showinextensions.addNotifier(updateExtensions, initial_cal
 def SoftcamAutostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during shutdown, with reason=0 at startup?"""
 	global softcamautopoller
+	updateActiveProcess()
 	if reason == 0:
 		link = "/etc/init.d/softcam"
 		print("[SoftcamAutostart] config.misc.softcams.value=%s" % (config.misc.softcams.value))
