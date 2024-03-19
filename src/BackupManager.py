@@ -1409,6 +1409,7 @@ class BackupFiles(Screen):
 			for fn in tmplist:
 				tfl.write(fn + "\n")
 		self.Console.ePopen("tar -T " + BackupFiles.tar_flist + " -czvf " + self.Backupfile, self.Stage4Complete)
+		self.Console.ePopen("tar -czvf " + self.BackupDirectory + "NetworkID.tar.gz /etc/enigma2/settings")
 
 	def Stage4Complete(self, result, retval, extra_args):
 		try:
