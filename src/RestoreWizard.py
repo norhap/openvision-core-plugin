@@ -15,6 +15,19 @@ from Components.SystemInfo import SystemInfo, MODEL
 from time import sleep
 
 
+def setcliJoinZerotier():  # join to ZeroTier
+	try:
+		with open("/tmp/etc/enigma2/settings", "r") as fr:
+			for line in fr.readlines():
+				if line.startswith('config.plugins.IPToSAT.networkidzerotier'):
+					networkid = line.strip().split('=')[1]
+					if networkid:
+						eConsoleAppContainer().execute(f'/etc/init.d/zerotier start ; update-rc.d -f zerotier defaults ; sleep 15 ; zerotier-cli join {networkid}')
+						break
+	except Exception:
+		pass
+
+
 class RestoreWizard(WizardLanguage, ShowRemoteControl):
 	def __init__(self, session):
 		self.xmlfile = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/Vision/restorewizard.xml")
@@ -142,7 +155,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
 			self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO, simple=True)
-			eConsoleAppContainer().execute("sleep 5 && killall -9 enigma2 && init 6")
+			eConsoleAppContainer().execute("sleep 15 && killall -9 enigma2 && init 6")
 		elif self.NextStep == 'settingsquestion' or self.NextStep == 'settingsrestore' or self.NextStep == 'pluginsquestion' or self.NextStep == 'pluginsrestoredevice' or self.NextStep == 'end' or self.NextStep == 'noplugins':
 			self.buildListfinishedCB(False)
 		elif self.NextStep == 'settingrestorestarted':
@@ -229,6 +242,8 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 	def pluginsRestore_Finished(self, result, retval, extra_args=None):
 		if result:
 			print("[RestoreWizard] opkg install result:\n", str(result))
+			if path.exists("/tmp/etc/enigma2/settings") and path.exists("/usr/sbin/zerotier-one"):
+				setcliJoinZerotier()
 		self.didPluginRestore = True
 		self.NextStep = 'reboot'
 		self.buildListRef.close(True)

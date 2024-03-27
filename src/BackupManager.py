@@ -502,7 +502,7 @@ class VISIONBackupManager(Screen):
 	def Stage1(self, answer=None):
 		print('[BackupManager] Restoring Stage 1:')
 		if answer is True:
-			self.Console.ePopen("sleep 1", self.Stage1SettingsComplete)
+			self.Console.ePopen("sleep 1 ; tar -xzvf " + self.BackupDirectory + self.sel + " -C /tmp/ etc/enigma2/settings", self.Stage1SettingsComplete)
 		if answer is False:
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C / tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion  tmp/3rdPartyPlugins", self.Stage1PluginsComplete)
 
@@ -755,6 +755,18 @@ class VISIONBackupManager(Screen):
 		self.Stage3Completed = True
 		self.Stage4Completed = True
 		self.Stage5Completed = True
+		if path.exists("/tmp/etc/enigma2/settings") and path.exists("/usr/sbin/zerotier-one"):  # join to ZeroTier
+			from enigma import eConsoleAppContainer  # noqa: E402
+			try:
+				with open("/tmp/etc/enigma2/settings", "r") as fr:
+					for line in fr.readlines():
+						if line.startswith('config.plugins.IPToSAT.networkidzerotier'):
+							networkid = line.strip().split('=')[1]
+							if networkid:
+								eConsoleAppContainer().execute(f'/etc/init.d/zerotier start ; update-rc.d -f zerotier defaults ; sleep 15 ; zerotier-cli join {networkid}')
+								break
+			except Exception:
+				pass
 		if SystemInfo["hasKexec"]:
 			slot = getCurrentImage()
 			text = createInfo(slot)
@@ -766,7 +778,7 @@ class VISIONBackupManager(Screen):
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
 			self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO)
-			self.Console.ePopen("sleep 5 && killall -9 enigma2 && init 6")
+			self.Console.ePopen("sleep 15 && killall -9 enigma2 && init 6")
 		else:
 			return self.close()
 
@@ -1409,7 +1421,6 @@ class BackupFiles(Screen):
 			for fn in tmplist:
 				tfl.write(fn + "\n")
 		self.Console.ePopen("tar -T " + BackupFiles.tar_flist + " -czvf " + self.Backupfile, self.Stage4Complete)
-		self.Console.ePopen("tar -czvf " + self.BackupDirectory + "NetworkID.tar.gz /etc/enigma2/settings")
 
 	def Stage4Complete(self, result, retval, extra_args):
 		try:
