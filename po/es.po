@@ -410,8 +410,8 @@ msgstr "Seleccionar Todo"
 msgid "Opkg"
 msgstr "Ipk"
 
-msgid "It seems you have not setup an extra location. Please set it up in the Backup manager setup menu."
-msgstr "Parece que no has configurado una ubicación extra. Configúralo en Administrador-copias-configuración ...menu/botón azul 'Elegir carpeta local IPK'."
+msgid "It seems you have not setup an extra location. Set in:\n\nThe Backup manager setup menu."
+msgstr "No has configurado una ubicación, establézcala en:\n\nAdministrador Copias de configuración > menu > 'Elegir carpeta IPK'."
 
 msgid "It seems you have not setup a extra location, please setup in Backup Manager setup menu "
 msgstr "Parece que no ha configurado una ubicación adicional, configure en el menú de configuración Administrador-copias-configuración "
@@ -755,26 +755,26 @@ msgstr "Prueba de Softcam"
 msgid "Sorry Image Restore is not supported on the"
 msgstr "Lo sentimos Imagen Restaurada no es compatible"
 
-msgid "Sorry but location does exist or not setup, please setup in Backup Manager setup menu "
-msgstr "Ojo: el destino no existe o no está configurado. Configúralo en el menú de administrador de copias de seguridad "
+msgid "The location does not exist or is not setup, set in:\n\nBackup manager setup menu."
+msgstr "La ubicación no existe o no está configurada, establézcala en:\n\nAdministrador Copias de configuración > menu > 'Elegir carpeta IPK'."
 
 msgid "Sorry feeds are down for maintenance, Please try again later."
-msgstr "Ojo: los Feeds están apagados por mantenimiento. Vuelve a intentarlo más tarde."
+msgstr "Los Feeds están apagados por mantenimiento. Vuelve a intentarlo más tarde."
 
 msgid "Sorry feeds are down for maintenance, Please try using Backup Manager to restore plugins later."
-msgstr "Ojo: los feeds están apagados por mantenimiento. Restaura los plugins más tarde usando el administrador de copias de seguridad."
+msgstr "Los feeds están apagados por mantenimiento. Restaura los plugins más tarde usando el administrador de copias de seguridad."
 
 msgid "Sorry you %s %s is not yet compatible."
 msgstr "Lo sentimos %s %s no es compatible."
 
 msgid "Sorry, but the restore failed."
-msgstr "Ojo: la restauración ha fallado."
+msgstr "La restauración ha fallado."
 
 msgid "Sorry, no physical devices that supports swapfile attached. Can't create swapfile on network or fat32 file-systems."
 msgstr "Lo sentimos, no hay dispositivos físicos que admitan swapfile adjuntos. No se puede crear un archivo swapfile en la red o sistemas de archivos fat32."
 
 msgid "Sorry, not enough free ram found, and no physical devices that supports SWAP attached. Can't create Swapfile on network or fat32 filesystems, unable to make backup"
-msgstr "Ojo: no se ha encontrado suficiente RAM libre y no hay ningún dispositivo conectado que soporte intercambio"
+msgstr "No se ha encontrado suficiente RAM libre y no hay ningún dispositivo conectado que soporte intercambio"
 
 msgid "Start"
 msgstr "Iniciar"

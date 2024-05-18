@@ -87,11 +87,11 @@ class VISIONIPKInstaller(Screen):
 			self.defaultDir = config.backupmanager.xtraplugindir.value
 			self['lab6'].setText(_("No IPK files found in your default folder"))
 			if not self.defaultDir:
-				message = _("It seems you have not setup an extra location. Please set it up in the Backup manager setup menu.")
+				message = _("It seems you have not setup an extra location. Set in:\n\nThe Backup manager setup menu.")
 				ybox = self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 				ybox.setTitle(_("Change location"))
 			elif self.defaultDir and not path.exists(self.defaultDir):
-				message = _("Sorry but that location does not exist or is not setup. Please set it up in the Backup manager setup menu.")
+				message = _("The location does not exist or is not setup, set in:\n\nBackup manager setup menu.")
 				ybox = self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 				ybox.setTitle(_("Change location"))
 			else:
