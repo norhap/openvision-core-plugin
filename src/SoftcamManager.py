@@ -35,20 +35,24 @@ softcamautopoller = None
 
 def updateActiveProcess():
 	wicardd = str(ProcessList().named("wicardd")).strip("[]")
+	oscam = str(ProcessList().named("oscam")).strip("[]")
 	cccam = str(ProcessList().named("CCcam232")).strip("[]")
 	if not cccam:
 		cccam = str(ProcessList().named("CCcam239")).strip("[]")
-	if not cccam:
+	elif not cccam:
 		cccam = str(ProcessList().named("CCcam209")).strip("[]")
-	if not cccam:
+	elif not cccam:
 		cccam = str(ProcessList().named("CCcam221")).strip("[]")
-	if not cccam:
+	elif not cccam:
 		cccam = str(ProcessList().named("CCcam230")).strip("[]")
 	if config.softcammanager.softcams_autostart.value not in ("wicardd", str(cccam)) and config.misc.softcams.value not in ("wicardd", str(cccam)):
 		if wicardd:
 			Console().ePopen(f'kill -9 {wicardd}')
 		if cccam:
 			Console().ePopen(f'kill -9 {cccam}')
+	if config.softcammanager.softcams_autostart.value not in ("oscam", str(oscam)) and config.misc.softcams.value not in ("oscam", str(oscam)):
+		if oscam:
+			Console().ePopen(f'kill -9 {oscam}')
 
 
 def updateExtensions(configElement):
