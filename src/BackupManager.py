@@ -736,8 +736,8 @@ class VISIONBackupManager(Screen):
 	def Stage5(self):
 		if self.doPluginsRestore:
 			print('[BackupManager] Restoring Stage 5: starting plugin restore')
-			print('[BackupManager] Console command: ', 'opkg install ' + self.pluginslist + ' ' + self.pluginslist2)
-			self.Console.ePopen('opkg install ' + self.pluginslist + ' ' + self.pluginslist2, self.Stage5Complete)
+			print('[BackupManager] Console command: ', 'opkg update && opkg install ' + self.pluginslist + ' ' + self.pluginslist2)
+			self.Console.ePopen('opkg update && opkg install ' + self.pluginslist + ' ' + self.pluginslist2, self.Stage5Complete)
 		else:
 			print('[BackupManager] Restoring Stage 5: plugin restore not requested')
 			self.Stage6()

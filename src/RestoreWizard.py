@@ -171,7 +171,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 			if self.feeds == 'OK':
 				print('[RestoreWizard] Stage 6: Feeds OK, Restoring Plugins')
 				print('[RestoreWizard] Console command: ', 'opkg install ' + self.pluginslist + ' ' + self.pluginslist2)
-				self.Console.ePopen("opkg install " + self.pluginslist + ' ' + self.pluginslist2, self.pluginsRestore_Finished)
+				self.Console.ePopen("opkg update && opkg install " + self.pluginslist + ' ' + self.pluginslist2, self.pluginsRestore_Finished)
 				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while plugins restore completes..."), type=MessageBox.TYPE_INFO, enable_input=False, simple=True)
 				self.buildListRef.setTitle(_("Restore wizard"))
 			elif self.feeds == 'DOWN':
