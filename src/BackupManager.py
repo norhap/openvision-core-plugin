@@ -493,11 +493,10 @@ class VISIONBackupManager(Screen):
 	def StageRestoreSettings(self, answer):
 		if answer:
 			print('[BackupManager] Restoring only settings:')
-			restoreSettings = "tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C /"
+			restoreSettings = "/sbin/init 4 && sleep 5 && tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C / && sleep 15 && /sbin/init 6"
 			self.Console.ePopen("%s" % restoreSettings, self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring settings, your receiver go to restart..."), MessageBox.TYPE_INFO))
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf")
-			self.Console.ePopen("/sbin/init 4 && sleep 5 && /sbin/init 6")
 
 	def Stage1(self, answer=None):
 		print('[BackupManager] Restoring Stage 1:')
