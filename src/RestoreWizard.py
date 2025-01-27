@@ -10,7 +10,7 @@ from Screens.WizardLanguage import WizardLanguage
 from Screens.HelpMenu import ShowRemoteControl
 from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
-from Tools.Multiboot import bootmviSlot, createInfo, getCurrentImage
+from Tools.Multiboot import bootmviSlot, getSlotImageInfo, getCurrentImage
 from Components.SystemInfo import SystemInfo, MODEL
 from time import sleep
 
@@ -147,7 +147,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 		if self.NextStep == 'reboot':
 			if SystemInfo["hasKexec"]:
 				slot = getCurrentImage()
-				text = createInfo(slot)
+				text = getSlotImageInfo(slot)
 				bootmviSlot(text=text, slot=slot)
 			if self.didSettingsRestore and path.exists("/tmp/etc/enigma2/settings"):
 				self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /")

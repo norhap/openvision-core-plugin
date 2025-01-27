@@ -25,7 +25,7 @@ from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Tools.Directories import fileExists
 from Tools.Notifications import AddPopupWithCallback
-from Tools.Multiboot import bootmviSlot, createInfo, getCurrentImage
+from Tools.Multiboot import bootmviSlot, getSlotImageInfo, getCurrentImage
 from time import sleep
 
 autoBackupManagerTimer = None
@@ -768,7 +768,7 @@ class VISIONBackupManager(Screen):
 				pass
 		if SystemInfo["hasKexec"]:
 			slot = getCurrentImage()
-			text = createInfo(slot)
+			text = getSlotImageInfo(slot)
 			bootmviSlot(text=text, slot=slot)
 		if self.didPluginsRestore and fileExists("/tmp/backupkernelversion") or self.didSettingsRestore and fileExists("/tmp/backupkernelversion"):
 			print('[BackupManager] Restoring backup')
