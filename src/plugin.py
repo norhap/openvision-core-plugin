@@ -106,7 +106,7 @@ def SoftcamMenu(session, **kwargs):
 
 def SoftcamSetup(menuid):
 	if menuid == "cam":
-		return [(_("Softcam Vision"), SoftcamMenu, "softcamsetup", 1005)]
+		return [(_("Vision Softcam"), SoftcamMenu, "softcamsetup", 1005)]
 	return []
 
 
