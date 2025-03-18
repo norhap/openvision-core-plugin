@@ -1191,8 +1191,8 @@ msgstr "Nota: la lista de slots no muestra la imagen actual o los slots vacíos.
 msgid "Sorry the feeds are down for maintenance. Please try using Backup manager to restore plugins later."
 msgstr "Lo sentimos, los feeds no funcionan por alguna razón. Intente usar el Administrador de copia de seguridad para restaurar los plugins más adelante."
 
-msgid "Your mount has changed, no device mount."
-msgstr "Su montaje ha cambiado, no hay dispositivo montado."
+msgid "Your mount has changed, no device mount.\nTry mounting it with enigma2 restart."
+msgstr "Su montaje ha cambiado, no hay dispositivo montado.\nIntente montarlo con reinicio de enigma2."
 
 msgid "Your receiver is not connected to a network. Please check your network settings and try again."
 msgstr "Su receptor no está conectado a internet. Verifique la configuración de su red y vuelva a intentarlo."
