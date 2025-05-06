@@ -242,8 +242,8 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 	def pluginsRestore_Finished(self, result, retval, extra_args=None):
 		if result:
 			print("[RestoreWizard] opkg install result:\n", str(result))
-			if path.exists("/tmp/etc/enigma2/settings") and path.exists("/usr/sbin/zerotier-one"):
-				setcliJoinZerotier()
+			# if path.exists("/tmp/etc/enigma2/settings") and path.exists("/usr/sbin/zerotier-one"):
+				# setcliJoinZerotier()
 		self.didPluginRestore = True
 		self.NextStep = 'reboot'
 		self.buildListRef.close(True)

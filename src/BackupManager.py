@@ -54,7 +54,7 @@ def getMountDefault(mountpointchoices):
 config.backupmanager = ConfigSubsection()
 config.backupmanager.backupdirs = ConfigLocations(
 	default=[eEnv.resolve('${sysconfdir}/enigma2/'), eEnv.resolve('${sysconfdir}/fstab'), eEnv.resolve('${sysconfdir}/crontab'), eEnv.resolve('${sysconfdir}/hostname'), eEnv.resolve('${sysconfdir}/network/interfaces'), eEnv.resolve('${sysconfdir}/passwd'), eEnv.resolve('${sysconfdir}/shadow'), eEnv.resolve('${sysconfdir}/etc/shadow'),
-	eEnv.resolve('${sysconfdir}/ushare.conf'), eEnv.resolve('${sysconfdir}/inadyn.conf'), eEnv.resolve('${sysconfdir}/tuxbox/config/'), eEnv.resolve('${sysconfdir}/wpa_supplicant.conf')])
+	eEnv.resolve('${sysconfdir}/ushare.conf'), eEnv.resolve('${sysconfdir}/inadyn.conf'), eEnv.resolve('${sysconfdir}/tuxbox/config/'), eEnv.resolve('${localstatedir}/lib/zerotier-one'), eEnv.resolve('${sysconfdir}/wpa_supplicant.conf')])
 config.backupmanager.backuplocation = ConfigSelection(choices=mountpointchoices, default=getMountDefault(mountpointchoices))
 config.backupmanager.backupretry = ConfigNumber(default=30)
 config.backupmanager.backupretrycount = NoSave(ConfigNumber(default=0))
@@ -754,18 +754,18 @@ class VISIONBackupManager(Screen):
 		self.Stage3Completed = True
 		self.Stage4Completed = True
 		self.Stage5Completed = True
-		if path.exists("/tmp/etc/enigma2/settings") and path.exists("/usr/sbin/zerotier-one"):  # join to ZeroTier
-			from enigma import eConsoleAppContainer  # noqa: E402
-			try:
-				with open("/tmp/etc/enigma2/settings", "r") as fr:
-					for line in fr.readlines():
-						if line.startswith('config.plugins.IPToSAT.networkidzerotier'):
-							networkid = line.strip().split('=')[1]
-							if networkid:
-								eConsoleAppContainer().execute(f'/etc/init.d/zerotier start ; update-rc.d -f zerotier defaults ; sleep 15 ; zerotier-cli join {networkid}')
-								break
-			except Exception:
-				pass
+		# if path.exists("/tmp/etc/enigma2/settings") and path.exists("/usr/sbin/zerotier-one"):  # join to ZeroTier
+			# from enigma import eConsoleAppContainer  # noqa: E402
+			# try:
+				# with open("/tmp/etc/enigma2/settings", "r") as fr:
+					# for line in fr.readlines():
+						# if line.startswith('config.plugins.IPToSAT.networkidzerotier'):
+							# networkid = line.strip().split('=')[1]
+							# if networkid:
+								# eConsoleAppContainer().execute(f'/etc/init.d/zerotier start ; update-rc.d -f zerotier defaults ; sleep 15 ; zerotier-cli join {networkid}')
+								# break
+			# except Exception:
+				# pass
 		if SystemInfo["hasKexec"]:
 			slot = getCurrentImage()
 			text = getSlotImageInfo(slot)
@@ -1304,7 +1304,8 @@ class BackupFiles(Screen):
 		# temp measure: clear "/etc/samba" from settings as this is a system config location, not user files
 		if "/etc/samba" in self.selectedFiles:
 			self.selectedFiles.remove("/etc/samba")
-
+		if path.exists('/var/lib/zerotier-one'):
+			self.selectedFiles.append('/var/lib/zerotier-one')
 		config.backupmanager.backupdirs.setValue(self.selectedFiles)
 		config.backupmanager.backupdirs.save()
 		configfile.save()
