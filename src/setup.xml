@@ -24,6 +24,7 @@
 		<if conditional="config.imagemanager.backuplocation.value">
 			<item level="2" text="Backup location" description="Location of where the image backup should be saved.">config.imagemanager.backuplocation</item>
 		</if>
+		<item level="1" text="BackupImage with partitions eMMC (flash USB recovery)" description="Choose type backupImage." requires="canBackupEMMC">config.imagemanager.recovery</item>
 		<item level="2" text="Backup prefix" description="Allows you to tag your image backup to a box. (default is box name/type)">config.imagemanager.folderprefix</item>
 		<item level="2" text="Schedule backups" description="Allows you to schedule your image backups.">config.imagemanager.schedule</item>
 		<item level="2" text="- Time of backup to start" requires="config.imagemanager.schedule" description="Set the time of backup to start.">config.imagemanager.scheduletime</item>
