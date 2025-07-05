@@ -2,9 +2,9 @@ name: coreplugin
 
 on:
   push:
-    branches: [ master ]
+    branches: [ scarthgap ]
   pull_request:
-    branches: [ master ]
+    branches: [ scarthgap ]
 
 jobs:
   build:
