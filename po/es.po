@@ -144,11 +144,8 @@ msgstr "Configuración automática de copia de seguridad"
 msgid "Autostart"
 msgstr "Autoinicio"
 
-msgid "Backing up eMMC partitions for USB flash ..."
-msgstr "Copia de seguridad de particiones eMMC para flash USB ..."
-
-msgid "Backing up eMMC partitions for USB flash..."
-msgstr "Copia de seguridad de particiones eMMC para flash USB..."
+msgid "Backing up eMMC partitions for USB flash. It can take a long time..."
+msgstr "Backup de particiones eMMC para flash USB. Puede tomar mucho tiempo..."
 
 msgid "Backing up files..."
 msgstr "Copiando archivos..."
@@ -205,6 +202,9 @@ msgstr ""
 msgid "Backup prefix"
 msgstr "Prefijo de copias de seguridad"
 
+msgid "BackupImage with partitions eMMC (flash USB recovery)"
+msgstr "Copia de imagen con particiones eMMC (recovery flash USB)"
+
 msgid "CCcam can't run whilst MGcamd is running"
 msgstr "CCcam no puede funcionar mientras funciona MGcamd"
 
@@ -228,6 +228,9 @@ msgstr "Elegir archivos"
 
 msgid "Choose IPK folder"
 msgstr "Elegir carpeta IPK"
+
+msgid "Choose type backupImage."
+msgstr "Elija el tipo de copia de imagen."
 
 msgid "Choose where to mount your devices to:"
 msgstr "Elegir dónde montar sus dispositivos:"
@@ -319,6 +322,9 @@ msgstr "Descargar Imagen"
 
 msgid "%s downloads"
 msgstr "Descargas %s"
+
+msgid "EMMC partitions are not included. It can take a long time..."
+msgstr "Particiones eMMC no se incluyen. Puede tomar mucho tiempo..."
 
 msgid "Enable startup"
 msgstr "Habilitar al iniciar"
@@ -474,7 +480,7 @@ msgid "Mount: "
 msgstr "Montado: "
 
 msgid "Moving to backup Location..."
-msgstr "Moviendo al destino de copias..."
+msgstr "Moviendo al backup..."
 
 msgid "Network server:\n\n"
 msgstr "Servidor de Red:\n\n"

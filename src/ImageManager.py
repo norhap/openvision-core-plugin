@@ -69,6 +69,7 @@ config.imagemanager.scheduletime = ConfigClock(default=0)  # 1:00
 config.imagemanager.query = ConfigYesNo(default=True)
 config.imagemanager.lastbackup = ConfigNumber(default=0)
 config.imagemanager.number_to_keep = ConfigNumber(default=0)
+config.imagemanager.recovery = ConfigYesNo(default=False)
 # config.imagemanager.imagefeed_OV = ConfigText(default="https://images.openvision.dedyn.io/json", fixed_size=False) if config.usage.alternative_imagefeed.value != "all" else ConfigText(default="https://images.openvision.dedyn.io/json%s" % config.usage.alternative_imagefeed.value, fixed_size=False)
 # config.imagemanager.imagefeed_OV.value = config.imagemanager.imagefeed_OV.default  # this is no longer a user setup option
 config.imagemanager.imagefeed_ViX = ConfigText(default="https://www.openvix.co.uk/json", fixed_size=False)
@@ -509,7 +510,7 @@ class VISIONImageManager(Screen):
 				self.session.open(MessageBox, _("There is no image to flash."), MessageBox.TYPE_INFO, timeout=10)
 
 	def keyRestore3(self, *args, **kwargs):
-		self.restore_infobox = self.session.open(MessageBox, _("Please wait while the flash prepares."), MessageBox.TYPE_INFO, timeout=240, enable_input=False)
+		self.restore_infobox = self.session.open(MessageBox, _("Please wait while the flash prepares."), MessageBox.TYPE_INFO, timeout=500, enable_input=False)
 		if "/media/autofs" in config.imagemanager.backuplocation.value or "/media/net" in config.imagemanager.backuplocation.value:
 			self.TEMPDESTROOT = tempfile.mkdtemp(prefix="imageRestore")
 		else:
@@ -842,9 +843,9 @@ class ImageBackup(Screen):
 		self.VuSlot0 = ""
 		self.EMMCIMG = "none"
 		self.MTDBOOT = "none"
-		if SystemInfo["canBackupEMC"]:
-			(self.EMMCIMG, self.MTDBOOT) = SystemInfo["canBackupEMC"]
-		print("[ImageManager] canBackupEMC:", SystemInfo["canBackupEMC"])
+		if SystemInfo["canBackupEMMC"]:
+			(self.EMMCIMG, self.MTDBOOT) = SystemInfo["canBackupEMMC"]
+		print("[ImageManager] canBackupEMMC:", SystemInfo["canBackupEMMC"])
 		self.KERN = "mmc"
 		self.rootdir = 0
 		if SystemInfo["canMultiBoot"]:
@@ -926,11 +927,11 @@ class ImageBackup(Screen):
 		task.check = lambda: self.Stage2Completed
 		task.weighting = 15
 
-		task = Components.Task.PythonTask(job, _("Backing up eMMC partitions for USB flash ..."))
+		task = Components.Task.PythonTask(job, _("Backing up eMMC partitions for USB flash. It can take a long time...") if SystemInfo["canBackupEMMC"] and config.imagemanager.recovery.value or not SystemInfo["canBackupEMMC"] and not config.imagemanager.recovery.value else _("EMMC partitions are not included. It can take a long time..."))
 		task.work = self.doBackup3
 		task.weighting = 5
 
-		task = Components.Task.ConditionTask(job, _("Backing up eMMC partitions for USB flash..."), timeoutCount=2700)
+		task = Components.Task.ConditionTask(job, _("Backing up eMMC partitions for USB flash. It can take a long time...") if SystemInfo["canBackupEMMC"] and config.imagemanager.recovery.value or not SystemInfo["canBackupEMMC"] and not config.imagemanager.recovery.value else _("EMMC partitions are not included. It can take a long time..."), timeoutCount=2700)
 		task.check = lambda: self.Stage3Completed
 		task.weighting = 15
 
@@ -1366,11 +1367,9 @@ class ImageBackup(Screen):
 	def doBackup5(self):
 		print("[ImageManager] Stage5: Moving from work to backup folders")
 		try:
-			if self.EMMCIMG == "emmc.img" or self.EMMCIMG == "disk.img" and path.exists("%s/%s" % (self.TMPDIR, self.EMMCIMG)):
-				if path.exists("%s/%s" % (self.TMPDIR, self.EMMCIMG)):
-					move("%s/%s" % (self.TMPDIR, self.EMMCIMG), "%s%s" % (self.MAINDEST, self.EMMCIMG))
-				if path.exists("%s/rootfs.ext4" % self.TMPDIR) and not MODEL.startswith("osmio4k"):
-					move("%s/rootfs.ext4" % self.TMPDIR, "%s%s" % (self.MAINDEST, self.EMMCIMG))
+			if self.EMMCIMG in ("emmc.img", "disk.img") and path.exists("%s/%s" % (self.TMPDIR, self.EMMCIMG)):
+				if config.imagemanager.recovery.value:
+					move("%s/%s" % (self.TMPDIR, self.EMMCIMG), "%s%s" % (self.MAINDEST, self.EMMCIMG))  # move img partitions eMMC for flash USB recovery.
 			if self.EMMCIMG == "usb_update.bin":
 				if path.exists("%s/%s" % (self.TMPDIR, self.EMMCIMG)):
 					move("%s/%s" % (self.TMPDIR, self.EMMCIMG), "%s/%s" % (self.MAINDESTROOT, self.EMMCIMG))
@@ -1443,7 +1442,7 @@ class ImageBackup(Screen):
 							line = defaultprefix + "-" + backupimage + "-" + MODEL + "-" + self.BackupDate
 							fileout.write(line)
 							fileout.close()
-					if self.EMMCIMG in ("emmc.img", "disk.img") and not MODEL.startswith("osmio4k") or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
+					if self.EMMCIMG in ("emmc.img", "disk.img") and config.imagemanager.recovery.value or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
 						self.session.open(MessageBox, _("Creating image online flash for ofgwrite and recovery eMMC."), MessageBox.TYPE_INFO, timeout=10)
 					else:
 						self.session.open(MessageBox, _("Creating image online flash for ofgwrite."), MessageBox.TYPE_INFO, timeout=10)
@@ -1491,10 +1490,10 @@ class ImageBackup(Screen):
 		zipfolder = path.split(self.MAINDESTROOT)
 		try:
 			if self.EMMCIMG in ("emmc.img", "disk.img", "usb_update.bin"):
-				if self.EMMCIMG in ("emmc.img", "disk.img") and not MODEL.startswith("osmio4k") or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
+				if self.EMMCIMG in ("emmc.img", "disk.img") and config.imagemanager.recovery.value or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
 					self.commandMB.append("7za a -r -bt -bd %s%s-%s-%s-%s_recovery_emmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROBUILD, self.MODEL, self.BackupDate, self.MAINDESTROOT))
 				else:
-					self.commandMB.append("7za a -r -bt -bd %s%s-%s-%s-%s%s_mmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROBUILD, self.MODEL, self.BackupDate, self.VuSlot0, self.MAINDESTROOT))
+					self.commandMB.append("7za a -r -bt -bd %s%s-%s-%s-%s%s_ofgwrite.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROBUILD, self.MODEL, self.BackupDate, self.VuSlot0, self.MAINDESTROOT))
 					self.commandMB.append("sync")
 			else:
 				self.commandMB.append("cd " + self.MAINDESTROOT + " && zip -r " + self.MAINDESTROOT + "_usb.zip *")
@@ -1752,10 +1751,7 @@ class ImageManagerSetup(Setup):
 			config.imagemanager.folderprefix.value = defaultprefix
 		for configElement in (config.imagemanager.imagefeed_ATV, config.imagemanager.imagefeed_PLi, config.imagemanager.imagefeed_ViX, config.imagemanager.imagefeed_OBH):
 			self.check_URL_format(configElement)
-		for x in self["config"].list:
-			x[1].save()
-		configfile.save()
-		self.close()
+		Setup.keySave(self)
 
 	def check_URL_format(self, configElement):
 		if configElement.value:
