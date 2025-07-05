@@ -1236,8 +1236,7 @@ class ImageBackup(Screen):
 
 			elif self.EMMCIMG == "emmc.img":
 				print("[ImageManager] %s: EMMC Detected." % MODEL)  # boxes with multiple eMMC partitions in class
-				EMMC = "rootfs.ext4"
-				EMMC_IMAGE = "%s/%s" % (self.TMPDIR, EMMC)
+				EMMC_IMAGE = "%s/%s" % (self.TMPDIR, self.EMMCIMG)
 				IMAGE_ROOTFS_ALIGNMENT = 1024
 				BOOT_PARTITION_SIZE = 3072
 				KERNEL_PARTITION_SIZE = 8192
