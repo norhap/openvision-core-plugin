@@ -43,6 +43,7 @@ partitions = sorted(harddiskmanager.getMountedPartitions(), key=lambda partition
 for parts in partitions:
 	d = path.normpath(parts.mountpoint)
 	if SystemInfo["canMultiBoot"]:
+		config.usage.recovery_disguise.value = True if SystemInfo["canBackupEMMC"] == ('usb_update.bin', 'none') else False
 		if "mmcblk0p" in d or "mmcblk1p" in d:
 			continue
 	if parts.mountpoint != "/":
@@ -927,11 +928,11 @@ class ImageBackup(Screen):
 		task.check = lambda: self.Stage2Completed
 		task.weighting = 15
 
-		task = Components.Task.PythonTask(job, _("Backing up eMMC partitions for USB flash. It can take a long time...") if SystemInfo["canBackupEMMC"] and config.imagemanager.recovery.value or not SystemInfo["canBackupEMMC"] and not config.imagemanager.recovery.value else _("EMMC partitions are not included. It can take a long time..."))
+		task = Components.Task.PythonTask(job, _("Backing up eMMC partitions for USB flash. It can take a long time...") if SystemInfo["canBackupEMMC"] and config.imagemanager.recovery.value or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1") else _("EMMC partitions are not included. It can take a long time..."))
 		task.work = self.doBackup3
 		task.weighting = 5
 
-		task = Components.Task.ConditionTask(job, _("Backing up eMMC partitions for USB flash. It can take a long time...") if SystemInfo["canBackupEMMC"] and config.imagemanager.recovery.value or not SystemInfo["canBackupEMMC"] and not config.imagemanager.recovery.value else _("EMMC partitions are not included. It can take a long time..."), timeoutCount=2700)
+		task = Components.Task.ConditionTask(job, _("Backing up eMMC partitions for USB flash. It can take a long time...") if SystemInfo["canBackupEMMC"] and config.imagemanager.recovery.value or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1") else _("EMMC partitions are not included. It can take a long time..."), timeoutCount=2700)
 		task.check = lambda: self.Stage3Completed
 		task.weighting = 15
 
