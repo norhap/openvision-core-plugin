@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     steps:
 
@@ -18,9 +18,9 @@ jobs:
 
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: '3.12'
 
-      - name: Build python 3.9
+      - name: Build python 3.12
         run: |
           sudo apt-get -q update
           sudo apt-get install dos2unix
