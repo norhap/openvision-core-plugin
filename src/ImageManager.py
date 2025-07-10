@@ -43,7 +43,7 @@ partitions = sorted(harddiskmanager.getMountedPartitions(), key=lambda partition
 for parts in partitions:
 	d = path.normpath(parts.mountpoint)
 	if SystemInfo["canMultiBoot"]:
-		config.usage.recovery_disguise.value = True if SystemInfo["canBackupEMMC"] == ('usb_update.bin', 'none') else False
+		config.usage.recovery_disguise.value = True if SystemInfo["canBackupEMMC"] == ('usb_update.bin', 'none') or getCurrentImage() > 1 else False
 		if "mmcblk0p" in d or "mmcblk1p" in d:
 			continue
 	if parts.mountpoint != "/":
@@ -920,11 +920,15 @@ class ImageBackup(Screen):
 		task.check = lambda: self.Stage2Completed
 		task.weighting = 15
 
-		task = Components.Task.PythonTask(job, _("Backing up eMMC partitions for USB flash. It can take a long time...") if SystemInfo["canBackupEMMC"] and config.imagemanager.recovery.value or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1") else _("EMMC partitions are not included."))
+		# not work in emmc.img and disk.img
+		# task = Components.Task.PythonTask(job, _("Backing up eMMC partitions for USB flash. It can take a long time...") if SystemInfo["canBackupEMMC"] and config.imagemanager.recovery.value and getCurrentImage() == 1 or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1") else _("EMMC partitions are not included."))
+		task = Components.Task.PythonTask(job, _("Backing up eMMC partitions for USB flash. It can take a long time...") if self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1") else _("EMMC partitions are not included."))
 		task.work = self.doBackup3
 		task.weighting = 5
 
-		task = Components.Task.ConditionTask(job, _("Backing up eMMC partitions for USB flash. It can take a long time...") if SystemInfo["canBackupEMMC"] and config.imagemanager.recovery.value or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1") else _("EMMC partitions are not included."), timeoutCount=2700)
+		# not work in emmc.img and disk.img
+		# task = Components.Task.ConditionTask(job, _("Backing up eMMC partitions for USB flash. It can take a long time...") if SystemInfo["canBackupEMMC"] and config.imagemanager.recovery.value and getCurrentImage() == 1 or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1") else _("EMMC partitions are not included."), timeoutCount=2700)
+		task = Components.Task.ConditionTask(job, _("Backing up eMMC partitions for USB flash. It can take a long time...") if self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1") else _("EMMC partitions are not included."), timeoutCount=2700)
 		task.check = lambda: self.Stage3Completed
 		task.weighting = 15
 
@@ -1176,7 +1180,9 @@ class ImageBackup(Screen):
 		SEEK_CONT = int((getFolderSize(self.TMPMOUNTDIR) / 1024) + 100000)
 		try:
 			if config.imagemanager.recovery.value:  # make eMMC partitions only if config is enabled for disk.img and emmc.img.
-				if self.EMMCIMG == "disk.img":
+				if self.EMMCIMG == "disk.img" and getCurrentImage() == 1:
+					self.Stage3Completed = True
+					return
 					print("[ImageManager] %s: EMMC Detected." % MODEL)  # boxes with multiple eMMC partitions in class
 					EMMC_IMAGE = "%s/%s" % (self.TMPDIR, self.EMMCIMG)
 					BLOCK_SIZE = 512
@@ -1227,8 +1233,9 @@ class ImageBackup(Screen):
 					ROOTFS_IMAGE_SEEK = int(ROOTFS_PARTITION_OFFSET) * int(BLOCK_SECTOR)
 					self.commandMB.append("dd if=/dev/%s of=%s seek=%s " % (self.MTDROOTFS, EMMC_IMAGE, ROOTFS_IMAGE_SEEK))
 					self.Console.eBatch(self.commandMB, self.Stage3Complete, debug=False)
-
-				elif self.EMMCIMG == "emmc.img":
+				elif self.EMMCIMG == "emmc.img" and getCurrentImage() == 1:
+					self.Stage3Completed = True
+					return
 					print("[ImageManager] %s: EMMC Detected." % MODEL)  # boxes with multiple eMMC partitions in class
 					EMMC_IMAGE = "%s/%s" % (self.TMPDIR, self.EMMCIMG)
 					IMAGE_ROOTFS_ALIGNMENT = 1024
@@ -1330,8 +1337,6 @@ class ImageBackup(Screen):
 					print("[ImageManager] Stage 3 bypassed: Complete.")
 		except Exception as err:
 			print("[ImageManager] doBackup3 Error: %s" % err)
-			if path.exists(self.TMPMOUNTDIR) and path.exists(self.MAINDESTROOT) and path.exists(self.TMPDIR) and not path.ismount(TMPMOUNTDIR + "/root"):
-				rmtree(self.TMPMOUNTDIR), rmtree(self.TMPDIR), rmtree(self.MAINDESTROOT)
 			if self.errorCallback:
 				self.errorCallback(err)
 			return self.session.openWithCallback(self.close, MessageBox, "%s" % err, MessageBox.TYPE_ERROR, timeout=10)
@@ -1431,7 +1436,9 @@ class ImageBackup(Screen):
 							line = defaultprefix + "-" + backupimage + "-" + MODEL + "-" + self.BackupDate
 							fileout.write(line)
 							fileout.close()
-					if self.EMMCIMG in ("emmc.img", "disk.img") and config.imagemanager.recovery.value or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
+					# not work in emmc.img and disk.img
+					# if self.EMMCIMG in ("emmc.img", "disk.img") and config.imagemanager.recovery.value or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
+					if self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
 						self.session.open(MessageBox, _("Creating image online flash for ofgwrite and recovery eMMC."), MessageBox.TYPE_INFO, timeout=10)
 					else:
 						self.session.open(MessageBox, _("Creating image online flash for ofgwrite."), MessageBox.TYPE_INFO, timeout=10)
@@ -1479,7 +1486,9 @@ class ImageBackup(Screen):
 		zipfolder = path.split(self.MAINDESTROOT)
 		try:
 			if self.EMMCIMG in ("emmc.img", "disk.img", "usb_update.bin"):
-				if self.EMMCIMG in ("emmc.img", "disk.img") and config.imagemanager.recovery.value or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
+				# not work in emmc.img and disk.img
+				# if self.EMMCIMG in ("emmc.img", "disk.img") and config.imagemanager.recovery.value and getCurrentImage() == 1 or self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
+				if self.EMMCIMG == "usb_update.bin" and self.ROOTFSSUBDIR.endswith("1"):
 					self.commandMB.append("7za a -r -bt -bd %s%s-%s-%s-%s_recovery_emmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROBUILD, self.MODEL, self.BackupDate, self.MAINDESTROOT))
 				else:
 					self.commandMB.append("7za a -r -bt -bd %s%s-%s-%s-%s%s_ofgwrite.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROBUILD, self.MODEL, self.BackupDate, self.VuSlot0, self.MAINDESTROOT))
