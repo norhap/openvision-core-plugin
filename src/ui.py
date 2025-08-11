@@ -144,9 +144,6 @@ class VISIONMenu(Screen, ProtectedScreen):
 				elif currentEntry == (_("Client Mode Box")):
 					from .ClientModeBox import ClientModeBoxWizard
 					self.session.open(ClientModeBoxWizard)
-				elif currentEntry == (_("H9 SDcard Manager")) and SystemInfo["HasH9SD"]:
-					from .H9SDmanager import H9SDmanager
-					self.session.open(H9SDmanager)
 
 	def closeRecursive(self):
 		self.close(True)
