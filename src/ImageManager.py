@@ -565,11 +565,6 @@ class VISIONImageManager(Screen):
 					print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
 				else:
 					CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)  # Normal multiboot
-			elif SystemInfo["HasH9SD"]:
-				if fileHas("/proc/cmdline", "root=/dev/mmcblk0p1") is True and fileExists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 using SD card
-					CMD = "/usr/bin/ofgwrite -rmmcblk0p1 '%s'" % MAINDEST
-				elif fileExists("%s/rootfs.ubi" % MAINDEST) and fileExists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 no SD card - build has both roots causes ofgwrite issue
-					rename("%s/rootfs.tar.bz2" % MAINDEST, "%s/xx.txt" % MAINDEST)
 		else:
 			CMD = "/usr/bin/ofgwrite -rmtd4 -kmtd3  %s/" % MAINDEST  # Xtrend ET8500 with OS2 multiboot
 		print("[ImageManager] running commnd:", CMD)

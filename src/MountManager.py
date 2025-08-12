@@ -61,11 +61,6 @@ def getProcPartitions(partitionList):
 			if devMajor == 179:
 				if not SystemInfo["HasSDnomount"]:  # Only interested in h9/i55/h9combo(+dups) mmc partitions.  h9combo(+dups) uses mmcblk1p[0-3].
 					continue
-				if SystemInfo["HasH9SD"]:
-					if not search("mmcblk0p1", device):  # h9/i55 only mmcblk0p1 mmc partition
-						continue
-					if SystemInfo["HasMMC"]:  # With h9/i55 reject mmcblk0p1 mmc partition if root device.
-						continue
 				if SystemInfo["HasSDnomount"][0] and not search("mmcblk1p[0-3]", device):  # h9combo(+dups) uses mmcblk1p[0-3] include
 					continue
 			if devMajor == 8:
