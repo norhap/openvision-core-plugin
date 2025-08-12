@@ -1066,9 +1066,6 @@ msgstr "Crear slot vacío."
 msgid "MultiBoot manager"
 msgstr "Administrador Multiboot"
 
-msgid "Move Nand root to SD card"
-msgstr "Mover Raíz Nand a Tarjeta SD"
-
 msgid "Sorry, but the file is not compatible with this kernel version."
 msgstr "Lo sentimos, pero el backup no es compatible con esta versión de kernel."
 
@@ -1418,9 +1415,6 @@ msgstr "Receptor en Modo Cliente"
 
 msgid "Use this box as a client of a server."
 msgstr "Utilice este receptor como cliente de un servidor."
-
-msgid "H9 SDcard Manager"
-msgstr "Administrador SDCard Receptor H9"
 
 msgid ""
 "From Softcam Setup [%s].\n"

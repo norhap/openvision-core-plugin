@@ -128,15 +128,6 @@ def ImageMangerMenu(session, **kwargs):
 	session.open(ImageManager)
 
 
-if SystemInfo["HasH9SD"]:
-	def H9SDmanager(session):
-		from .H9SDmanager import H9SDmanager
-		return H9SDmanager(session)
-
-	def H9SDmanagerMenu(session, **kwargs):
-		session.open(H9SDmanager)
-
-
 def MountManager(session):
 	from .MountManager import VISIONDevicesPanel
 	return VISIONDevicesPanel(session)
