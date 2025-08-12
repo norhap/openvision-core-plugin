@@ -111,7 +111,7 @@ msgid ""
 "Are you sure you want to delete this backup:\n"
 " "
 msgstr ""
-"Seguro que quieres borrar esta copia de seguridad:\n"
+"Seguro que quieres eliminar esta copia de seguridad:\n"
 " "
 
 msgid ""
@@ -204,12 +204,6 @@ msgstr "Prefijo de copias de seguridad"
 
 msgid "BackupImage with partitions eMMC (flash USB recovery)"
 msgstr "Copia de imagen con particiones eMMC (recovery flash USB)"
-
-msgid "CCcam can't run whilst MGcamd is running"
-msgstr "CCcam no puede funcionar mientras funciona MGcamd"
-
-msgid "Can't unmount partition, make sure it is not being used for swap or record/timeshift paths"
-msgstr "No se puede demontar la partición. Revisa que no está en uso por intercambio, grabación o Timeshift"
 
 msgid "Cancel"
 msgstr "Cancelar"
@@ -618,7 +612,7 @@ msgstr ""
 "%s?"
 
 msgid "Remove confirmation"
-msgstr "Confirmar borrar"
+msgstr "Confirmar eliminar"
 
 msgid "Removing temp mounts..."
 msgstr "Eliminando montajes temporales..."
@@ -827,9 +821,6 @@ msgstr "No hay una copia de seguridad para eliminar."
 msgid "There is no backup to restore."
 msgstr "No hay copia de seguridad para restaurar."
 
-msgid "There is no image to delete."
-msgstr "No hay imagen para borrar."
-
 msgid "There is no image to flash."
 msgstr "No hay imagen para flashear."
 
@@ -900,14 +891,8 @@ msgstr "Sí, restaurar plugins"
 msgid "YES, to restore settings"
 msgstr "Sí, restaurar configuración"
 
-msgid "You have no backup to delete."
-msgstr "No hay ninguna copia para borrar."
-
 msgid "You have no backups to restore."
 msgstr "No hay ninguna copia para restaurar."
-
-msgid "You have no image to delete."
-msgstr "No hay ninguna imagen para borrar."
 
 msgid "You have no image to download."
 msgstr "No hay ninguna imagen para descargar."
@@ -1069,9 +1054,6 @@ msgstr "Administrador Multiboot"
 msgid "Sorry, but the file is not compatible with this kernel version."
 msgstr "Lo sentimos, pero el backup no es compatible con esta versión de kernel."
 
-msgid "Can't unmount partiton, make sure it is not being used for swap or record/timeshift paths!"
-msgstr "No se puede desmontar la partición, asegúrese de que no se esté utilizando para swap o grabar/timeshift en rutas!"
-
 msgid "Warning, this device is used for more than one mount point!\n"
 msgstr "Atención, elija las opciones de montaje para este dispositivo!\n"
 
@@ -1134,18 +1116,6 @@ msgstr "Descargar"
 msgid "Expand"
 msgstr "Expandir"
 
-msgid "Http url for OpenATV Images"
-msgstr "Url http para imágenes OpenATV"
-
-msgid "Http url for OpenPli Images"
-msgstr "Url http para imágenes OpenPLi"
-
-msgid "Http url for OpenViX Images"
-msgstr "Url http para imágenes OpenVIX"
-
-msgid "Http url for User Images"
-msgstr "Url http para imágenes de usuarios"
-
 msgid "Image Version %s"
 msgstr "Imagen Versión %s"
 
@@ -1164,14 +1134,8 @@ msgstr "ImagenLib_ViX"
 msgid "Multiboot manager - SDcard initialization run, please restart your Image."
 msgstr "Administrador de arranque múltiple: inicialización de la tarjeta SD, inicie su receptor."
 
-msgid "Multiboot manager - to use this routine %s image must be at OpenViX 4.2.043 or later and USB flashed - reply Yes to continue"
-msgstr "Administrador de arranque múltiple: para usar esta rutina, la imagen% s debe estar en OpenViX 4.2.043 o posterior y USB flasheado: responda Sí para continuar"
-
 msgid "No images found on the selected download server...if password check validity"
 msgstr "No se encontraron imágenes para el servidor de descarga seleccionado, la contraseña verifica la validez"
-
-msgid "Please wait while the flash prepares, after the image is flashed, your %s will restart - if error please use Recovery mode to restart."
-msgstr "Espere mientras se prepara el flash, después de que la imagen se muestre, su% s se reiniciará; si se produce un error, use el modo de recuperación para reiniciar."
 
 msgid "Select an image to download:"
 msgstr "Seleccione una imagen para descargar:"
@@ -1226,9 +1190,6 @@ msgstr "Use las teclas del cursor para seleccionar una imagen instalada y luego 
 
 msgid "Restore settings"
 msgstr "Restaurar configuración"
-
-msgid "Softcam Vision Setup"
-msgstr "Softcam Vision Configuración"
 
 msgid "Restoring settings, your receiver go to restart..."
 msgstr "Restaurando configuración, su receptor va a reiniciar..."
