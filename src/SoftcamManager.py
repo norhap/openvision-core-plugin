@@ -16,6 +16,7 @@ from Components.config import configfile, config, ConfigSubsection, ConfigYesNo,
 from Components.Console import Console
 from Components.FileList import MultiFileSelectList
 from Components.PluginComponent import plugins
+from Components.SystemInfo import BoxInfo, getSysSoftcam
 from Tools.camcontrol import CamControl
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Screens.Screen import Screen
@@ -514,7 +515,15 @@ class VISIONStartCam(Screen):
 			output.write(now.strftime("%Y-%m-%d %H:%M") + ": Starting " + startselectedcam + "\n")
 			output.close()
 			self.Console.ePopen('sh /etc/init.d/softcam.%s start' % startselectedcam)
-
+		if getSysSoftcam() == "OSCam":
+			BoxInfo.setItem("ReadOscamConf", True)
+			BoxInfo.setItem("ReadNcamConf", False)
+		elif getSysSoftcam() == "NCam":
+			BoxInfo.setItem("ReadNcamConf", True)
+			BoxInfo.setItem("ReadOscamConf", False)
+		else:
+			BoxInfo.setItem("ReadNcamConf", False)
+			BoxInfo.setItem("ReadOscamConf", False)
 		self.activityTimer.start(1)
 
 	def updatepix(self):
@@ -615,6 +624,15 @@ class VISIONStopCam(Screen):
 			output.close()
 			self.Console.ePopen("kill -9 " + stopcam.replace("\n", ""))
 			self.activityTimer.start(1)
+		if getSysSoftcam() == "OSCam":
+			BoxInfo.setItem("ReadOscamConf", True)
+			BoxInfo.setItem("ReadNcamConf", False)
+		elif getSysSoftcam() == "NCam":
+			BoxInfo.setItem("ReadNcamConf", True)
+			BoxInfo.setItem("ReadOscamConf", False)
+		else:
+			BoxInfo.setItem("ReadNcamConf", False)
+			BoxInfo.setItem("ReadOscamConf", False)
 
 	def updatepix(self):
 		self.activityTimer.stop()
@@ -950,3 +968,12 @@ class SoftcamAutoPoller:
 						# self.Console.ePopen('sh /etc/init.d/softcam.%s start' % softcamcheck)
 						# if softcamcheck.startswith('CCcam'):
 						# self.Console.ePopen('sh /etc/init.d/softcam.%s start' % softcamcheck)
+		if getSysSoftcam() == "OSCam":
+			BoxInfo.setItem("ReadOscamConf", True)
+			BoxInfo.setItem("ReadNcamConf", False)
+		elif getSysSoftcam() == "NCam":
+			BoxInfo.setItem("ReadNcamConf", True)
+			BoxInfo.setItem("ReadOscamConf", False)
+		else:
+			BoxInfo.setItem("ReadNcamConf", False)
+			BoxInfo.setItem("ReadOscamConf", False)
