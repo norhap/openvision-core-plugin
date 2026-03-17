@@ -5,6 +5,7 @@ from time import localtime, time, strftime, mktime
 from datetime import date, datetime
 import tarfile
 import glob
+from subprocess import run
 from enigma import eTimer, eEnv, eDVBDB
 from .__init__ import _, PluginLanguageDomain
 from Components.About import about
@@ -133,6 +134,7 @@ class VISIONBackupManager(Screen):
 		self["key_info"] = StaticText(_("INFO"))
 
 		self.BackupRunning = False
+		self.unsatisfiedPlugins = False
 		self.BackupDirectory = " "
 		self.onChangedEntry = []
 		self.emlist = []
@@ -388,7 +390,7 @@ class VISIONBackupManager(Screen):
 		except OSError as err:
 			print("%s" % err)
 
-	def settingsRestoreCheck(self, result, retval, extra_args=None):
+	def settingsRestoreCheck(self, result, retVal, extra_args=None):
 		if path.exists('/tmp/backupkernelversion'):
 			kernel = open('/tmp/backupkernelversion').read()
 			print('[BackupManager] Backup Kernel:', kernel)
@@ -505,10 +507,10 @@ class VISIONBackupManager(Screen):
 		if answer is False:
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C / tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion  tmp/3rdPartyPlugins", self.Stage1PluginsComplete)
 
-	def Stage1SettingsComplete(self, result, retval, extra_args):
+	def Stage1SettingsComplete(self, result, retVal, extra_args):
 		print('[BackupManager] Restoring Stage 1 RESULT:', result)
-		print('[BackupManager] Restoring Stage 1 retval:', retval)
-		if retval == 0:
+		print('[BackupManager] Restoring Stage 1 retVal:', retVal)
+		if retVal == 0:
 			print('[BackupManager] Restoring Stage 1 Complete:')
 			self.didSettingsRestore = True
 			self.Stage1Completed = True
@@ -532,7 +534,7 @@ class VISIONBackupManager(Screen):
 				'StageOneFailedNotification'
 			)
 
-	def Stage1PluginsComplete(self, result, retval, extra_args):
+	def Stage1PluginsComplete(self, result, retVal, extra_args):
 		print('[BackupManager] Restoring Stage 1 Complete:')
 		self.Stage1Completed = True
 
@@ -540,7 +542,7 @@ class VISIONBackupManager(Screen):
 		print('[BackupManager] Restoring Stage 2: Checking feeds')
 		self.Console.ePopen('opkg update', self.Stage2Complete)
 
-	def Stage2Complete(self, result, retval, extra_args):
+	def Stage2Complete(self, result, retVal, extra_args):
 		result2 = result
 		print('[BackupManager] Restoring stage 2: Result ', result2)
 		if result2.find('wget returned 4') != -1:  # probably no network adaptor connected
@@ -620,81 +622,97 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring Stage 3: Feeds state is unknown aborting')
 			self.Stage6()
 
-	def Stage3Complete(self, result, retval, extra_args):
-		plugins = []
-		if path.exists('/tmp/ExtraInstalledPlugins') and self.kernelcheck:
-			self.pluginslist = []
-			for line in result.split("\n"):
-				if line:
-					parts = line.strip().split()
-					plugins.append(parts[0])
-			with open("/tmp/ExtraInstalledPlugins", "r") as fd:
-				tmppluginslist = fd.readlines()
-			for line in tmppluginslist:
-				if line:
-					parts = line.strip().split()
-					if len(parts) > 0 and parts[0] not in plugins:
-						self.pluginslist.append(parts[0])
+	def Stage3Complete(self, result, retVal, extra_args):
+		if self.unsatisfiedPlugins is False:
+			plugins = []
+			if path.exists('/tmp/ExtraInstalledPlugins'):
+				self.pluginslist = []
+				for line in result.split("\n"):
+					if line:
+						parts = line.strip().split()
+						plugins.append(parts[0])
+				tmppluginslist = open('/tmp/ExtraInstalledPlugins', 'r').readlines()
+				for line in tmppluginslist:
+					if line:
+						parts = line.strip().split()
+						if len(parts) > 0 and parts[0] not in plugins:
+							self.pluginslist.append(parts[0])
+			if path.exists('/tmp/3rdPartyPlugins') and self.kernelcheck:
+				self.pluginslist2 = []
+				self.plugfiles = []
+				self.thirdpartyPluginsLocation = " "
+				if config.backupmanager.xtraplugindir.value:
+					self.thirdpartyPluginsLocation = config.backupmanager.xtraplugindir.value
+					self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
+					self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
+				elif path.exists('/tmp/3rdPartyPluginsLocation'):
+					with open("/tmp/3rdPartyPluginsLocation", "r") as fd:
+						self.thirdpartyPluginsLocation = fd.readlines()
+					self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
+					self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n', '')
+					self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
+					self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
+				print("[BackupManager] thirdpartyPluginsLocation split = %s" % self.plugfiles)
+				with open("/tmp/3rdPartyPlugins", "r") as fd:
+					tmppluginslist2 = fd.readlines()
+				available = None
+				for line in tmppluginslist2:
+					if line:
+						parts = line.strip().split('_')
+						if parts[0] not in plugins:
+							ipk = parts[0]
+							if path.exists(self.thirdpartyPluginsLocation):
+								available = listdir(self.thirdpartyPluginsLocation)
+							else:
+								devmounts = []
+								files = []
+								self.plugfile = self.plugfiles[3]
+								for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
+									if "autofs" not in dir or "net" not in dir:
+										devmounts.append(dir)
+								if len(devmounts):
+									for x in devmounts:
+										print("[BackupManager] search dir = %s" % devmounts)
+										if path.exists(x):
+											self.thirdpartyPluginsLocation = x
+											try:
+												available = listdir(self.thirdpartyPluginsLocation)
+												break
+											except:
+												continue
+							if available:
+								for file in available:
+									if file:
+										fileparts = file.strip().split('_')
+										# 									print('FILE:',fileparts)
+										# 									print('IPK:',ipk)
+										if fileparts[0] == ipk:
+											self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
+											ipk = path.join(self.thirdpartyPluginsLocation, file)
+											if path.exists(ipk):
+												# 											print('IPK', ipk)
+												self.pluginslist2.append(ipk)
+							print("[BackupManager] pluginslist = %s" % self.pluginslist2)
 
-		if path.exists('/tmp/3rdPartyPlugins') and self.kernelcheck:
-			self.pluginslist2 = []
-			self.plugfiles = []
-			self.thirdpartyPluginsLocation = " "
-			if config.backupmanager.xtraplugindir.value:
-				self.thirdpartyPluginsLocation = config.backupmanager.xtraplugindir.value
-				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
-				self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
-			elif path.exists('/tmp/3rdPartyPluginsLocation'):
-				with open("/tmp/3rdPartyPluginsLocation", "r") as fd:
-					self.thirdpartyPluginsLocation = fd.readlines()
-				self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
-				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n', '')
-				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
-				self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
-			print("[BackupManager] thirdpartyPluginsLocation split = %s" % self.plugfiles)
-			with open("/tmp/3rdPartyPlugins", "r") as fd:
-				tmppluginslist2 = fd.readlines()
-			available = None
-			for line in tmppluginslist2:
-				if line:
-					parts = line.strip().split('_')
-					if parts[0] not in plugins:
-						ipk = parts[0]
-						if path.exists(self.thirdpartyPluginsLocation):
-							available = listdir(self.thirdpartyPluginsLocation)
-						else:
-							devmounts = []
-							files = []
-							self.plugfile = self.plugfiles[3]
-							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
-								if "autofs" not in dir or "net" not in dir:
-									devmounts.append(dir)
-							if len(devmounts):
-								for x in devmounts:
-									print("[BackupManager] search dir = %s" % devmounts)
-									if path.exists(x):
-										self.thirdpartyPluginsLocation = x
-										try:
-											available = listdir(self.thirdpartyPluginsLocation)
-											break
-										except:
-											continue
-						if available:
-							for file in available:
-								if file:
-									fileparts = file.strip().split('_')
-									# 									print('FILE:',fileparts)
-									# 									print('IPK:',ipk)
-									if fileparts[0] == ipk:
-										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
-										ipk = path.join(self.thirdpartyPluginsLocation, file)
-										if path.exists(ipk):
-											# 											print('IPK', ipk)
-											self.pluginslist2.append(ipk)
-						print("[BackupManager] pluginslist = %s" % self.pluginslist2)
-
-		print('[BackupManager] Restoring Stage 3: Complete')
-		self.Stage3Completed = True
+			print('[BackupManager] Restoring Stage 3: Complete')
+			self.Stage3Completed = True
+		else:
+			self.pluginslist = ""
+			plugins = []
+			if path.exists('/tmp/ExtraInstalledPlugins'):
+				self.pluginslist = []
+				for line in result.split("\n"):
+					if line:
+						parts = line.strip().split()
+						plugins.append(parts[0])
+				tmppluginslist = open('/tmp/ExtraInstalledPlugins', 'r').readlines()
+				for line in tmppluginslist:
+					if line:
+						parts = line.strip().split()
+						if len(parts) > 0 and parts[0] not in plugins:
+							self.pluginslist = parts[0]
+							run(["opkg install " + self.pluginslist], shell=True).stdout  # Forces the installation of packages available in the feeds.
+			print('[BackupManager] Restoring Stage 3: Complete with unsatisfactory packages not included')
 
 	def Stage4(self):
 		if len(self.pluginslist) or len(self.pluginslist2):
@@ -741,14 +759,20 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring Stage 5: plugin restore not requested')
 			self.Stage6()
 
-	def Stage5Complete(self, result, retval, extra_args):
-		if result:
+	def Stage5Complete(self, result, retVal, extra_args):
+		if retVal == 0:
 			print("[BackupManager] opkg install result:\n", str(result))
 			self.didPluginsRestore = True
 			self.Stage5Completed = True
 			print('[BackupManager] Restoring Stage 5: Completed')
+		else:
+			self.unsatisfiedPlugins = True
+			self.didPluginsRestore = True
+			self.Stage5Completed = True
+			print('[BackupManager] Restoring Stage 3: Couldnt find anything to satisfy')
+			self.Console.ePopen('opkg list-installed', self.Stage3Complete)
 
-	def Stage6(self, result=None, retval=None, extra_args=None):
+	def Stage6(self, result=None, retVal=None, extra_args=None):
 		self.Stage1Completed = True
 		self.Stage2Completed = True
 		self.Stage3Completed = True
@@ -777,7 +801,8 @@ class VISIONBackupManager(Screen):
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
 			self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO)
-			self.Console.ePopen("sleep 15 && killall -9 enigma2 && init 6")
+			delay = 15 if not self.unsatisfiedPlugins else 60
+			self.Console.ePopen("sleep " + str(delay) + " && killall -9 enigma2 && init 6")
 		else:
 			return self.close()
 
@@ -1336,11 +1361,11 @@ class BackupFiles(Screen):
 		print('[BackupManager] Listing installed plugins')
 		self.Console.ePopen('cat /var/lib/opkg/status', self.Stage2Complete)
 
-	def Stage2Complete(self, result, retval, extra_args):
+	def Stage2Complete(self, result, retVal, extra_args):
 		if result:
 			plugins_out = []
 			opkg_status_list = result.split('\n\n')
-			# print("[BackupManager] result=%s, retval=%s" % (opkg_status_list, retval))
+			# print("[BackupManager] result=%s, retVal=%s" % (opkg_status_list, retVal))
 			for opkg_status in opkg_status_list:
 				plugin = ''
 				opkg_status_split = opkg_status.split('\n')
@@ -1422,7 +1447,7 @@ class BackupFiles(Screen):
 				tfl.write(fn + "\n")
 		self.Console.ePopen("tar -T " + BackupFiles.tar_flist + " -czvf " + self.Backupfile, self.Stage4Complete)
 
-	def Stage4Complete(self, result, retval, extra_args):
+	def Stage4Complete(self, result, retVal, extra_args):
 		try:
 			if listdir(self.BackupDevice):
 				chmod(self.Backupfile, 0o644)
