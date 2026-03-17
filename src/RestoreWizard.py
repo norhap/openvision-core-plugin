@@ -1,5 +1,6 @@
 from .__init__ import _
 from enigma import eConsoleAppContainer
+from subprocess import run
 from os import listdir, path, stat
 from boxbranding import getImageDistro
 from Components.About import about
@@ -47,6 +48,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 		self.Text = None
 		self.buildListRef = None
 		self.didSettingsRestore = False
+		self.unsatisfiedPlugins = False
 		self.didPluginRestore = False
 		self.PluginsRestore = False
 		self.fullbackupfilename = None
@@ -155,7 +157,8 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
 			self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO, simple=True)
-			eConsoleAppContainer().execute("sleep 15 && killall -9 enigma2 && init 6")
+			delay = 15 if not self.unsatisfiedPlugins else 60
+			eConsoleAppContainer().execute("sleep " + str(delay) + " && killall -9 enigma2 && init 6")
 		elif self.NextStep == 'settingsquestion' or self.NextStep == 'settingsrestore' or self.NextStep == 'pluginsquestion' or self.NextStep == 'pluginsrestoredevice' or self.NextStep == 'end' or self.NextStep == 'noplugins':
 			self.buildListfinishedCB(False)
 		elif self.NextStep == 'settingrestorestarted':
@@ -200,7 +203,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 			self.currStep = self.getStepWithID(self.NextStep)
 			self.afterAsyncCode()
 
-	def settingsRestore_Started(self, result, retval, extra_args=None):
+	def settingsRestore_Started(self, result, retVal, extra_args=None):
 		self.doRestoreSettings1()
 
 	def doRestoreSettings1(self):
@@ -221,7 +224,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 			self.noVersion = self.session.openWithCallback(self.doNoVersion, MessageBox, _("Sorry, but the file is not compatible with this kernel version."), type=MessageBox.TYPE_INFO, timeout=30)
 			self.noVersion.setTitle(_("Restore wizard"))
 
-	def doNoVersion(self, result=None, retval=None, extra_args=None):
+	def doNoVersion(self, result=None, retVal=None, extra_args=None):
 		self.buildListRef.close(True)
 
 	def doRestoreSettings2(self):
@@ -230,23 +233,30 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 		self.pleaseWait = self.session.open(MessageBox, _("Please wait while settings restore completes..."), type=MessageBox.TYPE_INFO, enable_input=False, simple=True)
 		self.pleaseWait.setTitle(_("Restore wizard"))
 
-	def settingRestore_Finished(self, result, retval, extra_args=None):
+	def settingRestore_Finished(self, result, retVal, extra_args=None):
 		self.didSettingsRestore = True
 		network = [x.split(" ")[3] for x in open("/etc/network/interfaces").read().splitlines() if x.startswith("iface eth0")]
 		self.pleaseWait.close()
 		self.doRestorePlugins1()
 
-	def pluginsRestore_Started(self, result, retval, extra_args=None):
+	def pluginsRestore_Started(self, result, retVal, extra_args=None):
 		self.doRestorePlugins1()
 
-	def pluginsRestore_Finished(self, result, retval, extra_args=None):
+	def pluginsRestore_Finished(self, result, retVal, extra_args=None):
 		if result:
 			print("[RestoreWizard] opkg install result:\n", str(result))
 			# if path.exists("/tmp/etc/enigma2/settings") and path.exists("/usr/sbin/zerotier-one"):
 				# setcliJoinZerotier()
-		self.didPluginRestore = True
-		self.NextStep = 'reboot'
-		self.buildListRef.close(True)
+		if retVal == 0:
+			self.didPluginRestore = True
+			self.NextStep = 'reboot'
+			self.buildListRef.close(True)
+		else:
+			self.unsatisfiedPlugins = True
+			self.NextStep = 'reboot'
+			self.buildListRef.close(True)
+			print('[RestoreWizard] Restoring doRestorePlugins2: Couldnt find anything to satisfy')
+			self.Console.ePopen('opkg list-installed', self.doRestorePlugins2)
 
 	def doRestorePlugins1(self):
 		print('[RestoreWizard] Stage 3: Check Kernel')
@@ -272,13 +282,13 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 				self.NextStep = 'noplugins'
 			self.buildListRef.close(True)
 
-	def doRestorePluginsTest(self, result=None, retval=None, extra_args=None):
+	def doRestorePluginsTest(self, result=None, retVal=None, extra_args=None):
 		if self.delaymess:
 			self.delaymess.close()
 		print('[RestoreWizard] Stage 4: Feeds Test')
 		self.Console.ePopen('ifdown -v -f eth0; ifup -v eth0 && opkg update', self.doRestorePluginsTestComplete)
 
-	def doRestorePluginsTestComplete(self, result=None, retval=None, extra_args=None):
+	def doRestorePluginsTestComplete(self, result=None, retVal=None, extra_args=None):
 		result2 = result
 		print('[RestoreWizard] Stage 4: Feeds test result', result2)
 		if result2.find('wget returned 4') != -1:
@@ -310,79 +320,96 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 		print('[RestoreWizard] Stage 4: Feeds Test')
 		self.Console.ePopen('opkg list-installed', self.doRestorePlugins2)
 
-	def doRestorePlugins2(self, result, retval, extra_args):
-		print('[RestoreWizard] Stage 5: Build list of plugins to restore')
-		self.pluginslist = ""
-		self.pluginslist2 = ""
-		plugins = []
-		if path.exists('/tmp/ExtraInstalledPlugins'):
-			self.pluginslist = []
-			for line in result.split("\n"):
-				if line:
-					parts = line.strip().split()
-					plugins.append(parts[0])
-			tmppluginslist = open('/tmp/ExtraInstalledPlugins', 'r').readlines()
-			for line in tmppluginslist:
-				if line:
-					parts = line.strip().split()
-					if len(parts) > 0 and parts[0] not in plugins:
-						self.pluginslist.append(parts[0])
+	def doRestorePlugins2(self, result, retVal, extra_args):
+		if self.unsatisfiedPlugins is False:
+			print('[RestoreWizard] Stage 5: Build list of plugins to restore')
+			self.pluginslist = ""
+			self.pluginslist2 = ""
+			plugins = []
+			if path.exists('/tmp/ExtraInstalledPlugins'):
+				self.pluginslist = []
+				for line in result.split("\n"):
+					if line:
+						parts = line.strip().split()
+						plugins.append(parts[0])
+				tmppluginslist = open('/tmp/ExtraInstalledPlugins', 'r').readlines()
+				for line in tmppluginslist:
+					if line:
+						parts = line.strip().split()
+						if len(parts) > 0 and parts[0] not in plugins:
+							self.pluginslist.append(parts[0])
+			if path.exists('/tmp/3rdPartyPlugins'):
+				self.pluginslist2 = []
+				if path.exists('/tmp/3rdPartyPluginsLocation'):
+					self.thirdpartyPluginsLocation = open('/tmp/3rdPartyPluginsLocation', 'r').readlines()
+					self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
+					self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n', '')
+					self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
+					self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
+				else:
+					self.thirdpartyPluginsLocation = " "
 
-		if path.exists('/tmp/3rdPartyPlugins'):
-			self.pluginslist2 = []
-			if path.exists('/tmp/3rdPartyPluginsLocation'):
-				self.thirdpartyPluginsLocation = open('/tmp/3rdPartyPluginsLocation', 'r').readlines()
-				self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
-				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n', '')
-				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
-				self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
+				tmppluginslist2 = open('/tmp/3rdPartyPlugins', 'r').readlines()
+				available = None
+				for line in tmppluginslist2:
+					if line:
+						parts = line.strip().split('_')
+						if parts[0] not in plugins:
+							ipk = parts[0]
+							if path.exists(self.thirdpartyPluginsLocation):
+								available = listdir(self.thirdpartyPluginsLocation)
+							else:
+								devmounts = []
+								files = []
+								self.plugfile = self.plugfiles[3]
+								for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
+									if "autofs" not in dir or "net" not in dir:
+										devmounts.append(dir)
+								if len(devmounts):
+									for x in devmounts:
+										print("[BackupManager] Search dir = %s" % devmounts)
+										if path.exists(x):
+											self.thirdpartyPluginsLocation = x
+											try:
+												available = listdir(self.thirdpartyPluginsLocation)
+												break
+											except:
+												continue
+							if available:
+								for file in available:
+									if file:
+										fileparts = file.strip().split('_')
+										if fileparts[0] == ipk:
+											self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
+											ipk = path.join(self.thirdpartyPluginsLocation, file)
+											if path.exists(ipk):
+												self.pluginslist2.append(ipk)
+
+			if len(self.pluginslist) or len(self.pluginslist2):
+				self.doRestorePluginsQuestion()
 			else:
-				self.thirdpartyPluginsLocation = " "
-
-			tmppluginslist2 = open('/tmp/3rdPartyPlugins', 'r').readlines()
-			available = None
-			for line in tmppluginslist2:
-				if line:
-					parts = line.strip().split('_')
-					if parts[0] not in plugins:
-						ipk = parts[0]
-						if path.exists(self.thirdpartyPluginsLocation):
-							available = listdir(self.thirdpartyPluginsLocation)
-						else:
-							devmounts = []
-							files = []
-							self.plugfile = self.plugfiles[3]
-							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
-								if "autofs" not in dir or "net" not in dir:
-									devmounts.append(dir)
-							if len(devmounts):
-								for x in devmounts:
-									print("[BackupManager] Search dir = %s" % devmounts)
-									if path.exists(x):
-										self.thirdpartyPluginsLocation = x
-										try:
-											available = listdir(self.thirdpartyPluginsLocation)
-											break
-										except:
-											continue
-						if available:
-							for file in available:
-								if file:
-									fileparts = file.strip().split('_')
-									if fileparts[0] == ipk:
-										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
-										ipk = path.join(self.thirdpartyPluginsLocation, file)
-										if path.exists(ipk):
-											self.pluginslist2.append(ipk)
-
-		if len(self.pluginslist) or len(self.pluginslist2):
-			self.doRestorePluginsQuestion()
+				if self.didSettingsRestore:
+					self.NextStep = 'reboot'
+				else:
+					self.NextStep = 'noplugins'
+				self.buildListRef.close(True)
 		else:
-			if self.didSettingsRestore:
-				self.NextStep = 'reboot'
-			else:
-				self.NextStep = 'noplugins'
-			self.buildListRef.close(True)
+			self.pluginslist = ""
+			plugins = []
+			if path.exists('/tmp/ExtraInstalledPlugins'):
+				self.pluginslist = []
+				for line in result.split("\n"):
+					if line:
+						parts = line.strip().split()
+						plugins.append(parts[0])
+				tmppluginslist = open('/tmp/ExtraInstalledPlugins', 'r').readlines()
+				for line in tmppluginslist:
+					if line:
+						parts = line.strip().split()
+						if len(parts) > 0 and parts[0] not in plugins:
+							self.pluginslist = parts[0]
+							run(["opkg install " + self.pluginslist], shell=True).stdout  # Forces the installation of packages available in the feeds.
+			print('[RestoreWizard] Restoring Stage 4: Complete with unsatisfactory packages not included')
 
 	def doRestorePluginsQuestion(self):
 		if len(self.pluginslist) or len(self.pluginslist2):
