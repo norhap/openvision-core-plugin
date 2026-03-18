@@ -318,28 +318,23 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 
 	def doListPlugins(self):
 		print('[RestoreWizard] Stage 4: Feeds Test')
-		self.Console.ePopen('opkg list-installed', self.doRestorePlugins2)
+		self.Console.ePopen('opkg list', self.comparePluginLists)
+
+	def comparePluginLists(self, result, retVal, extra_args):
+		self.opkg_available_packages = {p.split()[0] for line in result.split("\n") if (p := line.strip())}  # list of all packages available from the feeds
+		self.Console.ePopen("opkg list-installed", self.doRestorePlugins2)
 
 	def doRestorePlugins2(self, result, retVal, extra_args):
 		if self.unsatisfiedPlugins is False:
 			print('[RestoreWizard] Stage 5: Build list of plugins to restore')
-			self.pluginslist = ""
-			self.pluginslist2 = ""
-			plugins = []
-			if path.exists('/tmp/ExtraInstalledPlugins'):
-				self.pluginslist = []
-				for line in result.split("\n"):
-					if line:
-						parts = line.strip().split()
-						plugins.append(parts[0])
-				tmppluginslist = open('/tmp/ExtraInstalledPlugins', 'r').readlines()
-				for line in tmppluginslist:
-					if line:
-						parts = line.strip().split()
-						if len(parts) > 0 and parts[0] not in plugins:
-							self.pluginslist.append(parts[0])
+			self.pluginslist = []
+			self.plugins = []
+			self.pluginslist2 = []
+			opkg_installed_packages = {p.split()[0] for line in result.split("\n") if (p := line.strip())}
+			if path.exists("/tmp/ExtraInstalledPlugins"):
+				with open("/tmp/ExtraInstalledPlugins", "r") as fd:
+					self.pluginslist = [p for line in fd.readlines() if (p := line.strip()) and p in self.opkg_available_packages and p not in opkg_installed_packages]
 			if path.exists('/tmp/3rdPartyPlugins'):
-				self.pluginslist2 = []
 				if path.exists('/tmp/3rdPartyPluginsLocation'):
 					self.thirdpartyPluginsLocation = open('/tmp/3rdPartyPluginsLocation', 'r').readlines()
 					self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
@@ -348,13 +343,16 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 					self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
 				else:
 					self.thirdpartyPluginsLocation = " "
-
+				for line in result.split("\n"):
+					if line:
+						parts = line.strip().split()
+						self.plugins.append(parts[0])
 				tmppluginslist2 = open('/tmp/3rdPartyPlugins', 'r').readlines()
 				available = None
 				for line in tmppluginslist2:
 					if line:
 						parts = line.strip().split('_')
-						if parts[0] not in plugins:
+						if parts[0] not in self.plugins:
 							ipk = parts[0]
 							if path.exists(self.thirdpartyPluginsLocation):
 								available = listdir(self.thirdpartyPluginsLocation)
@@ -384,7 +382,6 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 											ipk = path.join(self.thirdpartyPluginsLocation, file)
 											if path.exists(ipk):
 												self.pluginslist2.append(ipk)
-
 			if len(self.pluginslist) or len(self.pluginslist2):
 				self.doRestorePluginsQuestion()
 			else:
@@ -394,7 +391,6 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 					self.NextStep = 'noplugins'
 				self.buildListRef.close(True)
 		else:
-			self.pluginslist = ""
 			plugins = []
 			if path.exists('/tmp/ExtraInstalledPlugins'):
 				self.pluginslist = []

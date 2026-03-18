@@ -582,7 +582,7 @@ class VISIONBackupManager(Screen):
 				if kernelversion:
 					# print('[BackupManager] Restoring stage 3: Kernel version is same as backup')
 					self.kernelcheck = True
-					self.Console.ePopen('opkg list-installed', self.Stage3Complete)
+					self.Console.ePopen("opkg list", self.comparePluginLists)
 				else:
 					print('[BackupManager] Restoring Stage 3: Kernel or Image Version does not match, exiting')
 					self.kernelcheck = False
@@ -622,82 +622,79 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring Stage 3: Feeds state is unknown aborting')
 			self.Stage6()
 
+	def comparePluginLists(self, result, retVal, extra_args):
+		self.opkg_available_packages = {p.split()[0] for line in result.split("\n") if (p := line.strip())}  # list of all packages available from the feeds
+		self.Console.ePopen("opkg list-installed", self.Stage3Complete)
+
 	def Stage3Complete(self, result, retVal, extra_args):
 		if self.unsatisfiedPlugins is False:
-			plugins = []
-			if path.exists('/tmp/ExtraInstalledPlugins'):
-				self.pluginslist = []
-				for line in result.split("\n"):
-					if line:
-						parts = line.strip().split()
-						plugins.append(parts[0])
-				tmppluginslist = open('/tmp/ExtraInstalledPlugins', 'r').readlines()
-				for line in tmppluginslist:
-					if line:
-						parts = line.strip().split()
-						if len(parts) > 0 and parts[0] not in plugins:
-							self.pluginslist.append(parts[0])
-			if path.exists('/tmp/3rdPartyPlugins') and self.kernelcheck:
-				self.pluginslist2 = []
-				self.plugfiles = []
-				self.thirdpartyPluginsLocation = " "
-				if config.backupmanager.xtraplugindir.value:
-					self.thirdpartyPluginsLocation = config.backupmanager.xtraplugindir.value
-					self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
-					self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
-				elif path.exists('/tmp/3rdPartyPluginsLocation'):
-					with open("/tmp/3rdPartyPluginsLocation", "r") as fd:
-						self.thirdpartyPluginsLocation = fd.readlines()
-					self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
-					self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n', '')
-					self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
-					self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
-				print("[BackupManager] thirdpartyPluginsLocation split = %s" % self.plugfiles)
-				with open("/tmp/3rdPartyPlugins", "r") as fd:
-					tmppluginslist2 = fd.readlines()
-				available = None
-				for line in tmppluginslist2:
-					if line:
-						parts = line.strip().split('_')
-						if parts[0] not in plugins:
-							ipk = parts[0]
-							if path.exists(self.thirdpartyPluginsLocation):
-								available = listdir(self.thirdpartyPluginsLocation)
-							else:
-								devmounts = []
-								files = []
-								self.plugfile = self.plugfiles[3]
-								for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
-									if "autofs" not in dir or "net" not in dir:
-										devmounts.append(dir)
-								if len(devmounts):
-									for x in devmounts:
-										print("[BackupManager] search dir = %s" % devmounts)
-										if path.exists(x):
-											self.thirdpartyPluginsLocation = x
-											try:
-												available = listdir(self.thirdpartyPluginsLocation)
-												break
-											except:
-												continue
-							if available:
-								for file in available:
-									if file:
-										fileparts = file.strip().split('_')
-										# 									print('FILE:',fileparts)
-										# 									print('IPK:',ipk)
-										if fileparts[0] == ipk:
-											self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
-											ipk = path.join(self.thirdpartyPluginsLocation, file)
-											if path.exists(ipk):
-												# 											print('IPK', ipk)
-												self.pluginslist2.append(ipk)
-							print("[BackupManager] pluginslist = %s" % self.pluginslist2)
+			self.pluginslist = []
+			opkg_installed_packages = {p.split()[0] for line in result.split("\n") if (p := line.strip())}
+			if path.exists("/tmp/ExtraInstalledPlugins"):
+				with open("/tmp/ExtraInstalledPlugins", "r") as fd:
+					self.pluginslist = [p for line in fd.readlines() if (p := line.strip()) and p in self.opkg_available_packages and p not in opkg_installed_packages]
+				if path.exists('/tmp/3rdPartyPlugins') and self.kernelcheck:
+					self.pluginslist2 = []
+					self.plugfiles = []
+					self.plugins = []
+					self.thirdpartyPluginsLocation = " "
+					if config.backupmanager.xtraplugindir.value:
+						self.thirdpartyPluginsLocation = config.backupmanager.xtraplugindir.value
+						self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
+						self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
+					elif path.exists('/tmp/3rdPartyPluginsLocation'):
+						with open("/tmp/3rdPartyPluginsLocation", "r") as fd:
+							self.thirdpartyPluginsLocation = fd.readlines()
+						self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
+						self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n', '')
+						self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
+						self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
+					print("[BackupManager] thirdpartyPluginsLocation split = %s" % self.plugfiles)
+					for line in result.split("\n"):
+						if line:
+							parts = line.strip().split()
+							self.plugins.append(parts[0])
+					with open("/tmp/3rdPartyPlugins", "r") as fd:
+						tmppluginslist2 = fd.readlines()
+						available = None
+						for line in tmppluginslist2:
+							if line:
+								parts = line.strip().split('_')
+								if parts[0] not in self.plugins:
+									ipk = parts[0]
+									if path.exists(self.thirdpartyPluginsLocation):
+										available = listdir(self.thirdpartyPluginsLocation)
+									else:
+										devmounts = []
+										files = []
+										self.plugfile = self.plugfiles[3]
+										for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
+											if "autofs" not in dir or "net" not in dir:
+												devmounts.append(dir)
+										if len(devmounts):
+											for x in devmounts:
+												print("[BackupManager] search dir = %s" % devmounts)
+												if path.exists(x):
+													self.thirdpartyPluginsLocation = x
+													try:
+														available = listdir(self.thirdpartyPluginsLocation)
+														break
+													except:
+														continue
+									if available:
+										for file in available:
+											if file:
+												fileparts = file.strip().split('_')
+												if fileparts[0] == ipk:
+													self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
+													ipk = path.join(self.thirdpartyPluginsLocation, file)
+													if path.exists(ipk):
+														self.pluginslist2.append(ipk)
+									print("[BackupManager] pluginslist = %s" % self.pluginslist2)
 
-			print('[BackupManager] Restoring Stage 3: Complete')
-			self.Stage3Completed = True
+				print('[BackupManager] Restoring Stage 3: Complete')
+				self.Stage3Completed = True
 		else:
-			self.pluginslist = ""
 			plugins = []
 			if path.exists('/tmp/ExtraInstalledPlugins'):
 				self.pluginslist = []
