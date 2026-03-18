@@ -328,60 +328,43 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 		if self.unsatisfiedPlugins is False:
 			print('[RestoreWizard] Stage 5: Build list of plugins to restore')
 			self.pluginslist = []
-			self.plugins = []
 			self.pluginslist2 = []
 			opkg_installed_packages = {p.split()[0] for line in result.split("\n") if (p := line.strip())}
 			if path.exists("/tmp/ExtraInstalledPlugins"):
 				with open("/tmp/ExtraInstalledPlugins", "r") as fd:
 					self.pluginslist = [p for line in fd.readlines() if (p := line.strip()) and p in self.opkg_available_packages and p not in opkg_installed_packages]
-			if path.exists('/tmp/3rdPartyPlugins'):
-				if path.exists('/tmp/3rdPartyPluginsLocation'):
-					self.thirdpartyPluginsLocation = open('/tmp/3rdPartyPluginsLocation', 'r').readlines()
-					self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
-					self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace('\n', '')
-					self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
-					self.plugfiles = self.thirdpartyPluginsLocation.split('/', 3)
-				else:
-					self.thirdpartyPluginsLocation = " "
-				for line in result.split("\n"):
-					if line:
-						parts = line.strip().split()
-						self.plugins.append(parts[0])
-				tmppluginslist2 = open('/tmp/3rdPartyPlugins', 'r').readlines()
-				available = None
-				for line in tmppluginslist2:
-					if line:
-						parts = line.strip().split('_')
-						if parts[0] not in self.plugins:
-							ipk = parts[0]
-							if path.exists(self.thirdpartyPluginsLocation):
-								available = listdir(self.thirdpartyPluginsLocation)
-							else:
-								devmounts = []
-								files = []
-								self.plugfile = self.plugfiles[3]
-								for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
-									if "autofs" not in dir or "net" not in dir:
-										devmounts.append(dir)
-								if len(devmounts):
-									for x in devmounts:
-										print("[BackupManager] Search dir = %s" % devmounts)
-										if path.exists(x):
-											self.thirdpartyPluginsLocation = x
-											try:
-												available = listdir(self.thirdpartyPluginsLocation)
-												break
-											except:
-												continue
-							if available:
-								for file in available:
-									if file:
-										fileparts = file.strip().split('_')
-										if fileparts[0] == ipk:
-											self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(' ', '%20')
-											ipk = path.join(self.thirdpartyPluginsLocation, file)
-											if path.exists(ipk):
-												self.pluginslist2.append(ipk)
+			if path.exists("/tmp/3rdPartyPlugins"):
+				thirdpartyPluginsLocation = ""
+				tmppluginslist2 = ""
+				if path.exists("/tmp/3rdPartyPluginsLocation"):
+					with open("/tmp/3rdPartyPluginsLocation", "r") as fd:
+						thirdpartyPluginsLocation = fd.readline().strip()
+						# print("[RestoreWizard] Restoring Stage 3: thirdpartyPluginsLocation from file", "'%s'" % thirdpartyPluginsLocation)
+				thirdpartyPluginsLocation = thirdpartyPluginsLocation.replace(" ", "%20")  # What is this replace for?
+				with open("/tmp/3rdPartyPlugins", "r") as fd:
+					tmppluginslist2 = [package.split("_")[0] for line in fd.readlines() if (package := line.strip())]  # ".split("_")[0]" should be redundant if the input is correct
+				relative_path = len(x := thirdpartyPluginsLocation.split("/", 3)) > 3 and x[3] or None  # expects thirdpartyPluginsLocation to be in the format /media/something/myFolder
+				devmounts = relative_path and ["/media/%s/%s" % (media, relative_path) for media in listdir("/media/") if media not in ("autofs", "net") and path.isdir(path.join("/media/", media)) and path.exists("/media/%s/%s" % (media, relative_path))]
+				print("[RestoreWizard] search dir = %s" % str(devmounts))
+				for ipk in tmppluginslist2:
+					available = []
+					if ipk and ipk not in opkg_installed_packages:
+						if thirdpartyPluginsLocation and path.exists(thirdpartyPluginsLocation):
+							available = sorted([y for y in listdir(thirdpartyPluginsLocation) if y.startswith(ipk)], reverse=True)  # sort for most recent by name if multiple versions
+						elif devmounts:
+							for x in devmounts:
+								try:  # Why is this try/except needed? What exception is it protecting against?
+									available = sorted([y for y in listdir(x) if y.startswith(ipk)], reverse=True)  # sort for most recent by name if multiple versions
+									print("[RestoreWizard] Restoring Stage 3: 3rdPartyPlugin found", x, available)
+									thirdpartyPluginsLocation = x
+									break
+								except Exception as e:
+									print("[RestoreWizard] Restoring Stage 3: exception trying to access 3rdPartyPlugin location:", x, "\n", e)
+									continue
+						if available:
+							self.pluginslist2.append(path.join(thirdpartyPluginsLocation, available[0]))
+							if ipk in self.pluginslist:
+								self.pluginslist.remove(ipk)  # local version takes priority
 			if len(self.pluginslist) or len(self.pluginslist2):
 				self.doRestorePluginsQuestion()
 			else:
