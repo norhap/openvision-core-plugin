@@ -6,7 +6,7 @@ from datetime import date, datetime
 import tarfile
 import glob
 from subprocess import run
-from enigma import eTimer, eEnv, eDVBDB
+from enigma import eTimer, eEnv, eDVBDB, eConsoleAppContainer
 from .__init__ import _, PluginLanguageDomain
 from Components.About import about
 from Components.ActionMap import ActionMap
@@ -20,23 +20,25 @@ from Components.MenuList import MenuList
 from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo, MODEL
+from Components.Sources.List import List
 import Components.Task
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Setup import Setup
-from Tools.Directories import fileExists
+from Tools.Directories import fileExists, isPluginInstalled, resolveFilename, SCOPE_GUISKIN
 from Tools.Notifications import AddPopupWithCallback
 from Tools.Multiboot import bootmviSlot, getSlotImageInfo, getCurrentImage
 from time import sleep
+from Tools.LoadPixmap import LoadPixmap
 
 autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = 'RestoreSettingsNotification'
 PLUGINRESTOREQUESTIONID = 'RestorePluginsNotification'
 NOPLUGINS = 'NoPluginsNotification'
-
 mountpointchoices = []
 defaultprefix = getImageDistro()
 partitions = sorted(harddiskmanager.getMountedPartitions(), key=lambda partitions: partitions.device or "")
+
 for parts in partitions:
 	d = path.normpath(parts.mountpoint)
 	if SystemInfo["canMultiBoot"]:
@@ -44,6 +46,11 @@ for parts in partitions:
 			continue
 	if parts.mountpoint != "/":
 		mountpointchoices.append((parts.mountpoint, d))
+
+
+def SettingsEntry(item, checked):
+	picture = LoadPixmap(cached=True, path=resolveFilename(SCOPE_GUISKIN, f"skin_default/icons/lock_{'on' if checked else 'off'}.png"))
+	return (item, picture, checked)
 
 
 def getMountDefault(mountpointchoices):
@@ -362,6 +369,15 @@ class VISIONBackupManager(Screen):
 			if job.name.startswith(_("Backup manager")):
 				self.showJobView(job)
 				break
+		if isPluginInstalled("AutoBackup"):
+			self.container = eConsoleAppContainer()
+			from Plugins.Extensions.AutoBackup.plugin import BACKUP_SCRIPT
+			cmd = BACKUP_SCRIPT
+			if config.plugins.autobackup.autoinstall.value:
+				cmd += " -a"
+			cmd += " " + config.plugins.autobackup.where.value
+			cmd += " " + str(int(config.plugins.autobackup.prevbackup.value))
+			self.container.execute(cmd)
 
 	def keyResstore(self):
 		try:
@@ -624,15 +640,16 @@ class VISIONBackupManager(Screen):
 
 	def comparePluginLists(self, result, retVal, extra_args):
 		self.opkg_available_packages = {p.split()[0] for line in result.split("\n") if (p := line.strip())}  # list of all packages available from the feeds
-		self.Console.ePopen("opkg list-installed", self.Stage3Complete)
+		self.Console.ePopen("opkg list-installed | egrep 'enigma2-plugin-|task-base|packagegroup-base", self.Stage3Complete)
 
 	def Stage3Complete(self, result, retVal, extra_args):
 		if self.unsatisfiedPlugins is False:
 			self.pluginslist = []
 			self.pluginslist2 = []
 			opkg_installed_packages = {p.split()[0] for line in result.split("\n") if (p := line.strip())}
-			if path.exists("/tmp/ExtraInstalledPlugins"):
-				with open("/tmp/ExtraInstalledPlugins", "r") as fd:
+			listinstalledplugins = str(config.backupmanager.backuplocation.value) + '/backup/autoinstall' if path.exists(str(config.backupmanager.backuplocation.value) + '/backup/autoinstall') else "/tmp/ExtraInstalledPlugins"
+			if path.exists(listinstalledplugins):
+				with open(listinstalledplugins, "r") as fd:
 					self.pluginslist = [p for line in fd.readlines() if (p := line.strip()) and p in self.opkg_available_packages and p not in opkg_installed_packages]
 			if path.exists("/tmp/3rdPartyPlugins"):
 				thirdpartyPluginsLocation = ""
@@ -691,15 +708,9 @@ class VISIONBackupManager(Screen):
 	def Stage4(self):
 		if len(self.pluginslist) or len(self.pluginslist2):
 			if len(self.pluginslist):
-				self.pluginslist = " ".join(self.pluginslist)
+				print('[BackupManager] Restoring Stage 4: Plugins to restore (plugins installed)', self.pluginslist)
 			else:
-				self.pluginslist = ""
-			if len(self.pluginslist2):
-				self.pluginslist2 = " ".join(self.pluginslist2)
-			else:
-				self.pluginslist2 = ""
-			print('[BackupManager] Restoring Stage 4: Plugins to restore (extra plugins)', self.pluginslist)
-			print('[BackupManager] Restoring Stage 4: Plugins to restore (3rd party plugins)', self.pluginslist2)
+				print('[BackupManager] Restoring Stage 4: Plugins to restore (3rd party plugins)', self.pluginslist2)
 			AddPopupWithCallback(self.Stage4Complete,
 				_("Do you want to restore your Enigma2 plugins ?"),
 				MessageBox.TYPE_YESNO,
@@ -710,12 +721,13 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring Stage 4: plugin restore not required')
 			self.Stage6()
 
-	def Stage4Complete(self, answer=None):
-		if answer is True:
-			print('[BackupManager] Restoring Stage 4: plugin restore chosen')
+	def Stage4Complete(self, answer):
+		if answer:
 			self.doPluginsRestore = True
 			self.Stage4Completed = True
-		elif answer is False:
+			print('[BackupManager] Restoring Stage 4: plugin restore chosen')
+			self.session.openWithCallback(self.close, RestorePlugins, self.pluginslist)
+		else:
 			print('[BackupManager] Restoring Stage 4: plugin restore skipped by user')
 			AddPopupWithCallback(self.Stage6,
 				_("Now skipping restore process plugins."),
@@ -726,9 +738,16 @@ class VISIONBackupManager(Screen):
 
 	def Stage5(self):
 		if self.doPluginsRestore:
-			print('[BackupManager] Restoring Stage 5: starting plugin restore')
-			print('[BackupManager] Console command: ', 'opkg update && opkg install ' + self.pluginslist + ' ' + self.pluginslist2)
-			self.Console.ePopen('opkg update && opkg install ' + self.pluginslist + ' ' + self.pluginslist2, self.Stage5Complete)
+			if len(self.pluginslist2):
+				self.pluginslist2 = " ".join(self.pluginslist2)
+			else:
+				self.pluginslist2 = ""
+			if len(self.pluginslist) and not self.pluginslist2:
+					self.Console.ePopen('opkg update', self.Stage5Complete)
+			elif len(self.pluginslist2):
+				print('[BackupManager] Restoring Stage 5: starting plugin restore')
+				print('[BackupManager] Console command: ', 'opkg update && opkg install ' + self.pluginslist2)
+				self.Console.ePopen('opkg update && opkg install ' + self.pluginslist2, self.Stage5Complete)
 		else:
 			print('[BackupManager] Restoring Stage 5: plugin restore not requested')
 			self.Stage6()
@@ -744,7 +763,7 @@ class VISIONBackupManager(Screen):
 			self.didPluginsRestore = True
 			self.Stage5Completed = True
 			print('[BackupManager] Restoring Stage 3: Couldnt find anything to satisfy')
-			self.Console.ePopen('opkg list-installed', self.Stage3Complete)
+			self.Console.ePopen("opkg list-installed | egrep 'enigma2-plugin-|task-base|packagegroup-base", self.Stage3Complete)
 
 	def Stage6(self, result=None, retVal=None, extra_args=None):
 		self.Stage1Completed = True
@@ -774,9 +793,10 @@ class VISIONBackupManager(Screen):
 			sleep(0.5)
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
-			self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO)
-			delay = 15 if not self.unsatisfiedPlugins else 60
-			self.Console.ePopen("sleep " + str(delay) + " && killall -9 enigma2 && init 6")
+			if self.unsatisfiedPlugins:
+				self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO)
+				delay = 15 if not self.unsatisfiedPlugins else 60
+				self.Console.ePopen("sleep " + str(delay) + " && killall -9 enigma2 && init 6")
 		else:
 			return self.close()
 
@@ -1479,3 +1499,110 @@ class BackupFiles(Screen):
 			autoBackupManagerTimer.backupupdate(atLeast)
 		else:
 			autoBackupManagerTimer.backupstop()
+
+
+class RestorePlugins(Screen):
+	skin = """
+	<screen name="RestorePlugins" position="center,center" size="720,600" resolution="1280,720">
+		<widget source="menu" render="Listbox" position="10,10" size="700,490" scrollbarMode="showOnDemand">
+			<convert type="TemplatedMultiContent">
+				{"template": [
+					MultiContentEntryText(pos = (50, 1), size = (650, 25), font=0, flags = RT_HALIGN_LEFT|RT_VALIGN_TOP, text = 0),
+					MultiContentEntryPixmapAlphaBlend(pos = (5, 1), size = (24, 24), png = 1, flags = BT_SCALE),
+					],
+					"fonts": [gFont("Regular",19), gFont("Regular",16)],
+					"itemHeight": 30
+				}
+			</convert>
+		</widget>
+		<widget source="key_red" render="Label" position="0,e-40" size="180,40" backgroundColor="key_red" font="Regular;20" foregroundColor="key_text" horizontalAlignment="center" noWrap="1" verticalAlignment="center">
+			<convert type="ConditionalShowHide" />
+		</widget>
+		<widget source="key_green" render="Label" position="190,e-40" size="180,40" backgroundColor="key_green" font="Regular;20" foregroundColor="key_text" horizontalAlignment="center" noWrap="1" verticalAlignment="center">
+			<convert type="ConditionalShowHide" />
+		</widget>
+	</screen>
+	"""
+
+	def __init__(self, session, menulist=None, removelist=None):
+		Screen.__init__(self, session)
+		self.setTitle(_("Restoring plugins..."))
+		self.index = 0
+		self.pluginSelected = True
+		self.autoInstallList = []
+		self.pluginsInstalled = []
+		if not config.misc.firstrun.value:
+			listinstalled = str(config.backupmanager.backuplocation.value) + '/backup/autoinstall' if path.exists(str(config.backupmanager.backuplocation.value) + '/backup/autoinstall') or path.islink(str(config.backupmanager.backuplocation.value) + '/backup/autoinstall') else "/tmp/ExtraInstalledPlugins"
+			if path.exists(listinstalled):
+				with open(listinstalled, "r") as fd:
+					self.autoInstallList = [p for line in fd.readlines() if (p := line.strip())]
+		else:
+			from .RestoreWizard import fullbackupfilename
+			if fullbackupfilename is not None:
+				listinstalled = fullbackupfilename.split("norhap")[0] + "autoinstall"
+				if path.exists(listinstalled):
+					with open(listinstalled, "r") as fd:
+						self.autoInstallList = [p for line in fd.readlines() if (p := line.strip())]
+		for x in self.autoInstallList:
+			self.pluginsInstalled.append(SettingsEntry(x, True))
+		self.list = self.pluginsInstalled
+		self.container = eConsoleAppContainer()
+		self["menu"] = List([])
+		self["key_green"] = StaticText(_("Install"))
+		self["key_red"] = StaticText(_("Cancel"))
+		self["summary_description"] = StaticText("")
+		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
+		{
+			"red": self.close,
+			"green": self.green,
+			"cancel": self.close,
+			"ok": self.ok
+		}, -2)
+
+		self["menu"].setList(self.pluginsInstalled)
+		self["menu"].setIndex(self.index)
+
+	def green(self):
+		pluginlist = []
+		for x in self.list:
+			if x[2]:
+				pluginlist.append(x[0])
+		cmdList = []
+		if pluginlist:
+			cmdList.append("opkg install " + " ".join(pluginlist))
+		if cmdList:
+			from Screens.Console import Console
+			if not config.misc.firstrun.value:
+				cmd = "sleep 20 && killall -9 enigma2 && init 6"
+			else:
+				from .RestoreWizard import fullbackupfilename
+				cmd = "tar -xzvf " + str(fullbackupfilename) + " -C / ; sleep 20 ; killall -9 enigma2 ; init 6"
+				self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO, simple=True)
+			self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
+			self.container.execute(cmd)
+		else:
+			self.close()
+
+	def ok(self):
+		if self["menu"].getCurrent() and self.pluginSelected:
+			self.pluginSelected = False
+			for x in self.autoInstallList:
+				if self["menu"].count():
+					index = self["menu"].getIndex()
+					state = self["menu"].getCurrent()[2]
+					disableditem = self["menu"].getCurrent()[0]
+					self.list[index] = SettingsEntry(disableditem, False if state else True)
+					self["menu"].setList(self.list)
+					self["menu"].setIndex(index)
+					break
+		if not self.pluginSelected:
+			self.pluginSelected = True
+			for x in self.autoInstallList:
+				if self["menu"].count():
+					index = self["menu"].getIndex()
+					state = self["menu"].getCurrent()[2]
+					enableditem = self["menu"].getCurrent()[0]
+					self.list[index] = SettingsEntry(enableditem, True if state else False)
+					self["menu"].setList(self.list)
+					self["menu"].setIndex(index)
+					break

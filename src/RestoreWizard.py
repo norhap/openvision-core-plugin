@@ -15,6 +15,8 @@ from Tools.Multiboot import bootmviSlot, getSlotImageInfo, getCurrentImage
 from Components.SystemInfo import SystemInfo, MODEL
 from time import sleep
 
+fullbackupfilename = None
+
 
 def setcliJoinZerotier():  # join to ZeroTier
 	try:
@@ -91,7 +93,9 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 		self.settingsdeviceSelect(index)
 
 	def settingsdeviceSelect(self, index):
+		global fullbackupfilename
 		self.selectedDevice = index
+		fullbackupfilename = index
 		self.fullbackupfilename = index
 		self.NextStep = 'settingrestorestarted'
 
@@ -99,10 +103,14 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 		self.settingsdeviceSelect(self.selection)
 
 	def pluginsdeviceSelectionMade(self, index):
+		global fullbackupfilename
+		fullbackupfilename = index
 		self.selectedAction = index
 		self.pluginsdeviceSelect(index)
 
 	def pluginsdeviceSelect(self, index):
+		global fullbackupfilename
+		fullbackupfilename = index
 		self.selectedDevice = index
 		self.fullbackupfilename = index
 		self.NextStep = 'plugindetection'
@@ -156,9 +164,10 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 			sleep(0.5)
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
-			self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO, simple=True)
-			delay = 15 if not self.unsatisfiedPlugins else 60
-			eConsoleAppContainer().execute("sleep " + str(delay) + " && killall -9 enigma2 && init 6")
+			if self.unsatisfiedPlugins:
+				self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO, simple=True)
+				delay = 15 if not self.unsatisfiedPlugins else 60
+				eConsoleAppContainer().execute("sleep " + str(delay) + " && killall -9 enigma2 && init 6")
 		elif self.NextStep == 'settingsquestion' or self.NextStep == 'settingsrestore' or self.NextStep == 'pluginsquestion' or self.NextStep == 'pluginsrestoredevice' or self.NextStep == 'end' or self.NextStep == 'noplugins':
 			self.buildListfinishedCB(False)
 		elif self.NextStep == 'settingrestorestarted':
@@ -172,11 +181,15 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif self.NextStep == 'pluginrestore':
 			if self.feeds == 'OK':
-				print('[RestoreWizard] Stage 6: Feeds OK, Restoring Plugins')
-				print('[RestoreWizard] Console command: ', 'opkg install ' + self.pluginslist + ' ' + self.pluginslist2)
-				self.Console.ePopen("opkg update && opkg install " + self.pluginslist + ' ' + self.pluginslist2, self.pluginsRestore_Finished)
-				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while plugins restore completes..."), type=MessageBox.TYPE_INFO, enable_input=False, simple=True)
-				self.buildListRef.setTitle(_("Restore wizard"))
+				if self.pluginslist and not self.pluginslist2:
+					from .BackupManager import RestorePlugins
+					self.session.openWithCallback(self.close, RestorePlugins, self.pluginslist)
+				elif self.pluginslist2:
+					print('[RestoreWizard] Stage 6: Feeds OK, Restoring Plugins')
+					print('[RestoreWizard] Console command: ', 'opkg install ' + self.pluginslist2)
+					self.Console.ePopen("opkg update && opkg install " + self.pluginslist2, self.pluginsRestore_Finished)
+					self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while plugins restore completes..."), type=MessageBox.TYPE_INFO, enable_input=False, simple=True)
+					self.buildListRef.setTitle(_("Restore wizard"))
 			elif self.feeds == 'DOWN':
 				print('[RestoreWizard] Stage 6: Feeds Down')
 				self.didPluginRestore = True
@@ -322,7 +335,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 
 	def comparePluginLists(self, result, retVal, extra_args):
 		self.opkg_available_packages = {p.split()[0] for line in result.split("\n") if (p := line.strip())}  # list of all packages available from the feeds
-		self.Console.ePopen("opkg list-installed", self.doRestorePlugins2)
+		self.Console.ePopen("opkg list-installed | egrep 'enigma2-plugin-|task-base|packagegroup-base", self.doRestorePlugins2)
 
 	def doRestorePlugins2(self, result, retVal, extra_args):
 		if self.unsatisfiedPlugins is False:
