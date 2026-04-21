@@ -280,6 +280,9 @@ msgstr "Deseleccionar"
 msgid "Device: "
 msgstr "Dispositivo: "
 
+msgid "Disabled"
+msgstr "Deshabilitado"
+
 msgid "No device available."
 msgstr "Ningún dispositivo disponible."
 
@@ -328,6 +331,9 @@ msgstr "Habilitar SWAP al iniciar sistema"
 
 msgid "Enable frozen check"
 msgstr "Activar comprobación de parada"
+
+msgid "Enabled"
+msgstr "Habilitado"
 
 msgid "Enough retries, delaying till next schedule."
 msgstr "Suficientes reintentos, retrasando hasta el próximo horario."

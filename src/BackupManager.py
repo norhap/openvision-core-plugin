@@ -1521,6 +1521,9 @@ class RestorePlugins(Screen):
 		<widget source="key_green" render="Label" position="190,e-40" size="180,40" backgroundColor="key_green" font="Regular;20" foregroundColor="key_text" horizontalAlignment="center" noWrap="1" verticalAlignment="center">
 			<convert type="ConditionalShowHide" />
 		</widget>
+		<widget source="key_yellow" render="Label" position="380,e-40" size="180,40" backgroundColor="key_yellow" font="Regular;20" foregroundColor="key_text" horizontalAlignment="center" noWrap="1" verticalAlignment="center">
+			<convert type="ConditionalShowHide" />
+		</widget>
 	</screen>
 	"""
 
@@ -1548,15 +1551,16 @@ class RestorePlugins(Screen):
 		self.list = self.pluginsInstalled
 		self.container = eConsoleAppContainer()
 		self["menu"] = List([])
-		self["key_green"] = StaticText(_("Install"))
 		self["key_red"] = StaticText(_("Cancel"))
+		self["key_green"] = StaticText(_("Install"))
+		self["key_yellow"] = StaticText(_("Disabled"))
 		self["summary_description"] = StaticText("")
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
 		{
 			"red": self.close,
 			"green": self.green,
 			"cancel": self.close,
-			"ok": self.ok
+			"yellow": self.select
 		}, -2)
 
 		self["menu"].setList(self.pluginsInstalled)
@@ -1583,7 +1587,7 @@ class RestorePlugins(Screen):
 		else:
 			self.close()
 
-	def ok(self):
+	def select(self):
 		if self["menu"].getCurrent() and self.pluginSelected:
 			self.pluginSelected = False
 			for x in self.autoInstallList:
@@ -1605,4 +1609,6 @@ class RestorePlugins(Screen):
 					self.list[index] = SettingsEntry(enableditem, True if state else False)
 					self["menu"].setList(self.list)
 					self["menu"].setIndex(index)
+					self["key_yellow"].setText("")
+					self["key_yellow"].setText(_("Disabled") if state else _("Enabled"))
 					break
