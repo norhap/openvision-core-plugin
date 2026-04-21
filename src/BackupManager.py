@@ -504,7 +504,7 @@ class VISIONBackupManager(Screen):
 		AddPopupWithCallback(self.Stage1,
 			_("Do you want to restore your Enigma2 settings ?"),
 			MessageBox.TYPE_YESNO,
-			10,
+			0,
 			SETTINGSRESTOREQUESTIONID
 		)
 
@@ -516,11 +516,11 @@ class VISIONBackupManager(Screen):
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf")
 
-	def Stage1(self, answer=None):
+	def Stage1(self, answer=False):
 		print('[BackupManager] Restoring Stage 1:')
 		if answer is True:
-			self.Console.ePopen("sleep 1 ; tar -xzvf " + self.BackupDirectory + self.sel + " -C /tmp/ etc/enigma2/settings", self.Stage1SettingsComplete)
-		if answer is False:
+			self.Console.ePopen("sleep 1 ; echo '' > /tmp/settings_restore", self.Stage1SettingsComplete)
+		else:
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C / tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion  tmp/3rdPartyPlugins", self.Stage1PluginsComplete)
 
 	def Stage1SettingsComplete(self, result, retVal, extra_args):
@@ -535,12 +535,13 @@ class VISIONBackupManager(Screen):
 			sleep(0.5)
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
-			self.session.nav.PowerTimer.loadTimer()
+			if hasattr(self, "session"):
+				self.session.nav.PowerTimer.loadTimer()
 # Don't check RecordTimers for conflicts. On a restore we may
 # not have the correct tuner configuration (and no USB tuners)...
 #
-			self.session.nav.RecordTimer.loadTimer(justLoad=True)
-			configfile.load()
+				self.session.nav.RecordTimer.loadTimer(justLoad=True)
+				configfile.load()
 		else:
 			print('[BackupManager] Restoring Stage 1 Failed:')
 			AddPopupWithCallback(self.Stage2,
@@ -787,9 +788,10 @@ class VISIONBackupManager(Screen):
 			slot = getCurrentImage()
 			text = getSlotImageInfo(slot)
 			bootmviSlot(text=text, slot=slot)
-		if self.didPluginsRestore and fileExists("/tmp/backupkernelversion") or self.didSettingsRestore and fileExists("/tmp/backupkernelversion"):
+		if self.didSettingsRestore and fileExists("/tmp/settings_restore"):  # RESTORE ONLY SETTINGS
 			print('[BackupManager] Restoring backup')
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /", self.Stage1SettingsComplete)
+		if self.didPluginsRestore and fileExists("/tmp/backupkernelversion"):
 			sleep(0.5)
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
