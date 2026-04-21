@@ -1613,10 +1613,10 @@ class RestorePlugins(Screen):
 		if cmdList:
 			from Screens.Console import Console
 			if not config.misc.firstrun.value:
-				cmd = "sleep 20 && killall -9 enigma2 && init 6"
+				cmd = "sleep 35 && killall -9 enigma2 && init 6"
 			else:
 				from .RestoreWizard import fullbackupfilename
-				cmd = "tar -xzvf " + str(fullbackupfilename) + " -C / ; sleep 20 ; killall -9 enigma2 ; init 6"
+				cmd = "tar -xzvf " + str(fullbackupfilename) + " -C / ; sleep 35 ; killall -9 enigma2 ; init 6"
 				self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO, simple=True)
 			self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 			self.container.execute(cmd)
