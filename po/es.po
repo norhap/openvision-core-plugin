@@ -335,6 +335,9 @@ msgstr "Habilitar SWAP al iniciar sistema"
 msgid "Enable frozen check"
 msgstr "Activar comprobación de parada"
 
+msgid "Enabled, it will perform a parallel copy based on OpenPLi when you run a backup."
+msgstr "Habilitado, realizará una copia paralela basada en OpenPLi cuando ejecute un backup."
+
 msgid "Enough retries, delaying till next schedule."
 msgstr "Suficientes reintentos, retrasando hasta el próximo horario."
 
@@ -556,6 +559,9 @@ msgstr "OK"
 
 msgid "OK, to perform a restore"
 msgstr "OK, para realizar una restauración"
+
+msgid "Perform parallel backup based on OpenPLi"
+msgstr "Realizar copia de seguridad paralela basada en OpenPLi"
 
 msgid "Please copy the folder"
 msgstr "Por favor copia la carpeta"

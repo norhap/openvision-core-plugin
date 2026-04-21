@@ -11,7 +11,7 @@ from .__init__ import _, PluginLanguageDomain
 from Components.About import about
 from Components.ActionMap import ActionMap
 from Components.Button import Button
-from Components.config import configfile, config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, ConfigLocations, NoSave, ConfigClock, ConfigDirectory
+from Components.config import configfile, config, ConfigBoolean, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, ConfigLocations, NoSave, ConfigClock, ConfigDirectory
 from Components.Console import Console
 from Components.FileList import MultiFileSelectList, FileList
 from Components.Harddisk import harddiskmanager
@@ -73,6 +73,9 @@ config.backupmanager.repeattype = ConfigSelection(default="daily", choices=[("da
 config.backupmanager.schedule = ConfigYesNo(default=False)
 config.backupmanager.scheduletime = ConfigClock(default=0)  # 1:00
 config.backupmanager.xtraplugindir = ConfigDirectory(default='')
+config.backupmanager.xtraplugindir = ConfigDirectory(default='')
+config.backupmanager.twobackup = ConfigBoolean(default=True) if isPluginInstalled("AutoBackup") else ConfigYesNo(default=False)
+config.backupmanager.openplibackup = ConfigYesNo(default=True)
 # Querying is enabled by default - asthat is what used to happen always
 #
 config.backupmanager.query = ConfigYesNo(default=True)
@@ -369,7 +372,10 @@ class VISIONBackupManager(Screen):
 			if job.name.startswith(_("Backup manager")):
 				self.showJobView(job)
 				break
-		if isPluginInstalled("AutoBackup"):
+		if not isPluginInstalled("AutoBackup") and config.backupmanager.openplibackup.value:
+			config.backupmanager.openplibackup.value = False
+			config.backupmanager.openplibackup.save()
+		if config.backupmanager.openplibackup.value:
 			self.container = eConsoleAppContainer()
 			from Plugins.Extensions.AutoBackup.plugin import BACKUP_SCRIPT
 			cmd = BACKUP_SCRIPT
