@@ -280,8 +280,8 @@ msgstr "Deseleccionar"
 msgid "Device: "
 msgstr "Dispositivo: "
 
-msgid "Disabled"
-msgstr "Deshabilitado"
+msgid "Disable"
+msgstr "Deshabilitar"
 
 msgid "No device available."
 msgstr "Ningún dispositivo disponible."
@@ -323,6 +323,9 @@ msgstr "Descargas %s"
 msgid "EMMC partitions are not included."
 msgstr "Particiones eMMC no se incluyen."
 
+msgid "Enable"
+msgstr "Habilitar"
+
 msgid "Enable startup"
 msgstr "Habilitar al iniciar"
 
@@ -331,9 +334,6 @@ msgstr "Habilitar SWAP al iniciar sistema"
 
 msgid "Enable frozen check"
 msgstr "Activar comprobación de parada"
-
-msgid "Enabled"
-msgstr "Habilitado"
 
 msgid "Enough retries, delaying till next schedule."
 msgstr "Suficientes reintentos, retrasando hasta el próximo horario."

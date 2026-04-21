@@ -1555,18 +1555,46 @@ class RestorePlugins(Screen):
 		self["menu"] = List([])
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Install"))
-		self["key_yellow"] = StaticText(_("Disabled"))
+		self["key_yellow"] = StaticText(_("Disable"))
 		self["summary_description"] = StaticText("")
-		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
+		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "NavigationActions"],
 		{
 			"red": self.close,
 			"green": self.green,
 			"cancel": self.close,
-			"yellow": self.select
+			"yellow": self.select,
+			"down": self.moveDown,
+			"up": self.moveUp,
+			"left": self.keyLeft,
+			"right": self.keyRight
 		}, -2)
 
 		self["menu"].setList(self.pluginsInstalled)
 		self["menu"].setIndex(self.index)
+
+	def moveUp(self):
+		self["menu"].up()
+		state = self["menu"].getCurrent()[2]
+		self["key_yellow"].setText("")
+		self["key_yellow"].setText(_("Disable") if state else _("Enable"))
+
+	def moveDown(self):
+		self["menu"].down()
+		state = self["menu"].getCurrent()[2]
+		self["key_yellow"].setText("")
+		self["key_yellow"].setText(_("Disable") if state else _("Enable"))
+
+	def keyLeft(self):
+		self["menu"].pageUp()
+		state = self["menu"].getCurrent()[2]
+		self["key_yellow"].setText("")
+		self["key_yellow"].setText(_("Disable") if state else _("Enable"))
+
+	def keyRight(self):
+		self["menu"].pageDown()
+		state = self["menu"].getCurrent()[2]
+		self["key_yellow"].setText("")
+		self["key_yellow"].setText(_("Disable") if state else _("Enable"))
 
 	def green(self):
 		pluginlist = []
@@ -1612,5 +1640,5 @@ class RestorePlugins(Screen):
 					self["menu"].setList(self.list)
 					self["menu"].setIndex(index)
 					self["key_yellow"].setText("")
-					self["key_yellow"].setText(_("Disabled") if state else _("Enabled"))
+					self["key_yellow"].setText(_("Disable") if state else _("Enable"))
 					break
