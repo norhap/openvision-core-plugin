@@ -525,7 +525,7 @@ class VISIONBackupManager(Screen):
 	def Stage1(self, answer=False):
 		print('[BackupManager] Restoring Stage 1:')
 		if answer is True:
-			self.Console.ePopen("sleep 1 ; echo '' > /tmp/settings_restore", self.Stage1SettingsComplete)
+			self.Console.ePopen("sleep 1 ; tar -xzvf " + self.BackupDirectory + self.sel + " -C /tmp/ etc/enigma2/settings", self.Stage1SettingsComplete)
 		else:
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C / tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion  tmp/3rdPartyPlugins", self.Stage1PluginsComplete)
 
@@ -794,15 +794,15 @@ class VISIONBackupManager(Screen):
 			slot = getCurrentImage()
 			text = getSlotImageInfo(slot)
 			bootmviSlot(text=text, slot=slot)
-		if self.didSettingsRestore and fileExists("/tmp/settings_restore"):  # RESTORE ONLY SETTINGS
+		if self.didSettingsRestore and fileExists("/tmp/etc/enigma2/settings"):  # RESTORE SETTINGS
 			print('[BackupManager] Restoring backup')
-			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /", self.Stage1SettingsComplete)
+			self.Console.ePopen("rm -f /tmp/etc/enigma2/settings ; tar -xzvf " + self.BackupDirectory + self.sel + " -C /", self.Stage1SettingsComplete)
 		if self.didPluginsRestore and fileExists("/tmp/backupkernelversion"):
 			sleep(0.5)
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
 			if self.unsatisfiedPlugins:
-				self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO)
+				self.session.open(MessageBox, _("Finishing restore your receiver go to restart..."), MessageBox.TYPE_INFO)
 				delay = 15 if not self.unsatisfiedPlugins else 60
 				self.Console.ePopen("sleep " + str(delay) + " && killall -9 enigma2 && init 6")
 		else:
@@ -1557,7 +1557,6 @@ class RestorePlugins(Screen):
 		for x in self.autoInstallList:
 			self.pluginsInstalled.append(SettingsEntry(x, True))
 		self.list = self.pluginsInstalled
-		self.container = eConsoleAppContainer()
 		self["menu"] = List([])
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Install"))
@@ -1609,17 +1608,10 @@ class RestorePlugins(Screen):
 				pluginlist.append(x[0])
 		cmdList = []
 		if pluginlist:
-			cmdList.append("opkg install " + " ".join(pluginlist))
+			cmdList.append("opkg install " + " ".join(pluginlist) + " ; echo '  '" + _("Finishing restore your receiver go to restart...") + " ; sleep 8 ; killall -9 enigma2 ; init 6")
 		if cmdList:
 			from Screens.Console import Console
-			if not config.misc.firstrun.value:
-				cmd = "sleep 35 && killall -9 enigma2 && init 6"
-			else:
-				from .RestoreWizard import fullbackupfilename
-				cmd = "tar -xzvf " + str(fullbackupfilename) + " -C / ; sleep 35 ; killall -9 enigma2 ; init 6"
-				self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO, simple=True)
 			self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
-			self.container.execute(cmd)
 		else:
 			self.close()
 

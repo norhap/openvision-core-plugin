@@ -164,10 +164,9 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 			sleep(0.5)
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
-			if self.unsatisfiedPlugins:
-				self.session.open(MessageBox, _("Finishing restore, your receiver go to restart."), MessageBox.TYPE_INFO, simple=True)
-				delay = 15 if not self.unsatisfiedPlugins else 60
-				eConsoleAppContainer().execute("sleep " + str(delay) + " && killall -9 enigma2 && init 6")
+			self.session.open(MessageBox, _("Finishing restore your receiver go to restart..."), MessageBox.TYPE_INFO, simple=True)
+			delay = 15 if not self.unsatisfiedPlugins else 60
+			eConsoleAppContainer().execute("sleep " + str(delay) + " && killall -9 enigma2 && init 6")
 		elif self.NextStep == 'settingsquestion' or self.NextStep == 'settingsrestore' or self.NextStep == 'pluginsquestion' or self.NextStep == 'pluginsrestoredevice' or self.NextStep == 'end' or self.NextStep == 'noplugins':
 			self.buildListfinishedCB(False)
 		elif self.NextStep == 'settingrestorestarted':
@@ -181,6 +180,12 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif self.NextStep == 'pluginrestore':
 			if self.feeds == 'OK':
+				if SystemInfo["hasKexec"]:
+					slot = getCurrentImage()
+					text = getSlotImageInfo(slot)
+					bootmviSlot(text=text, slot=slot)
+				if self.didSettingsRestore and path.exists("/tmp/etc/enigma2/settings"):
+					self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /")
 				if self.pluginslist and not self.pluginslist2:
 					from .BackupManager import RestorePlugins
 					self.session.openWithCallback(self.close, RestorePlugins, self.pluginslist)
