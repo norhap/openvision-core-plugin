@@ -144,7 +144,6 @@ class VISIONBackupManager(Screen):
 		self["key_info"] = StaticText(_("INFO"))
 
 		self.BackupRunning = False
-		self.unsatisfiedPlugins = False
 		self.BackupDirectory = " "
 		self.onChangedEntry = []
 		self.emlist = []
@@ -154,6 +153,7 @@ class VISIONBackupManager(Screen):
 		self.activityTimer.timeout.get().append(self.backupRunning)
 		self.activityTimer.start(10)
 		self.Console = Console()
+		self.unsatisfiedPlugins = False
 		global BackupTime
 		BackupTime = 0
 		if BackupTime > 0:
@@ -515,10 +515,12 @@ class VISIONBackupManager(Screen):
 		)
 
 	def StageRestoreSettings(self, answer):
+		from Screens.Console import Console
 		if answer:
-			print('[BackupManager] Restoring only settings:')
-			restoreSettings = "/sbin/init 4 && sleep 5 && tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C / && sleep 15 && /sbin/init 6"
-			self.Console.ePopen("%s" % restoreSettings, self.Stage1SettingsComplete, self.session.open(MessageBox, _("Restoring settings, your receiver go to restart..."), MessageBox.TYPE_INFO))
+			cmdList = []
+			cmdList.append("tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C / ; echo '  '" + _("Restoring settings: Enigma2 is about to restart...") + " ; sleep 8 ; killall -9 enigma2 && sleep 5 && /sbin/init 3")
+			if cmdList:
+				self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf")
 
@@ -536,9 +538,6 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring Stage 1 Complete:')
 			self.didSettingsRestore = True
 			self.Stage1Completed = True
-			eDVBDB.getInstance().reloadServicelist()
-			eDVBDB.getInstance().reloadBouquets()
-			sleep(0.5)
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
 			if hasattr(self, "session"):
@@ -636,7 +635,7 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring Stage 3: no network connection, plugin restore not possible')
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
-				_("Your receiver is not connected to the Internet.\nIf restoring doesn't fix the problem, check your network settings.\nYour network settings will be restored now from backup."),
+				_("Your receiver is not connected to the Internet.\nNetwork settings will be restored from backup.\nPlease perform a full reset of the receiver."),
 				MessageBox.TYPE_INFO,
 				15,
 				NOPLUGINS
@@ -739,7 +738,7 @@ class VISIONBackupManager(Screen):
 			AddPopupWithCallback(self.Stage6,
 				_("Now skipping restore process plugins."),
 				MessageBox.TYPE_INFO,
-				15,
+				5,
 				NOPLUGINS
 			)
 
@@ -773,6 +772,7 @@ class VISIONBackupManager(Screen):
 			self.Console.ePopen("opkg list-installed | egrep 'enigma2-plugin-|task-base|packagegroup-base", self.Stage3Complete)
 
 	def Stage6(self, result=None, retVal=None, extra_args=None):
+		from Screens.Console import Console
 		self.Stage1Completed = True
 		self.Stage2Completed = True
 		self.Stage3Completed = True
@@ -796,15 +796,21 @@ class VISIONBackupManager(Screen):
 			bootmviSlot(text=text, slot=slot)
 		if self.didSettingsRestore and fileExists("/tmp/etc/enigma2/settings"):  # RESTORE SETTINGS
 			print('[BackupManager] Restoring backup')
-			self.Console.ePopen("rm -f /tmp/etc/enigma2/settings ; tar -xzvf " + self.BackupDirectory + self.sel + " -C /", self.Stage1SettingsComplete)
+			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C / ", self.Stage1SettingsComplete)
 		if self.didPluginsRestore and fileExists("/tmp/backupkernelversion"):
 			sleep(0.5)
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
 			if self.unsatisfiedPlugins:
-				self.session.open(MessageBox, _("Finishing restore your receiver go to restart..."), MessageBox.TYPE_INFO)
-				delay = 15 if not self.unsatisfiedPlugins else 60
-				self.Console.ePopen("sleep " + str(delay) + " && killall -9 enigma2 && init 6")
+				cmdList = []
+				cmdList.append("echo '  '" + _("Finishing restore your receiver go to restart...") + " ; sleep 60 ; killall -9 enigma2 && init 6")
+				if cmdList:
+					self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
+		elif fileExists("/tmp/etc/enigma2/settings"):
+			cmdList = []
+			cmdList.append("rm -f /tmp/etc/enigma2/settings ; echo '  '" + _("Restoring settings: Enigma2 is about to restart...") + " ; sleep 8 ; killall -9 enigma2 && sleep 5 && /sbin/init 3")
+			if cmdList:
+				self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 		else:
 			return self.close()
 
