@@ -6,7 +6,7 @@ from datetime import date, datetime
 import tarfile
 import glob
 from subprocess import run
-from enigma import eTimer, eEnv, eDVBDB, eConsoleAppContainer
+from enigma import eTimer, eEnv, eConsoleAppContainer
 from .__init__ import _, PluginLanguageDomain
 from Components.About import about
 from Components.ActionMap import ActionMap
@@ -750,7 +750,7 @@ class VISIONBackupManager(Screen):
 			else:
 				self.pluginslist2 = ""
 			if len(self.pluginslist) and not self.pluginslist2:
-					self.Console.ePopen('opkg update', self.Stage5Complete)
+				self.Console.ePopen('opkg update', self.Stage5Complete)
 			elif len(self.pluginslist2):
 				print('[BackupManager] Restoring Stage 5: starting plugin restore')
 				print('[BackupManager] Console command: ', 'opkg update && opkg install ' + self.pluginslist2)
@@ -782,18 +782,20 @@ class VISIONBackupManager(Screen):
 		self.Stage3Completed = True
 		self.Stage4Completed = True
 		self.Stage5Completed = True
-		# if path.exists("/tmp/etc/enigma2/settings") and path.exists("/usr/sbin/zerotier-one"):  # join to ZeroTier
-			# from enigma import eConsoleAppContainer  # noqa: E402
-			# try:
-				# with open("/tmp/etc/enigma2/settings", "r") as fr:
-					# for line in fr.readlines():
-						# if line.startswith('config.plugins.IPToSAT.networkidzerotier'):
-							# networkid = line.strip().split('=')[1]
-							# if networkid:
-								# eConsoleAppContainer().execute(f'/etc/init.d/zerotier start ; update-rc.d -f zerotier defaults ; sleep 15 ; zerotier-cli join {networkid}')
-								# break
-			# except Exception:
-				# pass
+		"""
+		if path.exists("/tmp/etc/enigma2/settings") and path.exists("/usr/sbin/zerotier-one"):  # join to ZeroTier
+			from enigma import eConsoleAppContainer  # noqa: E402
+			try:
+				with open("/tmp/etc/enigma2/settings", "r") as fr:
+					for line in fr.readlines():
+						if line.startswith('config.plugins.IPToSAT.networkidzerotier'):
+							networkid = line.strip().split('=')[1]
+							if networkid:
+								eConsoleAppContainer().execute(f'/etc/init.d/zerotier start ; update-rc.d -f zerotier defaults ; sleep 15 ; zerotier-cli join {networkid}')
+								break
+			except Exception:
+				pass
+		"""		
 		if SystemInfo["hasKexec"]:
 			slot = getCurrentImage()
 			text = getSlotImageInfo(slot)

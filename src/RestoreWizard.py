@@ -13,7 +13,6 @@ from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
 from Tools.Multiboot import bootmviSlot, getSlotImageInfo, getCurrentImage
 from Components.SystemInfo import SystemInfo, MODEL
-from time import sleep
 
 fullbackupfilename = None
 
@@ -265,8 +264,10 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 	def pluginsRestore_Finished(self, result, retVal, extra_args=None):
 		if result:
 			print("[RestoreWizard] opkg install result:\n", str(result))
-			# if path.exists("/tmp/etc/enigma2/settings") and path.exists("/usr/sbin/zerotier-one"):
-				# setcliJoinZerotier()
+			"""
+			if path.exists("/tmp/etc/enigma2/settings") and path.exists("/usr/sbin/zerotier-one"):
+				setcliJoinZerotier()
+			"""
 		if retVal == 0:
 			self.didPluginRestore = True
 			self.NextStep = 'reboot'
