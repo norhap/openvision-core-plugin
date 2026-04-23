@@ -732,7 +732,8 @@ class VISIONBackupManager(Screen):
 			self.doPluginsRestore = True
 			self.Stage4Completed = True
 			print('[BackupManager] Restoring Stage 4: plugin restore chosen')
-			self.session.openWithCallback(self.close, RestorePlugins, self.pluginslist)
+			if not path.exists("/tmp/etc/enigma2/settings"):  # RESTORE ONLY PLUGINS
+				self.session.openWithCallback(self.close, RestorePlugins, self.pluginslist)
 		else:
 			print('[BackupManager] Restoring Stage 4: plugin restore skipped by user')
 			AddPopupWithCallback(self.Stage6,
@@ -771,6 +772,9 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring Stage 3: Couldnt find anything to satisfy')
 			self.Console.ePopen("opkg list-installed | egrep 'enigma2-plugin-|task-base|packagegroup-base", self.Stage3Complete)
 
+	def restorePlugins(self, result=None, retVal=None, extra_args=None):
+		self.session.openWithCallback(self.close, RestorePlugins, self.pluginslist)
+
 	def Stage6(self, result=None, retVal=None, extra_args=None):
 		from Screens.Console import Console
 		self.Stage1Completed = True
@@ -794,19 +798,23 @@ class VISIONBackupManager(Screen):
 			slot = getCurrentImage()
 			text = getSlotImageInfo(slot)
 			bootmviSlot(text=text, slot=slot)
-		if self.didSettingsRestore and fileExists("/tmp/etc/enigma2/settings"):  # RESTORE SETTINGS
-			print('[BackupManager] Restoring backup')
-			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C / ", self.Stage1SettingsComplete)
-		if self.didPluginsRestore and fileExists("/tmp/backupkernelversion"):
-			cmd = "echo '\n  '" + _("Finishing restore your receiver go to restart...") + " ; sleep 60 ; killall -9 enigma2 && init 6" if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; echo '\n  '" + _("Finishing restore your receiver go to restart...") + " ; sleep 60 ; killall -9 enigma2 && init 6"
-			if self.unsatisfiedPlugins:
-				cmdList = []
+		if self.didSettingsRestore and fileExists("/tmp/etc/enigma2/settings"):
+			cmdList = []
+			if self.didPluginsRestore:  # RESTORE SETTINGS AND PLUGINS
+				print('[BackupManager] Restoring settings and plugins')
+				cmd = "tar -xzvf " + self.BackupDirectory + self.sel + " -C / " if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; tar -xzvf " + self.BackupDirectory + self.sel + " -C / "
 				cmdList.append(cmd)
 				if cmdList:
+					self.Console.ePopen("rm -f /tmp/etc/enigma2/settings ; sleep 4", self.restorePlugins)
 					self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
-		elif fileExists("/tmp/etc/enigma2/settings"):
+			elif fileExists("/tmp/etc/enigma2/settings"):  # RESTORE ONLY SETTINGS
+				cmdList.append("rm -f /tmp/etc/enigma2/settings ; tar -xzvf " + self.BackupDirectory + self.sel + " -C / ; echo '\n  '" + _("Restoring settings: Enigma2 is about to restart...") + " ; sleep 8 ; killall -9 enigma2 && sleep 5 && /sbin/init 3")
+				if cmdList:
+					self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
+		elif self.unsatisfiedPlugins and fileExists("/tmp/backupkernelversion"):
+			cmd = "echo '\n  '" + _("Finishing restore your receiver go to restart...") + " ; sleep 60 ; killall -9 enigma2 && init 6" if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; echo '\n  '" + _("Finishing restore your receiver go to restart...") + " ; sleep 60 ; killall -9 enigma2 && init 6"
 			cmdList = []
-			cmdList.append("rm -f /tmp/etc/enigma2/settings ; echo '\n  '" + _("Restoring settings: Enigma2 is about to restart...") + " ; sleep 8 ; killall -9 enigma2 && sleep 5 && /sbin/init 3")
+			cmdList.append(cmd)
 			if cmdList:
 				self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 		else:
