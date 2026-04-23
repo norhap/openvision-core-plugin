@@ -155,18 +155,18 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 
 	def buildList(self, action):
 		if self.NextStep == 'reboot':
+			delay = 8 if not self.unsatisfiedPlugins else 60
 			if SystemInfo["hasKexec"]:
 				slot = getCurrentImage()
 				text = getSlotImageInfo(slot)
 				bootmviSlot(text=text, slot=slot)
 			if self.didSettingsRestore and path.exists("/tmp/etc/enigma2/settings"):
-				self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /")
-			sleep(0.5)
-			if path.islink("/etc/resolv.conf"):
-				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
-			self.session.open(MessageBox, _("Finishing restore your receiver go to restart..."), MessageBox.TYPE_INFO, simple=True)
-			delay = 15 if not self.unsatisfiedPlugins else 60
-			eConsoleAppContainer().execute("sleep " + str(delay) + " && killall -9 enigma2 && init 6")
+				cmdList = []
+				cmd = "tar -xzvf " + self.fullbackupfilename + " -C / ; echo '\n  '" + _("Finishing restore your receiver go to restart...") + " ; sleep " + str(delay) + " ; killall -9 enigma2 ; init 6" if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; tar -xzvf " + self.fullbackupfilename + " -C / ; echo '\n  '" + _("Finishing restore your receiver go to restart...") + " ; sleep " + str(delay) + " ; killall -9 enigma2 ; init 6"
+				cmdList.append(cmd)
+				if cmdList:
+					from Screens.Console import Console
+					self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 		elif self.NextStep == 'settingsquestion' or self.NextStep == 'settingsrestore' or self.NextStep == 'pluginsquestion' or self.NextStep == 'pluginsrestoredevice' or self.NextStep == 'end' or self.NextStep == 'noplugins':
 			self.buildListfinishedCB(False)
 		elif self.NextStep == 'settingrestorestarted':
