@@ -515,11 +515,11 @@ class VISIONBackupManager(Screen):
 		)
 
 	def StageRestoreSettings(self, answer):
-		from Screens.Console import Console
 		if answer:
 			cmdList = []
-			cmdList.append("tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C / ; echo '  '" + _("Restoring settings: Enigma2 is about to restart...") + " ; sleep 8 ; killall -9 enigma2 && sleep 5 && /sbin/init 3")
+			cmdList.append("tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C / ; echo '\n  '" + _("Restoring settings: Enigma2 is about to restart...") + " ; sleep 8 ; killall -9 enigma2 && sleep 5 && /sbin/init 3")
 			if cmdList:
+				from Screens.Console import Console
 				self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 			if path.islink("/etc/resolv.conf"):
 				self.Console.ePopen("rm -f /etc/resolv.conf")
@@ -798,17 +798,15 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring backup')
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C / ", self.Stage1SettingsComplete)
 		if self.didPluginsRestore and fileExists("/tmp/backupkernelversion"):
-			sleep(0.5)
-			if path.islink("/etc/resolv.conf"):
-				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
+			cmd = "echo '\n  '" + _("Finishing restore your receiver go to restart...") + " ; sleep 60 ; killall -9 enigma2 && init 6" if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; echo '\n  '" + _("Finishing restore your receiver go to restart...") + " ; sleep 60 ; killall -9 enigma2 && init 6"
 			if self.unsatisfiedPlugins:
 				cmdList = []
-				cmdList.append("echo '  '" + _("Finishing restore your receiver go to restart...") + " ; sleep 60 ; killall -9 enigma2 && init 6")
+				cmdList.append(cmd)
 				if cmdList:
 					self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 		elif fileExists("/tmp/etc/enigma2/settings"):
 			cmdList = []
-			cmdList.append("rm -f /tmp/etc/enigma2/settings ; echo '  '" + _("Restoring settings: Enigma2 is about to restart...") + " ; sleep 8 ; killall -9 enigma2 && sleep 5 && /sbin/init 3")
+			cmdList.append("rm -f /tmp/etc/enigma2/settings ; echo '\n  '" + _("Restoring settings: Enigma2 is about to restart...") + " ; sleep 8 ; killall -9 enigma2 && sleep 5 && /sbin/init 3")
 			if cmdList:
 				self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 		else:
@@ -1614,7 +1612,7 @@ class RestorePlugins(Screen):
 				pluginlist.append(x[0])
 		cmdList = []
 		if pluginlist:
-			cmdList.append("opkg install " + " ".join(pluginlist) + " ; echo '  '" + _("Finishing restore your receiver go to restart...") + " ; sleep 8 ; killall -9 enigma2 ; init 6")
+			cmdList.append("opkg install " + " ".join(pluginlist) + " ; echo '\n  '" + _("Finishing restore your receiver go to restart...") + " ; sleep 8 ; killall -9 enigma2 ; init 6")
 		if cmdList:
 			from Screens.Console import Console
 			self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
