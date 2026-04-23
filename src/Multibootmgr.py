@@ -1,7 +1,5 @@
 from Components.ActionMap import ActionMap
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
-from Components.config import config
-from Components.Label import Label
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
 from Screens.MessageBox import MessageBox
@@ -73,7 +71,7 @@ class MultiBoot(Screen):
 
 	def erase(self):
 		self.currentSelected = self["config"].l.getCurrentSelection()
-		if self.currentSelected != None:
+		if self.currentSelected is not None:
 			if self.currentSelected[0][1] != "Queued":
 				if SystemInfo["HasRootSubdir"]:
 					message = _("Removal of this slot will not show in %s Gui.  Are you sure you want to delete image slot?" % (self.currentSelected[0][1]))

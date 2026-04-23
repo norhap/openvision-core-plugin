@@ -48,7 +48,7 @@ class StartSwap:
 					swap_place = parts[0]
 					tmpfile = open("/etc/fstab.tmp", "w")
 					fstabfile = open("/etc/fstab")
-					tmpfile.writelines([l for l in fstabfile.readlines() if swap_place not in l])
+					tmpfile.writelines([x for x in fstabfile.readlines() if swap_place not in x])
 					rename("/etc/fstab.tmp", "/etc/fstab")
 					tmpfile.close()
 					fstabfile.close()

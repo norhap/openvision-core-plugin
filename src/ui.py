@@ -7,7 +7,6 @@ from Components.Label import Label  # noqa: F401
 from Components.Sources.List import List
 from Screens.ParentalControlSetup import ProtectedScreen
 from Components.config import config
-from Components.SystemInfo import SystemInfo
 
 
 class VISIONMenu(Screen, ProtectedScreen):
