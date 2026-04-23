@@ -154,6 +154,8 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 		self.ActionSelect(self.selection)
 
 	def buildList(self, action):
+		from Screens.Console import Console
+		cmdList = []
 		if self.NextStep == 'reboot':
 			delay = 8 if not self.unsatisfiedPlugins else 60
 			if SystemInfo["hasKexec"]:
@@ -161,11 +163,9 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 				text = getSlotImageInfo(slot)
 				bootmviSlot(text=text, slot=slot)
 			if self.didSettingsRestore and path.exists("/tmp/etc/enigma2/settings"):
-				cmdList = []
 				cmd = "tar -xzvf " + self.fullbackupfilename + " -C / ; echo '\n  '" + _("Finishing restore your receiver go to restart...") + " ; sleep " + str(delay) + " ; killall -9 enigma2 ; init 6" if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; tar -xzvf " + self.fullbackupfilename + " -C / ; echo '\n  '" + _("Finishing restore your receiver go to restart...") + " ; sleep " + str(delay) + " ; killall -9 enigma2 ; init 6"
 				cmdList.append(cmd)
 				if cmdList:
-					from Screens.Console import Console
 					self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 		elif self.NextStep == 'settingsquestion' or self.NextStep == 'settingsrestore' or self.NextStep == 'pluginsquestion' or self.NextStep == 'pluginsrestoredevice' or self.NextStep == 'end' or self.NextStep == 'noplugins':
 			self.buildListfinishedCB(False)
@@ -180,15 +180,17 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif self.NextStep == 'pluginrestore':
 			if self.feeds == 'OK':
+				if self.pluginslist and not self.pluginslist2:
+					from .BackupManager import RestorePlugins
+					self.session.openWithCallback(self.close, RestorePlugins, self.pluginslist)
 				if SystemInfo["hasKexec"]:
 					slot = getCurrentImage()
 					text = getSlotImageInfo(slot)
 					bootmviSlot(text=text, slot=slot)
 				if self.didSettingsRestore and path.exists("/tmp/etc/enigma2/settings"):
-					self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /")
-				if self.pluginslist and not self.pluginslist2:
-					from .BackupManager import RestorePlugins
-					self.session.openWithCallback(self.close, RestorePlugins, self.pluginslist)
+					cmdList.append("tar -xzvf " + self.fullbackupfilename + " -C /")
+					if cmdList:
+						self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 				elif self.pluginslist2:
 					print('[RestoreWizard] Stage 6: Feeds OK, Restoring Plugins')
 					print('[RestoreWizard] Console command: ', 'opkg install ' + self.pluginslist2)
