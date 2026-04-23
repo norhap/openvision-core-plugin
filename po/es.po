@@ -1176,8 +1176,8 @@ msgstr "Su receptor no está conectado a internet. Intente usar el administrador
 msgid "Your receiver could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later.."
 msgstr "Su receptor no pudo conectarse a las fuentes de plugins en este momento. Intente usar el administrador de copias de seguridad para restaurar los plugins más tarde.."
 
-msgid "Your receiver is not connected to the Internet. Please try using the Backup manager to restore plugins later."
-msgstr "Su receptor no está conectado a Internet. Intente usar el administrador de copias de seguridad para restaurar los plugins más tarde."
+msgid "Your receiver is not connected to the Internet.\nNetwork settings will be restored from backup.\nPlease perform a full reset of the receiver."
+msgstr "Su receptor no está conectado a Internet.\nLa configuración de red se restauraró desde la copia de seguridad.\nReinicie completo el receptor."
 
 msgid "Sorry the feeds are down for maintenance. Please try again later."
 msgstr "Los feeds están inactivos por algún tipo de problema de red. Por favor, inténtelo de nuevo más tarde."
@@ -1203,8 +1203,8 @@ msgstr "Use las teclas del cursor para seleccionar una imagen instalada y luego 
 msgid "Restore settings"
 msgstr "Restaurar configuración"
 
-msgid "Restoring settings, your receiver go to restart..."
-msgstr "Restaurando configuración, su receptor va a reiniciar..."
+msgid "Restoring settings: Enigma2 is about to restart..."
+msgstr "Restaurando la configuración: Enigma2 va a reiniciar..."
 
 msgid "Finishing restore your receiver go to restart..."
 msgstr "Finalizando restauración su receptor va a reiniciar..."
