@@ -795,7 +795,7 @@ class VISIONBackupManager(Screen):
 								break
 			except Exception:
 				pass
-		"""		
+		"""
 		if SystemInfo["hasKexec"]:
 			slot = getCurrentImage()
 			text = getSlotImageInfo(slot)
