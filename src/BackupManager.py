@@ -795,7 +795,7 @@ class VISIONBackupManager(Screen):
 								break
 			except Exception:
 				pass
-		"""		
+		"""
 		if SystemInfo["hasKexec"]:
 			slot = getCurrentImage()
 			text = getSlotImageInfo(slot)
@@ -809,7 +809,7 @@ class VISIONBackupManager(Screen):
 				if cmdList:
 					self.Console.ePopen("rm -f /tmp/etc/enigma2/settings ; sleep 4", self.restorePlugins)
 					self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
-			elif fileExists("/tmp/etc/enigma2/settings"):  # RESTORE ONLY SETTINGS
+			else:  # RESTORE ONLY SETTINGS
 				cmdList.append("rm -f /tmp/etc/enigma2/settings ; tar -xzvf " + self.BackupDirectory + self.sel + " -C / ; echo '\n  '" + _("Restoring settings: Enigma2 is about to restart...") + " ; sleep 8 ; killall -9 enigma2 && sleep 5 && /sbin/init 3")
 				if cmdList:
 					self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
