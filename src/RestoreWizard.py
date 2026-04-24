@@ -161,7 +161,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 				slot = getCurrentImage()
 				text = getSlotImageInfo(slot)
 				bootmviSlot(text=text, slot=slot)
-			if self.didSettingsRestore and path.exists("/tmp/etc/enigma2/settings"):
+			if self.didSettingsRestore and path.exists("/tmp/etc/enigma2/settings"):  # RESTORE ONLY SETTINGS
 				cmd = "tar -xzvf " + self.fullbackupfilename + " -C / ; echo '\n  '" + _("Finishing restore your receiver go to restart...") + " ; sleep " + str(delay) + " ; killall -9 enigma2 ; init 6" if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; tar -xzvf " + self.fullbackupfilename + " -C / ; echo '\n  '" + _("Finishing restore your receiver go to restart...") + " ; sleep " + str(delay) + " ; killall -9 enigma2 ; init 6"
 				cmdList.append(cmd)
 				if cmdList:
@@ -181,21 +181,21 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 			if self.feeds == 'OK':
 				if self.pluginslist and not self.pluginslist2:
 					from .BackupManager import RestorePlugins
-					self.session.openWithCallback(self.close, RestorePlugins, self.pluginslist)
-				if SystemInfo["hasKexec"]:
-					slot = getCurrentImage()
-					text = getSlotImageInfo(slot)
-					bootmviSlot(text=text, slot=slot)
-				if self.didSettingsRestore and path.exists("/tmp/etc/enigma2/settings"):
-					cmdList.append("tar -xzvf " + self.fullbackupfilename + " -C /")
-					if cmdList:
-						self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
+					self.session.openWithCallback(self.close, RestorePlugins, self.pluginslist)  # RESTORE PLUGINS
 				elif self.pluginslist2:
 					print('[RestoreWizard] Stage 6: Feeds OK, Restoring Plugins')
 					print('[RestoreWizard] Console command: ', 'opkg install ' + self.pluginslist2)
 					self.Console.ePopen("opkg update && opkg install " + self.pluginslist2, self.pluginsRestore_Finished)
 					self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Please wait while plugins restore completes..."), type=MessageBox.TYPE_INFO, enable_input=False, simple=True)
 					self.buildListRef.setTitle(_("Restore wizard"))
+				if SystemInfo["hasKexec"]:
+					slot = getCurrentImage()
+					text = getSlotImageInfo(slot)
+					bootmviSlot(text=text, slot=slot)
+				if self.didSettingsRestore and path.exists("/tmp/etc/enigma2/settings"):
+					cmdList.append("tar -xzvf " + self.fullbackupfilename + " -C /")  # RESTORE SETTINGS
+					if cmdList:
+						self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 			elif self.feeds == 'DOWN':
 				print('[RestoreWizard] Stage 6: Feeds Down')
 				self.didPluginRestore = True
