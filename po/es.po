@@ -1203,12 +1203,6 @@ msgstr "Use las teclas del cursor para seleccionar una imagen instalada y luego 
 msgid "Restore settings"
 msgstr "Restaurar configuración"
 
-msgid "Restoring settings: Enigma2 is about to restart..."
-msgstr "Restaurando la configuración: Enigma2 va a reiniciar..."
-
-msgid "Finishing restore your receiver go to restart..."
-msgstr "Finalizando restauración su receptor va a reiniciar..."
-
 msgid "Use Mount manager and press green setup mounts"
 msgstr "Use Administrador de Montajes y pulse verde"
 
