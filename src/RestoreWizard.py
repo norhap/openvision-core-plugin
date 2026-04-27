@@ -156,7 +156,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 		from Screens.Console import Console
 		cmdList = []
 		if self.NextStep == 'reboot':
-			delay = 8 if not self.unsatisfiedPlugins else 60
+			delay = 10 if not self.unsatisfiedPlugins else 60
 			if SystemInfo["hasKexec"]:
 				slot = getCurrentImage()
 				text = getSlotImageInfo(slot)
