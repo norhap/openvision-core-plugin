@@ -517,7 +517,7 @@ class VISIONBackupManager(Screen):
 	def StageRestoreSettings(self, answer):
 		if answer:
 			cmdList = []
-			cmdList.append("tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C / ; sleep 8 ; killall -9 enigma2 && sleep 5 && /sbin/init 3")
+			cmdList.append("tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C / ; sleep 10 ; killall -9 enigma2 && sleep 5 && /sbin/init 3")
 			if cmdList:
 				from Screens.Console import Console
 				self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
@@ -810,7 +810,7 @@ class VISIONBackupManager(Screen):
 					self.Console.ePopen("rm -f /tmp/etc/enigma2/settings ; sleep 4", self.restorePlugins)
 					self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 			else:  # RESTORE ONLY SETTINGS
-				cmdList.append("rm -f /tmp/etc/enigma2/settings ; tar -xzvf " + self.BackupDirectory + self.sel + " -C / ; sleep 8 ; killall -9 enigma2 && sleep 5 && /sbin/init 3")
+				cmdList.append("rm -f /tmp/etc/enigma2/settings ; tar -xzvf " + self.BackupDirectory + self.sel + " -C / ; sleep 10 ; killall -9 enigma2 && sleep 5 && /sbin/init 3")
 				if cmdList:
 					self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 		elif self.unsatisfiedPlugins and fileExists("/tmp/backupkernelversion"):
@@ -1622,7 +1622,7 @@ class RestorePlugins(Screen):
 				pluginlist.append(x[0])
 		cmdList = []
 		if pluginlist:
-			cmdList.append("opkg install " + " ".join(pluginlist) + " ; sleep 8 ; killall -9 enigma2 ; init 6")
+			cmdList.append("opkg install " + " ".join(pluginlist) + " ; sleep 10 ; killall -9 enigma2 ; init 6")
 		if cmdList:
 			from Screens.Console import Console
 			self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
