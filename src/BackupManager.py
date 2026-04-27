@@ -500,7 +500,7 @@ class VISIONBackupManager(Screen):
 		task.check = lambda: self.Stage5Completed
 		task.weighting = 1
 
-		task = Components.Task.PythonTask(job, _("Rebooting..."))
+		task = Components.Task.PythonTask(job, _("Restoring plugins..."))
 		task.work = self.Stage6
 		task.weighting = 1
 
