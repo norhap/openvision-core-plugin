@@ -517,7 +517,7 @@ class VISIONBackupManager(Screen):
 	def StageRestoreSettings(self, answer):
 		if answer:
 			cmdList = []
-			cmdList.append("tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C / ; sleep 10 ; killall -9 enigma2 && sleep 5 && /sbin/init 3")
+			cmdList.append("tar -xzvf " + self.BackupDirectory + self.sel + " -C /tmp/ etc/enigma2/settings ; tar -xzvf" + " " + self.BackupDirectory + self.sel + " -C / ; sleep 10 ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; sleep 1 ; /sbin/init 3")
 			if cmdList:
 				from Screens.Console import Console
 				self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
@@ -527,7 +527,7 @@ class VISIONBackupManager(Screen):
 	def Stage1(self, answer=False):
 		print('[BackupManager] Restoring Stage 1:')
 		if answer is True:
-			self.Console.ePopen("sleep 1 ; tar -xzvf " + self.BackupDirectory + self.sel + " -C /tmp/ etc/enigma2/settings", self.Stage1SettingsComplete)
+			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /tmp/ etc/enigma2/settings", self.Stage1SettingsComplete)
 		else:
 			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C / tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion  tmp/3rdPartyPlugins", self.Stage1PluginsComplete)
 
@@ -772,9 +772,6 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring Stage 3: Couldnt find anything to satisfy')
 			self.Console.ePopen("opkg list-installed | egrep 'enigma2-plugin-|task-base|packagegroup-base", self.Stage3Complete)
 
-	def restorePlugins(self, result=None, retVal=None, extra_args=None):
-		self.session.openWithCallback(self.close, RestorePlugins, self.pluginslist)
-
 	def Stage6(self, result=None, retVal=None, extra_args=None):
 		from Screens.Console import Console
 		self.Stage1Completed = True
@@ -807,14 +804,14 @@ class VISIONBackupManager(Screen):
 				cmd = "tar -xzvf " + self.BackupDirectory + self.sel + " -C / " if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; tar -xzvf " + self.BackupDirectory + self.sel + " -C / "
 				cmdList.append(cmd)
 				if cmdList:
-					self.Console.ePopen("rm -f /tmp/etc/enigma2/settings ; sleep 4", self.restorePlugins)
+					self.session.open(RestorePlugins, self.pluginslist)
 					self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 			else:  # RESTORE ONLY SETTINGS
-				cmdList.append("rm -f /tmp/etc/enigma2/settings ; tar -xzvf " + self.BackupDirectory + self.sel + " -C / ; sleep 10 ; killall -9 enigma2 && sleep 5 && /sbin/init 3")
+				cmdList.append("tar -xzvf " + self.BackupDirectory + self.sel + " -C / ; sleep 20 ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; sleep 1 ; /sbin/init 3")
 				if cmdList:
 					self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 		elif self.unsatisfiedPlugins and fileExists("/tmp/backupkernelversion"):
-			cmd = "sleep 60 ; killall -9 enigma2 && init 6" if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; sleep 60 ; killall -9 enigma2 && init 6"
+			cmd = "sleep 60 ; killall -9 enigma2 ; init 6" if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; sleep 60 ; killall -9 enigma2 ; init 6"
 			cmdList = []
 			cmdList.append(cmd)
 			if cmdList:
@@ -1622,7 +1619,8 @@ class RestorePlugins(Screen):
 				pluginlist.append(x[0])
 		cmdList = []
 		if pluginlist:
-			cmdList.append("opkg install " + " ".join(pluginlist) + " ; sleep 10 ; killall -9 enigma2 ; init 6")
+			cmd = "opkg install " + " ".join(pluginlist) + " ; sleep 10 ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; sleep 1 ; init 6" if path.exists("/tmp/etc/enigma2/settings") else "opkg install " + " ".join(pluginlist) + " ; sleep 10 ; killall -9 enigma2 ; init 6"
+			cmdList.append(cmd)
 		if cmdList:
 			from Screens.Console import Console
 			self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
