@@ -162,7 +162,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 				text = getSlotImageInfo(slot)
 				bootmviSlot(text=text, slot=slot)
 			if self.didSettingsRestore and path.exists("/tmp/etc/enigma2/settings"):  # RESTORE ONLY SETTINGS
-				cmd = "tar -xzvf " + self.fullbackupfilename + " -C / ; sleep " + str(delay) + " ; killall -9 enigma2 ; init 6" if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; tar -xzvf " + self.fullbackupfilename + " -C / ; sleep " + str(delay) + " ; killall -9 enigma2 ; init 6"
+				cmd = "tar -xzvf " + self.fullbackupfilename + " -C / ; sleep " + str(delay) + " ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; sleep 1 ; init 6" if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; tar -xzvf " + self.fullbackupfilename + " -C / ; sleep " + str(delay) + " ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; sleep 1 ; init 6"
 				cmdList.append(cmd)
 				if cmdList:
 					self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
@@ -193,7 +193,8 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 					text = getSlotImageInfo(slot)
 					bootmviSlot(text=text, slot=slot)
 				if self.didSettingsRestore and path.exists("/tmp/etc/enigma2/settings"):
-					cmdList.append("tar -xzvf " + self.fullbackupfilename + " -C /")  # RESTORE SETTINGS
+					cmd = "tar -xzvf " + self.fullbackupfilename + " -C /" if self.pluginslist and not self.pluginslist2 else "tar -xzvf" + " " + self.fullbackupfilename + " -C / ; sleep 20 ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; sleep 1 ; /sbin/init 3"
+					cmdList.append(cmd)  # RESTORE SETTINGS
 					if cmdList:
 						self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 			elif self.feeds == 'DOWN':
