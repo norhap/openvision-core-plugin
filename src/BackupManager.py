@@ -801,7 +801,7 @@ class VISIONBackupManager(Screen):
 			cmdList = []
 			if self.didPluginsRestore:  # RESTORE SETTINGS AND PLUGINS
 				print('[BackupManager] Restoring settings and plugins')
-				cmd = "tar -xzvf " + self.BackupDirectory + self.sel + " -C / " if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; tar -xzvf " + self.BackupDirectory + self.sel + " -C / "
+				cmd = "tar -xzvf " + self.BackupDirectory + self.sel + " -C /" if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; tar -xzvf " + self.BackupDirectory + self.sel + " -C /"
 				cmdList.append(cmd)
 				if cmdList:
 					self.session.open(RestorePlugins, self.pluginslist)
