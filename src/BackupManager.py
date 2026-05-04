@@ -376,6 +376,9 @@ class VISIONBackupManager(Screen):
 			config.backupmanager.openplibackup.value = False
 			config.backupmanager.openplibackup.save()
 		if config.backupmanager.openplibackup.value:
+			if config.plugins.autobackup.where.value != config.backupmanager.backuplocation.value[:-1]:
+				config.plugins.autobackup.where.value = config.backupmanager.backuplocation.value[:-1]
+				config.plugins.autobackup.where.save()
 			self.container = eConsoleAppContainer()
 			from Plugins.Extensions.AutoBackup.plugin import BACKUP_SCRIPT
 			cmd = BACKUP_SCRIPT
