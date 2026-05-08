@@ -649,7 +649,7 @@ class VISIONBackupManager(Screen):
 
 	def comparePluginLists(self, result, retVal, extra_args):
 		self.opkg_available_packages = {p.split()[0] for line in result.split("\n") if (p := line.strip())}  # list of all packages available from the feeds
-		self.Console.ePopen("opkg list-installed | egrep 'enigma2-plugin-|task-base|packagegroup-base", self.Stage3Complete)
+		self.Console.ePopen("opkg list-installed | egrep 'enigma2-plugin-||packagegroup-base'", self.Stage3Complete)
 
 	def Stage3Complete(self, result, retVal, extra_args):
 		if self.unsatisfiedPlugins is False:
@@ -773,7 +773,7 @@ class VISIONBackupManager(Screen):
 			self.didPluginsRestore = True
 			self.Stage5Completed = True
 			print('[BackupManager] Restoring Stage 3: Couldnt find anything to satisfy')
-			self.Console.ePopen("opkg list-installed | egrep 'enigma2-plugin-|task-base|packagegroup-base", self.Stage3Complete)
+			self.Console.ePopen("opkg list-installed | egrep 'enigma2-plugin-||packagegroup-base'", self.Stage3Complete)
 
 	def Stage6(self, result=None, retVal=None, extra_args=None):
 		from Screens.Console import Console
