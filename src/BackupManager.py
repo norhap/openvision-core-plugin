@@ -19,7 +19,7 @@ from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo, MODEL
+from Components.SystemInfo import SystemInfo, MODEL, BoxInfo
 from Components.Sources.List import List
 import Components.Task
 from Screens.MessageBox import MessageBox
@@ -1622,7 +1622,12 @@ class RestorePlugins(Screen):
 				pluginlist.append(x[0])
 		cmdList = []
 		if pluginlist:
-			cmd = "opkg install " + " ".join(pluginlist) + " ; sleep 10 ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; sleep 1 ; init 6" if path.exists("/tmp/etc/enigma2/settings") else "opkg install " + " ".join(pluginlist) + " ; sleep 10 ; killall -9 enigma2 ; init 6"
+			# cmd = "opkg install " + " ".join(pluginlist) + " ; sleep 10 ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; sleep 1 ; init 6" if path.exists("/tmp/etc/enigma2/settings") else "opkg install " + " ".join(pluginlist) + " ; sleep 10 ; killall -9 enigma2 ; init 6"
+			# Temporary patch to enable the tun.ko kernel module in wrynose for VU+ ULTIMO 4K.
+			path_zerotier_driver = "/media/hdd/drivers-zerotier/tun.ko" if path.exists("/media/hdd/drivers-zerotier/tun.ko") else "/media/usb/drivers-zerotier/tun.ko" if path.exists("/media/usb/drivers-zerotier/tun.ko") else None
+			system_zerotier_driver = "/lib/modules/3.14.28-1.12/kernel/drivers/net/tun.ko"
+			cmd = "opkg install " + " ".join(pluginlist) + " ; sleep 1 ; cp -a " + path_zerotier_driver + " " + system_zerotier_driver + " ; sleep 10 ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; sleep 1 ; init 6" if path.exists("/tmp/etc/enigma2/settings") and "zerotier" in str(pluginlist) and BoxInfo.getItem("imgversion") == "wrynose" and path_zerotier_driver is not None and BoxInfo.getItem("machine") == "vuultimo4k" else "opkg install " + " ".join(pluginlist) + " ; sleep 10 ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; sleep 1 ; init 6" if path.exists("/tmp/etc/enigma2/settings") else "opkg install " + " ".join(pluginlist) + " ; sleep 10 ; killall -9 enigma2 ; init 6"
+			# END Temporary patch to enable the tun.ko kernel module in wrynose for VU+ ULTIMO 4K.
 			cmdList.append(cmd)
 		if cmdList:
 			from Screens.Console import Console
