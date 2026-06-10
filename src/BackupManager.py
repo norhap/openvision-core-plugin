@@ -524,8 +524,6 @@ class VISIONBackupManager(Screen):
 			if cmdList:
 				from Screens.Console import Console
 				self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
-			if path.islink("/etc/resolv.conf"):
-				self.Console.ePopen("rm -f /etc/resolv.conf")
 
 	def Stage1(self, answer=False):
 		print('[BackupManager] Restoring Stage 1:')
@@ -541,8 +539,6 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring Stage 1 Complete:')
 			self.didSettingsRestore = True
 			self.Stage1Completed = True
-			if path.islink("/etc/resolv.conf"):
-				self.Console.ePopen("rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/")
 			if hasattr(self, "session"):
 				self.session.nav.PowerTimer.loadTimer()
 # Don't check RecordTimers for conflicts. On a restore we may
@@ -804,7 +800,7 @@ class VISIONBackupManager(Screen):
 			cmdList = []
 			if self.didPluginsRestore:  # RESTORE SETTINGS AND PLUGINS
 				print('[BackupManager] Restoring settings and plugins')
-				cmd = "tar -xzvf " + self.BackupDirectory + self.sel + " -C /" if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; tar -xzvf " + self.BackupDirectory + self.sel + " -C /"
+				cmd = "tar -xzvf " + self.BackupDirectory + self.sel + " -C /"
 				cmdList.append(cmd)
 				if cmdList:
 					self.session.open(RestorePlugins, self.pluginslist)
@@ -814,7 +810,7 @@ class VISIONBackupManager(Screen):
 				if cmdList:
 					self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
 		elif self.unsatisfiedPlugins and fileExists("/tmp/backupkernelversion"):
-			cmd = "sleep 60 ; killall -9 enigma2 ; /sbin/init 6" if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; sleep 60 ; killall -9 enigma2 ; /sbin/init 6"
+			cmd = "sleep 60 ; killall -9 enigma2 ; /sbin/init 6"
 			cmdList = []
 			cmdList.append(cmd)
 			if cmdList:
@@ -1626,7 +1622,7 @@ class RestorePlugins(Screen):
 			# Temporary patch to enable the tun.ko kernel module in wrynose for VU+ ULTIMO 4K.
 			path_zerotier_driver = "/media/hdd/drivers-zerotier/tun.ko" if path.exists("/media/hdd/drivers-zerotier/tun.ko") else "/media/usb/drivers-zerotier/tun.ko" if path.exists("/media/usb/drivers-zerotier/tun.ko") else None
 			system_zerotier_driver = "/lib/modules/3.14.28-1.12/kernel/drivers/net/tun.ko"
-			cmd = "opkg install " + " ".join(pluginlist) + " ; sleep 1 ; cp -a " + path_zerotier_driver + " " + system_zerotier_driver + " ; sleep 10 ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; sleep 1 ; /sbin/init 6" if path.exists("/tmp/etc/enigma2/settings") and "zerotier" in str(pluginlist) and BoxInfo.getItem("imgversion") == "wrynose" and path_zerotier_driver is not None and BoxInfo.getItem("machine") == "vuultimo4k" else "opkg install " + " ".join(pluginlist) + " ; sleep 10 ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; sleep 1 ; /sbin/init 6" if path.exists("/tmp/etc/enigma2/settings") else "opkg install " + " ".join(pluginlist) + " ; sleep 10 ; killall -9 enigma2 ; /sbin/init 6"
+			cmd = "opkg install " + " ".join(pluginlist) + " ; sleep 1 ; cp -a " + path_zerotier_driver + " " + system_zerotier_driver + " ; sleep 10 ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; /sbin/init 6" if path.exists("/tmp/etc/enigma2/settings") and "zerotier" in str(pluginlist) and BoxInfo.getItem("imgversion") == "wrynose" and path_zerotier_driver is not None and BoxInfo.getItem("machine") == "vuultimo4k" else "opkg install " + " ".join(pluginlist) + " ; sleep 10 ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; /sbin/init 6" if path.exists("/tmp/etc/enigma2/settings") else "opkg install " + " ".join(pluginlist) + " ; sleep 10 ; killall -9 enigma2 ; /sbin/init 6"
 			# END Temporary patch to enable the tun.ko kernel module in wrynose for VU+ ULTIMO 4K.
 			cmdList.append(cmd)
 		if cmdList:
