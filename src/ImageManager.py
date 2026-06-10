@@ -854,7 +854,6 @@ class ImageBackup(Screen):
 			self.MTDKERNEL = getMachineMtdKernel()
 			self.MTDROOTFS = getMachineMtdRoot()
 		if getMachineBuild() == "gb7252" or MODEL == "gbx34k":
-			self.GB4Kbin = "boot.bin"
 			self.GB4Krescue = "rescue.bin"
 		if "sda" in self.MTDKERNEL:
 			self.KERN = "sda"
@@ -1150,9 +1149,7 @@ class ImageBackup(Screen):
 				else:
 					self.commands.append("/bin/tar -jcf %s/rootfs.tar.bz2 -C %s/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.TMPDIR, self.TMPMOUNTDIR))
 				if getMachineBuild() == "gb7252" or MODEL == "gbx34k":
-					self.commands.append("dd if=/dev/mmcblk0p1 of=%s/boot.bin" % self.TMPDIR)
 					self.commands.append("dd if=/dev/mmcblk0p3 of=%s/rescue.bin" % self.TMPDIR)
-					print("[ImageManager] Stage2: Create: boot dump boot.bin:", self.MODEL)
 					print("[ImageManager] Stage2: Create: rescue dump rescue.bin:", self.MODEL)
 			print("[ImageManager] ROOTFSTYPE:", self.ROOTFSTYPE)
 			self.Console.eBatch(self.commands, self.Stage2Complete, debug=False)
@@ -1398,10 +1395,12 @@ class ImageBackup(Screen):
 				move("%s/rootfs.%s" % (self.TMPDIR, self.ROOTFSTYPE), "%s/%s" % (self.MAINDEST, self.ROOTFSFILE))
 
 			if getMachineBuild() == "gb7252" or MODEL == "gbx34k":
-				move("%s/%s" % (self.TMPDIR, self.GB4Kbin), "%s/%s" % (self.MAINDEST, self.GB4Kbin))
 				move("%s/%s" % (self.TMPDIR, self.GB4Krescue), "%s/%s" % (self.MAINDEST, self.GB4Krescue))
-				system("cp -f /usr/share/gpt.bin %s/gpt.bin" % self.MAINDEST)
-				print("[ImageManager] Stage5: Create: gpt.bin:", self.MODEL)
+				print(f"[ImageManager] Stage5: Create: boot.bin gpt.bin for {self.MODEL} to {self.MAINDEST}")
+				for fileName in ("boot.bin", "gpt.bin", "boot4.bin", "gpt4.bin"):
+					if path.exists(f"/usr/share/{fileName}"):
+						system(f"cp -f /usr/share/{fileName} {self.MAINDEST}")
+						print(f"[ImageManager] Stage5: copy: {fileName} for {self.MODEL} to {self.MAINDEST}")
 
 			with open(self.MAINDEST + "/imageversion", "w") as fileout:
 				line = defaultprefix + "-" + backupimage + "-" + MODEL + "-" + self.BackupDate

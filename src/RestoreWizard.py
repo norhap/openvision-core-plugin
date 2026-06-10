@@ -162,7 +162,7 @@ class RestoreWizard(WizardLanguage, ShowRemoteControl):
 				text = getSlotImageInfo(slot)
 				bootmviSlot(text=text, slot=slot)
 			if self.didSettingsRestore and path.exists("/tmp/etc/enigma2/settings"):  # RESTORE ONLY SETTINGS
-				cmd = "tar -xzvf " + self.fullbackupfilename + " -C / ; sleep " + str(delay) + " ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; sleep 1 ; /sbin/init 6" if not path.islink("/etc/resolv.conf") else "rm -f /etc/resolv.conf ; mv /run/resolv.conf /etc/ ; tar -xzvf " + self.fullbackupfilename + " -C / ; sleep " + str(delay) + " ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; sleep 1 ; /sbin/init 6"
+				cmd = "tar -xzvf " + self.fullbackupfilename + " -C / ; sleep " + str(delay) + " ; killall -9 enigma2 ; mv /tmp/etc/enigma2/settings /etc/enigma2/settings ; /sbin/init 6"
 				cmdList.append(cmd)
 				if cmdList:
 					self.session.openWithCallback(self.close, Console, title=self.getTitle(), cmdlist=cmdList, closeOnSuccess=True)
