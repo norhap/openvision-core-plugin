@@ -34,26 +34,30 @@ config.misc.softcams = ConfigSelection(default="None", choices=CamControl("softc
 softcamautopoller = None
 
 
-def updateActiveProcess():
-	wicardd = str(ProcessList().named("wicardd")).strip("[]")
-	oscam = str(ProcessList().named("oscam")).strip("[]")
-	cccam = str(ProcessList().named("CCcam232")).strip("[]")
-	if not cccam:
-		cccam = str(ProcessList().named("CCcam239")).strip("[]")
-	elif not cccam:
-		cccam = str(ProcessList().named("CCcam209")).strip("[]")
-	elif not cccam:
-		cccam = str(ProcessList().named("CCcam221")).strip("[]")
-	elif not cccam:
-		cccam = str(ProcessList().named("CCcam230")).strip("[]")
-	if config.softcammanager.softcams_autostart.value not in ("wicardd", str(cccam)) and config.misc.softcams.value not in ("wicardd", str(cccam)):
-		if wicardd:
-			Console().ePopen(f'kill -9 {wicardd}')
-		if cccam:
-			Console().ePopen(f'kill -9 {cccam}')
-	if config.softcammanager.softcams_autostart.value not in ("oscam", str(oscam)) and config.misc.softcams.value not in ("oscam", str(oscam)):
-		if oscam:
-			Console().ePopen(f'kill -9 {oscam}')
+def updateActiveSoftcams():
+	softcam_inactive = ""
+	softcam_active = ""
+	softcam_second_active = ""
+	if path.exists('/tmp/cam.restartcheck.log'):
+		with open('/tmp/cam.restartcheck.log', 'r') as fd:
+			for line in fd.readlines():
+				if "softcam active " in line:
+					softcam_active = line.split("softcam active ")[1]
+				if "softcam inactive " in line:
+					if "," in line:
+						softcam_inactive = line.split("softcam inactive ")[1].split(",")[0]
+					if ", " in line:
+						softcam_second_active = line.split(", ")[1].split(",")[0]
+	if softcam_active:
+		for softcam in [x for x in listdir("/usr/softcams")]:
+			if str(softcam_active) not in softcam:
+				Console().ePopen('/etc/init.d/softcam.' + str(softcam) + ' stop')
+	if softcam_inactive:
+		if str(softcam_inactive) not in config.softcammanager.softcams_autostart.value:
+			Console().ePopen('/etc/init.d/softcam.' + str(softcam_inactive) + ' stop')
+	if softcam_second_active:
+		if str(softcam_second_active) not in config.softcammanager.softcams_autostart.value:
+			Console().ePopen('/etc/init.d/softcam.' + str(softcam_second_active) + ' stop')
 
 
 def updateExtensions(configElement):
@@ -67,8 +71,8 @@ config.softcammanager.showinextensions.addNotifier(updateExtensions, initial_cal
 def SoftcamAutostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during shutdown, with reason=0 at startup?"""
 	global softcamautopoller
-	updateActiveProcess()
 	if reason == 0:
+		updateActiveSoftcams()
 		link = "/etc/init.d/softcam"
 		print("[SoftcamAutostart] config.misc.softcams.value=%s" % (config.misc.softcams.value))
 		if path.exists(link) and config.misc.softcams.value != "None":
@@ -135,8 +139,8 @@ class VISIONSoftcamManager(Screen):
 
 		self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', "TimerEditActions", "MenuActions"], {
 			'ok': self.keyStart,
-			'cancel': self.close,
-			'red': self.close,
+			'cancel': self.myclose,
+			'red': self.myclose,
 			'green': self.keyStart,
 			'yellow': self.getRestartPID,
 			'blue': self.changeSelectionState,
@@ -180,9 +184,9 @@ class VISIONSoftcamManager(Screen):
 				self["key_yellow"].setText(_("Restart"))
 
 			if current[2] is True:
-				self["key_blue"].setText(_("Disable startup"))
+				self["key_blue"].setText(_("Disable"))
 			else:
-				self["key_blue"].setText(_("Enable startup"))
+				self["key_blue"].setText(_("Enable"))
 			self.saveSelection()
 		desc = _('Active:') + ' ' + self['activecam'].text
 		for cb in self.onChangedEntry:
@@ -357,6 +361,12 @@ class VISIONSoftcamManager(Screen):
 		self.session.open(VISIONSoftcamMenu)
 
 	def myclose(self):
+		with open('/tmp/cam.restartcheck.log', 'w') as fw:
+			if not str(config.softcammanager.softcams_autostart.value).replace("[", "").replace("/", "").replace("]", "").replace("'", "").replace("usrsoftcams", ""):
+				fw.write("softcam inactive " + self['activecam'].text)
+			if str(config.softcammanager.softcams_autostart.value):
+				fw.write("softcam active " + str(config.softcammanager.softcams_autostart.value).replace("[", "").replace("/", "").replace("]", "").replace("'", "").replace("usrsoftcams", ""))
+		updateActiveSoftcams()
 		self.close()
 
 
