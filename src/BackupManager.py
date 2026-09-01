@@ -48,10 +48,14 @@ for parts in partitions:
 	if parts.mountpoint != "/":
 		mountpointchoices.append((parts.mountpoint, d))
 	if "net" not in parts.mountpoint and "autofs" not in parts.mountpoint and parts.mountpoint != "/":
-		if path.getsize(str(parts.mountpoint + "backup/autoinstall")) != 0 and path.getsize(str(parts.mountpoint + "backup/autoinstall.txt")) == 0:
-			copy(parts.mountpoint + "backup/autoinstall", parts.mountpoint + "backup/autoinstall.txt")
-		if path.getsize(str(parts.mountpoint + "backup/autoinstall")) == 0 and path.getsize(str(parts.mountpoint + "backup/autoinstall.txt")) != 0:
-			copy(parts.mountpoint + "backup/autoinstall.txt", parts.mountpoint + "backup/autoinstall")
+		if path.exists(str(parts.mountpoint + "backup/autoinstall")):
+			if path.exists(str(parts.mountpoint + "backup/autoinstall.txt")):
+				if path.getsize(str(parts.mountpoint + "backup/autoinstall")) != 0 and path.getsize(str(parts.mountpoint + "backup/autoinstall.txt")) == 0:
+					copy(parts.mountpoint + "backup/autoinstall", parts.mountpoint + "backup/autoinstall.txt")
+				if path.getsize(str(parts.mountpoint + "backup/autoinstall")) == 0 and path.getsize(str(parts.mountpoint + "backup/autoinstall.txt")) != 0:
+					copy(parts.mountpoint + "backup/autoinstall.txt", parts.mountpoint + "backup/autoinstall")
+			else:
+				copy(parts.mountpoint + "backup/autoinstall", parts.mountpoint + "backup/autoinstall.txt")
 
 
 def SettingsEntry(item, checked):
@@ -394,7 +398,8 @@ class VISIONBackupManager(Screen):
 			cmd += " " + config.plugins.autobackup.where.value
 			cmd += " " + str(int(config.plugins.autobackup.prevbackup.value))
 			self.container.execute(cmd)
-			self.Console.ePopen(['sleep 20'], self.checkAutoinstall)
+			if path.exists(str(parts.mountpoint + "backup/autoinstall")):
+				self.Console.ePopen(['sleep 20'], self.checkAutoinstall)
 
 	def checkAutoinstall(self, result=None, retVal=None, extra_args=None):
 		if path.getsize(str(config.plugins.autobackup.where.value + "/backup/autoinstall")) == 0 and path.getsize(str(config.plugins.autobackup.where.value + "/backup/autoinstall.txt")) != 0:
@@ -664,7 +669,7 @@ class VISIONBackupManager(Screen):
 			self.pluginslist = []
 			self.pluginslist2 = []
 			opkg_installed_packages = {p.split()[0] for line in result.split("\n") if (p := line.strip())}
-			listinstalledplugins = str(config.backupmanager.backuplocation.value) + '/backup/autoinstall' if path.getsize(str(config.backupmanager.backuplocation.value + "/backup/autoinstall")) != 0 else str(config.backupmanager.backuplocation.value) + '/backup/autoinstall.txt' if path.getsize(str(config.backupmanager.backuplocation.value + "/backup/autoinstall.txt")) != 0 else "/tmp/ExtraInstalledPlugins"
+			listinstalledplugins = str(config.backupmanager.backuplocation.value) + '/backup/autoinstall' if path.exists(str(config.backupmanager.backuplocation.value + "/backup/autoinstall")) and path.getsize(str(config.backupmanager.backuplocation.value + "/backup/autoinstall")) != 0 else str(config.backupmanager.backuplocation.value) + '/backup/autoinstall.txt' if path.exists(str(config.backupmanager.backuplocation.value + "/backup/autoinstall.txt")) and path.getsize(str(config.backupmanager.backuplocation.value + "/backup/autoinstall.txt")) != 0 else "/tmp/ExtraInstalledPlugins"
 			if path.exists(listinstalledplugins):
 				with open(listinstalledplugins, "r") as fd:
 					self.pluginslist = [p for line in fd.readlines() if (p := line.strip()) and p in self.opkg_available_packages and p not in opkg_installed_packages]
@@ -1565,7 +1570,7 @@ class RestorePlugins(Screen):
 		self.autoInstallList = []
 		self.pluginsInstalled = []
 		if not config.misc.firstrun.value:
-			listinstalledplugins = str(config.backupmanager.backuplocation.value) + '/backup/autoinstall' if path.getsize(str(config.backupmanager.backuplocation.value + "/backup/autoinstall")) != 0 else str(config.backupmanager.backuplocation.value) + '/backup/autoinstall.txt' if path.getsize(str(config.backupmanager.backuplocation.value + "/backup/autoinstall.txt")) != 0 else "/tmp/ExtraInstalledPlugins"
+			listinstalledplugins = str(config.backupmanager.backuplocation.value) + '/backup/autoinstall' if path.exists(str(config.backupmanager.backuplocation.value + "/backup/autoinstall")) and path.getsize(str(config.backupmanager.backuplocation.value + "/backup/autoinstall")) != 0 else str(config.backupmanager.backuplocation.value) + '/backup/autoinstall.txt' if path.exists(str(config.backupmanager.backuplocation.value + "/backup/autoinstall.txt")) and path.getsize(str(config.backupmanager.backuplocation.value + "/backup/autoinstall.txt")) != 0 else "/tmp/ExtraInstalledPlugins"
 			if path.exists(listinstalledplugins):
 				with open(listinstalledplugins, "r") as fd:
 					self.autoInstallList = [p for line in fd.readlines() if (p := line.strip())]
