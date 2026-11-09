@@ -347,19 +347,16 @@ class VISIONDevicesPanel(Screen):
 			self.device = extra_args[0]
 			self.mountp = extra_args[1]
 			self.device_uuid = "UUID=" + str(result).split("UUID=")[1].split(" ")[0].replace('"', '')
-			# print("[MountManager1][addFstab1]: device = %s, mountp=%s, UUID=%s" %(self.device, self.mountp, self.device_uuid))
 			if not exists(self.mountp):
 				mkdir(self.mountp, 0o755)
-			open("/etc/fstab.tmp", "w").writelines([x for x in open("/etc/fstab").readlines() if "/media/hdd" not in x])
-			rename("/etc/fstab.tmp", "/etc/fstab")
-			open("/etc/fstab.tmp", "w").writelines([x for x in open("/etc/fstab").readlines() if self.device not in x])
-			rename("/etc/fstab.tmp", "/etc/fstab")
-			open("/etc/fstab.tmp", "w").writelines([x for x in open("/etc/fstab").readlines() if self.device_uuid not in x])
+			with open("/etc/fstab", "r") as f:
+				lines = [x for x in f.readlines() if "/media/hdd" not in x and self.device not in x and self.device_uuid not in x]
+			with open("/etc/fstab.tmp", "w") as f:
+				f.writelines(lines)
 			rename("/etc/fstab.tmp", "/etc/fstab")
 			with open("/etc/fstab", "a") as fd:
 				line = self.device_uuid + "\t/media/hdd\tauto\tdefaults\t0 0\n"
 				fd.write(line)
-			fd.close()
 			self.Console.ePopen("mount -a", self.setTimer)
 		except Exception:
 			pass
@@ -368,63 +365,67 @@ class VISIONDevicesPanel(Screen):
 		if len(self["list"].list) < 1:
 			return
 		sel = self["list"].getCurrent()
-		seldev = sel
-		for line in sel:
-			try:
-				line = line.strip()
-				if _("Mount: ") in line:
-					if line.find("/media/hdd") < 0:
-						des = sel[1]
-						des = des.replace('\n', '\t')
-						parts = des.strip().split('\t')
-						device = parts[2].replace(_("Device: "), '')
-						moremount = sel[1]
-						message = _("You may have to press red button again.\nUse %s as HDD ?") % device
-						self.session.openWithCallback(self.saveMypointAnswer, MessageBox, message, MessageBox.TYPE_YESNO)
-			except Exception:
-				pass
+		if not sel:
+			return
+		des = sel[1]
+		des = des.replace('\n', '\t')
+		parts = des.strip().split('\t')
+		mountp = parts[1].replace(_("Mount: "), "")
+		device = parts[2].replace(_("Device: "), '')
+		if mountp.find("/media/hdd") >= 0:
+			self.session.open(MessageBox, _("This Device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=6, close_on_any_key=True)
+			return
+		message = _("Use %s as HDD?") % device
+		self.session.openWithCallback(self.saveMypointAnswer, MessageBox, message, MessageBox.TYPE_YESNO)
 
 	def saveMypointAnswer(self, answer):
 		if answer:
 			sel = self["list"].getCurrent()
-			if sel:
-				des = sel[1]
-				des = des.replace("\n", "\t")
-				parts = des.strip().split("\t")
-				self.mountp = parts[1].replace(_("Mount: "), "")
-				self.device = parts[2].replace(_("Device: "), "")
-				if self.mountp.find("/media/hdd") < 0:
-					pass
-				else:
-					self.session.open(MessageBox, _("This Device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=6, close_on_any_key=True)
-					return
-				self.Console.ePopen("[ -e /media/hdd/swapfile ] && swapoff /media/hdd/swapfile")
-				self.Console.ePopen("umount /media/hdd")
-				try:
-					f = open("/proc/mounts", "r")
-				except IOError:
-					return
-				for line in f.readlines():
-					if "/media/hdd" in line:
-						f.close()
-						return
-					else:
-						pass
-				f.close()
-				if self.mountp.find("/media/hdd") < 0 and self.mountp != _("/media/hdd"):
-					if self.mountp != _("None"):
-						self.Console.ePopen("umount " + self.mountp)
-					self.Console.ePopen("umount " + self.device)
-					self.Console.ePopen("/sbin/blkid | grep " + self.device, self.addFstab, [self.device, self.mountp])
-				try:
-					f = open("/etc/fstab", "r")
-				except IOError:
-					return
-				for line in f.readlines():
-					if "/media/hdd" in line:
-						message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (BRAND, DISPLAYMODEL)
-						ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
-						ybox.setTitle(_("Restart receiver."))
+			if not sel:
+				return
+			des = sel[1]
+			des = des.replace("\n", "\t")
+			parts = des.strip().split("\t")
+			self.mountp = parts[1].replace(_("Mount: "), "")
+			self.device = parts[2].replace(_("Device: "), "")
+			self.Console.ePopen("umount /media/hdd")
+			self.Console.ePopen("umount %s" % self.device)
+			self.Console.ePopen("/sbin/blkid | grep " + self.device + " && opkg list-installed ntfs-3g", self._hddFstabDone, [self.device, "/media/hdd"])
+			self._hddWaitBox = self.session.open(MessageBox, _("Please wait..."), MessageBox.TYPE_INFO, timeout=10, enable_input=False)
+			self._hddWaitBox.setTitle("")
+
+	def _hddFstabDone(self, result=None, retval=None, extra_args=None):
+		if result:
+			self.device = extra_args[0]
+			self.mountp = extra_args[1]
+			result = str(result)
+			uuid = search('UUID="([^"]+)"', result)
+			type = search('TYPE="([^"]+)"', result)
+			if uuid and type:
+				self.device_uuid = "UUID=" + uuid.group(1)
+				self.device_type = type.group(1)
+				if self.device_type.startswith("ext"):
+					self.device_type = "auto"
+				elif self.device_type.startswith("ntfs") and result.find("ntfs-3g") != -1:
+					self.device_type = "ntfs-3g"
+				elif self.device_type.startswith("ntfs") and result.find("ntfs-3g") == -1:
+					self.device_type = "ntfs"
+				if not exists(self.mountp):
+					mkdir(self.mountp, 0o755)
+				with open("/etc/fstab", "r") as f:
+					lines = [x for x in f.readlines() if self.device not in x and self.device_uuid not in x]
+				with open("/etc/fstab.tmp", "w") as f:
+					f.writelines(lines)
+				rename("/etc/fstab.tmp", "/etc/fstab")
+				with open("/etc/fstab", "a") as fd:
+					line = self.device_uuid + "\t" + self.mountp + "\t" + self.device_type + "\tdefaults\t0 0\n"
+					fd.write(line)
+		message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (BRAND, DISPLAYMODEL)
+		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
+		ybox.setTitle(_("Restart receiver."))
+		if hasattr(self, '_hddWaitBox') and self._hddWaitBox:
+			self._hddWaitBox.close()
+			del self._hddWaitBox
 
 	def restartBox(self, answer):
 		if answer is True:
