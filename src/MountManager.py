@@ -37,7 +37,7 @@ def readFile(filename):
 		with open(filename, "r") as fd:
 			data = fd.read().strip()
 	except (IOError, OSError) as err:
-		if err.errno != errno.ENOENT:  # No such file or directory.
+		if err.errno != errno.ENOENT:
 			print("[MountManager] Error: Failed to read file! ", err)
 		data = None
 	return data
@@ -48,26 +48,25 @@ def getProcPartitions(partitionList):
 	with open("/proc/partitions", "r") as fd:
 		for line in fd.readlines():
 			line = line.strip()
-			if line == "":  # Skip empty lines.
+			if line == "":
 				continue
 			(devmajor, devminor, blocks, device) = line.split()
-			if devmajor == "major":  # Skip label line.
+			if devmajor == "major":
 				continue
-			# print "[MountManager] device='%s', devmajor='%s', devminor='%s'." % (device, devmajor, devminor)
 			devMajor = int(devmajor)
-			if devMajor in blacklistedDisks:  # Ignore all blacklisted devices.
+			if devMajor in blacklistedDisks:
 				continue
 			if devMajor == 179:
-				if not SystemInfo["HasSDnomount"]:  # Only interested in h9/i55/h9combo(+dups) mmc partitions.  h9combo(+dups) uses mmcblk1p[0-3].
+				if not SystemInfo["HasSDnomount"]:
 					continue
-				if SystemInfo["HasSDnomount"][0] and not search("mmcblk1p[0-3]", device):  # h9combo(+dups) uses mmcblk1p[0-3] include
+				if SystemInfo["HasSDnomount"][0] and not search("mmcblk1p[0-3]", device):
 					continue
 			if devMajor == 8:
-				if not search("sd[a-z][1-9]", device):  # If storage use partitions only.
+				if not search("sd[a-z][1-9]", device):
 					continue
-				if SystemInfo["HiSilicon"] and exists("/dev/sda4") and search("sd[a][1-4]", device):  # Sf8008 using SDcard for slots ---> exclude
+				if SystemInfo["HiSilicon"] and exists("/dev/sda4") and search("sd[a][1-4]", device):
 					continue
-			if device in partitions:  # If device is already in partition list ignore it.
+			if device in partitions:
 				continue
 			buildPartitionInfo(device, partitionList)
 			partitions.append(device)
@@ -94,7 +93,6 @@ def buildPartitionInfo(partition, partitionList):
 		count += 1
 		if "/%s" % bus in physicalDevice:
 			break
-	# print "[MountManager1]bus: %s count : %s" % (bus, count)
 	pngType = busTranslate[count]
 	name = _("%s: " % pngType.upper())
 	name += description
@@ -123,17 +121,14 @@ def buildPartitionInfo(partition, partitionList):
 		for line in f.readlines():
 			if line.find(partition) != -1:
 				parts = line.strip().split()
-# Also, map any fuseblk fstype to the real file-system behind it...
-# Use blkid to get the info we need....
-#
 				if _format == 'fuseblk':
 					import subprocess
 					res = subprocess.run(['blkid', '-sTYPE', '-ovalue', parts[0]], capture_output=True)
 					if res.returncode == 0:
 						_format = str(res.stdout).strip()
 				break
-		size = int(parts[2])  # get size partitions
-		if size < 1:  # is condition ever fulfilled?
+		size = int(parts[2])
+		if size < 1:
 			description = _("Size: unavailable")
 		if size < 1000 * 1000:
 			description = _("Size: %sMB") % str(int(size))
@@ -141,9 +136,9 @@ def buildPartitionInfo(partition, partitionList):
 			description = _("Size: %sGB") % format(size / (1000 * 1000), '.2f')
 		else:
 			description = _("Size: %sTB") % format(size / (1000 * 1000 * 1000), '.2f')
-	if description != "":  # how will this ever return false?
-		if SystemInfo["MountManager"]:  # called by VISIONDevicesPanel else DeviceMountSetup
-			if rw.startswith("rw"):  # read/write
+	if description != "":
+		if SystemInfo["MountManager"]:
+			if rw.startswith("rw"):
 				rw = " R/W"
 			elif rw.startswith("ro"):
 				rw = " R/O"
@@ -176,7 +171,7 @@ def buildPartitionInfo(partition, partitionList):
 
 class VISIONDevicesPanel(Screen, ConfigListScreen):
 	skin = ["""
-	<screen position="center,center" size="%d,%d">
+	<screen name="VISIONDevicesPanel" position="center,center" size="%d,%d">
 		<widget source="list" render="Listbox" position="%d,%d" size="%d,%d" scrollbarMode="showOnDemand">
 			<convert type="TemplatedMultiContent">
 				{
@@ -191,11 +186,13 @@ class VISIONDevicesPanel(Screen, ConfigListScreen):
 				}
 			</convert>
 		</widget>
+		<widget name="config" conditional="config" position="10,10" size="e-20,350" enableWrapAround="1" font="Regular;25" itemHeight="35" scrollbarMode="showOnDemand" />
 		<widget name="lab6" position="%d,%d" size="%d,%d" font="Regular;%d" horizontalAlignment="center" transparent="1" verticalAlignment="center" zPosition="+1" />
 		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" horizontalAlignment="center" verticalAlignment="center" />
 		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" horizontalAlignment="center" verticalAlignment="center" />
 		<widget source="key_yellow" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_yellow" font="Regular;%d" foregroundColor="key_text" horizontalAlignment="center" verticalAlignment="center" />
 		<widget source="key_blue" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_blue" font="Regular;%d" foregroundColor="key_text" horizontalAlignment="center" verticalAlignment="center" />
+		<widget name="HelpWindow" position="0,0" size="0,0" alphaTest="blend" conditional="HelpWindow" transparent="1" zPosition="+1" />
 	</screen>""",
 		640, 495,
 		10, 10, 620, 425,
@@ -231,6 +228,7 @@ class VISIONDevicesPanel(Screen, ConfigListScreen):
 		self.onChangedEntry = []
 		self.partitionList = []
 		ConfigListScreen.__init__(self, self.partitionList)
+		self["config"] = List(self.partitionList)
 		self["list"] = List(self.partitionList)
 		self["list"].onSelectionChanged.append(self.selectionChanged)
 		self["actions"] = ActionMap(["WizardActions", "ColorActions", "MenuActions"], {
@@ -247,11 +245,9 @@ class VISIONDevicesPanel(Screen, ConfigListScreen):
 		self.setTimer()
 
 	def selectionChanged(self):
-		# print("[MountManager][selectionChanged] self.partitionList=%s" % self.partitionList)
 		if len(self.list) == 0:
 			return
-		sel = self["list"].getCurrent()  # partitionInfo = (name, description, png)
-		# print("[MountManager][selectionChanged] sel1=%s sel2=%s" % (sel[0], sel[1]))
+		sel = self["list"].getCurrent()
 		seldev = sel
 		for line in sel:
 			try:
@@ -296,34 +292,28 @@ class VISIONDevicesPanel(Screen, ConfigListScreen):
 
 	def unmount(self):
 		sel = self["list"].getCurrent()
-		# print("[MountManager][unmount] sel1=%s sel2=%s" % (sel[0], sel[1]))
 		if sel:
 			des = sel[1]
 			des = des.replace("\n", "\t")
 			parts = des.strip().split("\t")
-			mountp = parts[1].replace(_("Mount: "), "")
+			mountpoint = parts[1].replace(_("Mount: "), "")
 			device = parts[2].replace(_("Device: "), "")
-			# print("[MountManager][unmount] mountp=%s device=%s" % (mountp, device))
-			exitStatus = self.Console.ePopen("umount %s" % mountp)
+			exitStatus = self.Console.ePopen("umount %s" % mountpoint)
 			if exitStatus == 0:
-				self.session.open(MessageBox, _("Partition: %s  Mount: %s unmounted successfully; if all partitions now unmounted you can remove device.") % (device, mountp), MessageBox.TYPE_INFO)
+				self.session.open(MessageBox, _("Partition: %s  Mount: %s unmounted successfully; if all partitions now unmounted you can remove device.") % (device, mountpoint), MessageBox.TYPE_INFO)
 				self.setTimer()
 			else:
-				# self.session.open(MessageBox, _("Cannot unmount partition '%s'.  Make sure this partition is not in use.  (SWAP, record/timeshift, etc.)") % mountp, MessageBox.TYPE_INFO)
-				# return -1
 				self.setTimer()
 
 	def mount(self):
 		if harddiskmanager.HDDList():
 			sel = self["list"].getCurrent()
-			# print("[MountManager][mount] sel1=%s sel2=%s" % (sel[0], sel[1]))
 			if sel:
 				des = sel[1]
 				des = des.replace("\n", "\t")
 				parts = des.strip().split("\t")
-				mountp = parts[1].replace(_("Mount: "), "")
+				mountpoint = parts[1].replace(_("Mount: "), "")
 				device = parts[2].replace(_("Device: "), "")
-				# print("[MountManager][mount] mountp=%s device=%s" % (mountp, device))
 				self.Console.ePopen("mount %s" % device)
 				self.setTimer()
 
@@ -331,7 +321,6 @@ class VISIONDevicesPanel(Screen, ConfigListScreen):
 		if len(self["list"].list) < 1:
 			return
 		sel = self["list"].getCurrent()
-		# print("[MountManager][saveMounts] selection=%s" % sel)
 		if sel:
 			des = sel[1]
 			des = des.replace('\n', '\t')
@@ -345,10 +334,10 @@ class VISIONDevicesPanel(Screen, ConfigListScreen):
 	def addFstab(self, result=None, retval=None, extra_args=None):
 		try:
 			self.device = extra_args[0]
-			self.mountp = extra_args[1]
+			self.mountpoint = extra_args[1]
 			self.device_uuid = "UUID=" + str(result).split("UUID=")[1].split(" ")[0].replace('"', '')
-			if not exists(self.mountp):
-				mkdir(self.mountp, 0o755)
+			if not exists(self.mountpoint):
+				mkdir(self.mountpoint, 0o755)
 			with open("/etc/fstab", "r") as f:
 				lines = [x for x in f.readlines() if "/media/hdd" not in x and self.device not in x and self.device_uuid not in x]
 			with open("/etc/fstab.tmp", "w") as f:
@@ -362,43 +351,36 @@ class VISIONDevicesPanel(Screen, ConfigListScreen):
 			pass
 
 	def saveMounthdd(self):
-		if len(self["list"].list) < 1:
-			return
+		def changeMount(answer):
+			if answer:
+				self.Console.ePopen("umount /media/hdd")
+				self.Console.ePopen("umount %s" % self.device)
+				self.Console.ePopen("/sbin/blkid | grep " + self.device + " && opkg list-installed ntfs-3g", self._hddFstabDone, [self.device, "/media/hdd"])
+				self.session.open(MessageBox, _("Updating mount locations..."), MessageBox.TYPE_INFO, timeout=7, close_on_any_key=True)
+			else:
+				self.close()
+
 		sel = self["list"].getCurrent()
-		if not sel:
-			return
 		des = sel[1]
 		des = des.replace('\n', '\t')
 		parts = des.strip().split('\t')
-		mountp = parts[1].replace(_("Mount: "), "")
-		device = parts[2].replace(_("Device: "), '')
-		if mountp.find("/media/hdd") >= 0:
+		mountpoint = parts[1].replace(_("Mount: "), "")
+		self.device = parts[2].replace(_("Device: "), '')
+		if len(self["list"].list) < 1:
+			return
+		if not sel:
+			return
+		if mountpoint.find("/media/hdd") >= 0:
 			self.session.open(MessageBox, _("This Device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=6, close_on_any_key=True)
 			return
-		message = _("Using %s as HDD?") % device
-		self.session.openWithCallback(self.saveMypointAnswer, MessageBox, message, MessageBox.TYPE_YESNO)
-
-	def saveMypointAnswer(self, answer):
-		if answer:
-			sel = self["list"].getCurrent()
-			if not sel:
-				return
-			des = sel[1]
-			des = des.replace("\n", "\t")
-			parts = des.strip().split("\t")
-			self.mountp = parts[1].replace(_("Mount: "), "")
-			self.device = parts[2].replace(_("Device: "), "")
-			self.Console.ePopen("umount /media/hdd")
-			self.Console.ePopen("umount %s" % self.device)
-			self.Console.ePopen("/sbin/blkid | grep " + self.device + " && opkg list-installed ntfs-3g", self._hddFstabDone, [self.device, "/media/hdd"])
-			message = _("Updating mount locations...")
-			ybox = self.session.openWithCallback(self.delay, MessageBox, message, type=MessageBox.TYPE_INFO, timeout=5, enable_input=False)
-			ybox.setTitle(_("Please wait..."))
+		message = _("Using %s as HDD?") % self.device
+		ybox = self.session.openWithCallback(changeMount, MessageBox, message, type=MessageBox.TYPE_YESNO)
+		ybox.setTitle(_("Updating mount locations..."))
 
 	def _hddFstabDone(self, result=None, retval=None, extra_args=None):
 		if result:
 			self.device = extra_args[0]
-			self.mountp = extra_args[1]
+			self.mountpoint = extra_args[1]
 			result = str(result)
 			uuid = search('UUID="([^"]+)"', result)
 			type = search('TYPE="([^"]+)"', result)
@@ -411,56 +393,47 @@ class VISIONDevicesPanel(Screen, ConfigListScreen):
 					self.device_type = "ntfs-3g"
 				elif self.device_type.startswith("ntfs") and result.find("ntfs-3g") == -1:
 					self.device_type = "ntfs"
-				if not exists(self.mountp):
-					mkdir(self.mountp, 0o755)
+				if not exists(self.mountpoint):
+					mkdir(self.mountpoint, 0o755)
 				with open("/etc/fstab", "r") as f:
 					lines = [x for x in f.readlines() if self.device not in x and self.device_uuid not in x]
 				with open("/etc/fstab.tmp", "w") as f:
 					f.writelines(lines)
 				rename("/etc/fstab.tmp", "/etc/fstab")
 				with open("/etc/fstab", "a") as fd:
-					line = self.device_uuid + "\t" + self.mountp + "\t" + self.device_type + "\tdefaults\t0 0\n"
+					line = self.device_uuid + "\t" + self.mountpoint + "\t" + self.device_type + "\tdefaults\t0 0\n"
 					fd.write(line)
+			self.updateHotPlugMount()
 
-	def delay(self, val):
-		message = _("Set %s as the new mount point?") % self.mountp
-		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
-		ybox.setTitle(_("Please wait..."))
-
-	def restartBox(self, answer):
-		if answer is True:
-			# Extrae puntos de montaje vigentes de fstab
-			fstab_mounts = set()
-			with open("/etc/fstab") as f:
-				for line in f:
-					line = line.strip()
-					if line and "/media/" in line and "/media/net" not in line and "/media/autofs" not in line and not line.startswith("#"):
-						parts = line.split()
-						if len(parts) >= 2 and parts[1] != "none":
-							fstab_mounts.add(parts[1])
-			# Descubre TODOS los /media/* que están montados ahora mismo
-			current_mounts = set()
-			with open("/proc/mounts") as f:
-				for line in f:
-					mp = line.split()[1]
-					if mp.startswith("/media/") and not mp.startswith("/media/net") and not mp.startswith("/media/autofs"):
-						current_mounts.add(mp)
-			# Desmonta todo lo que está montado (ya esté o no en fstab)
-			for m in current_mounts:
-				system("umount %s" % m)
-				if system("mountpoint -q %s" % m) == 0:
-					system("umount -l %s" % m)
-			# Monta lo que fstab dice
-			system("mount -a")
-			config.backupmanager.backuplocation.default = self.mountp
-			config.backupmanager.backuplocation.value = config.backupmanager.backuplocation.default
-			config.backupmanager.backuplocation.save()
-			config.imagemanager.backuplocation.default = self.mountp
-			config.imagemanager.backuplocation.value = config.imagemanager.backuplocation.default
-			config.imagemanager.backuplocation.save()
-			ConfigListScreen.keySave(self)
-		else:
-			ConfigListScreen.keySave(self)
+	def updateHotPlugMount(self):
+		# Extrae puntos de montaje vigentes de fstab
+		fstab_mounts = set()
+		with open("/etc/fstab") as f:
+			for line in f:
+				line = line.strip()
+				if line and "/media/" in line and "/media/net" not in line and "/media/autofs" not in line and not line.startswith("#"):
+					parts = line.split()
+					if len(parts) >= 2 and parts[1] != "none":
+						fstab_mounts.add(parts[1])
+		# Descubre TODOS los /media/* que están montados ahora mismo
+		current_mounts = set()
+		with open("/proc/mounts") as f:
+			for line in f:
+				mp = line.split()[1]
+				if mp.startswith("/media/") and not mp.startswith("/media/net") and not mp.startswith("/media/autofs"):
+					current_mounts.add(mp)
+		# Desmonta todo lo que está montado (ya esté o no en fstab)
+		for m in current_mounts:
+			system("umount %s" % m)
+			if system("mountpoint -q %s" % m) == 0:
+				system("umount -l %s" % m)
+		# Monta lo que fstab dice
+		system("mount -a")
+		config.backupmanager.backuplocation.default = self.mountpoint
+		config.backupmanager.backuplocation.value = config.backupmanager.backuplocation.default
+		config.imagemanager.backuplocation.default = self.mountpoint
+		config.imagemanager.backuplocation.value = config.imagemanager.backuplocation.default
+		ConfigListScreen.keySave(self)
 
 
 class DeviceMountSetup(Screen, ConfigListScreen):
@@ -489,14 +462,25 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 		self["key_red"] = Label(_("Cancel"))
 		self["lab6"] = Label()
 		self["actions"] = ActionMap(["WizardActions", "ColorActions"], {
-			"red": self.close,
+			"red": self.keyCancel,
 			"green": self.saveconfMounts,
-			"back": self.close
+			"back": self.keyCancel,
+			"left": self.keyLeft,
+			"right": self.keyRight
 		})
 		self.Console = Console()
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.findconfPartitions)
 		self.setconfTimer()
+
+	def keyCancel(self):
+		ConfigListScreen.keyCancel(self)
+
+	def keyLeft(self):
+		ConfigListScreen.keyLeft(self)
+
+	def keyRight(self):
+		ConfigListScreen.keyRight(self)
 
 	def setconfTimer(self, result=None, retval=None, extra_args=None):
 		scanning = _("Scanned devices")
@@ -513,42 +497,40 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 		self["lab6"].hide()
 
 	def saveconfMounts(self):
-		for x in self["config"].list:  # partitionInfo = getConfigListEntry(text, item, partition, _format)
-			self.device = x[2]
-			self.mountp = x[1].value
-			self.type = x[3]
-			# print("[MountManager][saveconfMount] mountp=%s device=%s type=%s" % (self.mountp, self.device, self.type))
-			self.Console.ePopen("umount %s" % self.device)
-			self.Console.ePopen("/sbin/blkid | grep " + self.device + " && opkg list-installed ntfs-3g", self.addconfFstab, [self.device, self.mountp])
-		message = _("Updating mount locations...")
-		ybox = self.session.openWithCallback(self.delay, MessageBox, message, type=MessageBox.TYPE_INFO, timeout=5, enable_input=False)
-		ybox.setTitle(_("Please wait..."))
+		def changeMount(answer):
+			if answer:
+				self.Console.ePopen("umount %s" % self.device)
+				self.Console.ePopen("/sbin/blkid | grep " + self.device + " && opkg list-installed ntfs-3g", self.addconfFstab, [self.device, self.mountpoint])
+				self.session.open(MessageBox, _("Updating mount locations..."), MessageBox.TYPE_INFO, timeout=7, close_on_any_key=True)
+			else:
+				self.close()
 
-	def delay(self, val):
-		message = _("Set %s as the new mount point?") % self.mountp
-		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
-		ybox.setTitle(_("Please wait..."))
+		for x in self["config"].list:
+			self.device = x[2]
+			self.mountpoint = x[1].value
+			self.type = x[3]
+		message = _("Set %s as the new mount point?") % self.mountpoint
+		ybox = self.session.openWithCallback(changeMount, MessageBox, message, type=MessageBox.TYPE_YESNO)
+		ybox.setTitle(_("Updating mount locations..."))
 
 	def addconfFstab(self, result=None, retval=None, extra_args=None):
-		# print "[MountManager] Result:", result
 		if result:
 			self.device = extra_args[0]
-			self.mountp = extra_args[1]
+			self.mountpoint = extra_args[1]
 			result = str(result)
 			uuid = search('UUID=\"([^\"]+)\"', result)
 			type = search('TYPE=\"([^\"]+)\"', result)
 			if uuid and type:
 				self.device_uuid = "UUID=" + uuid.group(1)
 				self.device_type = type.group(1)
-				# print("[MountManager][addFstab2] device_uuid:%s device_type:%s" % (self.device_uuid, self.device_type))
 				if self.device_type.startswith("ext"):
 					self.device_type = "auto"
 				elif self.device_type.startswith("ntfs") and result.find("ntfs-3g") != -1:
 					self.device_type = "ntfs-3g"
 				elif self.device_type.startswith("ntfs") and result.find("ntfs-3g") == -1:
 					self.device_type = "ntfs"
-				if not exists(self.mountp):
-					mkdir(self.mountp, 0o755)
+				if not exists(self.mountpoint):
+					mkdir(self.mountpoint, 0o755)
 				with open("/etc/fstab") as f:
 					lines = [x for x in f.readlines() if self.device not in x]
 				with open("/etc/fstab.tmp", "w") as f:
@@ -560,38 +542,36 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 					f.writelines(lines)
 				rename("/etc/fstab.tmp", "/etc/fstab")
 				with open("/etc/fstab", "a") as fd:
-					line = self.device_uuid + "\t" + self.mountp + "\t" + self.device_type + "\tdefaults\t0 0\n"
+					line = self.device_uuid + "\t" + self.mountpoint + "\t" + self.device_type + "\tdefaults\t0 0\n"
 					fd.write(line)
+			self.updateHotPlugMount()
 
-	def restartBox(self, answer):
-		if answer is True:
-			# Extrae puntos de montaje vigentes de fstab
-			fstab_mounts = set()
-			with open("/etc/fstab") as f:
-				for line in f:
-					line = line.strip()
-					if line and "/media/" in line and "/media/net" not in line and "/media/autofs" not in line and not line.startswith("#"):
-						parts = line.split()
-						if len(parts) >= 2 and parts[1] != "none":
-							fstab_mounts.add(parts[1])
-			# Descubre TODOS los /media/* que están montados ahora mismo
-			current_mounts = set()
-			with open("/proc/mounts") as f:
-				for line in f:
-					mp = line.split()[1]
-					if mp.startswith("/media/") and not mp.startswith("/media/net") and not mp.startswith("/media/autofs"):
-						current_mounts.add(mp)
-			# Desmonta todo lo que está montado (ya esté o no en fstab)
-			for m in current_mounts:
-				system("umount %s" % m)
-				if system("mountpoint -q %s" % m) == 0:
-					system("umount -l %s" % m)
-			# Monta lo que fstab dice
-			system("mount -a")
-			config.backupmanager.backuplocation.default = self.mountp
-			config.backupmanager.backuplocation.value = config.backupmanager.backuplocation.default
-			config.imagemanager.backuplocation.default = self.mountp
-			config.imagemanager.backuplocation.value = config.imagemanager.backuplocation.default
-			ConfigListScreen.keySave(self)
-		else:
-			ConfigListScreen.keySave(self)
+	def updateHotPlugMount(self):
+		# Extrae puntos de montaje vigentes de fstab
+		fstab_mounts = set()
+		with open("/etc/fstab") as f:
+			for line in f:
+				line = line.strip()
+				if line and "/media/" in line and "/media/net" not in line and "/media/autofs" not in line and not line.startswith("#"):
+					parts = line.split()
+					if len(parts) >= 2 and parts[1] != "none":
+						fstab_mounts.add(parts[1])
+		# Descubre TODOS los /media/* que están montados ahora mismo
+		current_mounts = set()
+		with open("/proc/mounts") as f:
+			for line in f:
+				mp = line.split()[1]
+				if mp.startswith("/media/") and not mp.startswith("/media/net") and not mp.startswith("/media/autofs"):
+					current_mounts.add(mp)
+		# Desmonta todo lo que está montado (ya esté o no en fstab)
+		for m in current_mounts:
+			system("umount %s" % m)
+			if system("mountpoint -q %s" % m) == 0:
+				system("umount -l %s" % m)
+		# Monta lo que fstab dice
+		system("mount -a")
+		config.backupmanager.backuplocation.default = self.mountpoint
+		config.backupmanager.backuplocation.value = config.backupmanager.backuplocation.default
+		config.imagemanager.backuplocation.default = self.mountpoint
+		config.imagemanager.backuplocation.value = config.imagemanager.backuplocation.default
+		ConfigListScreen.keySave(self)
