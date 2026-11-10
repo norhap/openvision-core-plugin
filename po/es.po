@@ -596,9 +596,6 @@ msgstr "Espera mientras se detiene\n"
 msgid "Scanned devices"
 msgstr "Dispositivos escaneados"
 
-msgid "Please wait."
-msgstr "Espera por favor."
-
 msgid "Plugin Listing failed - e. g. wrong backup destination or no space left on backup device"
 msgstr "Lista de plugins fallida - ej. destino erróneo o no hay espacio suficiente en el dispositivo de almacenamiento"
 
@@ -1081,13 +1078,6 @@ msgstr "Espera mientras escaneas sus dispositivos %s %s..."
 msgid "Updating mount locations..."
 msgstr "Actualizando ubicaciones de montaje..."
 
-msgid ""
-"The changes need a system restart to take effect.\n"
-"Restart your %s %s now?"
-msgstr ""
-"Los cambios necesitan un reinicio del sistema para que tenga efecto.\n"
-"Reiniciar su %s %s ahora?"
-
 msgid "Really unmount drive ?"
 msgstr "Realmente quieres desmontar la unidad ?"
 
@@ -1102,6 +1092,9 @@ msgstr "Montar todos los dispositivos desde el fstab"
 
 msgid "Select mount action for %s:"
 msgstr "Seleccione la acción de montaje para %s:"
+
+msgid "Set %s as the new mount point?"
+msgstr "¿Establecer %s como el nuevo punto de montaje?"
 
 msgid "The device is already mounted!"
 msgstr "El dispositivo ya está montado!"
@@ -1343,11 +1336,8 @@ msgstr "Contraseña Desarrollador"
 msgid "Partition: %s  Mount: %s unmounted successfully; if all partitions now unmounted you can remove device."
 msgstr "Partición: %s  Montaje: %s desmontado correctamente; si ahora se han desmontado todas las particiones, puede extraer el dispositivo."
 
-msgid "Use %s as HDD?"
+msgid "Using %s as HDD?"
 msgstr "¿Usar %s como HDD?"
-
-msgid "Restart receiver."
-msgstr "Reiniciar receptor."
 
 msgid "Login as a ViX developer"
 msgstr "Inicia sesión como desarrollador de ViX"
