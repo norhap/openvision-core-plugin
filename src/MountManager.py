@@ -1,5 +1,5 @@
 import errno
-from os import mkdir, rename
+from os import mkdir, rename, system
 from os.path import join, exists, realpath
 from re import search, sub
 
@@ -16,11 +16,10 @@ from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo, BRAND, DISPLAYMODEL
 from Screens.MessageBox import MessageBox
-from Screens.Screen import Screen
-from Screens.Standby import QUIT_REBOOT, TryQuitMainloop
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_GUISKIN, resolveFilename, SCOPE_PLUGINS
 from Components.Harddisk import harddiskmanager
+from Screens.Screen import Screen
 
 blacklistedDisks = [
 	1,  	# RAM disk (/dev/ram0=0, /dev/initrd=250 [250=Initial RAM disk for old systems, new systems use 0])
@@ -175,7 +174,7 @@ def buildPartitionInfo(partition, partitionList):
 		partitionList.append(partitionInfo)
 
 
-class VISIONDevicesPanel(Screen):
+class VISIONDevicesPanel(Screen, ConfigListScreen):
 	skin = ["""
 	<screen position="center,center" size="%d,%d">
 		<widget source="list" render="Listbox" position="%d,%d" size="%d,%d" scrollbarMode="showOnDemand">
@@ -231,6 +230,7 @@ class VISIONDevicesPanel(Screen):
 			self["key_blue"] = StaticText("")
 		self.onChangedEntry = []
 		self.partitionList = []
+		ConfigListScreen.__init__(self, self.partitionList)
 		self["list"] = List(self.partitionList)
 		self["list"].onSelectionChanged.append(self.selectionChanged)
 		self["actions"] = ActionMap(["WizardActions", "ColorActions", "MenuActions"], {
@@ -375,7 +375,7 @@ class VISIONDevicesPanel(Screen):
 		if mountp.find("/media/hdd") >= 0:
 			self.session.open(MessageBox, _("This Device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=6, close_on_any_key=True)
 			return
-		message = _("Use %s as HDD?") % device
+		message = _("Using %s as HDD?") % device
 		self.session.openWithCallback(self.saveMypointAnswer, MessageBox, message, MessageBox.TYPE_YESNO)
 
 	def saveMypointAnswer(self, answer):
@@ -391,8 +391,9 @@ class VISIONDevicesPanel(Screen):
 			self.Console.ePopen("umount /media/hdd")
 			self.Console.ePopen("umount %s" % self.device)
 			self.Console.ePopen("/sbin/blkid | grep " + self.device + " && opkg list-installed ntfs-3g", self._hddFstabDone, [self.device, "/media/hdd"])
-			self._hddWaitBox = self.session.open(MessageBox, _("Please wait..."), MessageBox.TYPE_INFO, timeout=10, enable_input=False)
-			self._hddWaitBox.setTitle("")
+			message = _("Updating mount locations...")
+			ybox = self.session.openWithCallback(self.delay, MessageBox, message, type=MessageBox.TYPE_INFO, timeout=5, enable_input=False)
+			ybox.setTitle(_("Please wait..."))
 
 	def _hddFstabDone(self, result=None, retval=None, extra_args=None):
 		if result:
@@ -420,18 +421,46 @@ class VISIONDevicesPanel(Screen):
 				with open("/etc/fstab", "a") as fd:
 					line = self.device_uuid + "\t" + self.mountp + "\t" + self.device_type + "\tdefaults\t0 0\n"
 					fd.write(line)
-		message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (BRAND, DISPLAYMODEL)
+
+	def delay(self, val):
+		message = _("Set %s as the new mount point?") % self.mountp
 		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
-		ybox.setTitle(_("Restart receiver."))
-		if hasattr(self, '_hddWaitBox') and self._hddWaitBox:
-			self._hddWaitBox.close()
-			del self._hddWaitBox
+		ybox.setTitle(_("Please wait..."))
 
 	def restartBox(self, answer):
 		if answer is True:
-			self.session.open(TryQuitMainloop, QUIT_REBOOT)
+			# Extrae puntos de montaje vigentes de fstab
+			fstab_mounts = set()
+			with open("/etc/fstab") as f:
+				for line in f:
+					line = line.strip()
+					if line and "/media/" in line and "/media/net" not in line and "/media/autofs" not in line and not line.startswith("#"):
+						parts = line.split()
+						if len(parts) >= 2 and parts[1] != "none":
+							fstab_mounts.add(parts[1])
+			# Descubre TODOS los /media/* que están montados ahora mismo
+			current_mounts = set()
+			with open("/proc/mounts") as f:
+				for line in f:
+					mp = line.split()[1]
+					if mp.startswith("/media/") and not mp.startswith("/media/net") and not mp.startswith("/media/autofs"):
+						current_mounts.add(mp)
+			# Desmonta todo lo que está montado (ya esté o no en fstab)
+			for m in current_mounts:
+				system("umount %s" % m)
+				if system("mountpoint -q %s" % m) == 0:
+					system("umount -l %s" % m)
+			# Monta lo que fstab dice
+			system("mount -a")
+			config.backupmanager.backuplocation.default = self.mountp
+			config.backupmanager.backuplocation.value = config.backupmanager.backuplocation.default
+			config.backupmanager.backuplocation.save()
+			config.imagemanager.backuplocation.default = self.mountp
+			config.imagemanager.backuplocation.value = config.imagemanager.backuplocation.default
+			config.imagemanager.backuplocation.save()
+			ConfigListScreen.keySave(self)
 		else:
-			self.close()
+			ConfigListScreen.keySave(self)
 
 
 class DeviceMountSetup(Screen, ConfigListScreen):
@@ -493,12 +522,12 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 			self.Console.ePopen("/sbin/blkid | grep " + self.device + " && opkg list-installed ntfs-3g", self.addconfFstab, [self.device, self.mountp])
 		message = _("Updating mount locations...")
 		ybox = self.session.openWithCallback(self.delay, MessageBox, message, type=MessageBox.TYPE_INFO, timeout=5, enable_input=False)
-		ybox.setTitle(_("Please wait."))
+		ybox.setTitle(_("Please wait..."))
 
 	def delay(self, val):
-		message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (BRAND, DISPLAYMODEL)
+		message = _("Set %s as the new mount point?") % self.mountp
 		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
-		ybox.setTitle(_("Restart receiver."))
+		ybox.setTitle(_("Please wait..."))
 
 	def addconfFstab(self, result=None, retval=None, extra_args=None):
 		# print "[MountManager] Result:", result
@@ -520,9 +549,15 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 					self.device_type = "ntfs"
 				if not exists(self.mountp):
 					mkdir(self.mountp, 0o755)
-				open("/etc/fstab.tmp", "w").writelines([x for x in open("/etc/fstab").readlines() if self.device not in x])
+				with open("/etc/fstab") as f:
+					lines = [x for x in f.readlines() if self.device not in x]
+				with open("/etc/fstab.tmp", "w") as f:
+					f.writelines(lines)
 				rename("/etc/fstab.tmp", "/etc/fstab")
-				open("/etc/fstab.tmp", "w").writelines([x for x in open("/etc/fstab").readlines() if self.device_uuid not in x])
+				with open("/etc/fstab") as f:
+					lines = [x for x in f.readlines() if self.device_uuid not in x]
+				with open("/etc/fstab.tmp", "w") as f:
+					f.writelines(lines)
 				rename("/etc/fstab.tmp", "/etc/fstab")
 				with open("/etc/fstab", "a") as fd:
 					line = self.device_uuid + "\t" + self.mountp + "\t" + self.device_type + "\tdefaults\t0 0\n"
@@ -530,6 +565,33 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 
 	def restartBox(self, answer):
 		if answer is True:
-			self.session.open(TryQuitMainloop, QUIT_REBOOT)
+			# Extrae puntos de montaje vigentes de fstab
+			fstab_mounts = set()
+			with open("/etc/fstab") as f:
+				for line in f:
+					line = line.strip()
+					if line and "/media/" in line and "/media/net" not in line and "/media/autofs" not in line and not line.startswith("#"):
+						parts = line.split()
+						if len(parts) >= 2 and parts[1] != "none":
+							fstab_mounts.add(parts[1])
+			# Descubre TODOS los /media/* que están montados ahora mismo
+			current_mounts = set()
+			with open("/proc/mounts") as f:
+				for line in f:
+					mp = line.split()[1]
+					if mp.startswith("/media/") and not mp.startswith("/media/net") and not mp.startswith("/media/autofs"):
+						current_mounts.add(mp)
+			# Desmonta todo lo que está montado (ya esté o no en fstab)
+			for m in current_mounts:
+				system("umount %s" % m)
+				if system("mountpoint -q %s" % m) == 0:
+					system("umount -l %s" % m)
+			# Monta lo que fstab dice
+			system("mount -a")
+			config.backupmanager.backuplocation.default = self.mountp
+			config.backupmanager.backuplocation.value = config.backupmanager.backuplocation.default
+			config.imagemanager.backuplocation.default = self.mountp
+			config.imagemanager.backuplocation.value = config.imagemanager.backuplocation.default
+			ConfigListScreen.keySave(self)
 		else:
-			self.close()
+			ConfigListScreen.keySave(self)
