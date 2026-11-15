@@ -210,6 +210,9 @@ class VISIONDevicesPanel(Screen, ConfigListScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Vision Mount Manager"))
+		self.onChangedEntry = []
+		self.partitionList = []
+		ConfigListScreen.__init__(self, self.partitionList)
 		self["lab1"] = StaticText(_("norhap"))
 		self["lab2"] = StaticText(_("Report problems to:"))
 		self["lab3"] = StaticText(_("telegram @norhap"))
@@ -225,14 +228,12 @@ class VISIONDevicesPanel(Screen, ConfigListScreen):
 			self["key_green"] = StaticText("")
 			self["key_yellow"] = StaticText("")
 			self["key_blue"] = StaticText("")
-		self.onChangedEntry = []
-		self.partitionList = []
-		ConfigListScreen.__init__(self, self.partitionList)
 		self["config"] = List(self.partitionList)
 		self["list"] = List(self.partitionList)
 		self["list"].onSelectionChanged.append(self.selectionChanged)
-		self["actions"] = ActionMap(["WizardActions", "ColorActions", "MenuActions"], {
-			"back": self.close,
+		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "MenuActions"], {
+			"cancel": self.close,
+			"ok": self.keyOK,
 			"green": self.setupMounts,
 			"red": self.saveMounthdd,
 			"yellow": self.unmount,
@@ -243,6 +244,9 @@ class VISIONDevicesPanel(Screen, ConfigListScreen):
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.findPartitions)
 		self.setTimer()
+
+	def keyOK(self):
+		pass
 
 	def selectionChanged(self):
 		if len(self.list) == 0:
